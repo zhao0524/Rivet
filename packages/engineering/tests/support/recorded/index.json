@@ -1,0 +1,248 @@
+{
+  "https://www.adafruit.com/product/155": {
+    "content_sha256": "098b26ff97de49b7539359ba41b1aebd0a96811215a8e1aba8154280f301317e",
+    "fetched_at": "2026-10-24T18:49:15Z",
+    "file": "www_adafruit_com_product_155.html",
+    "status": 200
+  },
+  "https://www.adafruit.com/product/2448": {
+    "content_sha256": "d945eedf8736e2ea42c6dc05b28d3b2cbb7815e2d5cf56a01c42b515def82451",
+    "fetched_at": "2026-10-24T18:48:58Z",
+    "file": "www_adafruit_com_product_2448.html",
+    "status": 200
+  },
+  "https://www.adafruit.com/product/2939": {
+    "content_sha256": "81aa68a9493c1fcdac595033765c383f2aced46db415b029c8360a70a12b5db3",
+    "fetched_at": "2026-10-24T18:49:04Z",
+    "file": "www_adafruit_com_product_2939.html",
+    "status": 200
+  },
+  "https://www.adafruit.com/product/3070": {
+    "content_sha256": "6b3698999f46a944c71d4abba41657ee5fec3c33edf2cb50cccbed29446cdbbb",
+    "fetched_at": "2026-10-24T18:49:11Z",
+    "file": "www_adafruit_com_product_3070.html",
+    "status": 200
+  },
+  "https://www.adafruit.com/product/3244": {
+    "content_sha256": "75bc8661a173170ba03bf93fc9971bc83ab21e4c614c7701f375a699a5349d66",
+    "fetched_at": "2026-10-24T18:49:05Z",
+    "file": "www_adafruit_com_product_3244.html",
+    "status": 200
+  },
+  "https://www.adafruit.com/product/3269": {
+    "content_sha256": "c30bcdccc021d9d5be562e0ad39df06b3ec81f3fb7ff5aa7676a0f7bd8d2607e",
+    "fetched_at": "2026-10-24T18:49:01Z",
+    "file": "www_adafruit_com_product_3269.html",
+    "status": 200
+  },
+  "https://www.adafruit.com/product/328": {
+    "content_sha256": "db519cdb8adeff515dac2b2415696409a359b832245b4787674fc3bd8a6984ba",
+    "fetched_at": "2026-10-24T18:49:17Z",
+    "file": "www_adafruit_com_product_328.html",
+    "status": 200
+  },
+  "https://www.adafruit.com/product/3317": {
+    "content_sha256": "f6d3992f7c1e2d2bebc0f3d6cb4be2cc5554f7cdc0decba44b48ce3acd740cd7",
+    "fetched_at": "2026-10-24T18:48:59Z",
+    "file": "www_adafruit_com_product_3317.html",
+    "status": 200
+  },
+  "https://www.adafruit.com/product/3801": {
+    "content_sha256": "beaa0f8e09baccd9684c82b36396ca41c81543909682fafc52bcc42c1ca594a3",
+    "fetched_at": "2026-10-24T18:48:55Z",
+    "file": "www_adafruit_com_product_3801.html",
+    "status": 200
+  },
+  "https://www.adafruit.com/product/746": {
+    "content_sha256": "11472b423469896b6e10fa941adb8d2d2a849ffe2d497d71c95e646169c5a7cb",
+    "fetched_at": "2026-10-24T18:49:09Z",
+    "file": "www_adafruit_com_product_746.html",
+    "status": 200
+  },
+  "https://www.adafruit.com/product/815": {
+    "content_sha256": "ad12062d25ac1813b73ddd99d9f0bcf46f1a22913740895487d752cc3c63ed27",
+    "fetched_at": "2026-10-24T18:49:13Z",
+    "file": "www_adafruit_com_product_815.html",
+    "status": 200
+  },
+  "https://www.adafruit.com/product/9999999": {
+    "content_sha256": "8e8130386cb8698bd5ee4df396be015439bd67f286ae62c4d1a405660fe93367",
+    "fetched_at": "2026-10-24T18:49:08Z",
+    "file": "www_adafruit_com_product_9999999.html",
+    "status": 404
+  },
+  "https://www.sparkfun.com/arduino-and-breadboard-holder.html": {
+    "content_sha256": "6cab22b933cf294aab785416ee021a115d1a8ce2473e57ac72b0455b82584215",
+    "fetched_at": "2026-10-24T18:51:59Z",
+    "file": "www_sparkfun_com_arduino_and_breadboard_holder_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/basic-16x2-character-lcd-white-on-black-5v.html": {
+    "content_sha256": "9e24ab4e9a8210ea7783a8681b182ed0a6c8e259a70637f2178f2a12a2f53815",
+    "fetched_at": "2026-10-24T18:52:11Z",
+    "file": "www_sparkfun_com_basic_16x2_character_lcd_white_on_black_5v_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/battery-holder-4xaa-to-barrel-jack-connector.html": {
+    "content_sha256": "9d1a9b2f1cb83e8857e81cdf9200770203405aed327de37496103f6881bcc617",
+    "fetched_at": "2026-10-24T18:52:43Z",
+    "file": "www_sparkfun_com_battery_holder_4xaa_to_barrel_jack_connector_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/breadboard-self-adhesive-white.html": {
+    "content_sha256": "577ab125c55dd991c46679a6e47abaa569c99d512630f7b3185ae9dbfa3136ae",
+    "fetched_at": "2026-10-24T18:52:04Z",
+    "file": "www_sparkfun_com_breadboard_self_adhesive_white_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/hobby-gearmotor-140-rpm-pair.html": {
+    "content_sha256": "b2f6360cfaae487561608a7b196f8f707cce541c74eb045d0b59bb42faaf09de",
+    "fetched_at": "2026-10-24T18:52:15Z",
+    "file": "www_sparkfun_com_hobby_gearmotor_140_rpm_pair_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/jumper-wires-standard-7-m-m-30-awg-30-pack.html": {
+    "content_sha256": "993ba7fd70ea54d05304549cc13de1acf0ffb1f8ee474bb72ae1bd704a91baa1",
+    "fetched_at": "2026-10-24T18:52:27Z",
+    "file": "www_sparkfun_com_jumper_wires_standard_7_m_m_30_awg_30_pack_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/led-assorted-20-pack.html": {
+    "content_sha256": "6e91f59a732c71ae1d9e02caad582fb29e2dcbb0317f3b8479dd61fa55f770ec",
+    "fetched_at": "2026-10-24T18:52:33Z",
+    "file": "www_sparkfun_com_led_assorted_20_pack_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/led-rgb-diffused-common-cathode.html": {
+    "content_sha256": "6b13eb489aa89162f4e5b1f3fd1751e341e87c79dc05d9ce641badc99e08a416",
+    "fetched_at": "2026-10-24T18:52:31Z",
+    "file": "www_sparkfun_com_led_rgb_diffused_common_cathode_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/mini-photocell.html": {
+    "content_sha256": "de87406427c845f1aa137b1691ae64a11acb6c0c944a9ae33388c69036108439",
+    "fetched_at": "2026-10-24T18:52:29Z",
+    "file": "www_sparkfun_com_mini_photocell_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/mini-power-switch-spdt.html": {
+    "content_sha256": "19dc9526a9a4f9997686f1c7416f169d7537c5e9d9bed29e09b5567d0bee01ea",
+    "fetched_at": "2026-10-24T18:52:38Z",
+    "file": "www_sparkfun_com_mini_power_switch_spdt_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/mini-speaker-pc-mount-12mm-2-048khz.html": {
+    "content_sha256": "c1a72dbae4a417982e1b1ebe958706e80c15d1a2d2a71705a263577dd4bd549c",
+    "fetched_at": "2026-10-24T18:52:41Z",
+    "file": "www_sparkfun_com_mini_speaker_pc_mount_12mm_2_048khz_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/multicolor-buttons-4-pack.html": {
+    "content_sha256": "1273ad25b063c72ee21dae45c2299cd1c9ab57baa8341bc881e0000633ca508f",
+    "fetched_at": "2026-10-24T18:52:35Z",
+    "file": "www_sparkfun_com_multicolor_buttons_4_pack_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/products/13301": {
+    "content_sha256": "ba83517a5cbcbede9a69d21f693b9e2690f49fc9eb37752f89b61f65877a2830",
+    "fetched_at": "2026-10-24T18:49:19Z",
+    "file": "www_sparkfun_com_products_13301.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/products/13820": {
+    "content_sha256": "b04b34eecb0bc1141367541915792c05107384d70a2e53ebd774f37daa25843d",
+    "fetched_at": "2026-10-24T18:49:25Z",
+    "file": "www_sparkfun_com_products_13820.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/products/15267": {
+    "content_sha256": "74becb0949f13aed27ac3387df81a160d6024efcfb94b22ce83eaecb9e5f80e0",
+    "fetched_at": "2026-10-24T18:49:21Z",
+    "file": "www_sparkfun_com_products_15267.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/products/21301": {
+    "content_sha256": "74becb0949f13aed27ac3387df81a160d6024efcfb94b22ce83eaecb9e5f80e0",
+    "fetched_at": "2026-10-24T19:02:53Z",
+    "file": "www_sparkfun_com_products_21301.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/products/9594": {
+    "content_sha256": "013a2615b1cd41b13427758051ef342fd512bb03a05f75441a0b5ac2057f83de",
+    "fetched_at": "2026-10-24T18:52:45Z",
+    "file": "www_sparkfun_com_products_9594.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/products/99999999": {
+    "content_sha256": "1306c2791310b99a94b05fa1f60b31c015656978c8a35ce8c782632ea82011c0",
+    "fetched_at": "2026-10-24T18:49:23Z",
+    "file": "www_sparkfun_com_products_99999999.html",
+    "status": 404
+  },
+  "https://www.sparkfun.com/servo-generic-sub-micro-size.html": {
+    "content_sha256": "ff45d1cec0f2304d51c5c940e1478a0812ad236ec170aef344edcfe59eae6b30",
+    "fetched_at": "2026-10-24T18:52:18Z",
+    "file": "www_sparkfun_com_servo_generic_sub_micro_size_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/sparkfun-carrying-case.html": {
+    "content_sha256": "395ab460f4c1b7dcc16a5a267e7237cee8bd2ac4ce5ace4d575a30dde8adff0f",
+    "fetched_at": "2026-10-24T18:52:06Z",
+    "file": "www_sparkfun_com_sparkfun_carrying_case_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/sparkfun-inventor-s-kit-guidebook-v4-1a.html": {
+    "content_sha256": "f0c1e4e9758e082d5afee3498c88fa3c3e8567231e8093b36ae5318846e0760a",
+    "fetched_at": "2026-10-24T18:52:02Z",
+    "file": "www_sparkfun_com_sparkfun_inventor_s_kit_guidebook_v4_1a_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/sparkfun-mini-screwdriver.html": {
+    "content_sha256": "48fffc8e1a14e7d7dcb872ddff2e9633b67e9c6f58f3c1d6dafc069226475cfb",
+    "fetched_at": "2026-10-24T18:52:08Z",
+    "file": "www_sparkfun_com_sparkfun_mini_screwdriver_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/sparkfun-motor-driver-dual-tb6612fng-with-headers.html": {
+    "content_sha256": "ae02b8557b92fd20140a089bd7aba66b4e3406a1188aad9b9b14f0e9378d783e",
+    "fetched_at": "2026-10-24T18:52:12Z",
+    "file": "www_sparkfun_com_sparkfun_motor_driver_dual_tb6612fng_with_headers_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/sparkfun-redboard-qwiic.html": {
+    "content_sha256": "cba54db176cd6a70489dcd7687ac6b698824795d0d09af4df68c5ac569a10429",
+    "fetched_at": "2026-10-24T18:51:57Z",
+    "file": "www_sparkfun_com_sparkfun_redboard_qwiic_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/temperature-sensor-tmp36.html": {
+    "content_sha256": "44f083440947d879667518f4ec818180e75eef6f14dc603e6174e60f133d6152",
+    "fetched_at": "2026-10-24T18:52:22Z",
+    "file": "www_sparkfun_com_temperature_sensor_tmp36_html.html",
+    "status": 404
+  },
+  "https://www.sparkfun.com/trimpot-10k-ohm-with-knob.html": {
+    "content_sha256": "724ee06259c0cd7d10dc050a2de583d973d79a7dba8bd2cb3c13be9d99f34541",
+    "fetched_at": "2026-10-24T18:52:37Z",
+    "file": "www_sparkfun_com_trimpot_10k_ohm_with_knob_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/ultrasonic-distance-sensor-hc-sr04.html": {
+    "content_sha256": "a2159853365d05548e5cc3b1030849754ccfc0d839fc96483839de6046bf4f58",
+    "fetched_at": "2026-10-24T18:52:20Z",
+    "file": "www_sparkfun_com_ultrasonic_distance_sensor_hc_sr04_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/usb-micro-b-cable-6-foot.html": {
+    "content_sha256": "e6efbb88a342d1c1b211c2002738193ce4445dee8a8be726fa576127609f0298",
+    "fetched_at": "2026-10-24T18:52:24Z",
+    "file": "www_sparkfun_com_usb_micro_b_cable_6_foot_html.html",
+    "status": 200
+  },
+  "https://www.sparkfun.com/wheel-65mm-rubber-tire-pair.html": {
+    "content_sha256": "acbf6d9d14751d73b46b9ea89612b504d67e33339593501855029cb276ef3f18",
+    "fetched_at": "2026-10-24T18:52:14Z",
+    "file": "www_sparkfun_com_wheel_65mm_rubber_tire_pair_html.html",
+    "status": 200
+  }
+}

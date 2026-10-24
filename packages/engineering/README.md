@@ -106,3 +106,15 @@ copies and clearly labeled SYNTHETIC test data).
   they have no modeled 3D position.
 - Edit state (budget, sensor offset) rides in one `engine_state:` line in `provenance.notes`,
   because the BuildPlan contract has no field for it.
+
+## Sourcing: evidence, adapters and decomposition (`rivet_engine.sourcing`)
+
+Implements `docs/plan-verified-parts.md` sections 5.1 to 5.3 (issues #81 #82 #83).
+
+- `evidence.py`: the `Evidence` record (claim, value, source URL, host tier, fetched_at, content hash, extractor, matched_text, TTL), the host allowlist with tiers (changed by PR only) and the pure verifier `verify()`: `verified` needs a manufacturer or distributor host and quoted text containing the value and never an `llm-extract`; teardown or model extraction gives `inferred`; expired evidence is `stale`; disagreeing sources are `conflict`; everything else is `not_found`.
+- `fetch.py`: `PoliteFetcher` (https only, robots.txt, per-host rate limit, identifying user agent, on-disk cache with TTL) and `RecordedFetcher` (replays `tests/support/recorded/index.json`; the only fetcher tests use).
+- `extract.py`: JSON-LD products, quoted page text and "Kit includes" lists.
+- `adapters.py`: Adafruit and SparkFun product pages, Mouser and Digi-Key APIs (`needs_api_key` without `MOUSER_API_KEY` / `DIGIKEY_CLIENT_ID`+`DIGIKEY_CLIENT_SECRET`), any allowlisted manufacturer page. Each returns Evidence or an explicit `not_found` / `blocked` / `error`.
+- `decompose.py`: product page to parts with evidence (linked parts verified from their own pages; parts named without a page are `not_found`, never guessed), the four outcomes, and `typical_parts()` from `data/sourcing/reference_architectures.json` (rover, drone, robot arm), each suggestion labelled "typical for category" with the usage count behind it.
+
+Record or refresh fixture pages: `python -m rivet_engine.sourcing.record tests/support/recorded <url> ...` (trims scripts and chrome, keeps text, links and JSON-LD).
