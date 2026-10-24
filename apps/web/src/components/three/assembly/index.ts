@@ -1,0 +1,26 @@
+export * from './types';
+export { createAssemblyModel, type AssemblyModel, type AssemblyModelOptions } from './model';
+export {
+  computeAssemblyView,
+  getAssemblyModel,
+  toPoseOverrides,
+  easeAssembly,
+  DEFAULT_GHOST_OPACITY,
+  DEFAULT_DIMMED_OPACITY,
+  type ComputeAssemblyViewOptions,
+} from './computeAssemblyView';
+export {
+  scrubToStep,
+  stepToScrub,
+  nextStepPosition,
+  previousStepPosition,
+  advancePlayback,
+  type StepPosition,
+  type PlaybackState,
+  type PlaybackOptions,
+} from './timeline';
+export {
+  AssemblyTimelineControls,
+  type AssemblyTimelineControlsProps,
+  type AssemblyTimelineStepLabel,
+} from './AssemblyTimelineControls';

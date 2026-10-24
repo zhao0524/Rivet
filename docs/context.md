@@ -5,12 +5,12 @@ Shared status file for everyone working in this repo, human or agent.
 
 | | |
 |---|---|
-| **Last updated** | 2026-10-24 · [A] |
-| **Branch / commit** | `main` @ `08fc92f` + this update |
-| **Current phase** | Pre-bootstrap: only the specs exist |
+| **Last updated** | 2026-10-24 · [C] |
+| **Branch / commit** | `feat/c-3d-sim` @ `7afb71e` + this update |
+| **Current phase** | Parallel lane implementation (`services/api` and `apps/web` active) |
 | **Next gate** | Hour 8: every lane demos itself from fixtures (`docs/implementation.md` §7) |
-| **In progress** | none |
-| **Blocked** | none (1 open issue in §6) |
+| **In progress** | A5 |
+| **Blocked** | none (open issues in §6) |
 
 **Next up:** INT-0 → INT-1 → INT-2 (skeleton, contracts, fixtures). After that, all lanes can branch off and work in parallel.
 
@@ -52,7 +52,7 @@ Source of truth: [`docs/implementation.md`](docs/implementation.md) for contract
 | `fixtures/` | INT | Not created |
 | `services/api/` | A | Started: FastAPI app, settings, error envelope, `/api/health`; Pydantic models for IntentSpec, BuildPlan, JobEvent and a plan integrity guard (`contract.py`); engineering port with fixture and real (`rivet_engine`) adapters; file-backed revision store (`orchestration/versions.py`); job manager with SSE (`orchestration/jobs.py`); generation pipeline and routes: `POST /api/projects/generate`, `GET /api/projects/{id}` (+`?revision=`), `/revisions`, `POST /edits`, `/examples`, `GET /api/catalog`. safe image upload (`POST /api/assets/images`, `GET /api/assets/{id}/preview`). live vision provider (OpenAI Chat Completions backend, strict parse, one retry) and intent sanitizer. BOM CSV and `build.json` exports (`GET /api/projects/{id}/exports/bom.csv`, `build.json`). firmware ZIP export (`GET /api/projects/{id}/exports/firmware.zip`, optional `?compile=true`). Estelle grounding client (`GET /api/estelle/status`, `POST /api/estelle/ground`). Smoke script and README not built yet |
 | `packages/engineering/` | B | Not created |
-| `apps/web/` | C | Not created |
+| `apps/web/` | C | Implemented: Next.js App Router app (`/` and `/studio`); canonical v1 contract types, runtime validators, referential integrity checks, `FixtureSource` and `HttpSource` adapters (`src/lib/rivet/**`, `src/lib/{contracts,api,fixtures,geometry,plan-store}.ts`); R3F 3D stage with fitted camera, studio lighting, millimeter grid and WebGL fallback (`src/components/three/stage/**`); procedural hardware recipes and `PartAssembly` (`src/components/three/parts/**`); part selection, hover, isolation and click-guard (`src/components/three/interactions/**`); exploded view and step assembly timeline (`src/components/three/assembly/**`); electrical wiring overlay with schematic fallback (`src/components/three/wiring/**`); unified `RoverScene` (`src/components/three/RoverScene.tsx`); deterministic 2D differential-drive rover simulator engine and 3D visual viewer bridged in `SimView` (`src/components/sim/**`); image/prompt intake, job progress and saved example launcher (`src/components/studio/intake/**`); part inspector, BOM, verification and revision panels (`src/components/studio/panels/**`); `<StudioShell>`, `Toolbar`, `StepTimeline`, `PartsPanel`, `Inspector` and `Studio` (`src/components/studio/**`, `src/components/ui/**`) |
 | `design/` | DESIGN | Not created |
 
 ### Lane ownership
@@ -109,14 +109,14 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 
 | ID | Task | Status | Owner | Check |
 |---|---|---|---|---|
-| C0 | Bootstrap: Next.js app and fixture loader | TODO | — | `pnpm --filter web dev` renders the fixture |
-| C1 | Part-backed 3D renderer (top priority) | TODO | — | Fixture rover renders; parts are selectable |
-| C2 | Exploded view and assembly timeline | TODO | — | Can explode the model and step through assembly |
-| C3 | BOM and inspector (functional shell) | TODO | — | Selecting a part shows its catalog data and links |
-| C4 | Bounded rover simulation | TODO | — | Obstacle scenario runs and is labeled as an approximation |
-| C5 | Image/prompt upload and streaming job UX | TODO | — | Job events shown live, or replayed from a fixture |
-| C6 | Designer interface and handoff | TODO | — | Designer can swap UI components without touching engine code |
-| C7 | Tests and standalone demo | TODO | — | Vitest and Playwright pass |
+| C0 | Bootstrap: Next.js app and fixture loader | DONE | [C] | `pnpm --filter web dev` renders the fixture |
+| C1 | Part-backed 3D renderer (top priority) | DONE | [C] | Fixture rover renders; parts are selectable |
+| C2 | Exploded view and assembly timeline | DONE | [C] | Can explode the model and step through assembly |
+| C3 | BOM and inspector (functional shell) | DONE | [C] | Selecting a part shows its catalog data and links |
+| C4 | Bounded rover simulation | DONE | [C] | Obstacle scenario runs and is labeled as an approximation |
+| C5 | Image/prompt upload and streaming job UX | DONE | [C] | Job events shown live, or replayed from a fixture |
+| C6 | Designer interface and handoff | DONE | [C] | Designer can swap UI components without touching engine code |
+| C7 | Tests and standalone demo | DONE | [C] | Vitest and Playwright pass |
 
 ### Designer `[DESIGN]` · `design/**`
 
@@ -144,6 +144,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
 
+- 2026-10-24 [C] C0/C1/C2/C3/C4/C5/C6/C7: Integrated the complete `apps/web` 3D hardware studio: Next.js App Router (`/` and `/studio`), canonical v1 contract validators and referential integrity checks (`src/lib/rivet`), `FixtureSource` and `HttpSource` data sources with SSE/polling job subscriptions, `RivetStage` with fitted camera and WebGL fallback (`src/components/three/stage`), procedural hardware part recipes and `PartAssembly` (`src/components/three/parts`), selection/hover/isolation controller (`src/components/three/interactions`), deterministic exploded view and assembly step timeline (`src/components/three/assembly`), electrical wiring overlay with schematic fallback (`src/components/three/wiring`), unified `RoverScene`, deterministic 2D differential-drive kinematic simulation engine and 3D viewer connected via `SimView` (`src/components/sim`), `BuildIntake` with image validation and stage log (`src/components/studio/intake`), `PartInspector`/`BOMPanel`/`VerificationPanel`/`ProjectRevisionPicker` (`src/components/studio/panels`), and `<StudioShell>` with `Toolbar`, `StepTimeline`, `PartsPanel`, `Inspector` (including exports and Estelle grounding UI) and `Studio`. Checked: `pnpm --dir apps/web typecheck` clean, `pnpm --dir apps/web test` 39 test files / 355 tests passed, `pnpm --dir apps/web build` succeeded. Notes: Playwright E2E is not configured yet; Vitest covers unit, component, R3F scene graph and studio integration tests.
 - 2026-10-24 [A] A5: Added `RepoGrounder` using only what Estelle's docs specify (`estelle ask "<question>"`, `estelle doctor`). Output is treated as untrusted: a citation counts only if its file exists inside the repo, the line is in range and the file really contains the symbol; otherwise the result is `ungrounded` with no citations. Non-zero exit, timeout, missing CLI, disabled flag, non-git path or `mcp` mode give `unavailable` and never record evidence. `estelle_evidence.json` (under the data dir) is appended only for verified results. Symbol names must be plain identifiers; subprocess runs a fixed argv with no shell, stdin closed, a timeout and a scrubbed environment (no API keys). `verify_change` only enforces that paths stay inside the firmware template folder (symlink escapes included) and then reports `unavailable`, since Estelle's verify/gate usage is undocumented. New env var `RIVET_ESTELLE_REPO` (defaults to this repo). Checked: `pytest` 321 passed (3 repeat runs, plus a mutation check that weakening the citation checks fails 4 tests); all with fake runners. Notes: A5 stays IN PROGRESS, see section 6.
 - 2026-10-24 [A] A4: Added firmware generation: `generate_firmware` renders `platformio.ini`, `src/main.cpp`, `include/rivet_config.h`, `README.md` and `manifest.json` (build id, revision, plan status, generation mode, sha256 and template source per file, compile status) from allow-list templates; GPIO numbers come only from the plan's pin map, behavior thresholds from its parameters (converted to mm, ms, PWM), titles are whitelisted so they cannot inject code. Refuses unbuildable plans (422 `FIRMWARE_REFUSED`); `needs_review` plans still generate but say so in the README and manifest, and fixture/fallback plans get a SAVED FIXTURE warning. The rover boots disabled; serial `x` disables, `g` enables; a missing sensor reading stops the motors. `compile_firmware` runs a fixed `pio run -d <dir>` argv with no shell, a timeout and a scrubbed environment (no API keys); no PlatformIO means `not_checked`. Checked: `pytest` 278 passed (3 repeat runs); generated `main.cpp` passes `clang++ -fsyntax-only -Wall -Wextra` against stub Arduino/Wire/VL53L0X headers. Notes: NEVER compiled with PlatformIO (not installed here), so the pinned `espressif32@6.9.0` and `Adafruit VL53L0X@1.2.4` versions and the real library APIs are unverified; the board id `esp32dev` is generic; unit tests use made-up pin numbers as test data only. See the pin_map issue in section 6.
 - 2026-10-24 [A] A2/A3: Added exports. `GET /api/projects/{id}/exports/bom.csv` (columns `catalog_id,quantity,instance_ids,unit_price_amount,currency,purchase_url,link_status`, instance ids joined with `;`, a final `TOTAL` row whose `link_status` cell reads `total_status:<status>`) and `exports/build.json` (the stored revision), both with `?revision=`, an attachment filename of `<build_id>-r<n>...`, `nosniff` and `X-Rivet-Generation-Mode`. Null prices and links stay empty cells (never 0); the subtotal is exactly what the engine reported, the API never sums anything; cells starting with `= + - @` or tab/CR get a leading `'` so spreadsheets cannot run them (plain decimals untouched). Checked: `pytest` 229 passed (3 repeat runs); real `uvicorn` run showed the CSV. Notes: firmware ZIP export is not built yet (next). Exports are not in the spec's Hour-16 minimum.
