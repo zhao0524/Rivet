@@ -35,6 +35,8 @@ export interface StudioProps {
   initialIntakeOpen?: boolean;
   /** Which intake input gets focus when it opens initially (landing page "Describe a build" = prompt). */
   initialIntakeFocus?: 'image' | 'prompt';
+  /** Prefills the intake description (landing page prompt). */
+  initialIntakePrompt?: string;
   /** Show developer controls: data source switch, render stats, raw build id and revision (#54). */
   devMode?: boolean;
   /** Open the saved product-match example for this outcome (fixture mode only). */
@@ -73,6 +75,7 @@ export function Studio({
   initialMode = 'design',
   initialIntakeOpen = false,
   initialIntakeFocus = 'image',
+  initialIntakePrompt = '',
   devMode = false,
   initialResolveOutcome = null,
 }: StudioProps) {
@@ -421,6 +424,7 @@ export function Studio({
   const intakeNode = (
     <BuildIntake
       key={store.dataSource.mode}
+      initialPrompt={initialIntakePrompt}
       onInterpret={store.dataSource.interpret ? (request) => store.dataSource.interpret!({
         input: request.input,
         requirements: { ...request.requirements, max_budget: request.requirements.max_budget === null ? null : String(request.requirements.max_budget) },

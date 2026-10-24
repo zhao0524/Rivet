@@ -5,7 +5,7 @@ import StudioPage from '../src/app/studio/page';
 import { Studio } from '../src/components/studio';
 import { SAMPLE_PROMPT } from '../src/components/studio/intake/BuildIntake';
 import { FixtureSource } from '../src/lib/contracts';
-import { isDevModeEnabled, readIntakeStart } from '../src/lib/dev-mode';
+import { isDevModeEnabled, readIntakePrompt, readIntakeStart } from '../src/lib/dev-mode';
 
 vi.mock('@react-three/fiber', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@react-three/fiber')>();
@@ -35,7 +35,9 @@ describe('Landing page (#52)', () => {
     const { container } = render(<HomePage />);
     expect(screen.getByTestId('home-page')).toBeDefined();
     expect(screen.getByTestId('home-start-upload').getAttribute('href')).toBe('/studio?start=upload');
-    expect(screen.getByTestId('home-start-describe').getAttribute('href')).toBe('/studio?start=describe');
+    const describe = screen.getByTestId('home-start-describe').closest('form')!;
+    expect(describe.getAttribute('action')).toBe('/studio');
+    expect(new FormData(describe).get('start')).toBe('describe');
     expect(container.querySelector('[data-rivet="studio-shell"]')).toBeNull();
     expect(screen.queryByTestId('parts-panel')).toBeNull();
     expect(screen.queryByTestId('studio-inspector')).toBeNull();
@@ -69,6 +71,13 @@ describe('/studio?start= opens the intake with the chosen input (#52)', () => {
     expect(readIntakeStart({ start: 'describe' })).toBe('describe');
     expect(readIntakeStart({ start: 'other' })).toBeNull();
     expect(readIntakeStart({})).toBeNull();
+  });
+
+  it('prefills the description from the landing page prompt', async () => {
+    expect(readIntakePrompt({ prompt: 'x'.repeat(2500) })).toHaveLength(2000);
+    await renderAsync(<StudioPage searchParams={{ start: 'describe', prompt: 'A rover that stops at walls' }} />);
+    const dialog = screen.getByRole('dialog', { name: 'New build' });
+    expect((within(dialog).getByLabelText(/what should it do/i) as HTMLTextAreaElement).value).toBe('A rover that stops at walls');
   });
 
   it('describe: intake dialog is open with the prompt focused', async () => {

@@ -1,5 +1,5 @@
 import { Studio } from '../../components/studio/Studio';
-import { isDevModeEnabled, readIntakeStart } from '../../lib/dev-mode';
+import { isDevModeEnabled, readIntakePrompt, readIntakeStart } from '../../lib/dev-mode';
 import { isResolveOutcome } from '../../lib/resolve/fixtures';
 
 export default function StudioPage({
@@ -15,6 +15,7 @@ export default function StudioPage({
       devMode={isDevModeEnabled(searchParams)}
       initialIntakeOpen={start !== null}
       initialIntakeFocus={start === 'describe' ? 'prompt' : 'image'}
+      initialIntakePrompt={readIntakePrompt(searchParams)}
       initialResolveOutcome={resolveOutcome}
     />
   );

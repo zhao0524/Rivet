@@ -33,6 +33,8 @@ export interface BuildIntakeProps {
   loadedExampleId?: string | null;
   currency?: string;
   maxImageBytes?: number;
+  /** Prefills the description, e.g. from the landing page prompt (`/studio?prompt=`). */
+  initialPrompt?: string;
   className?: string;
 }
 
@@ -79,6 +81,7 @@ export function BuildIntake({
   loadedExampleId = null,
   currency = "USD",
   maxImageBytes = MAX_IMAGE_BYTES,
+  initialPrompt = "",
   className,
 }: BuildIntakeProps) {
   const [interpretation, setInterpretation] = useState<InterpretResponse | null>(null);
@@ -96,7 +99,7 @@ export function BuildIntake({
   const budgetId = useId();
   const [file, setFile] = useState<File | null>(null);
   const [asset, setAsset] = useState<UploadedImageAsset | null>(null);
-  const [prompt, setPrompt] = useState("");
+  const [prompt, setPrompt] = useState(initialPrompt);
   const [budget, setBudget] = useState("");
   const [phase, setPhase] = useState<Phase>("idle");
   const [formError, setFormError] = useState<string | null>(null);

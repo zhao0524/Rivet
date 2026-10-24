@@ -31,3 +31,8 @@ export function readIntakeStart(params?: SearchParamsLike): IntakeStart | null {
   const value = readParam(params, 'start');
   return value === 'upload' || value === 'describe' ? value : null;
 }
+
+/** `/studio?prompt=...` prefills the intake description (landing page prompt field). */
+export function readIntakePrompt(params?: SearchParamsLike): string {
+  return (readParam(params, 'prompt') ?? '').slice(0, 2000);
+}
