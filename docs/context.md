@@ -50,7 +50,7 @@ Source of truth: [`docs/implementation.md`](docs/implementation.md) for contract
 | Root config (`package.json`, `pnpm-workspace.yaml`, `.env.example`, `.gitignore`, CI) | INT | Not created |
 | `contracts/` | INT | Not created |
 | `fixtures/` | INT | Not created |
-| `services/api/` | A | Started: FastAPI app, settings, error envelope, `/api/health`; Pydantic models for IntentSpec, BuildPlan, JobEvent and a plan integrity guard (`contract.py`). No other routes yet |
+| `services/api/` | A | Started: FastAPI app, settings, error envelope, `/api/health`; Pydantic models for IntentSpec, BuildPlan, JobEvent and a plan integrity guard (`contract.py`); engineering port with fixture and real (`rivet_engine`) adapters. No other routes yet |
 | `packages/engineering/` | B | Not created |
 | `apps/web/` | C | Not created |
 | `design/` | DESIGN | Not created |
@@ -144,6 +144,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
 
+- 2026-10-24 [A] A2: Added `EngineeringPort` with `FixtureEngineeringAdapter` (saved synthetic build, labeled `fixture`/`fallback`; edits touch only behavior params and colors, never status or findings) and `RealEngineeringAdapter` (imports only `solve`, `apply_edit`, `verify`, `get_catalog`; 503 `ENGINE_UNAVAILABLE` if absent). Checked: `pytest` 35 passed; live mode without `rivet_engine` falls back with `generation_mode=fallback` or raises when fallback is disabled. Notes: not tested against B's real engine (does not exist yet). Fixture adapter prefers repo `fixtures/` once INT-2 lands, else packaged copies in `rivet_api/data/fixtures/`. `set_budget`, `replace_optional_sensor` and `set_mount_offset_within_template` are rejected in fixture mode.
 - 2026-10-24 [A] A0: Added Pydantic models (IntentSpec, BuildPlan, JobEvent) and `assert_build_plan_contract` (referential integrity only; no status or findings logic). Checked: `pytest` 16 passed, incl. round trips of the Appendix A plan and rejection of a plan with `driver-1` removed. Notes: private fixture copies in `services/api/tests/fixtures/` extracted from `docs/implementation.md` Appendix A; swap for `fixtures/` once INT-2 lands.
 - 2026-10-24 [A] A0: Added `services/api` FastAPI app: settings from env, error envelope, `GET /api/health`. Checked: `pytest` 4 passed; `uvicorn` starts and `/api/health` returns `{"ok":true,"mode":"fixture"}`. Notes: no `uv` on this machine, used a Python 3.12 venv; contract models wait on INT-1/INT-2 (`contracts/`, `fixtures/` not created).
 - 2026-10-24 [INT] setup: Rebased on `08fc92f` (specs moved to `docs/`, protocol added); updated paths. Checked: links resolve. Notes: `README.md` still links `project.md`/`implementation.md` at root.
