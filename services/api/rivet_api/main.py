@@ -11,7 +11,10 @@ from rivet_api.orchestration.pipeline import Deps
 from rivet_api.orchestration.versions import ProjectStore
 from rivet_api.routes import assets as assets_routes
 from rivet_api.routes import estelle as estelle_routes
+from rivet_api.resolution.factory import build_resolver
+from rivet_api.resolution.store import ResolutionStore
 from rivet_api.routes import exports, health, jobs, projects
+from rivet_api.routes import resolve as resolve_routes
 
 
 class ModeHeaderMiddleware:
@@ -42,6 +45,8 @@ def create_app(
     store: ProjectStore | None = None,
     job_manager: JobManager | None = None,
     grounder=None,
+    resolver=None,
+    resolutions: ResolutionStore | None = None,
 ) -> FastAPI:
     settings = settings or get_settings()
     app = FastAPI(title="Rivet API", version="0.1.0")
@@ -53,6 +58,8 @@ def create_app(
         jobs=job_manager or JobManager(settings.data_root / "jobs"),
         assets=assets or AssetStore(settings.data_root / "assets"),
         grounder=grounder or RepoGrounder.from_settings(settings),
+        resolver=resolver or build_resolver(settings),
+        resolutions=resolutions or ResolutionStore(settings.data_root / "resolutions"),
     )
     app.state.settings = settings
     app.state.deps = deps
@@ -65,6 +72,7 @@ def create_app(
     app.include_router(exports.router)
     app.include_router(estelle_routes.router)
     app.include_router(assets_routes.router)
+    app.include_router(resolve_routes.router)
     return app
 
 

@@ -19,6 +19,7 @@ class Settings(BaseModel):
     vision_provider: str = "mock"
     vision_model: str = ""
     demo_fixture: str = "rover_obstacle_v1"
+    resolver_provider: str = "stub"
     enable_estelle: bool = False
     estelle_mode: Literal["cli", "mcp"] = "cli"
     estelle_repo_root: Path | None = None
@@ -39,6 +40,7 @@ class Settings(BaseModel):
             vision_provider=os.environ.get("RIVET_VISION_PROVIDER", "mock"),
             vision_model=os.environ.get("RIVET_VISION_MODEL", ""),
             demo_fixture=os.environ.get("RIVET_DEMO_FIXTURE", "rover_obstacle_v1"),
+            resolver_provider=os.environ.get("RIVET_RESOLVER", "stub"),
             enable_estelle=_flag("RIVET_ENABLE_ESTELLE"),
             estelle_mode=estelle_mode,
             estelle_repo_root=Path(os.environ["RIVET_ESTELLE_REPO"]) if os.environ.get("RIVET_ESTELLE_REPO") else None,

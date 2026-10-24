@@ -35,6 +35,8 @@ class Deps:
     assets: Any  # exists(asset_id) -> bool; read_bytes(asset_id) -> (bytes, mime)
     edit_selector: EditSelector | None = None
     grounder: Any = None  # RepoGrounder; optional so tests can omit it
+    resolver: Any = None  # ProductResolver (resolution/resolver.py)
+    resolutions: Any = None  # ResolutionStore
 
 
 _VALIDATE_STATUS = {

@@ -40,6 +40,7 @@ class JobSnapshot:
     error: dict[str, Any] | None
     build_id: str | None
     revision: int | None
+    resolution_id: str | None = None
 
 
 @dataclass
@@ -52,6 +53,7 @@ class _Job:
     error: dict[str, Any] | None = None
     build_id: str | None = None
     revision: int | None = None
+    resolution_id: str | None = None
     events: list[JobEvent] = field(default_factory=list)
 
     @property
@@ -77,6 +79,7 @@ class _Job:
             "error": self.error,
             "build_id": self.build_id,
             "revision": self.revision,
+            "resolution_id": self.resolution_id,
             "events": [e.model_dump(mode="json") for e in self.events],
         }
 
@@ -119,6 +122,7 @@ class JobManager:
             error=raw.get("error"),
             build_id=raw.get("build_id"),
             revision=raw.get("revision"),
+            resolution_id=raw.get("resolution_id"),
             events=[JobEvent.model_validate(e) for e in raw.get("events", [])],
         )
         if not job.terminal:
@@ -187,6 +191,17 @@ class JobManager:
             self._persist(job)
             self._cond.notify_all()
 
+    def complete_resolution(self, job_id: str, resolution_id: str) -> None:
+        with self._cond:
+            job = self._lookup(job_id)
+            if job.terminal:
+                raise ValueError(f"job {job_id} is already {job.status}")
+            self._append(job, "complete", "system", "ok", "Resolution ready")
+            job.status = "complete"
+            job.resolution_id = resolution_id
+            self._persist(job)
+            self._cond.notify_all()
+
     def fail(self, job_id: str, error: ApiError) -> None:
         with self._cond:
             job = self._lookup(job_id)
@@ -239,4 +254,5 @@ class JobManager:
             error=dict(job.error) if job.error else None,
             build_id=job.build_id,
             revision=job.revision,
+            resolution_id=job.resolution_id,
         )

@@ -25,6 +25,8 @@ def job_status(job_id: str, request: Request) -> dict:
     if job.build_id is not None:
         body["build_id"] = job.build_id
         body["revision"] = job.revision
+    if job.resolution_id is not None:
+        body["resolution_id"] = job.resolution_id
     return body
 
 

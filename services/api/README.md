@@ -42,6 +42,7 @@ To use the real engine: `.venv/bin/pip install -e ../../packages/engineering`, t
 | `RIVET_VISION_PROVIDER` | `mock` | `mock` or `openai`. A bad value fails at startup |
 | `RIVET_VISION_MODEL` | empty | Required for `openai` |
 | `OPENAI_API_KEY` | unset | Server side only; required for `openai`. Never logged or returned |
+| `RIVET_RESOLVER` | `stub` | Product resolver. Only `stub` exists until lane B's resolver lands; it is labeled a saved example and is refused in `RIVET_MODE=live` |
 | `RIVET_ENABLE_ESTELLE` | `false` | Turn on the Estelle grounding client |
 | `RIVET_ESTELLE_MODE` | `cli` | `cli` works; `mcp` always reports unavailable (tool parameters are undocumented) |
 | `RIVET_ESTELLE_REPO` | this repo | Repository Estelle should ground against |
@@ -61,6 +62,9 @@ Errors always use `{"error": {"code", "message", "details", "retryable"}}`.
 | POST | `/api/projects/generate` | 202 `{job_id, status: "queued", build_id: null}`; body `{input: {kind, image_asset_id?, user_text?}, requirements?}` |
 | GET | `/api/jobs/{job_id}` | `{status, stage, progress, build_id?, revision?, error?}`; `progress` is null unless real stages were planned |
 | GET | `/api/jobs/{job_id}/events` | Server-sent events with `id:` lines; reconnect with `Last-Event-ID` or `?last_event_id=` |
+| POST | `/api/resolve` | 202 `{job_id, status: "queued", resolution_id: null}`; body `{input: {kind, image_asset_id?, user_text?}}`. Poll `GET /api/jobs/{job_id}` until it carries `resolution_id`. 503 `RESOLVER_UNAVAILABLE` in live mode without a live resolver |
+| GET | `/api/resolutions/{resolution_id}` | The stored resolution: `outcome` (`exact_match`, `partial_match`, `no_match_with_alternatives`, `unsupported`), per-part status (`verified`, `inferred`, `not_found`, `stale`, `conflict`, `unavailable`), typical-for-category parts kept in their own list, and the evidence ledger |
+| GET | `/api/resolutions/{resolution_id}/evidence` | Only the ledger: every record the resolver returned, with what the gates concluded about it |
 | GET | `/api/projects/examples` | The saved build, labeled `fixture` |
 | GET | `/api/projects/{build_id}` | `?revision=` optional |
 | GET | `/api/projects/{build_id}/revisions` | Revision summaries |
@@ -93,6 +97,17 @@ Verified by the automated tests (offline, fake backends): the whole API contract
 - **The real engine:** lane B's `rivet_engine` was not ready when this was written, so the real adapter is tested only against fakes.
 
 **Open contract gap:** `BuildPlan.firmware.pin_map` has no defined format in the spec. The firmware template needs nine integer GPIO signals (`motor_left_pwm`, `motor_left_in1`, `motor_left_in2`, `motor_right_pwm`, `motor_right_in1`, `motor_right_in2`, `motor_standby`, `i2c_sda`, `i2c_scl`), and this API chose none of the numbers. Every current fixture ships an empty `pin_map`, so `firmware.zip` returns 422 until lane B provides one. Board-specific pin limits are lane B's check.
+
+## Product resolution
+
+`POST /api/resolve` implements the API half of `docs/plan-verified-parts.md`. Vision proposes a `ProductGuess` (`brand`, `model_guess`, `category`, `visible_features`, `confidence`, `verdict`; mock, OpenAI and Backboard providers return the same strict shape). The verdict is decided in code: `not_a_product`, an unsupported verdict, or `low` confidence all give `unsupported` with no brand or model, and a low-confidence reading asks for another photo instead of guessing. A resolver (`rivet_api/resolution/resolver.py`, an interface; lane B supplies the real one) returns candidates with `Evidence`. `rivet_api/resolution/gates.py` re-checks every record and decides the outcome; nothing a resolver or model says is trusted.
+
+- `verified` needs a manufacturer or distributor host, https, a fresh record (within `ttl_days`), a content hash, `matched_text` containing the value, and an extractor other than `llm-extract`. Teardown sources and model extractions give `inferred`; community sources, a 200 page that lacks the value, and malformed records are rejected. A claim backed only by records older than their TTL is `stale` (needs refetching) and counts as a gap, never as verified.
+- Two sources disagreeing on a SKU is `conflict`; values are listed, never averaged. A brand that differs from the identified brand never confirms a product.
+- `exact_match` needs a verified product SKU and at least one part, every part `verified` or explicitly `unavailable`. Otherwise `partial_match`. No verified product gives `no_match_with_alternatives`. Alternatives and "typical" parts must themselves carry verified evidence or they are dropped, and typical parts are never merged into the product's parts.
+- An offline or blocked resolver fails the job (`RESOLVER_OFFLINE` 503, `RESOLVER_BLOCKED` 502) and nothing is stored. Live mode with a non-live resolver is refused up front, and a resolver that reports itself live but returns sample data (reserved or documentation hosts such as `*.invalid`, `*.test`, `example.com`, IP addresses, or `STUB-`/`synthetic` values) fails the job with `SYNTHETIC_EVIDENCE_IN_LIVE_RESOLUTION` 502 and stores nothing. In fixture mode the stub works, and the stored `provenance.saved_example` is true with a banner.
+
+Errors: `RESOLVER_UNAVAILABLE`, `RESOLVER_OFFLINE`, `RESOLVER_BLOCKED`, `RESOLVER_FAILED`, `RESOLVER_CONTRACT_VIOLATION`, `SYNTHETIC_EVIDENCE_IN_LIVE_RESOLUTION`, `VISION_PARSE_FAILED`, `RESOLUTION_NOT_FOUND`. Resolutions are written once to `<data root>/resolutions/`.
 
 ## Real products only
 

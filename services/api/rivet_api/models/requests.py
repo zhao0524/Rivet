@@ -62,6 +62,12 @@ class GenerateRequest(_Strict):
     requirements: GenerateRequirements | None = None
 
 
+class ResolveRequest(_Strict):
+    """Image or text in; the same input rules as generate, with no build requirements."""
+
+    input: GenerateInput
+
+
 class EditRequest(_Strict):
     base_revision: int = Field(ge=1)
     instruction: str | None = None

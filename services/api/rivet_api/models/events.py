@@ -5,6 +5,9 @@ from pydantic import BaseModel, ConfigDict
 Stage = Literal[
     "upload",
     "understand",
+    "identify",
+    "verify",
+    "decompose",
     "catalog_selection",
     "assembly",
     "validate",
@@ -14,7 +17,7 @@ Stage = Literal[
     "complete",
     "failed",
 ]
-Actor = Literal["vision", "planner", "engineer", "validator", "repair", "firmware", "system"]
+Actor = Literal["vision", "planner", "engineer", "validator", "repair", "firmware", "resolver", "system"]
 EventStatus = Literal["running", "ok", "warning", "failed"]
 
 
