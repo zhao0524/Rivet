@@ -6,10 +6,10 @@ Shared status file for everyone working in this repo, human or agent.
 | | |
 |---|---|
 | **Last updated** | 2026-10-24 · [B] |
-| **Branch / commit** | `feat/b-p4-validation` + merge review |
+| **Branch / commit** | `feat/b-p5-exports` + merge review |
 | **Current phase** | Engineering modules under sequential merge review; public composition pending |
 | **Next gate** | Hour 8: every lane demos itself from fixtures (`docs/implementation.md` §7) |
-| **In progress** | [B] Sequential branch review: `feat/b-p4-validation` |
+| **In progress** | [B] Sequential branch review: `feat/b-p5-exports` |
 | **Blocked** | none (1 open issue in §6) |
 
 **Next up:** INT-0 → INT-1 → INT-2 (skeleton, contracts, fixtures). After that, all lanes can branch off and work in parallel.
@@ -102,7 +102,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | B3 | Electrical graph; driver and controller assignment | IN PROGRESS | [B] | Netlist references only valid pins |
 | B4 | Deterministic validators: mechanical, electrical, budget, completeness | IN PROGRESS | [B] | Failing-driver fixture produces the expected finding |
 | B5 | Repair engine | TODO | — | At least one failure repaired or honestly rejected |
-| B6 | BOM, assembly steps, serialization | TODO | — | BOM rows match instance IDs |
+| B6 | BOM, assembly steps, serialization | IN PROGRESS | [B] | BOM rows match instance IDs |
 | B7 | Tests and standalone demo | TODO | — | `pytest` passes standalone |
 | B-PLAN | Parallel work orders and per-task branch/PR handoffs | DONE | [B] | B0–B7 covered; exclusive implementation/test paths and dependency gates reviewed |
 | B-P0 | Foundation: models, internal API, test inputs (`feat/b-p0-foundation`) | DONE | [B] | Clean install; offline model tests pass; `INTERNAL_API.md` freezes P1–P6 signatures |
@@ -110,7 +110,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | B-P2 | Mechanical placement (`feat/b-p2-mechanics`) | DONE | [B] | See WORK_ORDERS P2 |
 | B-P3 | Wiring and pin allocation (`feat/b-p3-wiring`) | DONE | [B] | See WORK_ORDERS P3 |
 | B-P4 | Validators (`feat/b-p4-validation`) | DONE | [B] | See WORK_ORDERS P4 |
-| B-P5 | BOM, assembly, serialization (`feat/b-p5-exports`) | TODO | — | See WORK_ORDERS P5 |
+| B-P5 | BOM, assembly, serialization (`feat/b-p5-exports`) | DONE | [B] | See WORK_ORDERS P5 |
 | B-P6 | Repair (`feat/b-p6-repair`) | TODO | — | See WORK_ORDERS P6 |
 | B-P7 | Composition, edits, demo (`feat/b-p7-integration`) | TODO | — | See WORK_ORDERS P7 |
 
@@ -152,6 +152,10 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
+
+- 2026-10-24 [B] B-P5: Reviewed and reconciled with main for sequential merge. Checked: engineering pytest 188 (1 skipped) passed; diff check passed. Notes: Shared failing-driver fixture remains absent. Unknown prices and unverified product links remain explicit; totals do not silently mix currencies.
+
+- 2026-10-24 [B] B-P5: Added `bom.py`, `assembly.py`, `serialize.py`. BOM rows grouped by catalog ID with quantity = instance count; prices only from the catalog, Decimal subtotal to the cent; a price in another currency is left out, not converted; `complete`/`incomplete`/`not_available` set truthfully; purchase links shown only when verified, otherwise `manufacturer_reference_only` or `not_available`. Assembly steps follow the parent graph (cycles raise), then signal, motor and ground wiring listing every connection, then a wiring check, and the step that connects batteries/USB supply comes last. JSON output is sorted, newline-terminated and round-trips; extra fields are rejected with `INVALID_INPUT`. Checked: `uv run pytest -q` 187 passed, 1 skipped. Notes: one BOM unit = one item as sold (jumper wire pack counts as 1). Simulation fields are derived in P7.
 
 - 2026-10-24 [B] B-P4: Reviewed and reconciled with main for sequential merge. Checked: engineering pytest 165 (1 skipped) passed; diff check passed. Notes: Removed unsupported 1.5x current tolerance: stall above continuous rating now blocks, and unverified current evidence stays UNKNOWN. Shared failing-driver fixture check is skipped because shared fixtures are absent.
 
