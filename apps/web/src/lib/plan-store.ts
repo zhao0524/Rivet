@@ -34,7 +34,7 @@ import {
   getCombinedFixtureCatalog,
   getSyntheticRoverPlan,
 } from './fixtures';
-import type { GenerateRequest as IntakeGenerateRequest } from '../components/studio/intake/types';
+import type { GenerateRequest as IntakeGenerateRequest } from './generate-request';
 
 export type StudioActionMode = 'design' | 'inspect' | 'wiring' | 'assemble' | 'simulate';
 
