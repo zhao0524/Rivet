@@ -10,7 +10,9 @@ test('uploading an image reaches a resolution with per-part evidence (fixture ou
   const intake = page.getByRole('dialog', { name: 'New build' });
   await intake.getByTestId('image-dropzone-input').setInputFiles(IMAGE);
   await expect(intake.getByText(/not uploaded yet/)).toBeVisible();
-  await intake.getByRole('button', { name: 'Upload and generate' }).click();
+  // The intake now confirms the interpretation before building (#95).
+  await intake.getByRole('button', { name: 'Review interpretation', exact: true }).click();
+  await intake.getByRole('button', { name: 'Confirm and build', exact: true }).click();
   await expect(intake).toBeHidden();
 
   await page.goto('/studio?resolve=exact_match');

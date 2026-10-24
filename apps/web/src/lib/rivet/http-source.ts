@@ -47,6 +47,8 @@ import {
   uploadedImageAssetCheck,
   type Check,
 } from "./validate";
+import type { Resolution, ResolveJob, ResolveRequest, ResolveStartResponse } from "../resolve/types";
+import { resolutionCheck, resolveJobCheck, resolveStartResponseCheck } from "../resolve/validate";
 
 /** Minimal EventSource surface so tests and non-browser runtimes can inject one. */
 export interface EventSourceLike {
@@ -458,6 +460,25 @@ export class HttpSource implements RivetDataSource {
       body: request,
       options,
     });
+  }
+
+  async resolveProduct(request: ResolveRequest, options?: RequestOptions): Promise<ResolveStartResponse> {
+    assertValidRequest(generateRequestCheck, request, "ResolveRequest");
+    return this.request("POST", "/api/resolve", resolveStartResponseCheck, "resolve response", { body: request, options });
+  }
+
+  getResolveJob(jobId: string, options?: RequestOptions): Promise<ResolveJob> {
+    return this.request("GET", `/api/jobs/${encodeURIComponent(jobId)}`, resolveJobCheck, "resolve job response", { options });
+  }
+
+  async getResolution(resolutionId: string, options?: RequestOptions): Promise<Resolution> {
+    const path = `/api/resolutions/${encodeURIComponent(resolutionId)}`;
+    const resolution = await this.request("GET", path, resolutionCheck, "resolution", { options });
+    if (resolution.resolution_id !== resolutionId)
+      throw new RivetContractError(`resolution from GET ${path}`, [
+        { path: "$.resolution_id", message: `expected "${resolutionId}", got "${resolution.resolution_id}"` },
+      ]);
+    return resolution;
   }
 
   getExportUrl(buildId: string, kind: ExportArtifactKind, revision?: number): string {

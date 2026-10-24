@@ -17,6 +17,7 @@ import type {
   UploadedImageAsset,
 } from "./types";
 import type { RivetError } from "./errors";
+import type { Resolution, ResolveJob, ResolveRequest, ResolveStartResponse } from "../resolve/types";
 
 export interface RequestOptions {
   signal?: AbortSignal;
@@ -58,4 +59,10 @@ export interface RivetDataSource {
   getEstelleStatus?(options?: RequestOptions): Promise<EstelleStatusResponse>;
   groundSymbol?(request: EstelleGroundRequest, options?: RequestOptions): Promise<EstelleGroundResponse>;
   getExportUrl?(buildId: string, kind: ExportArtifactKind, revision?: number): string | null;
+  /** `POST /api/resolve`: identify a product and trace its parts. Poll the job for `resolution_id`. */
+  resolveProduct?(request: ResolveRequest, options?: RequestOptions): Promise<ResolveStartResponse>;
+  /** `GET /api/jobs/{id}` for a resolve job (its stages are not the generate pipeline's). */
+  getResolveJob?(jobId: string, options?: RequestOptions): Promise<ResolveJob>;
+  /** `GET /api/resolutions/{id}`, validated before it is returned. */
+  getResolution?(resolutionId: string, options?: RequestOptions): Promise<Resolution>;
 }

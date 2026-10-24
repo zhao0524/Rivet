@@ -1,18 +1,26 @@
 /**
  * The strict layer, client side (plan-verified-parts.md sections 3 and 5.1).
  *
- * The resolve response states a status per part. This module decides what the UI is allowed to
- * *show*, from the evidence attached to the claim. It only ever downgrades: a response that
- * over-claims is rendered as the weaker, honest status, with a plain-language reason.
+ * The resolution states a status per claim. This module decides what the UI is allowed to
+ * *show*, from the evidence records the claim cites in the ledger. It only ever downgrades: a
+ * response that over-claims is rendered as the weaker, honest status, with a plain-language reason.
  *
- * Rules from section 5.1:
- * - `verified` needs a manufacturer or distributor host, and `matched_text` must contain the value.
+ * Rules from section 5.1 (the same rules the API applies in `resolution/evidence.py`):
+ * - `verified` needs a manufacturer or distributor host, and `matched_text` must contain the
+ *   value as a whole token (case and spacing ignored; `AB-12` is not found in `AB-123`).
  * - `llm-extract` alone can never produce `verified`.
  * - Evidence older than its TTL downgrades the claim to `stale`.
  * Plus principle 4, fail closed: an unreadable date or a missing source is never rounded up.
  */
 
-import type { Evidence, PartStatus, ResolveOutcome, ResolveResult, ResolvedPart } from './types';
+import type {
+  ClaimResult,
+  ClaimStatus,
+  Evidence,
+  PartResult,
+  Resolution,
+  ResolveOutcome,
+} from './types';
 
 const DAY_MS = 86_400_000;
 
@@ -25,32 +33,77 @@ export function isStale(evidence: Evidence, now: Date): boolean {
   return now.getTime() - fetched > evidence.ttl_days * DAY_MS;
 }
 
+const norm = (text: string) => text.split(/\s+/).filter(Boolean).join(' ').toLowerCase();
+const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/** The value appears in the text as a whole token. Mirrors `_contains` in the API. */
+export function textContainsValue(text: string, value: string): boolean {
+  const v = norm(value);
+  if (v === '') return false;
+  return new RegExp(`(?<![0-9a-z])${escapeRegExp(v)}(?![0-9a-z])`).test(norm(text));
+}
+
 /** Whether this single record is strong enough to call a claim `verified`, ignoring freshness. */
 export function supportsVerified(evidence: Evidence): boolean {
   return (
     VERIFIABLE_TIERS.includes(evidence.source_host_tier) &&
     evidence.extractor !== 'llm-extract' &&
-    evidence.matched_text.includes(evidence.value)
+    textContainsValue(evidence.matched_text, evidence.value)
   );
+}
+
+/** Fresh and strong enough to verify on its own. */
+export function confirms(evidence: Evidence, now: Date): boolean {
+  return supportsVerified(evidence) && !isStale(evidence, now);
+}
+
+/** Evidence by id, from the ledger. */
+export type EvidenceIndex = ReadonlyMap<string, Evidence>;
+
+export function indexLedger(resolution: Resolution): EvidenceIndex {
+  return new Map(resolution.ledger.map((e) => [e.evidence_id, e.evidence]));
+}
+
+export function evidenceFor(ids: readonly string[], index: EvidenceIndex): Evidence[] {
+  return ids.flatMap((id) => {
+    const e = index.get(id);
+    return e ? [e] : [];
+  });
+}
+
+/** Every record any of these claims cites, in order, without repeats. */
+export function claimsEvidence(claims: readonly ClaimResult[], index: EvidenceIndex): Evidence[] {
+  return evidenceFor([...new Set(claims.flatMap((c) => c.evidence_ids))], index);
+}
+
+/** A part's or product's status is decided by its SKU claim; without one, by all its claims. */
+function statusEvidence(claims: readonly ClaimResult[], index: EvidenceIndex): Evidence[] {
+  const sku = claims.filter((c) => c.claim === 'sku');
+  return claimsEvidence(sku.length > 0 ? sku : claims, index);
 }
 
 export interface Verdict {
   /** What the UI shows. Never stronger than `claimed`. */
-  status: PartStatus;
+  status: ClaimStatus;
   /** What the response said. */
-  claimed: PartStatus;
+  claimed: ClaimStatus;
   /** Plain-language explanation, set only when the claim was downgraded. */
   reason?: string;
 }
 
 function freshnessReason(evidence: Evidence[], now: Date): string {
   const newest = evidence.reduce((a, b) => (Date.parse(a.fetched_at) > Date.parse(b.fetched_at) ? a : b));
-  const days = Math.max(0, Math.floor((now.getTime() - Date.parse(newest.fetched_at)) / DAY_MS));
+  const fetched = Date.parse(newest.fetched_at);
+  if (Number.isNaN(fetched)) return 'Its source has no readable fetch date, so it is not treated as current.';
+  const days = Math.max(0, Math.floor((now.getTime() - fetched) / DAY_MS));
   return `Its source was last checked ${days} days ago, past the ${newest.ttl_days}-day freshness window, so it is not treated as current.`;
 }
 
-/** Decide what a claimed status may be shown as. `conflict`, `not_found` and `stale` already fail closed. */
-export function checkClaim(claimed: PartStatus, evidence: Evidence[], now: Date): Verdict {
+/**
+ * Decide what a claimed status may be shown as. `conflict`, `not_found`, `stale` and
+ * `unavailable` already fail closed and pass through.
+ */
+export function checkClaim(claimed: ClaimStatus, evidence: Evidence[], now: Date): Verdict {
   if (claimed === 'verified') {
     const supporting = evidence.filter(supportsVerified);
     if (supporting.length === 0) {
@@ -59,6 +112,12 @@ export function checkClaim(claimed: PartStatus, evidence: Evidence[], now: Date)
           status: 'not_found',
           claimed,
           reason: 'Reported as verified with no source attached, so it is shown as not found.',
+        };
+      if (evidence.every((e) => !textContainsValue(e.matched_text, e.value)))
+        return {
+          status: 'not_found',
+          claimed,
+          reason: 'The attached pages do not contain this value, so it is shown as not found.',
         };
       return {
         status: 'inferred',
@@ -73,22 +132,26 @@ export function checkClaim(claimed: PartStatus, evidence: Evidence[], now: Date)
   }
 
   if (claimed === 'inferred') {
-    if (evidence.length === 0)
+    const backing = evidence.filter((e) => textContainsValue(e.matched_text, e.value));
+    if (backing.length === 0)
       return {
         status: 'not_found',
         claimed,
-        reason: 'Reported as inferred with no source attached, so it is shown as not found.',
+        reason:
+          evidence.length === 0
+            ? 'Reported as inferred with no source attached, so it is shown as not found.'
+            : 'The attached pages do not contain this value, so it is shown as not found.',
       };
-    if (evidence.every((e) => isStale(e, now)))
-      return { status: 'stale', claimed, reason: freshnessReason(evidence, now) };
+    if (backing.every((e) => isStale(e, now)))
+      return { status: 'stale', claimed, reason: freshnessReason(backing, now) };
     return { status: 'inferred', claimed };
   }
 
   return { status: claimed, claimed };
 }
 
-export function checkPart(part: ResolvedPart, now: Date): Verdict {
-  return checkClaim(part.status, part.evidence, now);
+export function checkPart(part: PartResult, index: EvidenceIndex, now: Date): Verdict {
+  return checkClaim(part.status, statusEvidence(part.claims, index), now);
 }
 
 export interface PartVerdict extends Verdict {
@@ -107,42 +170,63 @@ export interface ResolveVerdict {
   /** Only the parts whose shown status is weaker than the claim. */
   downgrades: PartVerdict[];
   /**
-   * Whether the product SKU itself is confirmed on a manufacturer or distributor page.
+   * Whether the product SKU itself is confirmed on a fresh manufacturer or distributor page.
    * When false, no copy may say the product was found.
    */
   productConfirmed: boolean;
+  /** Alternatives and typical parts the evidence confirms; the rest are hidden. */
+  alternatives: Resolution['alternatives'];
+  typical: Resolution['typical_parts'];
+  /** How many alternatives or typical parts were hidden because their sources do not confirm them. */
+  hiddenSuggestions: number;
 }
 
 /**
  * Section 4: `exact_match` promises every part is verified or explicitly marked unavailable.
- * A part we must show as inferred, conflicting or out of date breaks that promise, so the
- * outcome drops to `partial_match` rather than the copy overstating the evidence.
+ * A part we must show as inferred, conflicting, missing or out of date breaks that promise, so
+ * the outcome drops to `partial_match` rather than the copy overstating the evidence.
  */
-const EXACT_MATCH_ALLOWED: readonly PartStatus[] = ['verified', 'not_found'];
+const EXACT_MATCH_ALLOWED: readonly ClaimStatus[] = ['verified', 'unavailable'];
 
-export function checkResult(result: ResolveResult, now: Date = new Date()): ResolveVerdict {
-  const parts: PartVerdict[] = result.parts.map((p) => ({
+export function checkResult(resolution: Resolution, now: Date = new Date()): ResolveVerdict {
+  const index = indexLedger(resolution);
+  const parts: PartVerdict[] = resolution.parts.map((p) => ({
     part_id: p.part_id,
     name: p.name,
-    ...checkPart(p, now),
+    ...checkPart(p, index, now),
   }));
+  const product = resolution.product;
   const productConfirmed =
-    result.product !== null && result.product.evidence.some((e) => supportsVerified(e) && !isStale(e, now));
+    product !== null &&
+    product.status === 'verified' &&
+    statusEvidence(product.claims, index).some((e) => confirms(e, now));
 
-  let outcome: ResolveOutcome = result.outcome;
+  let outcome: ResolveOutcome = resolution.outcome;
   let outcomeReason: string | undefined;
-  if (outcome === 'exact_match' && parts.some((p) => !EXACT_MATCH_ALLOWED.includes(p.status))) {
+  if (outcome === 'exact_match' && (parts.length === 0 || parts.some((p) => !EXACT_MATCH_ALLOWED.includes(p.status)))) {
     outcome = 'partial_match';
     outcomeReason =
       'Reported as an exact match, but not every part is confirmed or explicitly unavailable, so it is shown as a partial match.';
   }
+  if ((outcome === 'exact_match' || outcome === 'partial_match') && !productConfirmed) {
+    outcome = 'no_match_with_alternatives';
+    outcomeReason = 'Reported as found, but no current manufacturer or distributor page confirms the product number.';
+  }
+
+  const confirmed = (ids: string[]) => evidenceFor(ids, index).some((e) => confirms(e, now));
+  const alternatives = resolution.alternatives.filter((a) => a.status === 'verified' && confirmed(a.evidence_ids));
+  const typical = resolution.typical_parts.filter((t) => confirmed(t.evidence_ids));
 
   return {
     outcome,
-    claimedOutcome: result.outcome,
+    claimedOutcome: resolution.outcome,
     outcomeReason,
     parts,
     downgrades: parts.filter((p) => p.status !== p.claimed),
     productConfirmed,
+    alternatives,
+    typical,
+    hiddenSuggestions:
+      resolution.alternatives.length - alternatives.length + (resolution.typical_parts.length - typical.length),
   };
 }

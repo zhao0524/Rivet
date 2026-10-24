@@ -2,14 +2,14 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { ResolveResultView } from '../ResolveResultView';
 import { makeResolveFixtures } from '../../../../lib/resolve/fixtures';
-import type { ResolveResult } from '../../../../lib/resolve/types';
+import type { Resolution } from '../../../../lib/resolve/types';
 
 afterEach(cleanup);
 
 const NOW = new Date('2026-10-24T18:00:00Z');
 const FIXTURES = makeResolveFixtures(NOW);
 
-function show(result: ResolveResult) {
+function show(result: Resolution) {
   render(<ResolveResultView result={result} now={NOW} />);
 }
 
@@ -24,9 +24,13 @@ describe('ResolveResultView copy (plan section 4)', () => {
     );
     expect(screen.getByTestId('resolve-sku').textContent).toContain('EA-SCOUT-MINI');
     expect(status('motor').textContent).toBe('Verified');
-    expect(status('gps').textContent).toBe('Not found');
+    expect(status('gps').textContent).toBe('Not sold separately');
     expect(screen.getByTestId('no-source-gps')).toBeTruthy();
-    expect(screen.getByTestId('resolve-part-counts').textContent).toBe('3 verified · 0 inferred · 1 not confirmed');
+    expect(screen.getByTestId('resolve-part-counts').textContent).toBe(
+      '3 verified · 0 inferred · 0 not confirmed · 1 not sold separately',
+    );
+    expect(screen.getByTestId('resolve-claim-frame-material').textContent).toBe('Material: Carbon fibre');
+    expect(screen.getByTestId('resolve-provenance-banner').textContent).toContain('Saved example');
     expect(screen.queryByTestId('resolve-downgrade-notice')).toBeNull();
     expect(screen.queryByTestId('resolve-typical')).toBeNull();
   });
@@ -34,15 +38,18 @@ describe('ResolveResultView copy (plan section 4)', () => {
   it('partial match counts what it could not confirm and keeps typical parts separate', () => {
     show(FIXTURES.partial_match);
     expect(screen.getByTestId('resolve-headline').textContent).toBe(
-      'We found the product but could not confirm 4 of 6 parts',
+      'We found the product but could not confirm 5 of 6 parts',
     );
     expect(status('frame').textContent).toBe('Inferred');
     expect(status('esc').textContent).toBe('Sources disagree');
+    expect(screen.getByTestId('resolve-conflict-esc').textContent).toBe(
+      'Sources give EA-ESC-4A and EA-ESC-5A. Neither is chosen.',
+    );
     const typical = screen.getByTestId('resolve-typical');
     expect(typical.textContent).toContain('What similar products use');
     expect(typical.textContent).toContain('not parts of your product');
     // The typical camera must never appear in the user's own parts list.
-    expect(screen.getByTestId('resolve-parts').textContent).not.toContain('12 MP');
+    expect(screen.getByTestId('resolve-parts').textContent).not.toContain('EA-CAM-12');
   });
 
   it('no match offers alternatives and never shows a product number', () => {
@@ -51,6 +58,7 @@ describe('ResolveResultView copy (plan section 4)', () => {
     expect(screen.queryByTestId('resolve-sku')).toBeNull();
     expect(screen.queryByTestId('resolve-parts')).toBeNull();
     expect(screen.getByTestId('resolve-alternatives').textContent).toContain('Pocket 4 drone');
+    expect(screen.getByTestId('resolve-alternatives').textContent).toContain('Same category and size class');
     expect(screen.getByTestId('resolve-typical').textContent).toContain('2 of 2 verified comparable drones');
   });
 
@@ -101,7 +109,8 @@ describe('ResolveResultView will not repeat a claim the evidence does not suppor
   it('refuses the exact-match headline when a part is not confirmed or unavailable', () => {
     show({
       ...FIXTURES.exact_match,
-      parts: [{ part_id: 'esc', name: 'Speed controller', status: 'conflict', evidence: FIXTURES.partial_match.parts[2].evidence }],
+      parts: [FIXTURES.partial_match.parts[2]],
+      ledger: FIXTURES.partial_match.ledger,
     });
     const result = screen.getByTestId('resolve-result');
     expect(result.dataset.claimedOutcome).toBe('exact_match');
@@ -111,21 +120,27 @@ describe('ResolveResultView will not repeat a claim the evidence does not suppor
   });
 
   it('does not say the product was found when its own number is unconfirmed', () => {
-    const product = FIXTURES.exact_match.product!;
+    const r = FIXTURES.exact_match;
+    const productId = r.product!.claims[0].evidence_ids[0];
     show({
-      ...FIXTURES.exact_match,
-      product: { ...product, evidence: [{ ...product.evidence[0], extractor: 'llm-extract' }] },
+      ...r,
+      ledger: r.ledger.map((e) =>
+        e.evidence_id === productId ? { ...e, evidence: { ...e.evidence, extractor: 'llm-extract' as const } } : e,
+      ),
     });
     const headline = screen.getByTestId('resolve-headline').textContent ?? '';
-    expect(headline).toBe('We think this is Example Aero Scout Mini quadcopter, but we could not confirm it');
+    expect(headline).toBe('This may be Example Aero Scout Mini quadcopter, but we could not confirm it');
     expect(headline).not.toContain('We found');
+    expect(screen.queryByTestId('resolve-sku')).toBeNull();
+    expect(screen.getByTestId('resolve-result').dataset.outcome).toBe('no_match_with_alternatives');
   });
 });
 
 describe('ResolveResultView empty states', () => {
   it('says so when the product publishes no parts list', () => {
-    show({ ...FIXTURES.exact_match, parts: [] });
+    show({ ...FIXTURES.partial_match, parts: [] });
     expect(screen.getByTestId('resolve-no-parts').textContent).toContain('No parts list is published');
+    expect(screen.getByTestId('resolve-headline').textContent).toContain('could not confirm any of its parts');
   });
 
   it('says so when no comparable product could be verified', () => {
@@ -134,7 +149,38 @@ describe('ResolveResultView empty states', () => {
   });
 
   it('suggests nothing when there is no sourced reference for typical parts', () => {
-    show({ ...FIXTURES.no_match_with_alternatives, typical: [] });
+    show({ ...FIXTURES.no_match_with_alternatives, typical_parts: [] });
     expect(screen.getByTestId('resolve-no-typical').textContent).toContain('we are not suggesting anything');
+  });
+});
+
+describe('ResolveResultView unsupported copy', () => {
+  it('does not call an unreadable photo "not a product"', () => {
+    show({
+      ...FIXTURES.unsupported,
+      guess: { ...FIXTURES.unsupported.guess, category: 'drone', confidence: 'low' },
+      unsupported_reason: 'Upload another photo that shows the brand or model label clearly',
+    });
+    expect(screen.getByTestId('resolve-headline').textContent).toBe('We could not tell which product this is');
+    expect(screen.getByTestId('resolve-result').textContent).toContain('Upload another photo');
+  });
+});
+
+describe('ResolveResultView ledger', () => {
+  it('lists every source checked, including rejected ones with the reason', () => {
+    show(FIXTURES.partial_match);
+    const ledger = screen.getByTestId('resolve-ledger');
+    expect(ledger.textContent).toContain(`Every source we checked (${FIXTURES.partial_match.ledger.length})`);
+    const rejected = FIXTURES.partial_match.ledger.find((e) => e.support === 'rejected')!;
+    const row = screen.getByTestId(`ledger-${rejected.evidence_id}`);
+    expect(row.dataset.support).toBe('rejected');
+    expect(row.textContent).toContain('does not contain the claimed value');
+  });
+
+  it('hides a suggestion its sources do not confirm, and says so', () => {
+    const r = FIXTURES.no_match_with_alternatives;
+    show({ ...r, alternatives: [r.alternatives[0], { ...r.alternatives[1], evidence_ids: [] }] });
+    expect(screen.getByTestId('resolve-alternatives').textContent).not.toContain('Pocket 4');
+    expect(screen.getByTestId('resolve-hidden-suggestions').textContent).toContain('1 suggestion was hidden');
   });
 });

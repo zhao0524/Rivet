@@ -37,7 +37,7 @@ export interface StudioProps {
   initialIntakeFocus?: 'image' | 'prompt';
   /** Show developer controls: data source switch, render stats, raw build id and revision (#54). */
   devMode?: boolean;
-  /** Open the saved product-match example for this outcome (fixture mode only). */
+  /** Open the product-match dialog; in fixture mode it shows the saved example for this outcome. */
   initialResolveOutcome?: ResolveOutcome | null;
 }
 
@@ -293,17 +293,15 @@ export function Studio({
           ]}
         />
       ) : null}
-      {store.sourceMode === 'fixture' ? (
-        <button
-          type="button"
-          className="rv-btn rv-hide-phone"
-          data-testid="header-open-resolve"
-          aria-haspopup="dialog"
-          onClick={() => setResolveOpen(true)}
-        >
-          Product match
-        </button>
-      ) : null}
+      <button
+        type="button"
+        className="rv-btn rv-hide-phone"
+        data-testid="header-open-resolve"
+        aria-haspopup="dialog"
+        onClick={() => setResolveOpen(true)}
+      >
+        Product match
+      </button>
       <button
         type="button"
         className="rv-btn"
@@ -628,13 +626,18 @@ export function Studio({
       {intakeNode}
     </Dialog>
     <Dialog
-      open={resolveOpen && store.sourceMode === 'fixture'}
+      open={resolveOpen}
       onClose={() => setResolveOpen(false)}
       title="Product match"
       wide
       testId="resolve-dialog"
     >
-      <ResolveDialogBody initialOutcome={initialResolveOutcome ?? 'exact_match'} />
+      <ResolveDialogBody
+        key={store.sourceMode}
+        initialOutcome={initialResolveOutcome ?? 'exact_match'}
+        dataSource={store.dataSource}
+        uploadImage={store.uploadImage}
+      />
     </Dialog>
     <Dialog
       open={exportOpen}

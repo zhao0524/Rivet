@@ -1,0 +1,188 @@
+{
+  "schema_version": "1.0",
+  "resolution_id": "res-e62a70932d7e",
+  "created_at": "2026-10-24T19:18:44Z",
+  "outcome": "partial_match",
+  "headline": "We found Parrot Anafi (SKU STUB-PARROT-ANAFI) but could not confirm 2 of 3 parts. Here is what we do know, and what similar products use for the rest.",
+  "input": {
+    "kind": "text",
+    "image_asset_id": null,
+    "user_text": "Parrot Anafi drone"
+  },
+  "guess": {
+    "brand": "Parrot",
+    "model_guess": "Anafi",
+    "category": "drone",
+    "visible_features": [],
+    "confidence": "medium",
+    "verdict": "supported",
+    "unsupported_reason": null
+  },
+  "product": {
+    "brand": "Parrot",
+    "name": "Parrot Anafi",
+    "sku": "STUB-PARROT-ANAFI",
+    "status": "verified",
+    "claims": [
+      {
+        "claim": "sku",
+        "status": "verified",
+        "value": "STUB-PARROT-ANAFI",
+        "conflicting_values": [],
+        "evidence_ids": [
+          "ev-001"
+        ],
+        "note": null
+      }
+    ]
+  },
+  "parts": [
+    {
+      "part_id": "frame",
+      "name": "Frame",
+      "sku": "STUB-FRAME-02",
+      "status": "verified",
+      "claims": [
+        {
+          "claim": "sku",
+          "status": "verified",
+          "value": "STUB-FRAME-02",
+          "conflicting_values": [],
+          "evidence_ids": [
+            "ev-002"
+          ],
+          "note": null
+        }
+      ],
+      "note": null
+    },
+    {
+      "part_id": "motor",
+      "name": "Brushless motor",
+      "sku": "STUB-MOTOR-02",
+      "status": "inferred",
+      "claims": [
+        {
+          "claim": "sku",
+          "status": "inferred",
+          "value": "STUB-MOTOR-02",
+          "conflicting_values": [],
+          "evidence_ids": [
+            "ev-003"
+          ],
+          "note": "teardown source"
+        }
+      ],
+      "note": null
+    },
+    {
+      "part_id": "battery",
+      "name": "Flight battery",
+      "sku": null,
+      "status": "not_found",
+      "claims": [],
+      "note": null
+    }
+  ],
+  "alternatives": [],
+  "typical_parts": [
+    {
+      "label": "typical_for_category",
+      "name": "Brushless motor",
+      "rationale": "1 of 1 comparable drones in the saved example use a brushless motor",
+      "sku": "STUB-MOTOR-01",
+      "evidence_ids": [
+        "ev-004"
+      ]
+    }
+  ],
+  "conflicts": [],
+  "counts": {
+    "parts_total": 3,
+    "verified": 1,
+    "inferred": 1,
+    "not_found": 1,
+    "stale": 0,
+    "conflict": 0,
+    "unavailable": 0,
+    "dropped_claims": 0
+  },
+  "unsupported_reason": null,
+  "ledger": [
+    {
+      "evidence_id": "ev-001",
+      "subject": "product",
+      "support": "verified",
+      "reason": "trusted source contains the value",
+      "evidence": {
+        "claim": "sku",
+        "value": "STUB-PARROT-ANAFI",
+        "source_url": "https://manufacturer.stub.invalid/parrot-anafi",
+        "source_host_tier": "manufacturer",
+        "fetched_at": "2026-10-24T19:18:44Z",
+        "content_sha256": "cc1913fe779f1b6932b6568d94f071d15a35c0bbf9ed6b0a0002214cce2f3df4",
+        "extractor": "jsonld",
+        "matched_text": "SKU: STUB-PARROT-ANAFI",
+        "ttl_days": 14
+      }
+    },
+    {
+      "evidence_id": "ev-002",
+      "subject": "part:frame",
+      "support": "verified",
+      "reason": "trusted source contains the value",
+      "evidence": {
+        "claim": "sku",
+        "value": "STUB-FRAME-02",
+        "source_url": "https://distributor.stub.invalid/frame",
+        "source_host_tier": "distributor",
+        "fetched_at": "2026-10-24T19:18:44Z",
+        "content_sha256": "24eabe916fcd366b8007541c7942c4d5059065b9571279057f08ca79bc5f3830",
+        "extractor": "jsonld",
+        "matched_text": "SKU: STUB-FRAME-02",
+        "ttl_days": 14
+      }
+    },
+    {
+      "evidence_id": "ev-003",
+      "subject": "part:motor",
+      "support": "inferred",
+      "reason": "teardown source",
+      "evidence": {
+        "claim": "sku",
+        "value": "STUB-MOTOR-02",
+        "source_url": "https://teardown.stub.invalid/teardown-anafi",
+        "source_host_tier": "teardown",
+        "fetched_at": "2026-10-24T19:18:44Z",
+        "content_sha256": "350bfca341ecd974a4fc6f5f5513d0a01c3a6d802f5bd537638c4840bba20f44",
+        "extractor": "jsonld",
+        "matched_text": "SKU: STUB-MOTOR-02",
+        "ttl_days": 14
+      }
+    },
+    {
+      "evidence_id": "ev-004",
+      "subject": "typical:Brushless motor",
+      "support": "verified",
+      "reason": "trusted source contains the value",
+      "evidence": {
+        "claim": "sku",
+        "value": "STUB-MOTOR-01",
+        "source_url": "https://distributor.stub.invalid/motor-reference",
+        "source_host_tier": "distributor",
+        "fetched_at": "2026-10-24T19:18:44Z",
+        "content_sha256": "9f838290b7cfca76c134acd84b719f6515c1aad9624d99364aab28959d28ec2d",
+        "extractor": "jsonld",
+        "matched_text": "SKU: STUB-MOTOR-01",
+        "ttl_days": 14
+      }
+    }
+  ],
+  "provenance": {
+    "vision_mode": "fixture",
+    "resolver": "stub",
+    "resolver_mode": "fixture",
+    "saved_example": true,
+    "banner": "Saved example: this result comes from built-in sample data, not from live sources. Do not rely on it."
+  }
+}

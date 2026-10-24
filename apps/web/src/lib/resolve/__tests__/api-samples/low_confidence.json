@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "resolution_id": "res-6f6c8b2b37f0",
+  "created_at": "2026-10-24T19:18:44Z",
+  "outcome": "unsupported",
+  "headline": "We could not tell which product this is. Rivet is not confident enough to say what this product is. Upload another photo that shows the brand or model label clearly, or describe the product in words",
+  "input": {
+    "kind": "text",
+    "image_asset_id": null,
+    "user_text": "something"
+  },
+  "guess": {
+    "brand": null,
+    "model_guess": null,
+    "category": "other_product",
+    "visible_features": [],
+    "confidence": "low",
+    "verdict": "unsupported",
+    "unsupported_reason": "Rivet is not confident enough to say what this product is. Upload another photo that shows the brand or model label clearly, or describe the product in words"
+  },
+  "product": null,
+  "parts": [],
+  "alternatives": [],
+  "typical_parts": [],
+  "conflicts": [],
+  "counts": {
+    "parts_total": 0,
+    "verified": 0,
+    "inferred": 0,
+    "not_found": 0,
+    "stale": 0,
+    "conflict": 0,
+    "unavailable": 0,
+    "dropped_claims": 0
+  },
+  "unsupported_reason": "Rivet is not confident enough to say what this product is. Upload another photo that shows the brand or model label clearly, or describe the product in words",
+  "ledger": [],
+  "provenance": {
+    "vision_mode": "fixture",
+    "resolver": "stub",
+    "resolver_mode": "fixture",
+    "saved_example": true,
+    "banner": "Saved example: this result comes from built-in sample data, not from live sources. Do not rely on it."
+  }
+}
