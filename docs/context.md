@@ -6,10 +6,10 @@ Shared status file for everyone working in this repo, human or agent.
 | | |
 |---|---|
 | **Last updated** | 2026-10-24 · [B] |
-| **Branch / commit** | `feat/b-p1-catalog` (stacked on `feat/b-p0-foundation`) + this update |
+| **Branch / commit** | `feat/b-p2-mechanics` (stacked on `feat/b-p1-catalog`) + this update |
 | **Current phase** | Pre-bootstrap: only the specs exist |
 | **Next gate** | Hour 8: every lane demos itself from fixtures (`docs/implementation.md` §7) |
-| **In progress** | [B] P2 mechanics (next on `feat/b-p2-mechanics`) |
+| **In progress** | [B] P3 wiring (next on `feat/b-p3-wiring`) |
 | **Blocked** | none (1 open issue in §6) |
 
 **Next up:** INT-0 → INT-1 → INT-2 (skeleton, contracts, fixtures). After that, all lanes can branch off and work in parallel.
@@ -98,7 +98,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 |---|---|---|---|---|
 | B0 | Domain model and public entry points (`solve`, etc.) | IN PROGRESS | [B] | Models match `contracts/` |
 | B1 | Catalog of real components | DONE | [B] | Only real parts; unknown values stay `null` |
-| B2 | Parametric mechanical assembly and mounts | TODO | — | Rover template produces consistent instances |
+| B2 | Parametric mechanical assembly and mounts | IN PROGRESS | [B] | Rover template produces consistent instances |
 | B3 | Electrical graph; driver and controller assignment | TODO | — | Netlist references only valid pins |
 | B4 | Deterministic validators: mechanical, electrical, budget, completeness | TODO | — | Failing-driver fixture produces the expected finding |
 | B5 | Repair engine | TODO | — | At least one failure repaired or honestly rejected |
@@ -106,7 +106,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | B7 | Tests and standalone demo | TODO | — | `pytest` passes standalone |
 | B-P0 | Foundation: models, internal API, test inputs (`feat/b-p0-foundation`) | DONE | [B] | Clean install; offline model tests pass; `INTERNAL_API.md` freezes P1–P6 signatures |
 | B-P1 | Sourced catalog (`feat/b-p1-catalog`) | DONE | [B] | See `packages/engineering/WORK_ORDERS.md` P1 |
-| B-P2 | Mechanical placement (`feat/b-p2-mechanics`) | TODO | — | See WORK_ORDERS P2 |
+| B-P2 | Mechanical placement (`feat/b-p2-mechanics`) | DONE | [B] | See WORK_ORDERS P2 |
 | B-P3 | Wiring and pin allocation (`feat/b-p3-wiring`) | TODO | — | See WORK_ORDERS P3 |
 | B-P4 | Validators (`feat/b-p4-validation`) | TODO | — | See WORK_ORDERS P4 |
 | B-P5 | BOM, assembly, serialization (`feat/b-p5-exports`) | TODO | — | See WORK_ORDERS P5 |
@@ -152,6 +152,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
 
+- 2026-10-24 [B] B-P2: Added `mounts.py` and template `data/templates/rover_2wd.json`. `place_rover` computes every pose as parent x parent mount x offset x inverse(child mount), with XYZ Euler degrees in the three.js order (R = Rx*Ry*Rz) so C can apply `rotation_deg` directly; it then lifts the assembly so the lowest wheel/caster point sits on y = 0. Stable IDs (`chassis-1`, `motor-left-1`, ..., `accessory-<n>`), wheels mount on motor shafts, mates must be listed on both sides, each mount takes one child, missing anchors/illegal mates/out-of-range offsets raise `PLACEMENT_ERROR`, sensor height adjustable -10..+25 mm. `world_aabb` gives conservative rotated bounds for P4. Also changed the TT motor shaft in `components.json` to the body centreline so mirrored motors keep one axle. Checked: `uv run pytest -q` 103 passed. Notes: sourced placement reports `mechanical.geometry_approximated` (advisory UNKNOWN) because mount coordinates are not from CAD. B2 stays IN PROGRESS until P7 integrates it.
 - 2026-10-24 [B] B-P1/B1: Added the sourced catalog `catalog-v1-2026-10-24`: 15 real parts (Espressif ESP32-DevKitC V4 via Adafruit 3269, Adafruit TB6612 2448, Adafruit TT motor 3777 and wheel 3766, SparkFun Shadow Chassis ROB-13301 with its nub caster and 4xAA holder, Adafruit VL53L0X 3317 and VL53L1X 3967, Adafruit power bank 4288, cables 4209/758/592, DC jack adapter 368, breadboard 64). Every rating cites a page read today; ledger in `rivet_engine/data/catalog_sources.md`. `load_catalog()` is offline, validates every record, rejects duplicates and malformed files. Checked: `uv run pytest -q` 71 passed. Notes: mount coordinates are approximated (not CAD); battery holder voltage is derived from 4 AA cells (4.8-6.0 V); TT motor fit in the Shadow motor mounts is assumed, not confirmed by SparkFun; Adafruit 3269 was out of stock today. Known electrical tension for P4: TT motor stall 1.5 A @6 V exceeds TB6612 1.2 A continuous (3 A peak for ~20 ms).
 - 2026-10-24 [B] B-P0: Added the `rivet_engine` foundation: Pydantic models for IntentSpec, CatalogComponent and BuildPlan (extra keys forbidden, every §3.4 enum, decimal-string money, nulls kept), internal `Catalog`, selection, placement, wiring, verification and repair types plus `EngineError` classes that carry the API error envelope; `INTERNAL_API.md` fixes the P1–P6 function signatures; public entry points raise instead of returning fake results. Test inputs: exact Appendix A catalog/plan and §3.1 intent, plus a SYNTHETIC TEST-ONLY complete rover catalog/plan with full netlist and adversarial parts. Checked: `cd packages/engineering && uv sync && uv run pytest -q` 49 passed (round-trip, null preservation, all enums, malformed rejection). Notes: no shared `contracts/` schemas exist yet, so validation is Pydantic only. `verify(plan, catalog=None)` takes an optional catalog because services/api calls `verify(plan)`. B0 stays IN PROGRESS until P7.
 - 2026-10-24 [A] A4: Added firmware generation: `generate_firmware` renders `platformio.ini`, `src/main.cpp`, `include/rivet_config.h`, `README.md` and `manifest.json` (build id, revision, plan status, generation mode, sha256 and template source per file, compile status) from allow-list templates; GPIO numbers come only from the plan's pin map, behavior thresholds from its parameters (converted to mm, ms, PWM), titles are whitelisted so they cannot inject code. Refuses unbuildable plans (422 `FIRMWARE_REFUSED`); `needs_review` plans still generate but say so in the README and manifest, and fixture/fallback plans get a SAVED FIXTURE warning. The rover boots disabled; serial `x` disables, `g` enables; a missing sensor reading stops the motors. `compile_firmware` runs a fixed `pio run -d <dir>` argv with no shell, a timeout and a scrubbed environment (no API keys); no PlatformIO means `not_checked`. Checked: `pytest` 278 passed (3 repeat runs); generated `main.cpp` passes `clang++ -fsyntax-only -Wall -Wextra` against stub Arduino/Wire/VL53L0X headers. Notes: NEVER compiled with PlatformIO (not installed here), so the pinned `espressif32@6.9.0` and `Adafruit VL53L0X@1.2.4` versions and the real library APIs are unverified; the board id `esp32dev` is generic; unit tests use made-up pin numbers as test data only. See the pin_map issue in section 6.
