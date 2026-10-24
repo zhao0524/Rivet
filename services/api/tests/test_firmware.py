@@ -290,7 +290,7 @@ def test_generate_with_compile_records_the_result_in_the_manifest(plan, monkeypa
 
 @pytest.fixture
 def pinned_project(generate, stub_engine_cls):
-    client, app, job = generate(engine=stub_engine_cls(mutate_plan=lambda p: with_pins(p)))
+    client, app, job = generate(engine=stub_engine_cls(real=True, mutate_plan=lambda p: with_pins(p)))
     assert job["status"] == "complete"
     return client, job["build_id"]
 
@@ -308,8 +308,15 @@ def test_route_returns_a_zip_tied_to_the_revision(pinned_project):
     assert manifest["build_id"] == build_id and manifest["revision"] == 1
 
 
-def test_route_422_for_the_saved_fixture_without_a_pin_map(generate):
-    client, _, job = generate()
+def test_route_refuses_the_synthetic_fixture_even_with_a_pin_map(generate, stub_engine_cls):
+    client, _, job = generate(engine=stub_engine_cls(mutate_plan=lambda p: with_pins(p)))
+    resp = client.get(f"/api/projects/{job['build_id']}/exports/firmware.zip")
+    assert resp.status_code == 422 and resp.json()["error"]["code"] == "FIRMWARE_REFUSED"
+    assert "demo.tb6612" in resp.json()["error"]["details"]["synthetic_catalog_ids"]
+
+
+def test_route_422_for_a_real_plan_without_a_pin_map(generate, stub_engine_cls):
+    client, _, job = generate(engine=stub_engine_cls(real=True))
     resp = client.get(f"/api/projects/{job['build_id']}/exports/firmware.zip")
     assert resp.status_code == 422 and resp.json()["error"]["code"] == "FIRMWARE_NOT_SUPPORTED"
 

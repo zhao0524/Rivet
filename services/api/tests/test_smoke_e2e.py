@@ -40,8 +40,9 @@ def test_e2e_fixture_flow(make_client):
     steps = by_name(results)
     assert "fixture" in steps["project"].detail  # the saved build is labeled, not passed off as live
     assert steps["edit"].status == "PASS" and steps["stale edit"].status == "PASS"
-    # the saved fixture has no pin map, so firmware is an honest skip rather than a pass
-    assert steps["firmware"].status == "SKIP" and "FIRMWARE_NOT_SUPPORTED" in steps["firmware"].detail
+    # the saved fixture is synthetic: no real SKUs, so BOM and firmware are honest skips rather than passes
+    assert steps["bom csv"].status == "SKIP" and "EXPORT_REFUSED_SYNTHETIC" in steps["bom csv"].detail
+    assert steps["firmware"].status == "SKIP" and "FIRMWARE_REFUSED" in steps["firmware"].detail
     assert steps["estelle"].status == "PASS" and "enabled=False" in steps["estelle"].detail
 
 
@@ -51,7 +52,7 @@ def test_smoke_firmware_passes_when_the_plan_has_a_pin_map(make_client, stub_eng
     def pins(plan):
         plan["firmware"]["pin_map"] = dict(zip(FIRMWARE_SIGNALS, range(16, 25)))
 
-    client, _ = make_client(engine=stub_engine_cls(mutate_plan=pins))
+    client, _ = make_client(engine=stub_engine_cls(real=True, mutate_plan=pins))
     steps = by_name(run_smoke(client, poll_interval_s=0.02))
     assert steps["firmware"].status == "PASS" and "not_checked" in steps["firmware"].detail
 

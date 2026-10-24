@@ -65,9 +65,9 @@ Errors always use `{"error": {"code", "message", "details", "retryable"}}`.
 | GET | `/api/projects/{build_id}` | `?revision=` optional |
 | GET | `/api/projects/{build_id}/revisions` | Revision summaries |
 | POST | `/api/projects/{build_id}/edits` | `{base_revision, operation, instruction?}`; 409 on a stale `base_revision`; 422 `UNSUPPORTED_EDIT` for anything but the five allowed operations |
-| GET | `/api/projects/{build_id}/exports/bom.csv` | Null prices stay empty cells; the subtotal is the engine's, never computed here |
-| GET | `/api/projects/{build_id}/exports/build.json` | The stored revision |
-| GET | `/api/projects/{build_id}/exports/firmware.zip` | `?revision=`, `?compile=true`; header `X-Rivet-Compile-Status` |
+| GET | `/api/projects/{build_id}/exports/bom.csv` | Null prices stay empty cells; the subtotal is the engine's, never computed here. 422 `EXPORT_REFUSED_SYNTHETIC` for a plan built from synthetic demo parts |
+| GET | `/api/projects/{build_id}/exports/build.json` | The stored revision; every export carries `X-Rivet-Synthetic: true\|false` |
+| GET | `/api/projects/{build_id}/exports/firmware.zip` | `?revision=`, `?compile=true`; header `X-Rivet-Compile-Status`. 422 `FIRMWARE_REFUSED` for synthetic or unbuildable plans |
 | GET | `/api/estelle/status` | Enabled/available, plus the output of `estelle doctor` when reachable |
 | POST | `/api/estelle/ground` | `{kind: "locate" \| "dependencies", name: "<identifier>"}` |
 
@@ -93,6 +93,18 @@ Verified by the automated tests (offline, fake backends): the whole API contract
 - **The real engine:** lane B's `rivet_engine` was not ready when this was written, so the real adapter is tested only against fakes.
 
 **Open contract gap:** `BuildPlan.firmware.pin_map` has no defined format in the spec. The firmware template needs nine integer GPIO signals (`motor_left_pwm`, `motor_left_in1`, `motor_left_in2`, `motor_right_pwm`, `motor_right_in1`, `motor_right_in2`, `motor_standby`, `i2c_sda`, `i2c_scl`), and this API chose none of the numbers. Every current fixture ships an empty `pin_map`, so `firmware.zip` returns 422 until lane B provides one. Board-specific pin limits are lane B's check.
+
+## Real products only
+
+The engine owns hardware truth; the API refuses to relay sourcing it cannot back:
+
+- A BOM row may say `verified_product` only if the catalog entry has a SKU and a verified `https` purchase link equal to the row's URL, and prices must equal the catalog's. Otherwise the plan is rejected (502 `ENGINE_CONTRACT_VIOLATION`) and nothing is stored.
+- A plan labeled `live` that contains synthetic parts (`demo.*` / `synthetic.*` ids, a `SYNTHETIC` manufacturer, or a `SYNTHETIC*` catalog version) is rejected with 502 `SYNTHETIC_PARTS_IN_LIVE_PLAN`. Fixture and fallback plans are allowed and flagged.
+- `GET /api/projects/{id}` adds `provenance.sourcing` (`synthetic`, `synthetic_catalog_ids`, `unverified_link_count`, `sku_missing_count`) on read only; it is never stored, because the engine rejects plans with unknown keys. `GET /api/catalog` adds `synthetic` and `synthetic_catalog_ids`.
+- Sensor swaps to a part that is synthetic or lacks a SKU and a verified https purchase link are rejected before the engine is called (finding `api.real_product_only`).
+- Kit items with no SKU or link (for example the chassis caster) are legitimate `manufacturer_reference_only` rows, not errors.
+
+Not checked here: that a SKU or URL still resolves on the vendor's site. That needs a human or a scheduled link check.
 
 ## Safety notes
 

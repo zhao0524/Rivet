@@ -26,7 +26,7 @@ Validate fixtures or any JSON file with `uv run scripts/validate_contracts.py` (
 | Method | Path | Request | Success response |
 |---|---|---|---|
 | GET | `/api/health` | none | `200 { "ok": true, "mode": "fixture" \| "live" }` |
-| GET | `/api/catalog` | optional `?category=<identity.category>` | `200 { "schema_version": "1.0", "components": [CatalogComponent] }` |
+| GET | `/api/catalog` | optional `?category=<identity.category>` | `200 { "schema_version": "1.0", "synthetic": bool, "synthetic_catalog_ids": [id], "components": [CatalogComponent] }` |
 | GET | `/api/projects/examples` | none | `200 { "examples": [{ "example_id", "title", "project_family", "status", "generation_mode" }] }` |
 | POST | `/api/assets/images` | multipart `file` (image) | `200 { "asset_id", "mime_type", "size_bytes", "preview_url" }`. `preview_url` is server-controlled; clients never send paths |
 | GET | `/api/assets/{asset_id}/preview` | none | image bytes |
@@ -36,9 +36,9 @@ Validate fixtures or any JSON file with `uv run scripts/validate_contracts.py` (
 | GET | `/api/projects/{build_id}` | optional `?revision=<int ≥ 1>` (default latest) | `200 BuildPlan` |
 | GET | `/api/projects/{build_id}/revisions` | none | `200 { "build_id", "revisions": [{ "revision", "created_at", "status", "title" }] }` |
 | POST | `/api/projects/{build_id}/edits` | `{ "base_revision": int ≥ 1, "instruction"?, "operation"? }` | `200 { "accepted": true, "build_id", "revision" }` or `200 { "accepted": false, "build_id", "finding" }` |
-| GET | `/api/projects/{build_id}/exports/bom.csv` | optional `?revision=` | `200 text/csv`; unknown prices stay empty/unknown, never `0` |
+| GET | `/api/projects/{build_id}/exports/bom.csv` | optional `?revision=` | `200 text/csv`; unknown prices stay empty/unknown, never `0`. `422 EXPORT_REFUSED_SYNTHETIC` for a plan built from synthetic parts |
 | GET | `/api/projects/{build_id}/exports/build.json` | optional `?revision=` | `200` `BuildPlan` as a download |
-| GET | `/api/projects/{build_id}/exports/firmware.zip` | optional `?revision=`, `?compile=true` | `200 application/zip`: PlatformIO project plus manifest tied to `build_id` and `revision` |
+| GET | `/api/projects/{build_id}/exports/firmware.zip` | optional `?revision=`, `?compile=true` | `200 application/zip`: PlatformIO project plus manifest tied to `build_id` and `revision`. `422 FIRMWARE_REFUSED` for a plan built from synthetic parts |
 
 Request details:
 
@@ -47,6 +47,7 @@ Request details:
 - Job `progress` is a server-measured fraction `0..1` or `null`. Clients must not invent percentages.
 - Edits never mutate a revision. Accepted edits create `revision = base_revision + 1` with the same `build_id`. A rejected edit returns the blocking `finding` (BuildPlan finding shape) and keeps the previous revision current.
 - `GET /api/projects/{build_id}` may add an optional, response-only `provenance.sourcing` object (`synthetic`, `synthetic_catalog_ids`, `unverified_link_count`, `sku_missing_count`), computed from the catalog on read. Stored revisions, `build.json` exports and engine output never carry it. Clients should read `sourcing.synthetic` instead of searching notes for "SYNTHETIC".
+- Every export response carries `X-Rivet-Generation-Mode` and `X-Rivet-Synthetic: true|false`. A `verified_product` BOM row needs a catalog SKU and a verified https purchase link equal to the row's URL; a `live` plan with synthetic parts is refused with `502 SYNTHETIC_PARTS_IN_LIVE_PLAN`.
 - Every plan the API returns has passed schema and referential checks. Source mode is reported honestly in `provenance.generation_mode` (`live | fixture | fallback | manual_template`); a fallback is never presented as live output.
 
 ## Errors
@@ -85,12 +86,12 @@ Codes in use in v1. Clients must treat unlisted codes by their HTTP status; new 
 | `PROJECT_NOT_FOUND`, `REVISION_NOT_FOUND`, `JOB_NOT_FOUND`, `ASSET_NOT_FOUND` | 404 | no |
 | `STALE_REVISION`, `PROJECT_EXISTS` | 409 | no |
 | `FILE_TOO_LARGE` | 413 | no |
-| `UNSUPPORTED_PROJECT_FAMILY`, `UNSUPPORTED_EDIT`, `FIRMWARE_NOT_SUPPORTED`, `FIRMWARE_REFUSED`, `FIRMWARE_INVALID_PIN_MAP`, `FIRMWARE_INVALID_PARAMETER` | 422 | no |
+| `UNSUPPORTED_PROJECT_FAMILY`, `UNSUPPORTED_EDIT`, `FIRMWARE_NOT_SUPPORTED`, `FIRMWARE_REFUSED`, `FIRMWARE_INVALID_PIN_MAP`, `FIRMWARE_INVALID_PARAMETER`, `EXPORT_REFUSED_SYNTHETIC` | 422 | no |
 | `PROVIDER_QUOTA` | 429 | yes |
 | `QUOTA_EXCEEDED` | 429 | no |
 | `INTERNAL` | 500 | no |
 | `VISION_PARSE_FAILED` | 502 | yes |
-| `PROVIDER_AUTH`, `PROVIDER_ERROR`, `ENGINE_ERROR`, `ENGINE_CONTRACT_VIOLATION` | 502 | no |
+| `PROVIDER_AUTH`, `PROVIDER_ERROR`, `ENGINE_ERROR`, `ENGINE_CONTRACT_VIOLATION`, `SYNTHETIC_PARTS_IN_LIVE_PLAN` | 502 | no |
 | `PROVIDER_UNAVAILABLE` | 503 | yes |
 | `ENGINE_UNAVAILABLE` | 503 | no |
 

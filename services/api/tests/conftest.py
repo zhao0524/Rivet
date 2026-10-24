@@ -37,11 +37,41 @@ from rivet_api.errors import ApiError  # noqa: E402
 from rivet_api.main import create_app  # noqa: E402
 
 
-class StubEngine:
-    """Pretends to be a live engine (no generation_mode attribute) around the saved plan."""
+def realish(plan: dict, catalog: list[dict], price: str | None = None) -> tuple[dict, list[dict]]:
+    """Rewrite the saved SYNTHETIC build into a test-only catalog whose parts carry a SKU and
+    a verified https link, so live-mode paths can run without relaxing the real-parts guard."""
+    plan, catalog = copy.deepcopy(plan), copy.deepcopy(catalog)
+    rename = lambda cid: cid.replace("demo.", "test.", 1)  # noqa: E731
+    for n, entry in enumerate(catalog, 1):
+        entry["catalog_id"] = rename(entry["catalog_id"])
+        entry["identity"].update(manufacturer="Test Vendor", sku=f"TEST-{n}")
+        entry["sourcing"].update(
+            purchase_url=f"https://shop.test/{entry['catalog_id']}", purchase_url_verified_at="2026-10-24"
+        )
+        if price:
+            entry["sourcing"].update(price_amount=price, price_currency="USD")
+    for comp in plan["components"]:
+        comp["catalog_id"] = rename(comp["catalog_id"])
+    for item in plan["bom"]["items"]:
+        item["catalog_id"] = rename(item["catalog_id"])
+        item["purchase_url"] = f"https://shop.test/{item['catalog_id']}"
+        item["link_status"] = "verified_product"
+        if price:
+            item["unit_price_amount"] = price
+    plan["provenance"]["catalog_version"] = "test-catalog"
+    return plan, catalog
 
-    def __init__(self, mutate_plan=None, edit_result=None):
+
+class StubEngine:
+    """Pretends to be a live engine (no generation_mode attribute) around the saved plan.
+
+    `real=True` swaps in a test-only catalog with SKUs and verified links (see `realish`);
+    `price` also gives every part that unit price."""
+
+    def __init__(self, mutate_plan=None, edit_result=None, real=False, price=None):
         self._fx = FixtureEngineeringAdapter()
+        self.real = real
+        self.price = price
         self.mutate_plan = mutate_plan
         self.edit_result = edit_result
         self.solve_calls: list[dict] = []
@@ -51,6 +81,8 @@ class StubEngine:
         self.solve_calls.append(intent)
         plan = self._fx.solve(intent)
         plan["provenance"]["generation_mode"] = "live"
+        if self.real:
+            plan, _ = realish(plan, self._fx.get_catalog(), self.price)
         if self.mutate_plan:
             self.mutate_plan(plan)
         return plan
@@ -65,6 +97,8 @@ class StubEngine:
         return self._fx.verify(plan)
 
     def get_catalog(self):
+        if self.real:
+            return realish(_load("plan_rover_obstacle_v1.json"), self._fx.get_catalog(), self.price)[1]
         return self._fx.get_catalog()
 
 

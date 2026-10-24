@@ -5,11 +5,11 @@ Shared status file for everyone working in this repo, human or agent.
 
 | | |
 |---|---|
-| **Last updated** | 2026-10-24 · [INT] |
-| **Branch / commit** | `feat/int-0-workspace-bootstrap` @ `f93156f` + this update |
-| **Current phase** | `services/api`, `packages/engineering` and `apps/web` all in `main`; default sourced rover is `needs_review` (no FAIL; motor-in-chassis fit undocumented) |
+| **Last updated** | 2026-10-24 · [A] |
+| **Branch / commit** | `feat/a-real-sku-validation` on `main` @ `96b34eb` |
+| **Current phase** | `services/api`, `packages/engineering` and `apps/web` all in `main`; root pnpm workspace bootstrapped (INT-0); default sourced rover is `needs_review` (no FAIL; motor-in-chassis fit undocumented) |
 | **Next gate** | Hour 8 not passed yet: A cannot demo from `main`. Then Hour 16: A+B, B+C, A+C (`docs/implementation.md` §7) |
-| **In progress** | A5, B0/B4 (waiting on INT-2) |
+| **In progress** | A5, real-product API guard (#43, PR #45), B0/B4 (waiting on INT-2) |
 | **Blocked** | [B] B0/B4 checks wait on INT-2; default rover's motor fit in the chassis is undocumented (see §6) |
 
 **Next up:** [INT] INT-2, INT-3 (`fixtures/`, CI); [DESIGN] D0–D3 not started.
@@ -156,7 +156,12 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
 
+- 2026-10-24 [A] #43 merge 2: Merged `main` (#48 INT-0 pnpm workspace, #59 B schema-path fix) into PR #45; only `context.md` conflicted (header and log), resolved keeping both sides. Dropped INT-0's "API does not start (missing `rivet_api.exports`)" from the header: nothing imports that module and C's C7 entry records it fixed on PR #13. Checked: `services/api` `pytest -q` 392 passed; `scripts/validate_contracts.py` passes.
 - 2026-10-24 [B] B0: `tests/test_demo.py` read `contracts/build_plan.schema.json`, but INT-1 created `build-plan.schema.json`, so the shared-schema check always skipped. Fixed the path and added `jsonschema>=4.18,<5` to the engine dev dependencies (`uv.lock` updated). Checked: `uv run pytest -q` 358 passed, 6 skipped (was 357 / 7); the `--sample` plan validates against `contracts/build-plan.schema.json`. Notes: remaining skips wait on INT-2 `fixtures/`.
+- 2026-10-24 [A] #43 merge: Merged `main` (#46, #47) into PR #45. `contracts/api.md` now lists `EXPORT_REFUSED_SYNTHETIC` (422) and `SYNTHETIC_PARTS_IN_LIVE_PLAN` (502), the `synthetic` / `synthetic_catalog_ids` fields on `GET /api/catalog`, the 422 refusals on `bom.csv` / `firmware.zip`, and the `X-Rivet-Synthetic` export header (additive; new codes need no contract change per `api.md`). Checked: `services/api` `pytest -q` 392 passed; `scripts/validate_contracts.py` passes, and a `GET /api/projects/{id}` response carrying `provenance.sourcing` validates against `contracts/build-plan.schema.json`.
+- 2026-10-24 [A] #43 review: Sensor-swap preflight now uses `is_verified_product` (catalog SKU plus verified https link with a host, the same bar as a `verified_product` BOM row) instead of "URL and date present", so an http or SKU-less part returns `accepted: false` / `api.real_product_only` without calling the engine instead of a later 502. Merged `main` after #44. Checked: `.venv/bin/python -m pytest -q` 392 passed; new endpoint tests for unverified, http, host-less and SKU-less parts assert `engine.edit_calls == []` and failed before the fix. Notes: B and C sign-off on the §3.5 additions is still outstanding.
+
+- 2026-10-24 [A] #43: API now refuses to relay sourcing the catalog cannot back (`rivet_api/provenance.py`). A BOM row may be `verified_product` only with a catalog SKU and a verified https link equal to its URL, and prices must equal the catalog's, else 502 `ENGINE_CONTRACT_VIOLATION` and nothing is stored. A `live` plan with synthetic parts (`demo.*`/`synthetic.*` id, `SYNTHETIC` manufacturer or catalog version) is 502 `SYNTHETIC_PARTS_IN_LIVE_PLAN`; fixture/fallback plans are allowed and flagged. `GET /api/projects/{id}` adds response-only `provenance.sourcing`; `GET /api/catalog` adds `synthetic`; every export carries `X-Rivet-Synthetic`; BOM CSV and firmware ZIP return 422 `EXPORT_REFUSED_SYNTHETIC` / `FIRMWARE_REFUSED` for synthetic plans; sensor swaps to synthetic or unlinked parts are rejected before the engine (`api.real_product_only`). Smoke script now SKIPs BOM/firmware for the saved synthetic build. Checked: `pytest` 388 passed (3 repeat runs), 8 mutation checks all caught, the real engine's sourced rover passes the BOM checks, in-process smoke 11 passed / 2 skipped. Notes: nothing checks that a SKU or URL still resolves on the vendor site. The summary is not stored because the engine's models reject unknown keys.
 - 2026-10-24 [C] C7: Added Playwright E2E for the studio core flows in fixture mode (issue #34). `apps/web/playwright.config.ts` manages `next dev` on port 3100 (CI-headless; `E2E_BASE_URL` skips the managed server) and `e2e/` covers: home → intake → saved-example launch and prompt generate (fixture job, honest "no live generation ran" event), 3D stage mount or the documented WebGL fallback, part select → Inspector catalog data ↔ BOM row agreement, explode toggle/slider and assembly-step scrubbing with step-part → inspector links, and the wall-ahead simulation FSM (`FORWARD → STOP` transition log) with the approximation disclaimer and DISABLE stop. Added `e2e`/`e2e:install` scripts (`@playwright/test` 1.64.1, chromium). Checked: `npx playwright test` 7/7 passed, `npm test` 39 files / 362 tests passed, `npm run lint` clean, `npm run build` succeeded. Notes: `package-lock.json` intentionally not committed (lockfiles are INT-0 scope); INT-3 can invoke `cd apps/web && npm run e2e` headlessly. Also cleared the stale "API does not start on `main`" notes — fixed on PR #13.
 - 2026-10-24 [INT] INT-1: `build-plan.schema.json` now allows an optional, response-only `provenance.sourcing` object (`synthetic`, `synthetic_catalog_ids`, `unverified_link_count`, `sku_missing_count`; closed shape) that PR #45 adds to `GET /api/projects/{id}`; documented in `api.md`. Added a 19th rejection case for an incomplete `sourcing`. Checked: validator passes; PR #45 branch in fixture mode: `GET` plan (with `sourcing`) and `build.json` (without) both validate.
 
@@ -226,7 +231,7 @@ Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done
 Agreed changes to `contracts/**`, `fixtures/**`, the stack, or scope (including cuts). Newest first.
 Format: `YYYY-MM-DD: decision. Agreed by: [A] [B] [C]. Reason: why.`
 
-- none yet
+- 2026-10-24: `docs/implementation.md` §3.5 documents the API real-product guard (new error codes `SYNTHETIC_PARTS_IN_LIVE_PLAN`, `EXPORT_REFUSED_SYNTHETIC`, `FIRMWARE_REFUSED` on synthetic plans, read-only `provenance.sourcing`, `X-Rivet-Synthetic` header, `/api/catalog` flags). Additive only; no schema or fixture changes. Agreed by: [A]; [B] and [C] to confirm in review. Reason: #43.
 
 ---
 
@@ -241,6 +246,10 @@ Format: `[LANE] TASK-ID: problem. Needs: who or what unblocks it.`
 - [DESIGN] D0–D3: `design/` does not exist and nobody has claimed the lane. Needs: a designer, or a team decision to cut it (§5).
 
 - [B] B0/B4: B0's check needs `contracts/` schemas (INT-1) and B4's check needs `fixtures/plans/rover_failing_driver_v1.json` (INT-2). Engine tests already compare against them when present. Needs: [INT] INT-1/INT-2.
+
+- [B] from #43: (1) `Sourcing` should enforce https and `purchase_url` implies `purchase_url_verified_at` in the schema, not only in `tests/test_catalog.py`; (2) `CatalogComponent.is_synthetic` checks the id prefix only, not the manufacturer label; (3) `completeness.real_parts` is UNKNOWN, so `apply_edit`'s added-blocking-FAIL filter would accept a synthetic sensor under a caller-supplied catalog; (4) no freshness check on `purchase_url_verified_at` / `price_checked_at`. Needs: [B].
+
+- [C] from #43: `provenance.sourcing.synthetic` (read responses only) can replace reading "SYNTHETIC" out of free text for the Saved demo build banner. Needs: [C] to adopt it.
 
 - [A] A5: Estelle was never run for real: the `estelle` CLI is not installed here and there is no account. Needs: a human to run `npm i -g @fatelabs/estelle`, `estelle login`, `estelle setup` in the repo, set `RIVET_ENABLE_ESTELLE=true`, then call `GET /api/estelle/status` and `POST /api/estelle/ground` once and check that `estelle ask` output really carries `file:line` citations (the output format is not documented, so the parser may need adjusting). Also not done: the grounded firmware-edit flow (a patch to the template that is grounded, then compiled), because Estelle's docs give no parameters for the MCP tools or `gate`/`verify`.
 

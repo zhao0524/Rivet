@@ -22,6 +22,7 @@ from rivet_api.models.plan import BuildPlan
 from rivet_api.models.requests import EditRequest, GenerateRequest
 from rivet_api.orchestration.jobs import JobManager, JobSnapshot
 from rivet_api.orchestration.versions import ProjectStore
+from rivet_api.provenance import check_bom_links, is_verified_product, is_synthetic_catalog_id, plan_is_synthetic, plan_synthetic_ids
 
 
 @dataclass
@@ -53,7 +54,7 @@ def planned_stages(deps: Deps, req: GenerateRequest) -> list[str]:
 
 
 def check_plan(plan: Any, engine: EngineeringPort) -> BuildPlan:
-    """Structural check only; raises ENGINE_CONTRACT_VIOLATION (502)."""
+    """Structure and sourcing check; raises ENGINE_CONTRACT_VIOLATION or SYNTHETIC_PARTS_IN_LIVE_PLAN (502)."""
     try:
         model = BuildPlan.model_validate(plan)
     except ValidationError as exc:
@@ -61,8 +62,9 @@ def check_plan(plan: Any, engine: EngineeringPort) -> BuildPlan:
         raise ApiError(
             "ENGINE_CONTRACT_VIOLATION", "Engine returned a malformed BuildPlan", 502, {"errors": errors}
         ) from exc
+    catalog = engine.get_catalog()
     try:
-        assert_build_plan_contract(model, engine.get_catalog())
+        assert_build_plan_contract(model, catalog)
     except ContractViolation as exc:
         raise ApiError(
             "ENGINE_CONTRACT_VIOLATION",
@@ -70,6 +72,21 @@ def check_plan(plan: Any, engine: EngineeringPort) -> BuildPlan:
             502,
             {"errors": exc.errors},
         ) from exc
+    problems = check_bom_links(plan, catalog)
+    if problems:
+        raise ApiError(
+            "ENGINE_CONTRACT_VIOLATION",
+            "Engine returned a BuildPlan whose BOM claims sourcing the catalog does not back",
+            502,
+            {"errors": problems},
+        )
+    if model.provenance.generation_mode == "live" and plan_is_synthetic(plan, catalog):
+        raise ApiError(
+            "SYNTHETIC_PARTS_IN_LIVE_PLAN",
+            "A live plan contains synthetic demo parts; only real catalog products may be served as live",
+            502,
+            {"synthetic_catalog_ids": plan_synthetic_ids(plan, catalog)},
+        )
     return model
 
 
@@ -157,6 +174,24 @@ def apply_edit_request(build_id: str, req: EditRequest, deps: Deps) -> dict[str,
         )
     op = parse_edit(req.instruction, req.operation, deps.edit_selector)
     operation = op.model_dump(exclude_none=True)
+    if operation["op"] == "replace_optional_sensor":
+        catalog = deps.engine.get_catalog()
+        new_id = operation["catalog_id"]
+        if is_synthetic_catalog_id(new_id, catalog) or not is_verified_product(new_id, catalog):
+            finding = {
+                "rule_id": "api.real_product_only",
+                "result": "UNKNOWN",
+                "severity": "blocking",
+                "affected_instance_ids": [],
+                "message": f"{new_id} is not a real catalog product with a SKU and a verified https purchase link",
+                "evidence_urls": [],
+            }
+            deps.store.log_edit(
+                build_id,
+                {"base_revision": req.base_revision, "instruction": req.instruction, "operation": operation,
+                 "accepted": False, "finding": finding},
+            )
+            return {"accepted": False, "build_id": build_id, "finding": finding}
     entry: dict[str, Any] = {
         "base_revision": req.base_revision,
         "instruction": req.instruction,

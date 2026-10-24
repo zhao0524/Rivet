@@ -106,7 +106,7 @@ def test_live_vision_and_live_engine_stays_live(generate, stub_engine_cls):
 
             return MockVisionProvider().interpret(request, image)
 
-    client, _, job = generate(engine=stub_engine_cls(), vision=LiveVision())
+    client, _, job = generate(engine=stub_engine_cls(real=True), vision=LiveVision())
     assert client.get(f"/api/projects/{job['build_id']}").json()["provenance"]["generation_mode"] == "live"
 
 

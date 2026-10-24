@@ -102,20 +102,40 @@ def project(generate):
     return _make
 
 
-def test_bom_csv_route_headers_and_content(project):
+def priced_total(plan: dict) -> None:
+    plan["bom"]["known_subtotal_amount"] = "112.50"
+    plan["bom"]["total_status"] = "complete"
+
+
+def test_bom_csv_is_refused_for_the_synthetic_fixture(project):
     client, _, build_id = project()
+    resp = client.get(f"/api/projects/{build_id}/exports/bom.csv")
+    assert resp.status_code == 422 and resp.json()["error"]["code"] == "EXPORT_REFUSED_SYNTHETIC"
+    assert "demo.tb6612" in resp.json()["error"]["details"]["synthetic_catalog_ids"]
+
+
+def test_build_json_for_the_synthetic_fixture_is_flagged(project):
+    client, _, build_id = project()
+    resp = client.get(f"/api/projects/{build_id}/exports/build.json")
+    assert resp.status_code == 200 and resp.headers["x-rivet-synthetic"] == "true"
+
+
+def test_bom_csv_route_headers_and_content(project, stub_engine_cls):
+    client, _, build_id = project(engine=stub_engine_cls(real=True))
     resp = client.get(f"/api/projects/{build_id}/exports/bom.csv")
     assert resp.status_code == 200
     assert resp.headers["content-type"].startswith("text/csv")
     assert resp.headers["content-disposition"] == f'attachment; filename="{build_id}-r1-bom.csv"'
     assert resp.headers["x-content-type-options"] == "nosniff"
-    assert resp.headers["x-rivet-generation-mode"] == "fixture"
+    assert resp.headers["x-rivet-generation-mode"] == "fallback"
+    assert resp.headers["x-rivet-synthetic"] == "false"
     body = rows(resp.text)
     assert body[-1][0] == "TOTAL" and body[-1][6] == "total_status:not_available"
+    assert body[1][5].startswith("https://shop.test/") and body[1][6] == "verified_product"
 
 
 def test_bom_csv_route_with_prices_from_the_engine(project, stub_engine_cls):
-    engine = stub_engine_cls(mutate_plan=priced)
+    engine = stub_engine_cls(real=True, price="12.50", mutate_plan=priced_total)
     client, _, build_id = project(engine=engine)
     body = rows(client.get(f"/api/projects/{build_id}/exports/bom.csv").text)
     assert body[1][3] == "12.50" and body[-1][3] == "112.50"
@@ -134,8 +154,8 @@ def test_build_json_equals_stored_revision_and_defaults_to_latest(project):
     assert first.json()["behavior"]["parameters"]["turn_duration_ms"] == 600
 
 
-def test_bom_csv_revision_param(project):
-    client, _, build_id = project()
+def test_bom_csv_revision_param(project, stub_engine_cls):
+    client, _, build_id = project(engine=stub_engine_cls(real=True))
     client.post(f"/api/projects/{build_id}/edits", json=BEHAVIOR_EDIT)
     r1 = client.get(f"/api/projects/{build_id}/exports/bom.csv?revision=1")
     assert 'filename="' + build_id + '-r1-bom.csv"' in r1.headers["content-disposition"]

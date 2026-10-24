@@ -80,7 +80,7 @@ Shared contracts live in `contracts/` and `fixtures/`. Do not invent interfaces 
 ## Non-negotiables (short)
 
 1. One versioned `BuildPlan` drives 3D, BOM, pins, assembly, firmware, and simulation.
-2. Real catalog parts and links only — never invent prices, stock, or SKUs.
+2. Real catalog parts and links only — never invent prices, stock, or SKUs. The API enforces this: it rejects unbacked `verified_product` BOM rows, synthetic parts in live plans, and BOM/firmware exports of synthetic builds (see `services/api/README.md`).
 3. AI proposes; deterministic code validates.
 4. Missing evidence → `UNKNOWN` / `WARN` / `NEEDS_REVIEW`, not a fake pass.
 5. Ship the rover flow before expanding scope.

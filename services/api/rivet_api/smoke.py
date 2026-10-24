@@ -139,6 +139,7 @@ def run_smoke(client: Any, poll_timeout_s: float = POLL_TIMEOUT_S, poll_interval
         plan = client.get(f"/api/projects/{s['build_id']}").json()
         assert plan["schema_version"] == "1.0", f"schema_version {plan['schema_version']!r}"
         assert (plan["build_id"], plan["revision"]) == (s["build_id"], s["revision"]), "ids differ from the job"
+        s["sourcing"] = plan["provenance"].pop("sourcing")  # response-only; not part of the stored plan
         s["plan"] = plan
         mode = plan["provenance"]["generation_mode"]
         s["_data"] = {"generation_mode": mode, "status": plan["status"]}
@@ -150,6 +151,10 @@ def run_smoke(client: Any, poll_timeout_s: float = POLL_TIMEOUT_S, poll_interval
 
     def bom() -> str:
         plan = s["plan"]
+        if s["sourcing"]["synthetic"]:
+            resp = client.get(f"/api/projects/{s['build_id']}/exports/bom.csv")
+            assert resp.status_code == 422, f"synthetic plan BOM export returned {resp.status_code}, expected 422"
+            raise _Skip("EXPORT_REFUSED_SYNTHETIC: synthetic demo parts have no real SKUs or links, so no BOM is exported")
         resp = client.get(f"/api/projects/{s['build_id']}/exports/bom.csv")
         assert resp.status_code == 200, f"bom returned {resp.status_code}"
         rows = list(csv.reader(io.StringIO(resp.text)))

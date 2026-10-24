@@ -5,6 +5,7 @@ from fastapi import APIRouter, Query, Request
 from rivet_api.adapters.fixture import FixtureEngineeringAdapter
 from rivet_api.errors import ApiError
 from rivet_api.models.requests import EditRequest, GenerateRequest
+from rivet_api.provenance import is_synthetic_catalog_id, sourcing_summary
 from rivet_api.orchestration.pipeline import apply_edit_request, generate_project, planned_stages
 
 router = APIRouter()
@@ -29,7 +30,11 @@ def examples(request: Request) -> dict[str, Any]:
 
 @router.get("/api/projects/{build_id}")
 def get_project(build_id: str, request: Request, revision: int | None = Query(default=None, ge=1)) -> dict:
-    return request.app.state.deps.store.get(build_id, revision)
+    deps = request.app.state.deps
+    plan = deps.store.get(build_id, revision)
+    # Response-only: the engine rejects stored plans that carry keys it does not know.
+    plan["provenance"]["sourcing"] = sourcing_summary(plan, deps.engine.get_catalog())
+    return plan
 
 
 @router.get("/api/projects/{build_id}/revisions")
@@ -47,4 +52,7 @@ def catalog(request: Request, category: str | None = None) -> dict[str, Any]:
     components = request.app.state.deps.engine.get_catalog()
     if category is not None:
         components = [c for c in components if c.get("identity", {}).get("category") == category]
-    return {"schema_version": "1.0", "components": components}
+    synthetic = sorted(
+        c["catalog_id"] for c in components if is_synthetic_catalog_id(c["catalog_id"], components)
+    )
+    return {"schema_version": "1.0", "synthetic": bool(synthetic), "synthetic_catalog_ids": synthetic, "components": components}

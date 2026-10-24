@@ -406,18 +406,18 @@ Base URL: `http://localhost:8000`; every response uses exact JSON shape and expl
 | Method | Path | Request | Response / notes |
 |---|---|---|---|
 | GET | `/api/health` | — | `{ "ok": true, "mode": "fixture|live" }` |
-| GET | `/api/catalog` | optional `?category=` | `{ "schema_version": "1.0", "components": [CatalogComponent] }` |
+| GET | `/api/catalog` | optional `?category=` | `{ "schema_version": "1.0", "synthetic", "synthetic_catalog_ids", "components": [CatalogComponent] }` (the two flags are API additions; see "Real-product guard") |
 | GET | `/api/projects/examples` | — | list of supported saved builds, titles/status |
 | POST | `/api/assets/images` | multipart `file` | `{ "asset_id", "mime_type", "size_bytes", "preview_url" }` (server-controlled URL; no arbitrary path) |
 | POST | `/api/projects/generate` | `{ "input": { "kind", "image_asset_id", "user_text" }, "requirements" }` | `{ "job_id", "status": "queued|running|complete|failed", "build_id": null }` |
 | GET | `/api/jobs/{job_id}` | — | `{ "job_id", "status", "stage", "progress", "error"?, "build_id"?, "revision"? }` |
 | GET | `/api/jobs/{job_id}/events` | — | `text/event-stream` with typed stage events; no invented progress percentages |
-| GET | `/api/projects/{build_id}` | `?revision=` optional | complete validated `BuildPlan` JSON |
+| GET | `/api/projects/{build_id}` | `?revision=` optional | complete validated `BuildPlan` JSON; the response adds `provenance.sourcing` (read-only, never stored) |
 | POST | `/api/projects/{build_id}/edits` | `{ "base_revision", "instruction", "operation"? }` | `{ "accepted", "build_id", "revision"?, "finding"?, "job_id"? }`; reject stale revision |
 | GET | `/api/projects/{build_id}/revisions` | — | list of revision summaries |
-| GET | `/api/projects/{build_id}/exports/bom.csv` | `?revision=` | actual BOM CSV; price null/unknown preserved |
-| GET | `/api/projects/{build_id}/exports/firmware.zip` | `?revision=` | ZIP with PlatformIO project and manifest tied to build revision |
-| GET | `/api/projects/{build_id}/exports/build.json` | `?revision=` | complete design file |
+| GET | `/api/projects/{build_id}/exports/bom.csv` | `?revision=` | actual BOM CSV; price null/unknown preserved; `422 EXPORT_REFUSED_SYNTHETIC` for a plan built from synthetic parts |
+| GET | `/api/projects/{build_id}/exports/firmware.zip` | `?revision=` | ZIP with PlatformIO project and manifest tied to build revision; `422 FIRMWARE_REFUSED` for synthetic or unbuildable plans |
+| GET | `/api/projects/{build_id}/exports/build.json` | `?revision=` | complete design file; served for synthetic plans too, flagged by `X-Rivet-Synthetic: true` |
 
 **Core minimum for hour 16:** health, catalog, generate job, job status, project GET, and revision edit endpoint. Exports can be added after working design.
 
@@ -437,6 +437,16 @@ HTTP errors use:
 ```
 
 Use `400` for bad request, `404` for missing resource, `409` for stale revision/conflict, `422` for semantically unsupported requests, `429` for provider quota, `502/503` for upstream unavailability. Service mode fallback returns explicit `generation_mode=fallback`, never undisclosed fabricated live output.
+
+#### Real-product guard (API)
+
+The engine decides hardware validity; the API additionally refuses to relay sourcing the catalog cannot back. It never invents or repairs data.
+
+- A `bom.items[]` row may have `link_status = verified_product` only if its catalog entry has `identity.sku` and a `sourcing.purchase_url` (https) with `purchase_url_verified_at`, and the row's `purchase_url` equals it. A row's `unit_price_amount` must equal the catalog price in the BOM currency (both null otherwise). A violation is `502 ENGINE_CONTRACT_VIOLATION` and nothing is stored. Kit items with no SKU or link stay valid `manufacturer_reference_only` rows.
+- A plan with `generation_mode = live` that contains a synthetic part is `502 SYNTHETIC_PARTS_IN_LIVE_PLAN`. A part is synthetic if its `catalog_id` starts with `demo.` or `synthetic.`, its manufacturer contains `SYNTHETIC`, or the plan's `catalog_version` starts with `SYNTHETIC`. `fixture` and `fallback` plans are allowed and flagged.
+- Read responses add `provenance.sourcing = { synthetic, synthetic_catalog_ids, unverified_link_count, sku_missing_count }`. It is computed on read and not part of the stored `BuildPlan`, because the engine rejects unknown keys. Every export carries `X-Rivet-Synthetic: true|false`.
+- `replace_optional_sensor` to a synthetic part or one without a SKU and a verified https purchase link is returned as `accepted: false` with finding `api.real_product_only`, before the engine is called.
+- Not checked: that a SKU or URL still resolves at the vendor. Verify links by hand before the demo (see the hour 34-36 gate).
 
 #### Job events
 
@@ -1300,7 +1310,7 @@ Separate jobs: (1) shared JSON fixture/schema validation, (2) engineering `pytes
 
 **Purpose:** These two JSON blocks are provided so A, B and C can implement/test in parallel without waiting on anybody else's server or catalog. They are deliberately synthetic and not supplier-verified. The geometry, electrical ports, dimensions, assembly instructions, and products here are **not real hardware advice**. They must never be represented to judges as a sourced, physically safe robot. B must replace them with documented manufacturer-specific parts and rerun engineering checks before Rivet claims real purchasing/compatibility. A uses this as a labeled offline saved build. C uses it for scene, selection, explosion, simulation and timeline development immediately.
 
-**Startup action:** Copy block 1 to `fixtures/catalog/seed-components.json` and block 2 to `fixtures/plans/rover_obstacle_v1.json`. Add `fixtures/intent/rover_obstacle_v1.json` from section 3.1. `RIVET_MODE=fixture` must show a **Saved synthetic example** banner. Every `demo.*` catalog ID has no purchase URL; the BOM correctly reports unknown total. It is **not** the final sourced demonstration build.
+**Startup action:** Copy block 1 to `fixtures/catalog/seed-components.json` and block 2 to `fixtures/plans/rover_obstacle_v1.json`. Add `fixtures/intent/rover_obstacle_v1.json` from section 3.1. `RIVET_MODE=fixture` must show a **Saved synthetic example** banner (C can key it off `provenance.sourcing.synthetic`). The API refuses BOM CSV and firmware exports for this build. Every `demo.*` catalog ID has no purchase URL; the BOM correctly reports unknown total. It is **not** the final sourced demonstration build.
 
 ### A.1 `fixtures/catalog/seed-components.json`
 
