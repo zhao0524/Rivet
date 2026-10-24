@@ -1,0 +1,271 @@
+/* Tokens use --rivet-sim-* custom properties so the design system can override them. */
+.root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  color: var(--rivet-sim-text, #e6ebf2);
+  font-family: var(--rivet-sim-font, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif);
+  font-size: 13px;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+  border-radius: var(--rivet-sim-radius, 12px);
+  overflow: hidden;
+  background: var(--rivet-sim-stage-bg, #0e131a);
+  border: 1px solid var(--rivet-sim-border, #263140);
+}
+
+.canvasHost {
+  position: absolute;
+  inset: 0;
+}
+
+.overlayTop {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.overlayTop > * {
+  pointer-events: auto;
+}
+
+.disclaimer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--rivet-sim-warning-bg, rgba(250, 190, 60, 0.14));
+  border: 1px solid var(--rivet-sim-warning-border, rgba(250, 190, 60, 0.55));
+  color: var(--rivet-sim-warning-text, #f8d27a);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  backdrop-filter: blur(6px);
+}
+
+.disclaimerIcon {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.readout {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, auto));
+  gap: 4px 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--rivet-sim-panel-bg, rgba(12, 17, 24, 0.82));
+  border: 1px solid var(--rivet-sim-border, #263140);
+  backdrop-filter: blur(6px);
+  min-width: 220px;
+}
+
+.readoutItem {
+  display: contents;
+}
+
+.readoutItem dt {
+  color: var(--rivet-sim-muted, #8a97a8);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  align-self: center;
+}
+
+.readoutItem dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--rivet-sim-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 12px;
+  text-align: right;
+}
+
+.readoutSecondary dd {
+  color: var(--rivet-sim-muted, #8a97a8);
+}
+
+.readoutEmpty {
+  color: var(--rivet-sim-muted, #8a97a8);
+  grid-column: 1 / -1;
+}
+
+.stateChip {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  background: #3a4454;
+  color: #e6ebf2;
+}
+
+.stateChip[data-tone="forward"] { background: var(--rivet-sim-state-forward, #1f8a5b); }
+.stateChip[data-tone="stop"] { background: var(--rivet-sim-state-stop, #c2412d); }
+.stateChip[data-tone="turn"] { background: var(--rivet-sim-state-turn, #c98a16); color: #1b1300; }
+.stateChip[data-tone="disabled"] { background: var(--rivet-sim-state-disabled, #59616d); }
+
+.collisionBadge {
+  grid-column: 1 / -1;
+  margin-top: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(220, 60, 60, 0.18);
+  border: 1px solid rgba(220, 60, 60, 0.6);
+  color: #ffb4a8;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.limitations {
+  margin: 0;
+  padding: 0 2px;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  color: var(--rivet-sim-muted, #8a97a8);
+  font-size: 12px;
+}
+
+.limitations li::before {
+  content: "• ";
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 10px;
+  background: var(--rivet-sim-panel-bg, rgba(12, 17, 24, 0.82));
+  border: 1px solid var(--rivet-sim-border, #263140);
+}
+
+.controlsDivider {
+  width: 1px;
+  height: 20px;
+  background: var(--rivet-sim-border, #263140);
+}
+
+.controlsStatus {
+  margin-left: auto;
+  color: var(--rivet-sim-muted, #8a97a8);
+  font-size: 12px;
+}
+
+.button {
+  appearance: none;
+  border: 1px solid var(--rivet-sim-border, #334155);
+  background: var(--rivet-sim-button-bg, #1a2330);
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--rivet-sim-button-hover, #243041);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--rivet-sim-focus, #5aa9ff);
+  outline-offset: 2px;
+}
+
+.button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.buttonDanger {
+  border-color: rgba(220, 80, 60, 0.6);
+  color: #ffb4a8;
+}
+
+.root[data-disabled="true"] .stage {
+  filter: saturate(0.55);
+}
+
+.emptyStage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--rivet-sim-muted, #8a97a8);
+  pointer-events: none;
+}
+
+.debugBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.debugNote {
+  color: var(--rivet-sim-muted, #8a97a8);
+  font-size: 12px;
+}
+
+.button[aria-current="true"] {
+  border-color: var(--rivet-sim-focus, #5aa9ff);
+  background: #1d3350;
+}
+
+.cameraToggle {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  padding: 2px;
+  gap: 2px;
+  border-radius: 8px;
+  background: var(--rivet-sim-panel-bg, rgba(12, 17, 24, 0.82));
+  border: 1px solid var(--rivet-sim-border, #263140);
+  backdrop-filter: blur(6px);
+}
+
+.cameraButton {
+  padding: 4px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--rivet-sim-muted, #8a97a8);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cameraButton[aria-pressed="true"] {
+  background: var(--rivet-sim-button-bg, #1a2330);
+  color: var(--rivet-sim-text, #e6ebf2);
+}
+
+.cameraButton:focus-visible {
+  outline: 2px solid var(--rivet-sim-focus, #5aa9ff);
+  outline-offset: 1px;
+}
+
+.cameraButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
