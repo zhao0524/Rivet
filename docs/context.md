@@ -6,10 +6,10 @@ Shared status file for everyone working in this repo, human or agent.
 | | |
 |---|---|
 | **Last updated** | 2026-10-24 · [B] |
-| **Branch / commit** | `feat/b-p3-wiring` + merge review |
+| **Branch / commit** | `feat/b-p4-validation` + merge review |
 | **Current phase** | Engineering modules under sequential merge review; public composition pending |
 | **Next gate** | Hour 8: every lane demos itself from fixtures (`docs/implementation.md` §7) |
-| **In progress** | [B] Sequential branch review: `feat/b-p3-wiring` |
+| **In progress** | [B] Sequential branch review: `feat/b-p4-validation` |
 | **Blocked** | none (1 open issue in §6) |
 
 **Next up:** INT-0 → INT-1 → INT-2 (skeleton, contracts, fixtures). After that, all lanes can branch off and work in parallel.
@@ -100,7 +100,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | B1 | Catalog of real components | DONE | [B] | Only real parts; unknown values stay `null` |
 | B2 | Parametric mechanical assembly and mounts | IN PROGRESS | [B] | Rover template produces consistent instances |
 | B3 | Electrical graph; driver and controller assignment | IN PROGRESS | [B] | Netlist references only valid pins |
-| B4 | Deterministic validators: mechanical, electrical, budget, completeness | TODO | — | Failing-driver fixture produces the expected finding |
+| B4 | Deterministic validators: mechanical, electrical, budget, completeness | IN PROGRESS | [B] | Failing-driver fixture produces the expected finding |
 | B5 | Repair engine | TODO | — | At least one failure repaired or honestly rejected |
 | B6 | BOM, assembly steps, serialization | TODO | — | BOM rows match instance IDs |
 | B7 | Tests and standalone demo | TODO | — | `pytest` passes standalone |
@@ -109,7 +109,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | B-P1 | Sourced catalog (`feat/b-p1-catalog`) | DONE | [B] | See `packages/engineering/WORK_ORDERS.md` P1 |
 | B-P2 | Mechanical placement (`feat/b-p2-mechanics`) | DONE | [B] | See WORK_ORDERS P2 |
 | B-P3 | Wiring and pin allocation (`feat/b-p3-wiring`) | DONE | [B] | See WORK_ORDERS P3 |
-| B-P4 | Validators (`feat/b-p4-validation`) | TODO | — | See WORK_ORDERS P4 |
+| B-P4 | Validators (`feat/b-p4-validation`) | DONE | [B] | See WORK_ORDERS P4 |
 | B-P5 | BOM, assembly, serialization (`feat/b-p5-exports`) | TODO | — | See WORK_ORDERS P5 |
 | B-P6 | Repair (`feat/b-p6-repair`) | TODO | — | See WORK_ORDERS P6 |
 | B-P7 | Composition, edits, demo (`feat/b-p7-integration`) | TODO | — | See WORK_ORDERS P7 |
@@ -152,6 +152,10 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
+
+- 2026-10-24 [B] B-P4: Reviewed and reconciled with main for sequential merge. Checked: engineering pytest 165 (1 skipped) passed; diff check passed. Notes: Removed unsupported 1.5x current tolerance: stall above continuous rating now blocks, and unverified current evidence stays UNKNOWN. Shared failing-driver fixture check is skipped because shared fixtures are absent.
+
+- 2026-10-24 [B] B-P4: Added `rivet_engine/validators/` (`verify_candidate`, `aggregate`): referential integrity (duplicate IDs, parents/cycles, mounts, connection ports, BOM quantity/phantoms/subtotal, step references), family/behavior/capabilities, required roles, real parts, availability, mount mates, rotated-box overlap and ground contact via an injected bounds helper, size limits, signal types, GPIO usage (input-only, reserved, strapping, shared pins), supply and motor voltage ranges, logic levels, motor stall vs driver continuous current (WARN up to 1.5x, FAIL above; heuristic documented), common ground, required connections, I2C address collisions, supply capacity, Decimal budget with currency checks, pin-map backing and firmware profile support. Missing ratings give UNKNOWN; a PASS that relies on approximated catalog evidence becomes an advisory WARN. Findings are sorted and de-duplicated; aggregation follows spec B4. Also made the synthetic test plan physically consistent and spread the Shadow Chassis deck mounts so the power bank no longer overlaps the ESP32 board. Checked: `uv run pytest -q` 164 passed, 1 skipped (shared failing-driver fixture not landed). Notes: trial run of the sourced rover gives only advisory findings (out-of-stock ESP32, 1.5 A stall vs 1.2 A continuous, approximated battery voltage and geometry, battery capacity unknown). B4 stays IN PROGRESS until P7 runs it end to end.
 
 - 2026-10-24 [B] B-P3: Reviewed and reconciled with main for sequential merge. Checked: engineering pytest 120 passed; diff check passed. Notes: Unknown supply/current facts remain findings; wiring does not establish firmware compilation or physical readiness.
 
