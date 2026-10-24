@@ -1,0 +1,122 @@
+# INT-3: every lane is an independent job (no `needs:`), so a failure in one lane
+# never blocks or cancels the others. Everything runs offline in fixture mode; no
+# job needs secrets, git-crypt, live AI or Estelle.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  UV_VERSION: "0.13.5"
+  UV_PYTHON: "3.11"
+  RIVET_MODE: fixture
+  RIVET_VISION_PROVIDER: mock
+  RIVET_ENABLE_ESTELLE: "false"
+  NEXT_PUBLIC_RIVET_USE_FIXTURES: "true"
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  contracts:
+    name: Fixture validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+      - name: Validate fixtures against contracts/ schemas
+        run: uv run scripts/validate_contracts.py
+
+  engine:
+    name: Engine (packages/engineering)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: packages/engineering
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: packages/engineering/uv.lock
+      - name: pytest
+        run: uv run --locked --extra dev pytest -q
+
+  api:
+    name: API (services/api, fixture mode)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: services/api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: services/api/pyproject.toml
+      - name: pytest
+        run: uv run --extra dev pytest -q
+
+  web:
+    name: Web (apps/web)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm --filter web lint
+      - name: Typecheck
+        run: pnpm --filter web typecheck
+      - name: Test
+        run: pnpm --filter web test
+      - name: Build
+        run: pnpm --filter web build
+
+  firmware:
+    name: Firmware compile (optional)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Optional lane: a failed install or compile is reported but never fails the run.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+      # PlatformIO keeps platforms, toolchains and libraries in ~/.platformio; the key
+      # follows the template that pins them (platform and lib versions).
+      - uses: actions/cache@v4
+        with:
+          path: ~/.platformio
+          key: platformio-${{ runner.os }}-${{ hashFiles('services/api/rivet_api/firmware/templates/esp32_rover/platformio.ini.tmpl') }}
+      - name: Install PlatformIO
+        id: pio
+        continue-on-error: true
+        run: uv tool install platformio
+      - name: Generate the default rover BuildPlan
+        run: uv run --project packages/engineering python -m rivet_engine.demo --sample --output "$RUNNER_TEMP/plan.json"
+      - name: Generate and compile firmware
+        # Without pio on PATH the script reports compile_status not_checked and exits 0.
+        run: uv run --project services/api python scripts/ci_firmware_check.py --plan "$RUNNER_TEMP/plan.json" --out "$RUNNER_TEMP/firmware"

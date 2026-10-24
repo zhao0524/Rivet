@@ -59,7 +59,9 @@ pnpm test:engineering
 pnpm test:web
 ```
 
-Without a git-crypt key, run `cp .env.example .env`; those defaults are sufficient for the offline web fixture flow. The API does not start on `main` right now because `rivet_api.exports` is missing (see `docs/context.md` §6).
+CI (`.github/workflows/ci.yml`) runs the same checks as independent jobs on every PR and push to `main`: contract/fixture validation (`uv run scripts/validate_contracts.py`), engine and API `pytest`, web lint/typecheck/test/build, and an optional PlatformIO compile (`scripts/ci_firmware_check.py`) that never fails the run.
+
+Without a git-crypt key, run `cp .env.example .env`; those defaults are sufficient for the offline web fixture flow.
 
 Default API: `http://localhost:8000`  
 Default web: `http://localhost:3000`
