@@ -4,7 +4,7 @@
     python -m rivet_engine.demo --sample --output /tmp/rivet-plan.json            # built-in §3.1 intent
     python -m rivet_engine.demo --sample --max-budget 60 --output /tmp/fail.json   # failing budget case
 
-Exit codes: 0 plan written (whatever its status), 2 bad input, 3 unsupported request.
+Exit codes: 0 plan written (whatever its status), 2 bad input or unwritable output, 3 unsupported request.
 The intent file is never silently replaced: if it is missing, the run fails and says so.
 """
 
@@ -64,10 +64,13 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         try:
             intent, label = json.loads(args.intent.read_text()), str(args.intent)
+        except OSError as exc:
+            print(f"error: cannot read {args.intent}: {exc.strerror or exc}", file=sys.stderr)
+            return 2
         except ValueError as exc:
             print(f"error: {args.intent} is not JSON: {exc}", file=sys.stderr)
             return 2
-    if args.max_budget is not None and isinstance(intent.get("requirements"), dict):
+    if args.max_budget is not None and isinstance(intent, dict) and isinstance(intent.get("requirements"), dict):
         intent["requirements"]["max_budget"] = args.max_budget
 
     try:
@@ -79,7 +82,11 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(err.to_envelope(), indent=2), file=sys.stderr)
         return 2
 
-    args.output.write_text(json.dumps(plan, sort_keys=True, indent=2) + "\n")
+    try:
+        args.output.write_text(json.dumps(plan, sort_keys=True, indent=2) + "\n")
+    except OSError as exc:
+        print(f"error: cannot write {args.output}: {exc.strerror or exc}", file=sys.stderr)
+        return 2
     findings = plan["verification"]["findings"]
     counts = {r: sum(1 for f in findings if f["result"] == r) for r in ("PASS", "WARN", "FAIL", "UNKNOWN")}
     print(f"intent: {label}", file=sys.stderr)
