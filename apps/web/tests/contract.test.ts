@@ -10,12 +10,18 @@ import {
 } from '../src/lib/contracts';
 import {
   DEFAULT_SAVED_EXAMPLES,
+  SOURCED_ROVER_BUILD_ID,
+  getSourcedCatalog,
+  getSourcedRoverPlan,
   getSyntheticCatalog,
   getSyntheticRoverIntent,
   getSyntheticRoverPlan,
 } from '../src/lib/fixtures';
 import { buildDimensionsByCatalogId, computePlanBoundsMm } from '../src/lib/geometry';
 import { buildBomCsvClientSide } from '../src/lib/plan-store';
+import { computeAssemblyView } from '../src/components/three/assembly';
+import { normalizeVisibility } from '../src/components/three/parts';
+import { buildWiringLayout, type WiringCatalogComponent } from '../src/components/three/wiring';
 
 describe('Canonical contract & cross-module integration checks (C7)', () => {
   it('validates synthetic rover plan, catalog, and intent and maps every instance to a BOM row', () => {
@@ -112,5 +118,60 @@ describe('Canonical contract & cross-module integration checks (C7)', () => {
     expect(http.getExportUrl('rivet-1', 'bom.csv', 2)).toBe(
       'http://localhost:8000/api/projects/rivet-1/exports/bom.csv?revision=2',
     );
+  });
+
+  it('validates Developer B sourced engine output (16 catalog items, 17 components, 20 wires) and skips rendering visible:false accessories', () => {
+    const catalog = getSourcedCatalog();
+    const plan = getSourcedRoverPlan();
+
+    expect(catalog).toHaveLength(16);
+    expect(plan.build_id).toBe(SOURCED_ROVER_BUILD_ID);
+    expect(plan.components).toHaveLength(17);
+    expect(plan.connections).toHaveLength(20);
+    expect(plan.assembly_steps).toHaveLength(11);
+    expect(checkPlanIntegrity(plan, catalog)).toEqual([]);
+
+    // Accessories (accessory-1..6) carry render_overrides.visible = false
+    const accessories = plan.components.filter((c) => c.render_overrides?.visible === false);
+    expect(accessories).toHaveLength(6);
+    for (const acc of accessories) {
+      expect(normalizeVisibility(undefined, acc.render_overrides)).toBe('hidden');
+    }
+
+    // computeAssemblyView marks visible:false accessories as hidden in all modes
+    const dims = buildDimensionsByCatalogId(catalog);
+    for (const mode of ['assembled', 'exploded', 'step'] as const) {
+      const view = computeAssemblyView(plan, { mode, step: 6, progress: 1, dimensionsByCatalogId: dims });
+      for (const acc of accessories) {
+        expect(view.byInstanceId[acc.instance_id].visibility).toBe('hidden');
+        expect(view.byInstanceId[acc.instance_id].opacity).toBe(0);
+      }
+    }
+
+    // computePlanBoundsMm skips visible:false accessories (so the 914mm USB cable does not inflate bounds)
+    const bounds = computePlanBoundsMm(plan, catalog);
+    expect(bounds).toBeDefined();
+    expect(bounds!.max[2] - bounds!.min[2]).toBeLessThan(260);
+
+    // buildWiringLayout routes all 20 electrical connections from B's real netlist with 0 rejected
+    const wiringLayout = buildWiringLayout(
+      {
+        build_id: plan.build_id,
+        revision: plan.revision,
+        components: plan.components,
+        connections: plan.connections.map((c) => ({
+          connection_id: c.connection_id,
+          kind: c.kind,
+          from: { instance_id: c.from.instance_id, port_id: c.from.port_id ?? '' },
+          to: { instance_id: c.to.instance_id, port_id: c.to.port_id ?? '' },
+          net_name: c.net_name ?? null,
+          notes: c.notes ?? null,
+        })),
+      },
+      catalog as unknown as readonly WiringCatalogComponent[],
+    );
+    expect(wiringLayout.counts.electrical_connections).toBe(20);
+    expect(wiringLayout.counts.drawn).toBe(20);
+    expect(wiringLayout.counts.rejected).toBe(0);
   });
 });

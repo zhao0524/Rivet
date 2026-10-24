@@ -103,6 +103,13 @@ export const isoUtc: Check<string> = (v, p, issues) => {
   return v as string;
 };
 
+const ISO_DATE_OR_UTC_RE = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]00:00))?$/;
+export const isoDateOrUtc: Check<string> = (v, p, issues) => {
+  if (typeof v !== "string" || !ISO_DATE_OR_UTC_RE.test(v) || Number.isNaN(Date.parse(v)))
+    fail(issues, p, `expected ISO-8601 date or UTC timestamp, got ${describe(v)}`);
+  return v as string;
+};
+
 export const literal =
   <T extends string>(expected: T): Check<T> =>
   (v, p, issues) => {
@@ -263,10 +270,10 @@ export const catalogComponentCheck: Check<CatalogComponent> = object<CatalogComp
     manufacturer_reference_url: nullable(str),
     datasheet_url: nullable(str),
     purchase_url: nullable(str),
-    purchase_url_verified_at: nullable(isoUtc),
+    purchase_url_verified_at: nullable(isoDateOrUtc),
     price_amount: nullable(decimalString),
     price_currency: nullable(str),
-    price_checked_at: nullable(isoUtc),
+    price_checked_at: nullable(isoDateOrUtc),
     availability_status: str,
   }),
   evidence: object({ dimensions: str, electrical: str, price: str, notes: strArray }),

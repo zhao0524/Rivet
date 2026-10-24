@@ -1,0 +1,1677 @@
+{
+  "schema_version": "1.0",
+  "build_id": "rivet-intent-rover-001",
+  "revision": 1,
+  "project_family": "rover",
+  "title": "Indoor obstacle rover",
+  "source_intent_id": "intent-rover-001",
+  "created_at": "2026-10-24T00:00:00Z",
+  "status": "unbuildable",
+  "components": [
+    {
+      "instance_id": "chassis-1",
+      "catalog_id": "chassis.sparkfun_shadow_rob13301",
+      "role": "chassis",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          52.5,
+          0.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {}
+    },
+    {
+      "instance_id": "motor-left-1",
+      "catalog_id": "motor.adafruit_tt_gearbox_200rpm_3777",
+      "role": "motor",
+      "parent_instance_id": "chassis-1",
+      "attached_to_mount_id": "motor_left",
+      "own_mount_id": "base",
+      "pose": {
+        "position_mm": [
+          -45.0,
+          31.5,
+          50.0
+        ],
+        "rotation_deg": [
+          180.0,
+          0.0,
+          180.0
+        ]
+      },
+      "render_overrides": {}
+    },
+    {
+      "instance_id": "motor-right-1",
+      "catalog_id": "motor.adafruit_tt_gearbox_200rpm_3777",
+      "role": "motor",
+      "parent_instance_id": "chassis-1",
+      "attached_to_mount_id": "motor_right",
+      "own_mount_id": "base",
+      "pose": {
+        "position_mm": [
+          45.0,
+          31.5,
+          50.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {}
+    },
+    {
+      "instance_id": "wheel-left-1",
+      "catalog_id": "wheel.adafruit_tt_wheel_3766",
+      "role": "wheel",
+      "parent_instance_id": "motor-left-1",
+      "attached_to_mount_id": "shaft",
+      "own_mount_id": "hub",
+      "pose": {
+        "position_mm": [
+          -68.5,
+          31.5,
+          50.0
+        ],
+        "rotation_deg": [
+          180.0,
+          0.0,
+          180.0
+        ]
+      },
+      "render_overrides": {}
+    },
+    {
+      "instance_id": "wheel-right-1",
+      "catalog_id": "wheel.adafruit_tt_wheel_3766",
+      "role": "wheel",
+      "parent_instance_id": "motor-right-1",
+      "attached_to_mount_id": "shaft",
+      "own_mount_id": "hub",
+      "pose": {
+        "position_mm": [
+          68.5,
+          31.5,
+          50.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {}
+    },
+    {
+      "instance_id": "caster-1",
+      "catalog_id": "caster.sparkfun_shadow_nub",
+      "role": "caster",
+      "parent_instance_id": "chassis-1",
+      "attached_to_mount_id": "caster_rear",
+      "own_mount_id": "base",
+      "pose": {
+        "position_mm": [
+          0.0,
+          21.25,
+          -80.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {}
+    },
+    {
+      "instance_id": "controller-1",
+      "catalog_id": "board.esp32_devkitc_v4_wroom32e",
+      "role": "controller",
+      "parent_instance_id": "chassis-1",
+      "attached_to_mount_id": "controller_deck",
+      "own_mount_id": "base",
+      "pose": {
+        "position_mm": [
+          -25.0,
+          102.95,
+          30.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {}
+    },
+    {
+      "instance_id": "driver-1",
+      "catalog_id": "driver.adafruit_tb6612_2448",
+      "role": "motor_driver",
+      "parent_instance_id": "chassis-1",
+      "attached_to_mount_id": "driver_deck",
+      "own_mount_id": "base",
+      "pose": {
+        "position_mm": [
+          30.0,
+          98.0,
+          30.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {}
+    },
+    {
+      "instance_id": "sensor-1",
+      "catalog_id": "sensor.adafruit_vl53l0x_3317",
+      "role": "distance_sensor",
+      "parent_instance_id": "chassis-1",
+      "attached_to_mount_id": "front_sensor",
+      "own_mount_id": "base",
+      "pose": {
+        "position_mm": [
+          0.0,
+          81.1,
+          98.0
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {}
+    },
+    {
+      "instance_id": "power-motor-1",
+      "catalog_id": "power.sparkfun_shadow_4xaa_holder",
+      "role": "motor_power",
+      "parent_instance_id": "chassis-1",
+      "attached_to_mount_id": "power_deck",
+      "own_mount_id": "base",
+      "pose": {
+        "position_mm": [
+          0.0,
+          62.5,
+          -40.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {}
+    },
+    {
+      "instance_id": "power-control-1",
+      "catalog_id": "power.adafruit_usb_power_bank_5000_4288",
+      "role": "controller_power",
+      "parent_instance_id": "chassis-1",
+      "attached_to_mount_id": "power_usb",
+      "own_mount_id": "base",
+      "pose": {
+        "position_mm": [
+          0.0,
+          102.75,
+          -50.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {}
+    },
+    {
+      "instance_id": "accessory-1",
+      "catalog_id": "accessory.adafruit_half_breadboard_64",
+      "role": "accessory",
+      "parent_instance_id": "chassis-1",
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          52.5,
+          0.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "visible": false
+      }
+    },
+    {
+      "instance_id": "accessory-2",
+      "catalog_id": "wiring.adafruit_jumper_mm_40x150_758",
+      "role": "accessory",
+      "parent_instance_id": "chassis-1",
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          52.5,
+          0.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "visible": false
+      }
+    },
+    {
+      "instance_id": "accessory-3",
+      "catalog_id": "wiring.adafruit_stemma_qt_to_male_4209",
+      "role": "accessory",
+      "parent_instance_id": "chassis-1",
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          52.5,
+          0.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "visible": false
+      }
+    },
+    {
+      "instance_id": "accessory-4",
+      "catalog_id": "wiring.adafruit_usb_a_microb_3ft_592",
+      "role": "accessory",
+      "parent_instance_id": "chassis-1",
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          52.5,
+          0.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "visible": false
+      }
+    },
+    {
+      "instance_id": "accessory-5",
+      "catalog_id": "accessory.adafruit_dc_jack_terminal_368",
+      "role": "accessory",
+      "parent_instance_id": "chassis-1",
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          52.5,
+          0.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "visible": false
+      }
+    },
+    {
+      "instance_id": "accessory-6",
+      "catalog_id": "accessory.adafruit_aa_alkaline_4pack_3349",
+      "role": "accessory",
+      "parent_instance_id": "chassis-1",
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          52.5,
+          0.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "visible": false
+      }
+    }
+  ],
+  "connections": [
+    {
+      "connection_id": "wire-motor-left-pwm",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "controller-1",
+        "port_id": "gpio25"
+      },
+      "to": {
+        "instance_id": "driver-1",
+        "port_id": "pwma"
+      },
+      "net_name": "MOTOR_LEFT_PWM",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-motor-left-in1",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "controller-1",
+        "port_id": "gpio26"
+      },
+      "to": {
+        "instance_id": "driver-1",
+        "port_id": "ain1"
+      },
+      "net_name": "MOTOR_LEFT_IN1",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-motor-left-in2",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "controller-1",
+        "port_id": "gpio27"
+      },
+      "to": {
+        "instance_id": "driver-1",
+        "port_id": "ain2"
+      },
+      "net_name": "MOTOR_LEFT_IN2",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-motor-right-pwm",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "controller-1",
+        "port_id": "gpio32"
+      },
+      "to": {
+        "instance_id": "driver-1",
+        "port_id": "pwmb"
+      },
+      "net_name": "MOTOR_RIGHT_PWM",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-motor-right-in1",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "controller-1",
+        "port_id": "gpio33"
+      },
+      "to": {
+        "instance_id": "driver-1",
+        "port_id": "bin1"
+      },
+      "net_name": "MOTOR_RIGHT_IN1",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-motor-right-in2",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "controller-1",
+        "port_id": "gpio18"
+      },
+      "to": {
+        "instance_id": "driver-1",
+        "port_id": "bin2"
+      },
+      "net_name": "MOTOR_RIGHT_IN2",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-motor-standby",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "controller-1",
+        "port_id": "gpio19"
+      },
+      "to": {
+        "instance_id": "driver-1",
+        "port_id": "stby"
+      },
+      "net_name": "MOTOR_STANDBY",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-i2c-sda",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "controller-1",
+        "port_id": "gpio21"
+      },
+      "to": {
+        "instance_id": "sensor-1",
+        "port_id": "sda"
+      },
+      "net_name": "I2C_SDA",
+      "notes": "Arduino-ESP32 default Wire pins"
+    },
+    {
+      "connection_id": "wire-i2c-scl",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "controller-1",
+        "port_id": "gpio22"
+      },
+      "to": {
+        "instance_id": "sensor-1",
+        "port_id": "scl"
+      },
+      "net_name": "I2C_SCL",
+      "notes": "Arduino-ESP32 default Wire pins"
+    },
+    {
+      "connection_id": "wire-v-logic-1",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "controller-1",
+        "port_id": "v3v3"
+      },
+      "to": {
+        "instance_id": "driver-1",
+        "port_id": "vcc"
+      },
+      "net_name": "V_LOGIC",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-v-logic-2",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "controller-1",
+        "port_id": "v3v3"
+      },
+      "to": {
+        "instance_id": "sensor-1",
+        "port_id": "vin"
+      },
+      "net_name": "V_LOGIC",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-motor-left-a",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "driver-1",
+        "port_id": "ao1"
+      },
+      "to": {
+        "instance_id": "motor-left-1",
+        "port_id": "terminal_1"
+      },
+      "net_name": "MOTOR_LEFT_A",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-motor-left-b",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "driver-1",
+        "port_id": "ao2"
+      },
+      "to": {
+        "instance_id": "motor-left-1",
+        "port_id": "terminal_2"
+      },
+      "net_name": "MOTOR_LEFT_B",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-motor-right-a",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "driver-1",
+        "port_id": "bo1"
+      },
+      "to": {
+        "instance_id": "motor-right-1",
+        "port_id": "terminal_1"
+      },
+      "net_name": "MOTOR_RIGHT_A",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-motor-right-b",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "driver-1",
+        "port_id": "bo2"
+      },
+      "to": {
+        "instance_id": "motor-right-1",
+        "port_id": "terminal_2"
+      },
+      "net_name": "MOTOR_RIGHT_B",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-v-motor",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "power-motor-1",
+        "port_id": "v_out"
+      },
+      "to": {
+        "instance_id": "driver-1",
+        "port_id": "vm"
+      },
+      "net_name": "V_MOTOR",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-v-controller",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "power-control-1",
+        "port_id": "usb_a_out"
+      },
+      "to": {
+        "instance_id": "controller-1",
+        "port_id": "usb_5v_in"
+      },
+      "net_name": "V_CONTROLLER",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-gnd-1",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "controller-1",
+        "port_id": "gnd"
+      },
+      "to": {
+        "instance_id": "driver-1",
+        "port_id": "gnd"
+      },
+      "net_name": "GND",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-gnd-2",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "sensor-1",
+        "port_id": "gnd"
+      },
+      "to": {
+        "instance_id": "driver-1",
+        "port_id": "gnd"
+      },
+      "net_name": "GND",
+      "notes": null
+    },
+    {
+      "connection_id": "wire-gnd-3",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "power-motor-1",
+        "port_id": "gnd"
+      },
+      "to": {
+        "instance_id": "driver-1",
+        "port_id": "gnd"
+      },
+      "net_name": "GND",
+      "notes": null
+    }
+  ],
+  "verification": {
+    "overall": "unbuildable",
+    "findings": [
+      {
+        "rule_id": "budget.price_currency",
+        "result": "PASS",
+        "severity": "advisory",
+        "affected_instance_ids": [
+          "accessory-1",
+          "accessory-2",
+          "accessory-3",
+          "accessory-4",
+          "accessory-5",
+          "accessory-6",
+          "caster-1",
+          "chassis-1",
+          "controller-1",
+          "driver-1",
+          "motor-left-1",
+          "motor-right-1",
+          "power-control-1",
+          "power-motor-1",
+          "sensor-1",
+          "wheel-left-1",
+          "wheel-right-1"
+        ],
+        "message": "Every catalog price is in the BOM currency",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "completeness.availability",
+        "result": "WARN",
+        "severity": "advisory",
+        "affected_instance_ids": [
+          "controller-1"
+        ],
+        "message": "ESP32-DevKitC V4 (ESP32-WROOM-32E) - Adafruit 3269 was out of stock when checked",
+        "evidence_urls": [
+          "https://cdn-shop.adafruit.com/product-files/3269/esp32_datasheet_en_0.pdf",
+          "https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html"
+        ]
+      },
+      {
+        "rule_id": "completeness.real_parts",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [],
+        "message": "All parts are identifiable products",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "completeness.required_caster",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "caster-1"
+        ],
+        "message": "caster present",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "completeness.required_chassis",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "chassis-1"
+        ],
+        "message": "chassis present",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "completeness.required_controller",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "controller-1"
+        ],
+        "message": "controller present",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "completeness.required_controller_power",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "power-control-1"
+        ],
+        "message": "controller_power present",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "completeness.required_distance_sensor",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "sensor-1"
+        ],
+        "message": "distance_sensor present",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "completeness.required_motor",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "motor-left-1",
+          "motor-right-1"
+        ],
+        "message": "motor present",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "completeness.required_motor_driver",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "driver-1"
+        ],
+        "message": "motor_driver present",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "completeness.required_motor_power",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "power-motor-1"
+        ],
+        "message": "motor_power present",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "completeness.required_wheel",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "wheel-left-1",
+          "wheel-right-1"
+        ],
+        "message": "wheel present",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "completeness.wheels_on_motors",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [],
+        "message": "Each drive wheel is mounted on its own motor",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "completeness.wiring_supplies",
+        "result": "PASS",
+        "severity": "advisory",
+        "affected_instance_ids": [],
+        "message": "Wiring supplies are listed in the BOM",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "electrical.common_ground",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "controller-1",
+          "driver-1",
+          "power-motor-1",
+          "sensor-1"
+        ],
+        "message": "All grounded parts share one ground net",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "electrical.gpio_usage",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "controller-1"
+        ],
+        "message": "Controller pins are used once each and only as documented",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "electrical.i2c_addresses",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "sensor-1"
+        ],
+        "message": "I2C devices have distinct addresses",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "electrical.logic_level",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "controller-1",
+          "driver-1",
+          "sensor-1"
+        ],
+        "message": "Signal inputs accept the controller's logic level",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "electrical.motor_channels",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "motor-left-1",
+          "motor-right-1"
+        ],
+        "message": "Each motor has its own pair of driver outputs",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "electrical.motor_driver_current",
+        "result": "FAIL",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "driver-1",
+          "motor-left-1"
+        ],
+        "message": "motor-left-1 stall current 1.5 A exceeds the driver-1 continuous rating 1.2 A; no validated stall-duration limit or current protection is modeled",
+        "evidence_urls": [
+          "https://cdn-shop.adafruit.com/product-files/3777/3777_diagram.jpg",
+          "https://learn.adafruit.com/adafruit-tb6612-h-bridge-dc-stepper-motor-driver-breakout/pinouts",
+          "https://www.adafruit.com/product/3777"
+        ]
+      },
+      {
+        "rule_id": "electrical.motor_driver_current",
+        "result": "FAIL",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "driver-1",
+          "motor-right-1"
+        ],
+        "message": "motor-right-1 stall current 1.5 A exceeds the driver-1 continuous rating 1.2 A; no validated stall-duration limit or current protection is modeled",
+        "evidence_urls": [
+          "https://cdn-shop.adafruit.com/product-files/3777/3777_diagram.jpg",
+          "https://learn.adafruit.com/adafruit-tb6612-h-bridge-dc-stepper-motor-driver-breakout/pinouts",
+          "https://www.adafruit.com/product/3777"
+        ]
+      },
+      {
+        "rule_id": "electrical.motor_voltage",
+        "result": "FAIL",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "driver-1",
+          "motor-left-1",
+          "power-motor-1"
+        ],
+        "message": "power-motor-1 supply on motor-left-1: up to 6.4 V exceeds the rated maximum 6.0 V",
+        "evidence_urls": [
+          "https://cdn-shop.adafruit.com/product-files/3777/3777_diagram.jpg",
+          "https://learn.adafruit.com/adafruit-tb6612-h-bridge-dc-stepper-motor-driver-breakout/pinouts",
+          "https://www.adafruit.com/product/3777",
+          "https://www.sparkfun.com/products/13301"
+        ]
+      },
+      {
+        "rule_id": "electrical.motor_voltage",
+        "result": "FAIL",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "driver-1",
+          "motor-right-1",
+          "power-motor-1"
+        ],
+        "message": "power-motor-1 supply on motor-right-1: up to 6.4 V exceeds the rated maximum 6.0 V",
+        "evidence_urls": [
+          "https://cdn-shop.adafruit.com/product-files/3777/3777_diagram.jpg",
+          "https://learn.adafruit.com/adafruit-tb6612-h-bridge-dc-stepper-motor-driver-breakout/pinouts",
+          "https://www.adafruit.com/product/3777",
+          "https://www.sparkfun.com/products/13301"
+        ]
+      },
+      {
+        "rule_id": "electrical.required_connections",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "caster-1",
+          "chassis-1",
+          "controller-1",
+          "driver-1",
+          "motor-left-1",
+          "motor-right-1",
+          "power-control-1",
+          "power-motor-1",
+          "sensor-1",
+          "wheel-left-1",
+          "wheel-right-1"
+        ],
+        "message": "Every required power, motor and control port is wired",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "electrical.signal_types",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "controller-1",
+          "driver-1",
+          "motor-left-1",
+          "motor-right-1",
+          "power-control-1",
+          "power-motor-1",
+          "sensor-1"
+        ],
+        "message": "Every wire joins compatible port types",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "electrical.supply_capacity",
+        "result": "UNKNOWN",
+        "severity": "advisory",
+        "affected_instance_ids": [
+          "controller-1",
+          "power-control-1"
+        ],
+        "message": "power-control-1: current draw of controller-1 is not documented",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "electrical.supply_capacity",
+        "result": "UNKNOWN",
+        "severity": "advisory",
+        "affected_instance_ids": [
+          "motor-left-1",
+          "motor-right-1",
+          "power-motor-1"
+        ],
+        "message": "power-motor-1 (4xAA battery holder with barrel jack (included with ROB-13301)) has no documented current capacity",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "electrical.supply_voltage",
+        "result": "WARN",
+        "severity": "advisory",
+        "affected_instance_ids": [
+          "driver-1",
+          "power-motor-1"
+        ],
+        "message": "power-motor-1.v_out -> driver-1.vm: may drop to 3.2 V, below the rated minimum 4.5 V (brown-out)",
+        "evidence_urls": [
+          "https://learn.adafruit.com/adafruit-tb6612-h-bridge-dc-stepper-motor-driver-breakout/pinouts",
+          "https://www.sparkfun.com/products/13301"
+        ]
+      },
+      {
+        "rule_id": "firmware.behavior_parameters",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [],
+        "message": "Behavior parameters are complete, in range and within sensor range",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "firmware.pin_map_backed",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [],
+        "message": "Every pin-map entry is backed by a controller wire",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "firmware.profile_supported",
+        "result": "PASS",
+        "severity": "advisory",
+        "affected_instance_ids": [],
+        "message": "Board, driver, sensor and behavior map to the tested firmware template",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "integrity.assembly_steps",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [],
+        "message": "Assembly steps are numbered 1..n and reference placed components",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "integrity.bom",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [],
+        "message": "BOM rows match the placed components exactly",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "integrity.catalog_ids",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [],
+        "message": "Every component references a catalog item",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "integrity.connections",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [],
+        "message": "Every connection endpoint resolves to a component port",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "integrity.instance_ids_unique",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [],
+        "message": "Every instance_id is unique",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "integrity.mounts",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [],
+        "message": "Every mount reference exists on its catalog item",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "integrity.parents",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [],
+        "message": "Every parent exists and the hierarchy has no cycles",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "mechanical.fit_evidence",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "caster-1",
+          "chassis-1"
+        ],
+        "message": "caster-1 on chassis-1.caster_rear: Nub caster ships with the Shadow Chassis",
+        "evidence_urls": [
+          "https://www.sparkfun.com/products/13301"
+        ]
+      },
+      {
+        "rule_id": "mechanical.fit_evidence",
+        "result": "UNKNOWN",
+        "severity": "advisory",
+        "affected_instance_ids": [
+          "chassis-1",
+          "controller-1"
+        ],
+        "message": "controller-1 on chassis-1.controller_deck: fit not documented; Board has no mounting holes; fixed to the top plate with foam tape at an approximated position",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "mechanical.fit_evidence",
+        "result": "UNKNOWN",
+        "severity": "advisory",
+        "affected_instance_ids": [
+          "chassis-1",
+          "driver-1"
+        ],
+        "message": "driver-1 on chassis-1.driver_deck: fit not documented; Breakout sits in the half-size breadboard, which is stuck to the top plate; position approximated",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "mechanical.fit_evidence",
+        "result": "UNKNOWN",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "chassis-1",
+          "motor-left-1"
+        ],
+        "message": "motor-left-1 on chassis-1.motor_left: fit not documented; SparkFun's Shadow Chassis assembly guide fits the Hobby Gearmotor (ROB-13302) in these mounts; no source documents the Adafruit TT motor fitting them",
+        "evidence_urls": [
+          "https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis"
+        ]
+      },
+      {
+        "rule_id": "mechanical.fit_evidence",
+        "result": "UNKNOWN",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "chassis-1",
+          "motor-right-1"
+        ],
+        "message": "motor-right-1 on chassis-1.motor_right: fit not documented; SparkFun's Shadow Chassis assembly guide fits the Hobby Gearmotor (ROB-13302) in these mounts; no source documents the Adafruit TT motor fitting them",
+        "evidence_urls": [
+          "https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis"
+        ]
+      },
+      {
+        "rule_id": "mechanical.fit_evidence",
+        "result": "UNKNOWN",
+        "severity": "advisory",
+        "affected_instance_ids": [
+          "chassis-1",
+          "power-control-1"
+        ],
+        "message": "power-control-1 on chassis-1.power_usb: fit not documented; Power bank strapped or taped to the top plate; position approximated",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "mechanical.fit_evidence",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "chassis-1",
+          "power-motor-1"
+        ],
+        "message": "power-motor-1 on chassis-1.power_deck: 4xAA holder and battery pack clip ship with the Shadow Chassis",
+        "evidence_urls": [
+          "https://www.sparkfun.com/products/13301"
+        ]
+      },
+      {
+        "rule_id": "mechanical.fit_evidence",
+        "result": "UNKNOWN",
+        "severity": "advisory",
+        "affected_instance_ids": [
+          "chassis-1",
+          "sensor-1"
+        ],
+        "message": "sensor-1 on chassis-1.front_sensor: fit not documented; Shadow Chassis documents no ToF sensor bracket; front mounting is approximated",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "mechanical.fit_evidence",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "motor-left-1",
+          "wheel-left-1"
+        ],
+        "message": "wheel-left-1 on motor-left-1.shaft: Adafruit 3766 is sold for TT gearbox DC motors",
+        "evidence_urls": [
+          "https://www.adafruit.com/product/3766"
+        ]
+      },
+      {
+        "rule_id": "mechanical.fit_evidence",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "motor-right-1",
+          "wheel-right-1"
+        ],
+        "message": "wheel-right-1 on motor-right-1.shaft: Adafruit 3766 is sold for TT gearbox DC motors",
+        "evidence_urls": [
+          "https://www.adafruit.com/product/3766"
+        ]
+      },
+      {
+        "rule_id": "mechanical.geometry_approximated",
+        "result": "UNKNOWN",
+        "severity": "advisory",
+        "affected_instance_ids": [
+          "caster-1",
+          "chassis-1",
+          "power-motor-1",
+          "wheel-left-1",
+          "wheel-right-1"
+        ],
+        "message": "Placement uses approximated or unverified dimensions/mount positions for these parts; poses are a model, not measured CAD",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "mechanical.ground_contact",
+        "result": "PASS",
+        "severity": "advisory",
+        "affected_instance_ids": [
+          "caster-1",
+          "wheel-left-1",
+          "wheel-right-1"
+        ],
+        "message": "Wheels and caster reach the same ground plane",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "mechanical.mount_mates",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "caster-1",
+          "controller-1",
+          "driver-1",
+          "motor-left-1",
+          "motor-right-1",
+          "power-control-1",
+          "power-motor-1",
+          "sensor-1",
+          "wheel-left-1",
+          "wheel-right-1"
+        ],
+        "message": "Every mounted part uses a compatible mount pair",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "mechanical.overlap",
+        "result": "PASS",
+        "severity": "advisory",
+        "affected_instance_ids": [
+          "caster-1",
+          "controller-1",
+          "driver-1",
+          "motor-left-1",
+          "motor-right-1",
+          "power-control-1",
+          "power-motor-1",
+          "sensor-1",
+          "wheel-left-1",
+          "wheel-right-1"
+        ],
+        "message": "No unexpected bounding-box overlaps between parts",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "mechanical.pose_consistency",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "caster-1",
+          "controller-1",
+          "driver-1",
+          "motor-left-1",
+          "motor-right-1",
+          "power-control-1",
+          "power-motor-1",
+          "sensor-1",
+          "wheel-left-1",
+          "wheel-right-1"
+        ],
+        "message": "Every mounted part sits at its mount",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "requirements.behavior",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [],
+        "message": "Requested behavior has a supported profile",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "requirements.project_family",
+        "result": "PASS",
+        "severity": "blocking",
+        "affected_instance_ids": [],
+        "message": "Rover is the supported project family",
+        "evidence_urls": []
+      }
+    ]
+  },
+  "assembly_steps": [
+    {
+      "step": 1,
+      "title": "Prepare the chassis",
+      "instance_ids": [
+        "chassis-1"
+      ],
+      "instructions": "Assemble the chassis plates and check its mounting points.",
+      "safety_notes": []
+    },
+    {
+      "step": 2,
+      "title": "Mount the motors",
+      "instance_ids": [
+        "motor-left-1",
+        "motor-right-1"
+      ],
+      "instructions": "Fix each motor into its motor mount with the shaft pointing outward.",
+      "safety_notes": []
+    },
+    {
+      "step": 3,
+      "title": "Fit the wheels and caster",
+      "instance_ids": [
+        "wheel-left-1",
+        "wheel-right-1",
+        "caster-1"
+      ],
+      "instructions": "Press each wheel onto its motor shaft and attach the caster.",
+      "safety_notes": []
+    },
+    {
+      "step": 4,
+      "title": "Mount the electronics",
+      "instance_ids": [
+        "controller-1",
+        "driver-1",
+        "sensor-1"
+      ],
+      "instructions": "Fix the boards to their mounting points; the range sensor faces forward.",
+      "safety_notes": [
+        "Keep every power supply disconnected during this step."
+      ]
+    },
+    {
+      "step": 5,
+      "title": "Place the power supplies",
+      "instance_ids": [
+        "power-motor-1",
+        "power-control-1"
+      ],
+      "instructions": "Secure the power supplies. Leave them disconnected, with no batteries inserted.",
+      "safety_notes": [
+        "Keep every power supply disconnected during this step."
+      ]
+    },
+    {
+      "step": 6,
+      "title": "Lay out wiring supplies",
+      "instance_ids": [
+        "accessory-1",
+        "accessory-2",
+        "accessory-3",
+        "accessory-4",
+        "accessory-5",
+        "accessory-6"
+      ],
+      "instructions": "Set out the breadboard, wires and adapters used in the next steps.",
+      "safety_notes": [
+        "Keep every power supply disconnected during this step."
+      ]
+    },
+    {
+      "step": 7,
+      "title": "Wire logic supply and control signals",
+      "instance_ids": [
+        "controller-1",
+        "driver-1",
+        "sensor-1"
+      ],
+      "instructions": "Connect: controller-1.gpio25 to driver-1.pwma (MOTOR_LEFT_PWM); controller-1.gpio26 to driver-1.ain1 (MOTOR_LEFT_IN1); controller-1.gpio27 to driver-1.ain2 (MOTOR_LEFT_IN2); controller-1.gpio32 to driver-1.pwmb (MOTOR_RIGHT_PWM); controller-1.gpio33 to driver-1.bin1 (MOTOR_RIGHT_IN1); controller-1.gpio18 to driver-1.bin2 (MOTOR_RIGHT_IN2); controller-1.gpio19 to driver-1.stby (MOTOR_STANDBY); controller-1.gpio21 to sensor-1.sda (I2C_SDA); controller-1.gpio22 to sensor-1.scl (I2C_SCL); controller-1.v3v3 to driver-1.vcc (V_LOGIC); controller-1.v3v3 to sensor-1.vin (V_LOGIC).",
+      "safety_notes": [
+        "Keep every power supply disconnected during this step."
+      ]
+    },
+    {
+      "step": 8,
+      "title": "Wire the motors",
+      "instance_ids": [
+        "driver-1",
+        "motor-left-1",
+        "motor-right-1"
+      ],
+      "instructions": "Connect each driver output to a motor terminal: driver-1.ao1 to motor-left-1.terminal_1 (MOTOR_LEFT_A); driver-1.ao2 to motor-left-1.terminal_2 (MOTOR_LEFT_B); driver-1.bo1 to motor-right-1.terminal_1 (MOTOR_RIGHT_A); driver-1.bo2 to motor-right-1.terminal_2 (MOTOR_RIGHT_B).",
+      "safety_notes": [
+        "Keep every power supply disconnected during this step.",
+        "If a wheel spins backwards later, swap that motor's two leads."
+      ]
+    },
+    {
+      "step": 9,
+      "title": "Wire the common ground",
+      "instance_ids": [
+        "controller-1",
+        "driver-1",
+        "power-motor-1",
+        "sensor-1"
+      ],
+      "instructions": "Connect every ground together: controller-1.gnd to driver-1.gnd (GND); sensor-1.gnd to driver-1.gnd (GND); power-motor-1.gnd to driver-1.gnd (GND).",
+      "safety_notes": [
+        "Keep every power supply disconnected during this step."
+      ]
+    },
+    {
+      "step": 10,
+      "title": "Check the wiring before power",
+      "instance_ids": [
+        "controller-1",
+        "driver-1",
+        "motor-left-1",
+        "motor-right-1",
+        "power-control-1",
+        "power-motor-1",
+        "sensor-1"
+      ],
+      "instructions": "Compare every wire against the netlist. Confirm supply polarity, that the motor supply goes only to the driver's motor input, and that all grounds are joined.",
+      "safety_notes": [
+        "Keep every power supply disconnected during this step.",
+        "Do not continue until every connection matches the netlist."
+      ]
+    },
+    {
+      "step": 11,
+      "title": "Connect power",
+      "instance_ids": [
+        "controller-1",
+        "driver-1",
+        "power-control-1",
+        "power-motor-1"
+      ],
+      "instructions": "Only after the wiring check passes, connect the supplies: power-motor-1.v_out to driver-1.vm (V_MOTOR); power-control-1.usb_a_out to controller-1.usb_5v_in (V_CONTROLLER).",
+      "safety_notes": [
+        "Lift the wheels off the table for the first power-up.",
+        "Disconnect the motor supply immediately if anything gets hot or smells."
+      ]
+    }
+  ],
+  "bom": {
+    "currency": "USD",
+    "known_subtotal_amount": "105.45",
+    "total_status": "complete",
+    "items": [
+      {
+        "catalog_id": "accessory.adafruit_aa_alkaline_4pack_3349",
+        "quantity": 1,
+        "instance_ids": [
+          "accessory-6"
+        ],
+        "unit_price_amount": "2.95",
+        "purchase_url": "https://www.adafruit.com/product/3349",
+        "link_status": "verified_product"
+      },
+      {
+        "catalog_id": "accessory.adafruit_dc_jack_terminal_368",
+        "quantity": 1,
+        "instance_ids": [
+          "accessory-5"
+        ],
+        "unit_price_amount": "2.00",
+        "purchase_url": "https://www.adafruit.com/product/368",
+        "link_status": "verified_product"
+      },
+      {
+        "catalog_id": "accessory.adafruit_half_breadboard_64",
+        "quantity": 1,
+        "instance_ids": [
+          "accessory-1"
+        ],
+        "unit_price_amount": "4.95",
+        "purchase_url": "https://www.adafruit.com/product/64",
+        "link_status": "verified_product"
+      },
+      {
+        "catalog_id": "board.esp32_devkitc_v4_wroom32e",
+        "quantity": 1,
+        "instance_ids": [
+          "controller-1"
+        ],
+        "unit_price_amount": "15.00",
+        "purchase_url": "https://www.adafruit.com/product/3269",
+        "link_status": "verified_product"
+      },
+      {
+        "catalog_id": "caster.sparkfun_shadow_nub",
+        "quantity": 1,
+        "instance_ids": [
+          "caster-1"
+        ],
+        "unit_price_amount": "0.00",
+        "purchase_url": null,
+        "link_status": "manufacturer_reference_only"
+      },
+      {
+        "catalog_id": "chassis.sparkfun_shadow_rob13301",
+        "quantity": 1,
+        "instance_ids": [
+          "chassis-1"
+        ],
+        "unit_price_amount": "14.95",
+        "purchase_url": "https://www.sparkfun.com/products/13301",
+        "link_status": "verified_product"
+      },
+      {
+        "catalog_id": "driver.adafruit_tb6612_2448",
+        "quantity": 1,
+        "instance_ids": [
+          "driver-1"
+        ],
+        "unit_price_amount": "6.95",
+        "purchase_url": "https://www.adafruit.com/product/2448",
+        "link_status": "verified_product"
+      },
+      {
+        "catalog_id": "motor.adafruit_tt_gearbox_200rpm_3777",
+        "quantity": 2,
+        "instance_ids": [
+          "motor-left-1",
+          "motor-right-1"
+        ],
+        "unit_price_amount": "2.95",
+        "purchase_url": "https://www.adafruit.com/product/3777",
+        "link_status": "verified_product"
+      },
+      {
+        "catalog_id": "power.adafruit_usb_power_bank_5000_4288",
+        "quantity": 1,
+        "instance_ids": [
+          "power-control-1"
+        ],
+        "unit_price_amount": "26.95",
+        "purchase_url": "https://www.adafruit.com/product/4288",
+        "link_status": "verified_product"
+      },
+      {
+        "catalog_id": "power.sparkfun_shadow_4xaa_holder",
+        "quantity": 1,
+        "instance_ids": [
+          "power-motor-1"
+        ],
+        "unit_price_amount": "0.00",
+        "purchase_url": null,
+        "link_status": "manufacturer_reference_only"
+      },
+      {
+        "catalog_id": "sensor.adafruit_vl53l0x_3317",
+        "quantity": 1,
+        "instance_ids": [
+          "sensor-1"
+        ],
+        "unit_price_amount": "14.95",
+        "purchase_url": "https://www.adafruit.com/product/3317",
+        "link_status": "verified_product"
+      },
+      {
+        "catalog_id": "wheel.adafruit_tt_wheel_3766",
+        "quantity": 2,
+        "instance_ids": [
+          "wheel-left-1",
+          "wheel-right-1"
+        ],
+        "unit_price_amount": "1.50",
+        "purchase_url": "https://www.adafruit.com/product/3766",
+        "link_status": "verified_product"
+      },
+      {
+        "catalog_id": "wiring.adafruit_jumper_mm_40x150_758",
+        "quantity": 1,
+        "instance_ids": [
+          "accessory-2"
+        ],
+        "unit_price_amount": "3.95",
+        "purchase_url": "https://www.adafruit.com/product/758",
+        "link_status": "verified_product"
+      },
+      {
+        "catalog_id": "wiring.adafruit_stemma_qt_to_male_4209",
+        "quantity": 1,
+        "instance_ids": [
+          "accessory-3"
+        ],
+        "unit_price_amount": "0.95",
+        "purchase_url": "https://www.adafruit.com/product/4209",
+        "link_status": "verified_product"
+      },
+      {
+        "catalog_id": "wiring.adafruit_usb_a_microb_3ft_592",
+        "quantity": 1,
+        "instance_ids": [
+          "accessory-4"
+        ],
+        "unit_price_amount": "2.95",
+        "purchase_url": "https://www.adafruit.com/product/592",
+        "link_status": "verified_product"
+      }
+    ]
+  },
+  "behavior": {
+    "profile_id": "rover.obstacle_avoidance.v1",
+    "controller_catalog_id": "board.esp32_devkitc_v4_wroom32e",
+    "parameters": {
+      "obstacle_stop_distance_m": 0.25,
+      "turn_duration_ms": 600,
+      "forward_speed_fraction": 0.45
+    }
+  },
+  "simulation": {
+    "kind": "differential_drive_2d",
+    "enabled": true,
+    "wheel_radius_m": 0.0315,
+    "wheel_base_m": 0.137,
+    "max_wheel_speed_mps": 0.25,
+    "sensor_range_m": 1.2,
+    "sensor_fov_deg": 35,
+    "limitations": [
+      "Kinematic 2D differential-drive approximation",
+      "No motor torque, wheel slip, battery sag or real sensor noise",
+      "Wheel radius and wheel base come from approximated geometry",
+      "Sensor model: Adafruit 3317: ~30-1200 mm default mode, ~35 degree cone",
+      "Max wheel speed 0.25 m/s is a bounded nominal value, not measured"
+    ]
+  },
+  "firmware": {
+    "target": "esp32_arduino_platformio",
+    "profile_id": "rover.obstacle_avoidance.v1",
+    "pin_map": {
+      "motor_left_pwm": 25,
+      "motor_left_in1": 26,
+      "motor_left_in2": 27,
+      "motor_right_pwm": 32,
+      "motor_right_in1": 33,
+      "motor_right_in2": 18,
+      "motor_standby": 19,
+      "i2c_sda": 21,
+      "i2c_scl": 22
+    },
+    "compile_status": "not_checked"
+  },
+  "provenance": {
+    "input_mode": "image_and_text",
+    "catalog_version": "catalog-v1.1-2026-10-24",
+    "generation_mode": "live",
+    "notes": [
+      "Placed from template rover_2wd.v1; poses are computed, not model-generated",
+      "Verification covers the engine's implemented rules only; it is not a physical safety certification",
+      "Requested controller board.esp32_devkit_v1 has no catalog entry with a wiring profile; used board.esp32_devkitc_v4_wroom32e",
+      "Repair round 1: swap power-motor-1 to power.adafruit_usb_power_bank_5000_4288: rejected (rebuild rejected: power.adafruit_usb_power_bank_5000_4288 mount 'base' (adhesive_pad) cannot mate with chassis.sparkfun_shadow_rob13301 mount 'power_deck' (battery_clip))",
+      "Repair round 1: swap power-motor-1 to power.adafruit_usb_power_bank_5000_4288: rejected (rebuild rejected: power.adafruit_usb_power_bank_5000_4288 mount 'base' (adhesive_pad) cannot mate with chassis.sparkfun_shadow_rob13301 mount 'power_deck' (battery_clip))",
+      "engine_state: {\"currency\": \"USD\", \"max_budget\": null, \"max_length_mm\": null, \"max_width_mm\": null, \"mount_offsets\": {}, \"requested_behavior\": \"obstacle_avoidance\"}"
+    ]
+  }
+}

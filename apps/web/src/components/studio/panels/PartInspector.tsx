@@ -252,9 +252,9 @@ export function PartInspector({ plan, catalog, selectedInstanceId, onSelectInsta
         <h3>Verification findings</h3>
         {findings.length ? (
           <ul data-testid="inspector-findings">
-            {findings.map((f) => (
+            {findings.map((f, idx) => (
               <li
-                key={f.rule_id}
+                key={`${f.rule_id}-${idx}`}
                 data-testid={`inspector-finding-${f.rule_id}`}
                 data-result={f.result}
                 data-blocking={isBlocking(f) ? "true" : "false"}

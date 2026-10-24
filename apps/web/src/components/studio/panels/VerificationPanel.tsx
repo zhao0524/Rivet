@@ -56,9 +56,9 @@ export function VerificationPanel({ plan, onSelectInstance }: VerificationPanelP
         <p data-testid="verification-empty">No findings reported.</p>
       ) : (
         <ul aria-label="Findings">
-          {sorted.map((f) => (
+          {sorted.map((f, idx) => (
             <li
-              key={f.rule_id}
+              key={`${f.rule_id}-${idx}`}
               data-testid={`finding-${f.rule_id}`}
               data-result={f.result}
               data-severity={f.severity}

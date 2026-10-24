@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "profile_id": "esp32_devkitc_v4.tb6612.v1",
+  "controller_catalog_id": "board.esp32_devkitc_v4_wroom32e",
+  "driver_catalog_ids": [
+    "driver.adafruit_tb6612_2448"
+  ],
+  "controller_logic_v": 3.3,
+  "evidence_urls": [
+    "https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html",
+    "https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/gpio.html",
+    "https://learn.adafruit.com/adafruit-tb6612-h-bridge-dc-stepper-motor-driver-breakout/pinouts"
+  ],
+  "reserved_gpio": [
+    {
+      "gpio": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "reason": "Connected to SPI flash (DevKitC guide: avoid using these pins; ESP-IDF GPIO docs: SPI0/1)"
+    },
+    {
+      "gpio": [
+        0,
+        2,
+        5,
+        12,
+        15
+      ],
+      "reason": "Strapping pins sampled at reset (ESP-IDF GPIO docs)"
+    },
+    {
+      "gpio": [
+        1,
+        3
+      ],
+      "reason": "TXD/RXD used for flashing and debugging (ESP-IDF GPIO docs)"
+    },
+    {
+      "gpio": [
+        34,
+        35,
+        36,
+        39
+      ],
+      "reason": "Input only (ESP-IDF GPIO docs); cannot drive driver inputs"
+    }
+  ],
+  "i2c": {
+    "sda_gpio": 21,
+    "scl_gpio": 22,
+    "notes": "Arduino-ESP32 default Wire pins"
+  },
+  "output_gpio_order": [
+    25,
+    26,
+    27,
+    32,
+    33,
+    18,
+    19,
+    23,
+    4,
+    13,
+    16,
+    17
+  ],
+  "controller_ports": {
+    "logic_out": "v3v3",
+    "power_in": "usb_5v_in",
+    "ground": "gnd"
+  },
+  "driver_ports": {
+    "logic_in": "vcc",
+    "motor_in": "vm",
+    "ground": "gnd"
+  },
+  "driver_signals": {
+    "motor_left_pwm": "pwma",
+    "motor_left_in1": "ain1",
+    "motor_left_in2": "ain2",
+    "motor_right_pwm": "pwmb",
+    "motor_right_in1": "bin1",
+    "motor_right_in2": "bin2",
+    "motor_standby": "stby"
+  },
+  "motor_outputs": {
+    "motor-left-1": [
+      "ao1",
+      "ao2"
+    ],
+    "motor-right-1": [
+      "bo1",
+      "bo2"
+    ]
+  },
+  "allocation_notes": "GPIO16/17 come last: ESP-IDF lists them as usually wired to module PSRAM; the DevKitC guide reserves them only on WROVER modules."
+}

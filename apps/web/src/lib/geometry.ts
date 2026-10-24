@@ -70,6 +70,7 @@ export function computePlanBoundsMm(
 
   for (const comp of plan.components) {
     if (filterSet && !filterSet.has(comp.instance_id)) continue;
+    if (!filterSet && comp.render_overrides?.visible === false) continue;
     const pos = options.positionOverridesMm?.[comp.instance_id] ?? comp.pose.position_mm;
     const half = halfExtentsMm(comp, catalogById);
     for (let i = 0; i < 3; i++) {

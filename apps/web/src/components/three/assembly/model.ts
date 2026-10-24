@@ -44,6 +44,8 @@ const UP_ROLES = new Set([
   'controller',
   'motor_driver',
   'power_supply',
+  'motor_power',
+  'controller_power',
   'battery',
   'board',
   'switch',

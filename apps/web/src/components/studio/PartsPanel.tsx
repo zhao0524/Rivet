@@ -233,6 +233,7 @@ export function PartsPanel({
                     }}
                   >
                     {comp.instance_id} · {comp.role}
+                    {comp.render_overrides?.visible === false ? ' · unmodeled kit item' : ''}
                   </div>
                 </button>
 

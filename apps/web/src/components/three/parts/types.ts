@@ -43,7 +43,7 @@ export interface PlanComponentOccurrence {
   own_mount_id?: string | null;
   attached_to_mount_id?: string | null;
   pose: PartPose;
-  render_overrides?: { color?: string | null; [key: string]: unknown } | null;
+  render_overrides?: { color?: string | null; visible?: boolean | null; [key: string]: unknown } | null;
 }
 
 export interface PartPlan {

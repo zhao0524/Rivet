@@ -210,6 +210,7 @@ export interface Pose {
 
 export interface RenderOverrides {
   color?: string;
+  visible?: boolean;
   [key: string]: unknown;
 }
 

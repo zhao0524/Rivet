@@ -2,7 +2,13 @@ import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-libra
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Studio } from '../src/components/studio';
 import { FixtureSource, SYNTHETIC_ROVER_BUILD_ID } from '../src/lib/contracts';
-import { getSyntheticCatalog, getSyntheticRoverPlan } from '../src/lib/fixtures';
+import {
+  SOURCED_ROVER_BUILD_ID,
+  getSourcedCatalog,
+  getSourcedRoverPlan,
+  getSyntheticCatalog,
+  getSyntheticRoverPlan,
+} from '../src/lib/fixtures';
 
 vi.mock('@react-three/fiber', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@react-three/fiber')>();
@@ -121,5 +127,39 @@ describe('3D Studio, Inspector, Timeline, Wiring & Edit Integration (C1–C7)', 
     const outcome = screen.getByTestId('edit-outcome-banner');
     expect(outcome.getAttribute('data-accepted')).toBe('false');
     expect(outcome.textContent).toContain('edits cannot be validated in fixture mode');
+  });
+
+  it('renders Developer B sourced rover plan with priced BOM ($105.45 USD), 9 GPIO pins, and 55 verification findings', async () => {
+    const sourcedFixture = new FixtureSource({
+      catalog: getSourcedCatalog(),
+      plans: [getSourcedRoverPlan()],
+      defaultBuildId: SOURCED_ROVER_BUILD_ID,
+    });
+
+    render(<Studio initialDataSource={sourcedFixture} />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('studio-build-identity').textContent).toContain(SOURCED_ROVER_BUILD_ID);
+    });
+
+    // Loose kit accessories are marked as unmodeled in the component tree
+    expect(screen.getByTestId('tree-select-accessory-4').textContent).toContain('unmodeled kit item');
+
+    // BOM tab shows complete total of 105.45 USD and verified Adafruit/SparkFun product links
+    fireEvent.click(screen.getByTestId('inspector-tab-bom'));
+    expect(screen.getByTestId('bom-total').textContent).toContain('Total: 105.45 USD');
+    expect(screen.getByTestId('bom-link-board.esp32_devkitc_v4_wroom32e').getAttribute('href')).toBe(
+      'https://www.adafruit.com/product/3269',
+    );
+
+    // Verify tab renders all 55 findings (including multiple mechanical.fit_evidence findings)
+    fireEvent.click(screen.getByTestId('inspector-tab-verify'));
+    expect(screen.getAllByTestId('finding-mechanical.fit_evidence').length).toBeGreaterThan(1);
+
+    // Wiring tab shows all 20 electrical connections and the 9 ESP32 GPIO pins in pin_map
+    fireEvent.click(screen.getByTestId('inspector-tab-wiring'));
+    expect(screen.getByTestId('wiring-counts').textContent).toContain(
+      '20 of 20 electrical connections drawn',
+    );
   });
 });

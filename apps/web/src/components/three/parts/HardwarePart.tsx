@@ -45,10 +45,15 @@ export function toRadians(deg: Vec3): Vec3 {
   return [deg[0] * DEG, deg[1] * DEG, deg[2] * DEG];
 }
 
-export function normalizeVisibility(v: PartVisibility | undefined): 'visible' | 'ghost' | 'hidden' {
-  if (v === undefined || v === true || v === 'visible') return 'visible';
+export function normalizeVisibility(
+  v: PartVisibility | undefined,
+  renderOverrides?: { visible?: unknown } | null,
+): 'visible' | 'ghost' | 'hidden' {
   if (v === false || v === 'hidden') return 'hidden';
-  return 'ghost';
+  if (v === 'ghost') return 'ghost';
+  if (v === true || v === 'visible') return 'visible';
+  if (renderOverrides && renderOverrides.visible === false) return 'hidden';
+  return 'visible';
 }
 
 export interface HardwarePartProps {
@@ -84,7 +89,7 @@ export const HardwarePart = memo(function HardwarePart({
   const visualRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
   const [bounds, setBounds] = useState<THREE.Box3 | null>(null);
-  const mode = normalizeVisibility(visibility);
+  const mode = normalizeVisibility(visibility, component.render_overrides);
   const recipeId = resolveRecipe(component, catalogItem);
   const Recipe = RECIPES[recipeId];
   const size = useMemo(() => resolveSize(catalogItem), [catalogItem]);

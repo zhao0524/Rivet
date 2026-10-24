@@ -17,6 +17,7 @@ export interface AssemblyComponent {
   readonly role: string;
   readonly parent_instance_id: string | null;
   readonly pose: AssemblyPose;
+  readonly render_overrides?: { readonly visible?: boolean | null; readonly [key: string]: unknown } | null;
 }
 
 export interface AssemblyStep {

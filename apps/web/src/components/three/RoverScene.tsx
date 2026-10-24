@@ -180,7 +180,11 @@ export function RoverScene({
       posMm[id] = displayPos;
 
       let partVis: PartVisibility = 'visible';
-      if (selVisual.hidden || asmItem?.visibility === 'hidden') {
+      if (
+        comp.render_overrides?.visible === false ||
+        selVisual.hidden ||
+        asmItem?.visibility === 'hidden'
+      ) {
         partVis = 'hidden';
         hiddenCount++;
       } else if (selVisual.isolated_out) {

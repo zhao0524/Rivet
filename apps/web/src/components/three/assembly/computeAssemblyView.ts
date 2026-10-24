@@ -119,7 +119,11 @@ export function computeAssemblyView(
       state = 'future';
     }
 
-    if (state === 'future' || state === 'unscheduled') {
+    if (c.render_overrides?.visible === false) {
+      visibility = 'hidden';
+      opacity = 0;
+      highlighted = false;
+    } else if (state === 'future' || state === 'unscheduled') {
       visibility = ghostFuture ? 'ghost' : 'hidden';
       opacity = ghostFuture ? ghostOpacity : 0;
     } else if (state === 'installed' && previous !== 'solid') {

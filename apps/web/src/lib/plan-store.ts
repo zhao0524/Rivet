@@ -26,7 +26,14 @@ import {
   type StageEvent,
   type UploadedImageAsset,
 } from './rivet';
-import { DEFAULT_SAVED_EXAMPLES, getSyntheticCatalog, getSyntheticRoverPlan } from './fixtures';
+import {
+  DEFAULT_SAVED_EXAMPLES,
+  SOURCED_ROVER_BUILD_ID,
+  getSourcedCatalog,
+  getSourcedRoverPlan,
+  getSyntheticCatalog,
+  getSyntheticRoverPlan,
+} from './fixtures';
 import type { GenerateRequest as IntakeGenerateRequest } from '../components/studio/intake/types';
 
 export type StudioActionMode = 'design' | 'inspect' | 'wiring' | 'assemble' | 'simulate';
@@ -207,6 +214,22 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
       setEditError(null);
       setLastEditResponse(null);
       try {
+        if (exampleId === SOURCED_ROVER_BUILD_ID) {
+          const nextCatalog = getSourcedCatalog();
+          const nextPlan = getSourcedRoverPlan();
+          applyValidatedBuild(nextPlan, nextCatalog);
+          setLoadedExampleId(exampleId);
+          setRevisions([
+            {
+              revision: nextPlan.revision,
+              created_at: nextPlan.created_at,
+              status: nextPlan.status,
+              title: nextPlan.title,
+              label: 'Sourced engine snapshot',
+            },
+          ]);
+          return;
+        }
         const fixture = new FixtureSource();
         const targetId = exampleId === 'rover_obstacle_v1' ? SYNTHETIC_ROVER_BUILD_ID : exampleId;
         const [nextCatalog, nextPlan] = await Promise.all([

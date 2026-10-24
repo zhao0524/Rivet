@@ -1,0 +1,28 @@
+[project]
+name = "rivet-engine"
+version = "0.1.0"
+description = "Rivet engineering engine: catalog, placement, wiring, validation, repair, BOM and assembly"
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.6",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["rivet_engine*"]
+
+[tool.setuptools.package-data]
+rivet_engine = ["data/**/*.json", "data/**/*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
