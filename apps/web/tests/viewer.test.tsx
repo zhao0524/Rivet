@@ -105,7 +105,7 @@ describe('3D Studio, Inspector, Timeline, Wiring & Edit Integration (C1–C7)', 
       defaultBuildId: SYNTHETIC_ROVER_BUILD_ID,
     });
 
-    render(<Studio initialDataSource={multiFixture} />);
+    render(<Studio initialDataSource={multiFixture} devMode />);
 
     // Starts at latest revision (2)
     await waitFor(() => {
@@ -138,7 +138,7 @@ describe('3D Studio, Inspector, Timeline, Wiring & Edit Integration (C1–C7)', 
       defaultBuildId: SOURCED_ROVER_BUILD_ID,
     });
 
-    render(<Studio initialDataSource={sourcedFixture} />);
+    render(<Studio initialDataSource={sourcedFixture} devMode />);
 
     await waitFor(() => {
       expect(screen.getByTestId('studio-build-identity').textContent).toContain(SOURCED_ROVER_BUILD_ID);

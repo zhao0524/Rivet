@@ -1,124 +1,97 @@
-'use client';
-
 import Link from 'next/link';
-import { useState } from 'react';
-import { Studio } from '../components/studio';
+import { HeroRover } from '../components/home/HeroRover';
 
 const PROJECT_FAMILIES = [
   {
-    family: 'Differential-drive indoor rover',
-    badge: 'supported',
-    tone: '#10b981',
-    note: 'End-to-end 2WD ESP32 + TB6612 + range sensor assembly, BOM, wiring, simulation & firmware.',
+    family: 'Indoor rover',
+    status: 'supported',
+    label: 'Supported',
+    tone: 'ok',
+    note: 'Two-wheel ESP32 rover with a motor driver and range sensor: 3D assembly, parts list, wiring, simulation and starter firmware.',
+    href: '/studio',
+    cta: 'Open the example',
   },
   {
-    family: 'Mini RC car variant',
-    badge: 'planned',
-    tone: '#f59e0b',
-    note: 'Stretch variation reusing rover drive primitives; not enabled until independently verified.',
+    family: 'Mini RC car',
+    status: 'planned',
+    label: 'Planned',
+    tone: 'warn',
+    note: 'Reuses the rover drive. Turned on only once it is independently verified.',
   },
   {
-    family: 'Quadcopter drone / Robot arm',
-    badge: 'unsupported (coming later)',
-    tone: '#64748b',
-    note: 'Flight and articulated manipulator verification are outside v1 scope.',
+    family: 'Drones and robot arms',
+    status: 'unsupported',
+    label: 'Coming later',
+    tone: 'neutral',
+    note: 'Flight and arm verification are outside this version.',
   },
 ] as const;
 
 export default function HomePage() {
-  const [showIntroStrip, setShowIntroStrip] = useState(true);
-
   return (
-    <div data-testid="home-page">
-      {showIntroStrip && (
-        <section
-          aria-label="Rivet overview and supported hardware scope"
-          data-testid="home-scope-strip"
-          style={{
-            background: '#10141d',
-            borderBottom: '1px solid #1f2737',
-            padding: '10px 16px',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 12,
-            fontSize: 12,
-          }}
-        >
-          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12 }}>
-            <strong style={{ color: '#f8fafc', fontSize: 13 }}>
-              Rivet: Inspiration → Component-Backed Hardware Starting Point
-            </strong>
-            <span style={{ color: '#94a3b8' }}>
-              Reference images are interpreted into supported catalog builds, not reverse-engineered with certainty.
-            </span>
-          </div>
+    <div data-testid="home-page" className="rv-home">
+      <header className="rv-home__nav">
+        <span className="rv-home__wordmark">RIVET</span>
+        <Link href="/studio" data-testid="open-studio-link" className="rv-btn">
+          Open studio
+        </Link>
+      </header>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>
-            {PROJECT_FAMILIES.map((f) => (
-              <span
-                key={f.family}
-                title={f.note}
-                data-testid={`family-badge-${f.badge.split(' ')[0]}`}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 5,
-                  background: '#161c28',
-                  border: '1px solid #263042',
-                  borderRadius: 999,
-                  padding: '3px 9px',
-                  fontSize: 11,
-                  color: '#cbd5e1',
-                }}
+      <main>
+        <section className="rv-home__hero" aria-labelledby="home-title">
+          <div className="rv-home__copy">
+            <h1 id="home-title" className="rv-home__title">
+              Turn a picture or an idea into a robot you can actually build.
+            </h1>
+            <p className="rv-home__lede">
+              Rivet designs a rover from real catalog parts and shows you the 3D assembly, parts list,
+              wiring and starter firmware.
+            </p>
+            <div className="rv-home__actions">
+              <Link
+                href="/studio?start=upload"
+                className="rv-btn rv-btn--primary rv-home__action"
+                data-testid="home-start-upload"
               >
-                <span
-                  style={{
-                    width: 7,
-                    height: 7,
-                    borderRadius: '50%',
-                    background: f.tone,
-                  }}
-                />
-                <span>{f.family}:</span>
-                <strong style={{ color: f.tone }}>{f.badge}</strong>
-              </span>
-            ))}
-            <Link
-              href="/studio"
-              data-testid="open-studio-link"
-              style={{
-                background: '#2563eb',
-                color: '#ffffff',
-                borderRadius: 5,
-                padding: '4px 10px',
-                fontSize: 11,
-                fontWeight: 600,
-                textDecoration: 'none',
-              }}
-            >
-              Dedicated /studio view
-            </Link>
-            <button
-              type="button"
-              onClick={() => setShowIntroStrip(false)}
-              aria-label="Dismiss overview strip"
-              style={{
-                background: 'transparent',
-                color: '#94a3b8',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: 12,
-              }}
-            >
-              ✕
-            </button>
+                Upload an image
+              </Link>
+              <Link href="/studio?start=describe" className="rv-btn rv-home__action" data-testid="home-start-describe">
+                Describe a build
+              </Link>
+            </div>
+            <p className="rv-hint">
+              Images are interpreted into a supported build, not reverse-engineered with certainty.
+            </p>
           </div>
+          <HeroRover />
         </section>
-      )}
 
-      <Studio />
+        <section className="rv-home__families" aria-labelledby="home-families">
+          <h2 id="home-families" className="rv-label">
+            What Rivet can build today
+          </h2>
+          <ul className="rv-card-grid">
+            {PROJECT_FAMILIES.map((f) => (
+              <li key={f.family} className="rv-card" data-testid={`family-card-${f.status}`}>
+                <span
+                  className={`rv-badge rv-badge--${f.tone}`}
+                  data-testid={`family-badge-${f.status}`}
+                  style={{ alignSelf: 'flex-start' }}
+                >
+                  {f.label}
+                </span>
+                <h3 className="rv-card__title">{f.family}</h3>
+                <p className="rv-hint">{f.note}</p>
+                {'href' in f ? (
+                  <Link href={f.href} className="rv-btn" style={{ alignSelf: 'flex-start' }}>
+                    {f.cta}
+                  </Link>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </section>
+      </main>
     </div>
   );
 }

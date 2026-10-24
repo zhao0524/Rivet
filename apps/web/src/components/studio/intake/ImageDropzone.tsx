@@ -82,7 +82,7 @@ export function ImageDropzone({
 
   return (
     <div className={className} data-rivet="image-dropzone">
-      <span id={labelId} className="block text-sm font-medium">
+      <span id={labelId} className="rv-label">
         {label}
       </span>
       <div
@@ -95,38 +95,34 @@ export function ImageDropzone({
         onDragEnter={onDragOver}
         onDragLeave={() => setDragging(false)}
         onDrop={onDrop}
-        className="mt-1 flex flex-col items-center gap-2 rounded border border-dashed p-4 text-center data-[dragging]:border-solid"
+        className="rv-dropzone"
       >
         {file && previewUrl ? (
-          <img
-            src={previewUrl}
-            alt={`Preview of ${file.name}`}
-            className="max-h-48 w-auto max-w-full object-contain"
-          />
+          <img src={previewUrl} alt={`Preview of ${file.name}`} />
         ) : null}
         {file ? (
-          <p className="text-sm">
+          <p className="rv-hint" style={{ color: "var(--rv-text)" }}>
             {file.name} · {formatBytes(file.size)} · not uploaded yet
           </p>
         ) : (
-          <p className="text-sm">Drag an image here, or</p>
+          <p className="rv-hint" style={{ color: "var(--rv-text)" }}>Drag an image here, or</p>
         )}
-        <div className="flex flex-wrap justify-center gap-2">
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 8 }}>
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={disabled}
-            className="rounded border px-3 py-1"
+            className="rv-btn"
           >
             {file ? "Replace image" : "Choose image"}
           </button>
           {file && onClear ? (
-            <button type="button" onClick={clear} disabled={disabled} className="rounded border px-3 py-1">
+            <button type="button" onClick={clear} disabled={disabled} className="rv-btn">
               Remove image
             </button>
           ) : null}
         </div>
-        <p id={hintId} className="text-xs">
+        <p id={hintId} className="rv-hint">
           PNG, JPEG or WebP, up to {formatBytes(maxBytes)}.
         </p>
         <input
@@ -142,7 +138,7 @@ export function ImageDropzone({
         />
       </div>
       {error ? (
-        <p id={errorId} role="alert" className="mt-1 text-sm">
+        <p id={errorId} role="alert" style={{ margin: "6px 0 0", color: "var(--rv-danger-text)" }}>
           {error}
         </p>
       ) : null}

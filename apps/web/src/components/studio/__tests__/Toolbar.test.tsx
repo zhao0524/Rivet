@@ -78,7 +78,7 @@ describe('Toolbar (#50)', () => {
   });
 
   it('reaches every secondary control in two clicks through the View menu, with the same callbacks', () => {
-    const p = props({ hiddenCount: 2, isolatedInstanceId: 'driver-1' });
+    const p = props({ hiddenCount: 2, isolatedInstanceId: 'driver-1', showDevControls: true });
     render(<Toolbar {...p} />);
     const cases: Array<[string, keyof ToolbarProps]> = [
       ['toolbar-toggle-steps', 'onAssemblyModeChange'],
@@ -95,6 +95,12 @@ describe('Toolbar (#50)', () => {
       fireEvent.click(screen.getByTestId(testId));
       expect(p[callback]).toHaveBeenCalled();
     }
+  });
+
+  it('keeps developer-only render stats out of the View menu unless dev controls are on (#54)', () => {
+    render(<Toolbar {...props()} />);
+    fireEvent.click(screen.getByTestId('toolbar-view-menu'));
+    expect(screen.queryByTestId('toolbar-toggle-debug')).toBeNull();
   });
 
   it('reports toggle state in the menu', () => {

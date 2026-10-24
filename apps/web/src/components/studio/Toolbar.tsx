@@ -41,6 +41,8 @@ export interface ToolbarProps {
   onToggleDebug: () => void;
   themeMode: 'dark' | 'light';
   onToggleTheme: () => void;
+  /** Developer-only items (render stats) appear in the View menu only when true (#54). */
+  showDevControls?: boolean;
 }
 
 /**
@@ -75,6 +77,7 @@ export function Toolbar({
   onToggleDebug,
   themeMode,
   onToggleTheme,
+  showDevControls = false,
 }: ToolbarProps) {
   const isExploded = assemblyMode === 'exploded' && explodeAmount > 0;
   const [presetId, setPresetId] = useState(CAMERA_PRESETS[0]!.id);
@@ -97,8 +100,10 @@ export function Toolbar({
       onSelect: onToggleTheme,
       testId: 'toolbar-toggle-theme',
     },
-    { id: 'stats', label: 'Render stats', checked: showDebug, onSelect: onToggleDebug, testId: 'toolbar-toggle-debug' },
   ];
+  if (showDevControls) {
+    viewMenu.push({ id: 'stats', label: 'Render stats', checked: showDebug, onSelect: onToggleDebug, testId: 'toolbar-toggle-debug' });
+  }
   if (isolatedInstanceId || hiddenCount > 0) {
     viewMenu.push({ kind: 'separator', id: 'parts-sep' });
     if (isolatedInstanceId) {

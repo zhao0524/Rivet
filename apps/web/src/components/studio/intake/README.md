@@ -32,7 +32,9 @@ Neutral, prop-driven intake and job-progress components. They import nothing fro
 - Retry resubmits the last `GenerateRequest`. It is hidden when the backend error has `retryable: false`.
 - Stages without events show "Not reported". A progress bar appears only if the backend sends `progress` (a 0–1 fraction, per `services/api` `Job.progress`).
 - `max_budget` is `null` when the budget field is empty.
-- Styling is Tailwind utility classes plus `data-rivet` hooks for the designer.
+- Styling uses the shared `.rv-*` classes in `src/styles/globals.css` plus `data-rivet` hooks for the designer.
+- Layout (#53): image drop zone, then "What should it do?" with a `SAMPLE_PROMPT` quick-fill chip, then Generate; the budget sits in a collapsed "Constraints" disclosure. Saved examples render as cards (status badge, `Open <title>` button, disclosure line) below the form.
+- The studio shows `BuildIntake` in a modal `Dialog` opened only from the header "New build" button; it closes when a saved example opens or the generated build is on screen.
 
 ## Types
 

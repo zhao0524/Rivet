@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useStudioPlanStore, type StudioActionMode } from '../../lib/plan-store';
-import type { RivetDataSource } from '../../lib/rivet';
+import type { BuildStatus, RivetDataSource } from '../../lib/rivet';
 import { SimView } from '../sim';
 import { RoverScene } from '../three/RoverScene';
 import {
@@ -15,6 +15,7 @@ import { usePartSelection } from '../three/interactions';
 import { DEFAULT_VIEW, type CameraView } from '../three/stage';
 import { useWiringOverlayState } from '../three/wiring';
 import { Dialog } from '../ui/Dialog';
+import { MenuButton } from '../ui/MenuButton';
 import { ExportPanel } from './ExportPanel';
 import { Inspector } from './Inspector';
 import { PartsPanel } from './PartsPanel';
@@ -28,18 +29,47 @@ export interface StudioProps {
   initialDataSource?: RivetDataSource;
   initialMode?: StudioActionMode;
   initialIntakeOpen?: boolean;
+  /** Which intake input gets focus when it opens initially (landing page "Describe a build" = prompt). */
+  initialIntakeFocus?: 'image' | 'prompt';
+  /** Show developer controls: data source switch, render stats, raw build id and revision (#54). */
+  devMode?: boolean;
 }
+
+const STATUS_CHIP: Record<BuildStatus, { label: string; tone: 'ok' | 'warn' | 'bad' }> = {
+  verified: { label: 'Verified', tone: 'ok' },
+  verified_with_warnings: { label: 'Verified with warnings', tone: 'warn' },
+  needs_review: { label: 'Needs review', tone: 'warn' },
+  unbuildable: { label: 'Unbuildable', tone: 'bad' },
+};
 
 export function Studio({
   initialDataSource,
   initialMode = 'design',
   initialIntakeOpen = false,
+  initialIntakeFocus = 'image',
+  devMode = false,
 }: StudioProps) {
   const store = useStudioPlanStore({ initialDataSource, initialMode });
   const { plan, catalog, trust, activeMode, setActiveMode } = store;
 
   const [intakeOpen, setIntakeOpen] = useState(initialIntakeOpen);
   const [exportOpen, setExportOpen] = useState(false);
+
+  // Landing page "Describe a build" lands with the prompt focused. Runs after Dialog's own
+  // initial focus (child effects run first), so it wins only for that first open.
+  useEffect(() => {
+    if (!initialIntakeOpen || initialIntakeFocus !== 'prompt') return;
+    document.querySelector<HTMLTextAreaElement>('[data-rivet="build-intake"] textarea')?.focus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Intake closes into the studio once the generated build is the one on screen.
+  useEffect(() => {
+    if (intakeOpen && store.job?.status === 'complete' && store.job.build_id === plan.build_id) {
+      setIntakeOpen(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [store.job?.status, store.job?.build_id, plan.build_id]);
 
   // 3D Stage & Assembly Timeline State
   const [assemblyMode, setAssemblyMode] = useState<AssemblyMode>('assembled');
@@ -133,6 +163,8 @@ export function Studio({
     ? selection.state.hidden_instance_ids.has(selection.selectedInstanceId)
     : false;
 
+  const statusChip = STATUS_CHIP[plan.status] ?? { label: plan.status, tone: 'warn' as const };
+
   const headerNode = (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
       <Link
@@ -163,60 +195,66 @@ export function Studio({
         >
           {plan.title}
         </span>
-        <span
-          data-testid="studio-build-identity"
-          style={{
-            fontSize: 11,
-            color: 'var(--rv-text-muted)',
-            fontFamily: 'var(--rv-font-mono)',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {plan.build_id} · rev {plan.revision} · status: {plan.status}
-        </span>
+        {devMode ? (
+          <span
+            data-testid="studio-build-identity"
+            style={{
+              fontSize: 11,
+              color: 'var(--rv-text-muted)',
+              fontFamily: 'var(--rv-font-mono)',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {plan.build_id} · rev {plan.revision} · status: {plan.status}
+          </span>
+        ) : null}
       </div>
+      <span
+        data-testid="studio-status-chip"
+        data-status={plan.status}
+        className={`rv-badge rv-badge--${statusChip.tone} rv-hide-phone`}
+        title={`Build status: ${statusChip.label}`}
+      >
+        {statusChip.label}
+      </span>
     </div>
   );
 
   const headerActionsNode = (
     <>
-      {/* Data Source Mode Toggle (Fixture vs Live HTTP API) */}
-      <div
-        role="group"
-        aria-label="Data source mode"
-        data-testid="datasource-toggle"
-        className="rv-hide-phone"
-        style={{
-          display: 'inline-flex',
-          background: 'var(--rv-bg)',
-          border: '1px solid var(--rv-border)',
-          borderRadius: 'var(--rv-radius-sm)',
-          padding: 2,
-        }}
-      >
-        <button
-          type="button"
-          data-testid="datasource-mode-fixture"
-          aria-pressed={store.sourceMode === 'fixture'}
-          onClick={() => void store.setSourceMode('fixture')}
-          className="rv-btn rv-btn--ghost"
-          style={{ minHeight: 24, padding: '2px 8px' }}
-        >
-          Fixture
-        </button>
-        <button
-          type="button"
-          data-testid="datasource-mode-http"
-          aria-pressed={store.sourceMode === 'http'}
-          onClick={() => void store.setSourceMode('http')}
-          className="rv-btn rv-btn--ghost"
-          style={{ minHeight: 24, padding: '2px 8px' }}
-        >
-          Live API
-        </button>
-      </div>
+      {devMode ? (
+        <MenuButton
+          label="Developer"
+          testId="developer-menu"
+          buttonClassName="rv-btn rv-hide-phone"
+          entries={[
+            {
+              id: 'fixture',
+              label: 'Data: checked-in fixtures',
+              checked: store.sourceMode === 'fixture',
+              onSelect: () => void store.setSourceMode('fixture'),
+              testId: 'datasource-mode-fixture',
+            },
+            {
+              id: 'http',
+              label: 'Data: live API',
+              checked: store.sourceMode === 'http',
+              onSelect: () => void store.setSourceMode('http'),
+              testId: 'datasource-mode-http',
+            },
+            { kind: 'separator', id: 'sep' },
+            {
+              id: 'stats',
+              label: 'Render stats overlay',
+              checked: showDebug,
+              onSelect: () => setShowDebug((d) => !d),
+              testId: 'dev-toggle-stats',
+            },
+          ]}
+        />
+      ) : null}
       <button
         type="button"
         className="rv-btn"
@@ -230,10 +268,11 @@ export function Studio({
         type="button"
         className="rv-btn rv-btn--primary"
         data-testid="header-toggle-intake"
+        aria-haspopup="dialog"
         aria-expanded={intakeOpen}
-        onClick={() => setIntakeOpen((o) => !o)}
+        onClick={() => setIntakeOpen(true)}
       >
-        {intakeOpen ? 'Close intake' : 'New build'}
+        New build
       </button>
     </>
   );
@@ -280,7 +319,7 @@ export function Studio({
     };
   }, [store.job]);
 
-  const intakeNode = intakeOpen ? (
+  const intakeNode = (
     <BuildIntake
       onUpload={store.uploadImage}
       onGenerate={store.startGeneration}
@@ -289,12 +328,12 @@ export function Studio({
       onCancelJob={store.cancelJob}
       savedExamples={store.savedExamples}
       onLoadSavedExample={(id) => {
-        void store.loadSavedExample(id);
+        void store.loadSavedExample(id).then(() => setIntakeOpen(false));
       }}
       loadedExampleId={store.loadedExampleId}
       currency={plan.bom.currency || 'USD'}
     />
-  ) : null;
+  );
 
   const toolbarNode =
     activeMode !== 'simulate' ? (
@@ -337,6 +376,7 @@ export function Studio({
         onToggleGrid={() => setShowGrid((g) => !g)}
         showDebug={showDebug}
         onToggleDebug={() => setShowDebug((d) => !d)}
+        showDevControls={devMode}
         themeMode={themeMode}
         onToggleTheme={() => setThemeMode((t) => (t === 'dark' ? 'light' : 'dark'))}
       />
@@ -420,7 +460,6 @@ export function Studio({
       lastEditResponse={store.lastEditResponse}
       editError={store.editError}
       onSubmitEdit={store.submitEdit}
-      onOpenIntake={() => setIntakeOpen(true)}
     />
   );
 
@@ -451,7 +490,6 @@ export function Studio({
       header={headerNode}
       headerActions={headerActionsNode}
       banner={bannerNode}
-      intakeOverlay={intakeNode}
       toolbar={toolbarNode}
       sidebar={sidebarNode}
       scene={sceneNode}
@@ -462,6 +500,15 @@ export function Studio({
       onModeChange={handleModeChange}
       inspectorOpenSignal={selection.selectedInstanceId}
     />
+    <Dialog
+      open={intakeOpen}
+      onClose={() => setIntakeOpen(false)}
+      title="New build"
+      wide
+      testId="intake-dialog"
+    >
+      {intakeNode}
+    </Dialog>
     <Dialog
       open={exportOpen}
       onClose={() => setExportOpen(false)}

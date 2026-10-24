@@ -35,6 +35,10 @@ export interface BuildIntakeProps {
 
 type Phase = "idle" | "uploading" | "submitting";
 
+/** The demo request from README "Demo target"; offered as a one-click quick fill. */
+export const SAMPLE_PROMPT =
+  "Design something like this that can avoid obstacles. Use real parts and explain how to build it.";
+
 function isAbortError(error: unknown): boolean {
   return typeof error === "object" && error !== null && (error as { name?: string }).name === "AbortError";
 }
@@ -189,36 +193,52 @@ export function BuildIntake({
   const showFormRetry = !!formError && phase === "idle" && !jobActive && (!!lastRequest || !!asset || !!file);
 
   return (
-    <div className={className} data-rivet="build-intake">
-      <div className="flex flex-col gap-6 lg:flex-row">
-        <form onSubmit={onSubmit} noValidate className="flex min-w-0 flex-1 flex-col gap-4" aria-label="New build">
-          <ImageDropzone
-            file={file}
-            onFileAccepted={selectFile}
-            onClear={() => selectFile(null)}
+    <div className={className} data-rivet="build-intake" style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+      <form onSubmit={onSubmit} noValidate aria-label="New build" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <ImageDropzone
+          file={file}
+          onFileAccepted={selectFile}
+          onClear={() => selectFile(null)}
+          disabled={busy}
+          maxBytes={maxImageBytes}
+        />
+        {asset ? <p className="rv-hint">Image uploaded.</p> : null}
+
+        <div className="rv-field">
+          <label htmlFor={promptId} className="rv-label">
+            What should it do?
+          </label>
+          <textarea
+            id={promptId}
+            value={prompt}
+            onChange={(event) => setPrompt(event.target.value)}
             disabled={busy}
-            maxBytes={maxImageBytes}
+            rows={3}
+            className="rv-input"
+            placeholder="Describe the build, or what it should do with the image above."
           />
-          {asset ? <p className="text-xs">Uploaded as {asset.asset_id}.</p> : null}
-
-          <div className="flex flex-col gap-1">
-            <label htmlFor={promptId} className="text-sm font-medium">
-              What should it do? (optional with an image)
-            </label>
-            <textarea
-              id={promptId}
-              value={prompt}
-              onChange={(event) => setPrompt(event.target.value)}
-              disabled={busy}
-              rows={3}
-              className="rounded border p-2"
-              placeholder="Design something like this that can avoid obstacles."
-            />
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
+            <span className="rv-hint">Optional when you add an image.</span>
+            {prompt.trim() !== SAMPLE_PROMPT ? (
+              <button
+                type="button"
+                className="rv-chip"
+                data-testid="intake-sample-prompt"
+                disabled={busy}
+                title={SAMPLE_PROMPT}
+                onClick={() => setPrompt(SAMPLE_PROMPT)}
+              >
+                Try: “Design something like this that can avoid obstacles…”
+              </button>
+            ) : null}
           </div>
+        </div>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor={budgetId} className="text-sm font-medium">
-              Max budget ({currency}, optional)
+        <details className="rv-details" data-testid="intake-constraints" open={budget !== "" || undefined}>
+          <summary>Constraints (optional)</summary>
+          <div className="rv-field">
+            <label htmlFor={budgetId} className="rv-label">
+              Max budget ({currency})
             </label>
             <input
               id={budgetId}
@@ -229,56 +249,54 @@ export function BuildIntake({
               value={budget}
               onChange={(event) => setBudget(event.target.value)}
               disabled={busy}
-              className="w-40 rounded border p-2"
+              className="rv-input"
+              style={{ width: 160 }}
             />
-            <span className="text-xs">Leave empty for no hard limit.</span>
+            <span className="rv-hint">Leave empty for no hard limit.</span>
           </div>
+        </details>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <button type="submit" disabled={busy || !hasInput} className="rounded border px-3 py-1 font-medium">
-              {file && !asset ? "Upload and generate" : "Generate"}
+        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
+          <button type="submit" disabled={busy || !hasInput} className="rv-btn rv-btn--primary" style={{ minHeight: 36, padding: "6px 16px" }}>
+            {file && !asset ? "Upload and generate" : "Generate"}
+          </button>
+          {phase === "uploading" ? (
+            <button type="button" onClick={cancel} className="rv-btn">
+              Cancel upload
             </button>
-            {phase === "uploading" ? (
-              <button type="button" onClick={cancel} className="rounded border px-3 py-1">
-                Cancel upload
-              </button>
-            ) : null}
-            {showFormRetry ? (
-              <button type="button" onClick={retry} className="rounded border px-3 py-1">
-                Retry
-              </button>
-            ) : null}
-          </div>
-
-          <p role="status" aria-live="polite" className="text-sm" data-testid="intake-phase">
+          ) : null}
+          {showFormRetry ? (
+            <button type="button" onClick={retry} className="rv-btn">
+              Retry
+            </button>
+          ) : null}
+          <p role="status" aria-live="polite" className="rv-hint" data-testid="intake-phase">
             {phase === "uploading" ? "Uploading image…" : phase === "submitting" ? "Starting generation…" : notice ?? ""}
           </p>
-          {formError ? (
-            <p role="alert" className="text-sm" data-testid="intake-error">
-              {formError}
-            </p>
-          ) : null}
-        </form>
-
-        {savedExamples && onLoadSavedExample ? (
-          <SavedExampleLauncher
-            className="lg:w-80"
-            examples={savedExamples}
-            onLoadSavedExample={onLoadSavedExample}
-            loadedExampleId={loadedExampleId}
-            disabled={busy}
-          />
+        </div>
+        {formError ? (
+          <p role="alert" data-testid="intake-error" style={{ margin: 0, color: "var(--rv-danger-text)" }}>
+            {formError}
+          </p>
         ) : null}
-      </div>
+      </form>
 
       {job ? (
         <GenerationStatus
-          className="mt-6"
           job={job}
           events={events}
           canceled={jobCanceled}
           onCancel={cancel}
           onRetry={lastRequest ? retry : undefined}
+        />
+      ) : null}
+
+      {savedExamples && onLoadSavedExample ? (
+        <SavedExampleLauncher
+          examples={savedExamples}
+          onLoadSavedExample={onLoadSavedExample}
+          loadedExampleId={loadedExampleId}
+          disabled={busy}
         />
       ) : null}
     </div>

@@ -25,17 +25,25 @@ export function ProjectRevisionPicker({
   const latest = ordered[0]?.revision;
   const known = ordered.some((r) => r.revision === currentRevision);
 
+  const latestNow = currentRevision === latest;
+
   return (
     <section
       aria-label="Project revisions"
       data-testid="revision-picker"
       aria-busy={pending}
       className="rivet-panel"
+      style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}
     >
-      <label htmlFor={selectId}>Revision of {buildId}</label>
+      <label htmlFor={selectId} style={{ fontSize: "var(--rv-text-caption)", color: "var(--rv-text-muted)" }}>
+        Revision
+      </label>
       <select
         id={selectId}
         data-testid="revision-select"
+        aria-label={`Revision of ${buildId}`}
+        className="rv-select"
+        style={{ flex: "1 1 160px", minWidth: 0 }}
         value={known ? String(currentRevision) : ""}
         disabled={pending || ordered.length === 0}
         onChange={(e) => {
@@ -57,15 +65,20 @@ export function ProjectRevisionPicker({
           </option>
         ))}
       </select>
-      <p data-testid="revision-state" data-latest={currentRevision === latest ? "true" : "false"}>
+      <p
+        data-testid="revision-state"
+        data-latest={latestNow ? "true" : "false"}
+        aria-live="polite"
+        style={{ flexBasis: "100%", margin: 0, fontSize: "var(--rv-text-caption)", color: "var(--rv-warn-text)" }}
+      >
         {pending
           ? "Loading revision…"
-          : currentRevision === latest
-            ? `Viewing latest revision (${currentRevision})`
+          : latestNow
+            ? ""
             : `Viewing older revision ${currentRevision}; latest is ${latest ?? "unknown"}`}
       </p>
       {error && (
-        <p role="alert" data-testid="revision-error">
+        <p role="alert" data-testid="revision-error" style={{ flexBasis: "100%", margin: 0 }}>
           {error}
         </p>
       )}

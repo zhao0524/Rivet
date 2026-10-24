@@ -79,7 +79,7 @@ export function GenerationStatus({
       ) : null}
 
       {job?.error ? (
-        <div role="alert" className="mt-2 rounded border p-2 text-sm" data-testid="generation-error">
+        <div role="alert" className="mt-2 rounded p-2 text-sm" style={{ border: "1px solid rgba(239, 68, 68, 0.45)", color: "var(--rv-danger-text)" }} data-testid="generation-error">
           <p>
             <strong>{job.error.code}</strong>: {job.error.message}
           </p>
@@ -97,12 +97,12 @@ export function GenerationStatus({
       {(active && onCancel) || showRetry ? (
         <div className="mt-2 flex flex-wrap gap-2">
           {active && onCancel ? (
-            <button type="button" onClick={onCancel} className="rounded border px-3 py-1">
+            <button type="button" onClick={onCancel} className="rv-btn">
               Cancel
             </button>
           ) : null}
           {showRetry ? (
-            <button type="button" onClick={onRetry} className="rounded border px-3 py-1">
+            <button type="button" onClick={onRetry} className="rv-btn">
               Retry
             </button>
           ) : null}

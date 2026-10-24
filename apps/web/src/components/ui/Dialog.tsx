@@ -18,7 +18,7 @@ const FOCUSABLE =
 
 /**
  * Accessible modal dialog: portal to `document.body`, Escape and backdrop close,
- * focus moves in on open, Tab is trapped inside, focus returns to the opener on close.
+ * focus moves to the first control in the body on open, Tab is trapped inside, focus returns to the opener on close.
  */
 export function Dialog({ open, onClose, title, children, wide = false, testId }: DialogProps) {
   const titleId = useId();
@@ -30,7 +30,8 @@ export function Dialog({ open, onClose, title, children, wide = false, testId }:
     if (!open) return;
     const opener = document.activeElement as HTMLElement | null;
     const panel = panelRef.current;
-    (panel?.querySelector<HTMLElement>(FOCUSABLE) ?? panel)?.focus();
+    // First control in the body (not the header close button), else the dialog itself.
+    (panel?.querySelector<HTMLElement>(`.rv-dialog__body :is(${FOCUSABLE})`) ?? panel)?.focus();
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {

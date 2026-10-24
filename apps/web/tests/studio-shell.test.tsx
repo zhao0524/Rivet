@@ -92,14 +92,16 @@ describe('Single navigation (#51)', () => {
   it('never loses the selected part or the revision when switching modes', async () => {
     await renderStudio();
     fireEvent.click(screen.getByTestId('tree-select-driver-1'));
-    const identity = screen.getByTestId('studio-build-identity').textContent;
+    const revision = (screen.getByTestId('revision-select') as HTMLSelectElement).value;
+    const title = screen.getByTestId('studio-build-title').textContent;
 
     for (const mode of [...STUDIO_MODES.map((m) => m.id), 'design']) {
       fireEvent.click(screen.getByTestId(`studio-mode-${mode}`));
     }
 
     expect(screen.getByTestId('inspector-instance-id').textContent).toBe('driver-1');
-    expect(screen.getByTestId('studio-build-identity').textContent).toBe(identity);
+    expect((screen.getByTestId('revision-select') as HTMLSelectElement).value).toBe(revision);
+    expect(screen.getByTestId('studio-build-title').textContent).toBe(title);
   });
 
   it('clicking an assembly step in the right panel scrubs the timeline to it', async () => {

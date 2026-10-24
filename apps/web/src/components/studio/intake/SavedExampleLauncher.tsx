@@ -23,6 +23,13 @@ export interface SavedExampleLauncherProps {
   className?: string;
 }
 
+const STATUS_BADGE: Record<string, { label: string; tone: "ok" | "warn" | "bad" }> = {
+  verified: { label: "Verified", tone: "ok" },
+  verified_with_warnings: { label: "Verified with warnings", tone: "warn" },
+  needs_review: { label: "Needs review", tone: "warn" },
+  unbuildable: { label: "Unbuildable", tone: "bad" },
+};
+
 export function SavedExampleLauncher({
   examples,
   onLoadSavedExample,
@@ -35,33 +42,48 @@ export function SavedExampleLauncher({
 
   return (
     <section aria-labelledby={headingId} className={className} data-rivet="saved-example-launcher">
-      <h2 id={headingId} className="text-base font-semibold">
-        Saved examples
+      <h2 id={headingId} className="rv-label" style={{ margin: 0 }}>
+        Or open a saved example
       </h2>
-      <p className="text-xs">Opens instantly from saved data. No generation runs.</p>
+      <p className="rv-hint" style={{ margin: "2px 0 10px" }}>
+        Opens instantly from saved data. No generation runs.
+      </p>
       {examples.length === 0 ? (
-        <p className="text-sm">No saved examples available.</p>
+        <p className="rv-hint">No saved examples available.</p>
       ) : (
-        <ul className="mt-2 grid gap-2">
-          {examples.map((example) => (
-            <li key={example.example_id} className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-2">
-              <button
-                type="button"
-                onClick={() => onLoadSavedExample(example.example_id)}
-                disabled={disabled}
-                aria-pressed={example.example_id === loadedExampleId}
-                className="rounded border px-3 py-1 text-left"
+        <ul className="rv-card-grid">
+          {examples.map((example) => {
+            const badge = example.status ? STATUS_BADGE[example.status] : undefined;
+            const active = example.example_id === loadedExampleId;
+            return (
+              <li
+                key={example.example_id}
+                className="rv-card"
+                data-active={active}
+                data-testid={`saved-example-card-${example.example_id}`}
               >
-                Open {example.title}
-              </button>
-              <SavedExampleBadge className="text-xs" />
-              {example.status ? <span className="text-xs">Status: {example.status}</span> : null}
-            </li>
-          ))}
+                {example.status ? (
+                  <span className={`rv-badge rv-badge--${badge?.tone ?? "warn"}`} style={{ alignSelf: "flex-start" }}>
+                    {badge?.label ?? example.status}
+                  </span>
+                ) : null}
+                <button
+                  type="button"
+                  className="rv-card__title"
+                  onClick={() => onLoadSavedExample(example.example_id)}
+                  disabled={disabled}
+                  aria-pressed={active}
+                >
+                  Open {example.title}
+                </button>
+                <SavedExampleBadge className="rv-hint" />
+              </li>
+            );
+          })}
         </ul>
       )}
       {loaded ? (
-        <p role="status" className="mt-2 rounded border p-2 text-sm" data-testid="saved-example-loaded">
+        <p role="status" className="rv-hint" style={{ marginTop: 10 }} data-testid="saved-example-loaded">
           Showing {loaded.title}. {SAVED_EXAMPLE_LABEL}.
         </p>
       ) : null}
