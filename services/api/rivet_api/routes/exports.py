@@ -1,9 +1,12 @@
+import io
 import json
+import zipfile
 
 from fastapi import APIRouter, Query, Request
 from fastapi.responses import Response
 
 from rivet_api.exports.bom import bom_to_csv
+from rivet_api.firmware.generate import generate_firmware
 
 router = APIRouter()
 
@@ -32,3 +35,32 @@ def export_build(build_id: str, request: Request, revision: int | None = Query(d
     return _download(
         json.dumps(plan, indent=2), "application/json", f"{build_id}-r{plan['revision']}.json", plan
     )
+
+
+@router.get("/api/projects/{build_id}/exports/firmware.zip")
+def export_firmware(
+    build_id: str,
+    request: Request,
+    revision: int | None = Query(default=None, ge=1),
+    compile: bool = False,
+) -> Response:
+    plan = request.app.state.deps.store.get(build_id, revision)
+    bundle = generate_firmware(plan, compile=compile)
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as archive:
+        for path, data in bundle.files.items():
+            info = zipfile.ZipInfo(path, date_time=(2026, 1, 1, 0, 0, 0))
+            info.external_attr = 0o644 << 16
+            info.compress_type = zipfile.ZIP_DEFLATED
+            archive.writestr(info, data)
+    response = Response(
+        content=buf.getvalue(),
+        media_type="application/zip",
+        headers={
+            "Content-Disposition": f'attachment; filename="{build_id}-r{plan["revision"]}-firmware.zip"',
+            "X-Content-Type-Options": "nosniff",
+            "X-Rivet-Generation-Mode": plan["provenance"]["generation_mode"],
+            "X-Rivet-Compile-Status": bundle.manifest["compile_status"],
+        },
+    )
+    return response

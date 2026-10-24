@@ -24,7 +24,7 @@ build-backend = "setuptools.build_meta"
 include = ["rivet_api*"]
 
 [tool.setuptools.package-data]
-rivet_api = ["data/fixtures/**/*.json"]
+rivet_api = ["data/fixtures/**/*.json", "firmware/templates/**/*.tmpl"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
