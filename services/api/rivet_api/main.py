@@ -9,7 +9,7 @@ from rivet_api.orchestration.jobs import JobManager
 from rivet_api.orchestration.pipeline import Deps
 from rivet_api.orchestration.versions import ProjectStore
 from rivet_api.routes import assets as assets_routes
-from rivet_api.routes import health, jobs, projects
+from rivet_api.routes import exports, health, jobs, projects
 
 
 class ModeHeaderMiddleware:
@@ -58,6 +58,7 @@ def create_app(
     app.include_router(health.router)
     app.include_router(jobs.router)
     app.include_router(projects.router)
+    app.include_router(exports.router)
     app.include_router(assets_routes.router)
     return app
 
