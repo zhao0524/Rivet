@@ -230,13 +230,13 @@ def test_motor_current_unknown_when_unrated():
     assert f.affected_instance_ids == ["driver-1", "motor-left-1"]
 
 
-def test_moderate_stall_overshoot_is_a_warning():
+def test_moderate_stall_overshoot_blocks_without_protection():
     records = real_records()
     motor = next(r for r in records if r["catalog_id"] == "testpart.motor")
     for p in motor["ports"]:
         p["current_limit_a"] = 1.5  # 1.25 x the 1.2 A continuous rating
     found = non_pass(run(records=records), "electrical.motor_driver_current")
-    assert len(found) == 2 and all(f.result == "WARN" and f.severity == "advisory" for f in found)
+    assert len(found) == 2 and all(f.result == "FAIL" and f.severity == "blocking" for f in found)
 
 
 def test_higher_rated_driver_passes():
@@ -377,3 +377,12 @@ def test_inputs_not_mutated_and_existing_verification_ignored():
     report = verify_candidate(plan, catalog_from_records(real_records(), "t"), VerificationContext(bounds=box_bounds))
     assert plan.to_wire() == before
     assert all(f.rule_id != "fake.pass" for f in report.findings)
+
+
+def test_current_numbers_without_verified_evidence_cannot_pass():
+    records = real_records()
+    motor = next(r for r in records if r["catalog_id"] == "testpart.motor")
+    motor["evidence"]["electrical"] = "unverified"
+    found = non_pass(run(records=records), "electrical.motor_driver_current")
+    assert len(found) == 2
+    assert all(f.result == "UNKNOWN" and f.severity == "blocking" for f in found)
