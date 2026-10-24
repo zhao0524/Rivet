@@ -891,7 +891,7 @@
           "position_mm": [
             9.0,
             0,
-            20.0
+            0
           ],
           "rotation_deg": [
             0,
@@ -939,7 +939,7 @@
         "price": "verified",
         "notes": [
           "70 x 22 x 18 mm, 30.6 g, 1:48, no-load 150-160 mA, stall 1.1-1.5 A from Adafruit 3777 product page (checked 2026-10-24).",
-          "Shaft position within the body is approximated from the product diagram.",
+          "Shaft modeled on the body centreline (z = 0) so mirrored motors keep both wheels on one axle; the real offset along the body is not modeled.",
           "Fit in the SparkFun Shadow Chassis TT-style motor mounts is assumed from the shared TT form factor, not confirmed by SparkFun."
         ]
       }

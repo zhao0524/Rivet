@@ -6,10 +6,10 @@ Shared status file for everyone working in this repo, human or agent.
 | | |
 |---|---|
 | **Last updated** | 2026-10-24 · [B] |
-| **Branch / commit** | `feat/b-p1-catalog` + merge review |
+| **Branch / commit** | `feat/b-p2-mechanics` + merge review |
 | **Current phase** | Engineering modules under sequential merge review; public composition pending |
 | **Next gate** | Hour 8: every lane demos itself from fixtures (`docs/implementation.md` §7) |
-| **In progress** | [B] Sequential branch review: `feat/b-p1-catalog` |
+| **In progress** | [B] Sequential branch review: `feat/b-p2-mechanics` |
 | **Blocked** | none (1 open issue in §6) |
 
 **Next up:** INT-0 → INT-1 → INT-2 (skeleton, contracts, fixtures). After that, all lanes can branch off and work in parallel.
@@ -98,7 +98,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 |---|---|---|---|---|
 | B0 | Domain model and public entry points (`solve`, etc.) | IN PROGRESS | [B] | Models match `contracts/` |
 | B1 | Catalog of real components | DONE | [B] | Only real parts; unknown values stay `null` |
-| B2 | Parametric mechanical assembly and mounts | TODO | — | Rover template produces consistent instances |
+| B2 | Parametric mechanical assembly and mounts | IN PROGRESS | [B] | Rover template produces consistent instances |
 | B3 | Electrical graph; driver and controller assignment | TODO | — | Netlist references only valid pins |
 | B4 | Deterministic validators: mechanical, electrical, budget, completeness | TODO | — | Failing-driver fixture produces the expected finding |
 | B5 | Repair engine | TODO | — | At least one failure repaired or honestly rejected |
@@ -107,7 +107,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | B-PLAN | Parallel work orders and per-task branch/PR handoffs | DONE | [B] | B0–B7 covered; exclusive implementation/test paths and dependency gates reviewed |
 | B-P0 | Foundation: models, internal API, test inputs (`feat/b-p0-foundation`) | DONE | [B] | Clean install; offline model tests pass; `INTERNAL_API.md` freezes P1–P6 signatures |
 | B-P1 | Sourced catalog (`feat/b-p1-catalog`) | DONE | [B] | See `packages/engineering/WORK_ORDERS.md` P1 |
-| B-P2 | Mechanical placement (`feat/b-p2-mechanics`) | TODO | — | See WORK_ORDERS P2 |
+| B-P2 | Mechanical placement (`feat/b-p2-mechanics`) | DONE | [B] | See WORK_ORDERS P2 |
 | B-P3 | Wiring and pin allocation (`feat/b-p3-wiring`) | TODO | — | See WORK_ORDERS P3 |
 | B-P4 | Validators (`feat/b-p4-validation`) | TODO | — | See WORK_ORDERS P4 |
 | B-P5 | BOM, assembly, serialization (`feat/b-p5-exports`) | TODO | — | See WORK_ORDERS P5 |
@@ -152,6 +152,10 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
+
+- 2026-10-24 [B] B-P2: Reviewed and reconciled with main for sequential merge. Checked: engineering pytest 103 passed; diff check passed. Notes: Mount and geometry approximations remain labeled; placement is not proof of physical fit. Public composition remains pending.
+
+- 2026-10-24 [B] B-P2: Added `mounts.py` and template `data/templates/rover_2wd.json`. `place_rover` computes every pose as parent x parent mount x offset x inverse(child mount), with XYZ Euler degrees in the three.js order (R = Rx*Ry*Rz) so C can apply `rotation_deg` directly; it then lifts the assembly so the lowest wheel/caster point sits on y = 0. Stable IDs (`chassis-1`, `motor-left-1`, ..., `accessory-<n>`), wheels mount on motor shafts, mates must be listed on both sides, each mount takes one child, missing anchors/illegal mates/out-of-range offsets raise `PLACEMENT_ERROR`, sensor height adjustable -10..+25 mm. `world_aabb` gives conservative rotated bounds for P4. Also changed the TT motor shaft in `components.json` to the body centreline so mirrored motors keep one axle. Checked: `uv run pytest -q` 103 passed. Notes: sourced placement reports `mechanical.geometry_approximated` (advisory UNKNOWN) because mount coordinates are not from CAD. B2 stays IN PROGRESS until P7 integrates it.
 
 - 2026-10-24 [B] B-P1: Reviewed and reconciled with main for sequential merge. Checked: engineering pytest 71 passed; diff check passed. Notes: Source ledger and unknown metadata are preserved; catalog presence does not establish physical or electrical compatibility. Public composition remains pending.
 
