@@ -6,10 +6,10 @@ Shared status file for everyone working in this repo, human or agent.
 | | |
 |---|---|
 | **Last updated** | 2026-10-24 · [B] |
-| **Branch / commit** | `feat/b-p5-exports` + merge review |
+| **Branch / commit** | `feat/b-p6-repair` + merge review |
 | **Current phase** | Engineering modules under sequential merge review; public composition pending |
 | **Next gate** | Hour 8: every lane demos itself from fixtures (`docs/implementation.md` §7) |
-| **In progress** | [B] Sequential branch review: `feat/b-p5-exports` |
+| **In progress** | [B] Sequential branch review: `feat/b-p6-repair` |
 | **Blocked** | none (1 open issue in §6) |
 
 **Next up:** INT-0 → INT-1 → INT-2 (skeleton, contracts, fixtures). After that, all lanes can branch off and work in parallel.
@@ -101,7 +101,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | B2 | Parametric mechanical assembly and mounts | IN PROGRESS | [B] | Rover template produces consistent instances |
 | B3 | Electrical graph; driver and controller assignment | IN PROGRESS | [B] | Netlist references only valid pins |
 | B4 | Deterministic validators: mechanical, electrical, budget, completeness | IN PROGRESS | [B] | Failing-driver fixture produces the expected finding |
-| B5 | Repair engine | TODO | — | At least one failure repaired or honestly rejected |
+| B5 | Repair engine | IN PROGRESS | [B] | At least one failure repaired or honestly rejected |
 | B6 | BOM, assembly steps, serialization | IN PROGRESS | [B] | BOM rows match instance IDs |
 | B7 | Tests and standalone demo | TODO | — | `pytest` passes standalone |
 | B-PLAN | Parallel work orders and per-task branch/PR handoffs | DONE | [B] | B0–B7 covered; exclusive implementation/test paths and dependency gates reviewed |
@@ -111,7 +111,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | B-P3 | Wiring and pin allocation (`feat/b-p3-wiring`) | DONE | [B] | See WORK_ORDERS P3 |
 | B-P4 | Validators (`feat/b-p4-validation`) | DONE | [B] | See WORK_ORDERS P4 |
 | B-P5 | BOM, assembly, serialization (`feat/b-p5-exports`) | DONE | [B] | See WORK_ORDERS P5 |
-| B-P6 | Repair (`feat/b-p6-repair`) | TODO | — | See WORK_ORDERS P6 |
+| B-P6 | Repair (`feat/b-p6-repair`) | DONE | [B] | See WORK_ORDERS P6 |
 | B-P7 | Composition, edits, demo (`feat/b-p7-integration`) | TODO | — | See WORK_ORDERS P7 |
 
 ### Developer C `[C]` · `apps/web/**`
@@ -152,6 +152,10 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
+
+- 2026-10-24 [B] B-P6: Reviewed and reconciled with main for sequential merge. Checked: engineering pytest 202 (1 skipped) passed; diff check passed. Notes: Enforced a hard three-round cap even when callers request more, with a regression covering three accepted improvements. Shared fixture remains absent; runtime composition is next.
+
+- 2026-10-24 [B] B-P6: Added `repair.py`: `repair_candidate` verifies, then for each blocking FAIL tries same-category catalog substitutions (all instances of that part at once) and optional injected layout corrections in a stable order, rebuilds and re-verifies through injected callbacks, and keeps the first change that removes a blocking failure without adding one; at most 3 rounds, repeated candidates and rebuild errors are logged and skipped. Substitutes must keep the real/synthetic kind and have evidence no weaker than the part they replace. UNKNOWNs are never repaired away, catalog and input are not mutated, the result carries only canonical plan fields plus a separate attempt log. Outcomes: unchanged / repaired / improved / rejected. Checked: `uv run pytest -q` 200 passed, 1 skipped. Notes: B5 is DONE only after P7 shows a real repair or honest rejection on engine-built plans.
 
 - 2026-10-24 [B] B-P5: Reviewed and reconciled with main for sequential merge. Checked: engineering pytest 188 (1 skipped) passed; diff check passed. Notes: Shared failing-driver fixture remains absent. Unknown prices and unverified product links remain explicit; totals do not silently mix currencies.
 
