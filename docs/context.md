@@ -5,11 +5,11 @@ Shared status file for everyone working in this repo, human or agent.
 
 | | |
 |---|---|
-| **Last updated** | 2026-10-24 · [A] |
-| **Branch / commit** | `main` @ `08fc92f` + this update |
+| **Last updated** | 2026-10-24 · [B] |
+| **Branch / commit** | `feat/b-p0-foundation` based on `284b1af` + this update |
 | **Current phase** | Pre-bootstrap: only the specs exist |
 | **Next gate** | Hour 8: every lane demos itself from fixtures (`docs/implementation.md` §7) |
-| **In progress** | none |
+| **In progress** | [B] P1 catalog (next on `feat/b-p1-catalog`) |
 | **Blocked** | none (1 open issue in §6) |
 
 **Next up:** INT-0 → INT-1 → INT-2 (skeleton, contracts, fixtures). After that, all lanes can branch off and work in parallel.
@@ -51,7 +51,7 @@ Source of truth: [`docs/implementation.md`](docs/implementation.md) for contract
 | `contracts/` | INT | Not created |
 | `fixtures/` | INT | Not created |
 | `services/api/` | A | Started: FastAPI app, settings, error envelope, `/api/health`; Pydantic models for IntentSpec, BuildPlan, JobEvent and a plan integrity guard (`contract.py`); engineering port with fixture and real (`rivet_engine`) adapters; file-backed revision store (`orchestration/versions.py`); job manager with SSE (`orchestration/jobs.py`); generation pipeline and routes: `POST /api/projects/generate`, `GET /api/projects/{id}` (+`?revision=`), `/revisions`, `POST /edits`, `/examples`, `GET /api/catalog`. safe image upload (`POST /api/assets/images`, `GET /api/assets/{id}/preview`). live vision provider (OpenAI Chat Completions backend, strict parse, one retry) and intent sanitizer. BOM CSV and `build.json` exports (`GET /api/projects/{id}/exports/bom.csv`, `build.json`). firmware ZIP export (`GET /api/projects/{id}/exports/firmware.zip`, optional `?compile=true`). Estelle grounder, smoke script and README not built yet |
-| `packages/engineering/` | B | Not created |
+| `packages/engineering/` | B | Started: `rivet_engine` package (Python 3.11+, Pydantic v2, `uv.lock`); canonical wire models (`models.py`), internal types and stage protocols (`ports.py`), `INTERNAL_API.md`; public `solve`/`apply_edit`/`verify`/`get_catalog` raise `ENGINE_NOT_IMPLEMENTED` until P7; private Appendix A copies and SYNTHETIC test data in `tests/support/` |
 | `apps/web/` | C | Not created |
 | `design/` | DESIGN | Not created |
 
@@ -96,7 +96,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 
 | ID | Task | Status | Owner | Check |
 |---|---|---|---|---|
-| B0 | Domain model and public entry points (`solve`, etc.) | TODO | — | Models match `contracts/` |
+| B0 | Domain model and public entry points (`solve`, etc.) | IN PROGRESS | [B] | Models match `contracts/` |
 | B1 | Catalog of real components | TODO | — | Only real parts; unknown values stay `null` |
 | B2 | Parametric mechanical assembly and mounts | TODO | — | Rover template produces consistent instances |
 | B3 | Electrical graph; driver and controller assignment | TODO | — | Netlist references only valid pins |
@@ -104,6 +104,14 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | B5 | Repair engine | TODO | — | At least one failure repaired or honestly rejected |
 | B6 | BOM, assembly steps, serialization | TODO | — | BOM rows match instance IDs |
 | B7 | Tests and standalone demo | TODO | — | `pytest` passes standalone |
+| B-P0 | Foundation: models, internal API, test inputs (`feat/b-p0-foundation`) | DONE | [B] | Clean install; offline model tests pass; `INTERNAL_API.md` freezes P1–P6 signatures |
+| B-P1 | Sourced catalog (`feat/b-p1-catalog`) | TODO | — | See `packages/engineering/WORK_ORDERS.md` P1 |
+| B-P2 | Mechanical placement (`feat/b-p2-mechanics`) | TODO | — | See WORK_ORDERS P2 |
+| B-P3 | Wiring and pin allocation (`feat/b-p3-wiring`) | TODO | — | See WORK_ORDERS P3 |
+| B-P4 | Validators (`feat/b-p4-validation`) | TODO | — | See WORK_ORDERS P4 |
+| B-P5 | BOM, assembly, serialization (`feat/b-p5-exports`) | TODO | — | See WORK_ORDERS P5 |
+| B-P6 | Repair (`feat/b-p6-repair`) | TODO | — | See WORK_ORDERS P6 |
+| B-P7 | Composition, edits, demo (`feat/b-p7-integration`) | TODO | — | See WORK_ORDERS P7 |
 
 ### Developer C `[C]` · `apps/web/**`
 
@@ -144,6 +152,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
 
+- 2026-10-24 [B] B-P0: Added the `rivet_engine` foundation: Pydantic models for IntentSpec, CatalogComponent and BuildPlan (extra keys forbidden, every §3.4 enum, decimal-string money, nulls kept), internal `Catalog`, selection, placement, wiring, verification and repair types plus `EngineError` classes that carry the API error envelope; `INTERNAL_API.md` fixes the P1–P6 function signatures; public entry points raise instead of returning fake results. Test inputs: exact Appendix A catalog/plan and §3.1 intent, plus a SYNTHETIC TEST-ONLY complete rover catalog/plan with full netlist and adversarial parts. Checked: `cd packages/engineering && uv sync && uv run pytest -q` 49 passed (round-trip, null preservation, all enums, malformed rejection). Notes: no shared `contracts/` schemas exist yet, so validation is Pydantic only. `verify(plan, catalog=None)` takes an optional catalog because services/api calls `verify(plan)`. B0 stays IN PROGRESS until P7.
 - 2026-10-24 [A] A4: Added firmware generation: `generate_firmware` renders `platformio.ini`, `src/main.cpp`, `include/rivet_config.h`, `README.md` and `manifest.json` (build id, revision, plan status, generation mode, sha256 and template source per file, compile status) from allow-list templates; GPIO numbers come only from the plan's pin map, behavior thresholds from its parameters (converted to mm, ms, PWM), titles are whitelisted so they cannot inject code. Refuses unbuildable plans (422 `FIRMWARE_REFUSED`); `needs_review` plans still generate but say so in the README and manifest, and fixture/fallback plans get a SAVED FIXTURE warning. The rover boots disabled; serial `x` disables, `g` enables; a missing sensor reading stops the motors. `compile_firmware` runs a fixed `pio run -d <dir>` argv with no shell, a timeout and a scrubbed environment (no API keys); no PlatformIO means `not_checked`. Checked: `pytest` 278 passed (3 repeat runs); generated `main.cpp` passes `clang++ -fsyntax-only -Wall -Wextra` against stub Arduino/Wire/VL53L0X headers. Notes: NEVER compiled with PlatformIO (not installed here), so the pinned `espressif32@6.9.0` and `Adafruit VL53L0X@1.2.4` versions and the real library APIs are unverified; the board id `esp32dev` is generic; unit tests use made-up pin numbers as test data only. See the pin_map issue in section 6.
 - 2026-10-24 [A] A2/A3: Added exports. `GET /api/projects/{id}/exports/bom.csv` (columns `catalog_id,quantity,instance_ids,unit_price_amount,currency,purchase_url,link_status`, instance ids joined with `;`, a final `TOTAL` row whose `link_status` cell reads `total_status:<status>`) and `exports/build.json` (the stored revision), both with `?revision=`, an attachment filename of `<build_id>-r<n>...`, `nosniff` and `X-Rivet-Generation-Mode`. Null prices and links stay empty cells (never 0); the subtotal is exactly what the engine reported, the API never sums anything; cells starting with `= + - @` or tab/CR get a leading `'` so spreadsheets cannot run them (plain decimals untouched). Checked: `pytest` 229 passed (3 repeat runs); real `uvicorn` run showed the CSV. Notes: firmware ZIP export is not built yet (next). Exports are not in the spec's Hour-16 minimum.
 - 2026-10-24 [A] A1: Added the live vision provider and intent sanitizer. `LiveVisionProvider` sends the spec prompt (section 9.7 verbatim plus a data-not-instructions rule) through a `VisionBackend`; `OpenAIBackend` uses Chat Completions JSON mode with the image as a data URI. Replies are parsed strictly (extra keys such as `status` are rejected), retried once with a hint that never echoes the bad reply, then 502 `VISION_PARSE_FAILED` (retryable). Provider errors map to 429/503/502 with generic messages (no key leakage). `sanitize_intent` runs for every provider including the mock: support status is decided by code (non-rover never supported, rc_car planned, line following unsupported), budget and size limits come only from the request, unknown controller ids are nulled, capabilities filtered, text lists capped and cleaned, input rebuilt from the request, image uploads get the hidden-electronics assumption. `user_text` capped at 2000 chars. `RIVET_VISION_PROVIDER=openai` needs `RIVET_VISION_MODEL`, `OPENAI_API_KEY` and `pip install 'openai>=1.40'` (extra `live`); misconfiguration fails at startup. Checked: `pytest` 208 passed (3 repeat runs), all with fake backends. Notes: NOT tested against the real OpenAI API (no key here), so the request shape in `OpenAIBackend` is unverified against a live call; the mock still ignores the image content. Other providers fit behind `VisionBackend`.
@@ -173,7 +182,7 @@ Format: `YYYY-MM-DD: decision. Agreed by: [A] [B] [C]. Reason: why.`
 Open items only; delete an item once it's resolved and log the fix in §4.
 Format: `[LANE] TASK-ID: problem. Needs: who or what unblocks it.`
 
-- [A] A4: `BuildPlan.firmware.pin_map` has no defined format in the spec (it is `{}` in every fixture). The firmware template needs these signals, each an integer ESP32 GPIO number: `motor_left_pwm, motor_left_in1, motor_left_in2, motor_right_pwm, motor_right_in1, motor_right_in2, motor_standby, i2c_sda, i2c_scl`. Missing, unknown, duplicate or non-integer entries are rejected (422 `FIRMWARE_INVALID_PIN_MAP`) and an empty map gives 422 `FIRMWARE_NOT_SUPPORTED`, so with today's fixtures firmware export always returns 422. Needs: [B] confirm or change these signal names and the value format in the engine's pin map (and add a real pin_map to the sourced plan); board-specific limits (input-only or flash pins) are B's check, not A's.
+- [A] A4 / [B] B3: `firmware.pin_map` format. [B] confirms A's proposal: keys `motor_left_pwm, motor_left_in1, motor_left_in2, motor_right_pwm, motor_right_in1, motor_right_in2, motor_standby, i2c_sda, i2c_scl`, values integer controller GPIO numbers (enforced in `rivet_engine/models.py`, documented in `packages/engineering/INTERNAL_API.md`). Still open until B's sourced plan carries a real pin map (B-P3/B-P7). Needs: [B] P3 wiring.
 - [INT] README: spec links point to root `project.md`/`implementation.md`, which moved to `docs/`. Needs: README link fix.
 
 ---
