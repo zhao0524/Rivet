@@ -51,8 +51,10 @@ export function CartModal({ open, onClose, lines, ownedIds, currency, onContinue
               {group.vendor}
             </h3>
             <span className="ui-small ui-muted">
-              {group.lines.length} {group.lines.length === 1 ? 'item' : 'items'} · {formatMoney(group.subtotal, currency)}
-              {group.unknownPriceCount > 0 ? ' + unknown' : ''}
+              {group.lines.length} {group.lines.length === 1 ? 'item' : 'items'} ·{' '}
+              {group.unknownPriceCount >= group.lines.length
+                ? 'price unknown'
+                : `${formatMoney(group.subtotal, currency)}${group.unknownPriceCount > 0 ? ` + ${group.unknownPriceCount} unknown` : ''}`}
             </span>
           </div>
           <ul className="buy-cart__list">

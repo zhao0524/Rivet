@@ -221,8 +221,14 @@ function VendorRow({
           </span>
         </span>
         <span className="buy-vendor__sub">
-          {formatMoney(group.subtotal, currency)}
-          {group.unknownPriceCount > 0 ? <span className="ui-small ui-muted"> + unknown</span> : null}
+          {group.unknownPriceCount >= group.lines.length ? (
+            <span className="ui-muted">Price unknown</span>
+          ) : (
+            <>
+              {formatMoney(group.subtotal, currency)}
+              {group.unknownPriceCount > 0 ? <span className="ui-small ui-muted"> + {group.unknownPriceCount} unknown</span> : null}
+            </>
+          )}
         </span>
       </button>
       {open ? (
@@ -230,7 +236,7 @@ function VendorRow({
           {noVendor ? (
             <li className="buy-line" style={{ paddingLeft: 14 }}>
               <p className="p2-note" style={{ margin: 0 }}>
-                Rivet found no verified product page for {group.lines.length === 1 ? 'this part' : 'these parts'}. The price shown is the catalog&apos;s last-known figure.
+                Rivet found no verified product page for {group.lines.length === 1 ? 'this part' : 'these parts'}. Any price here comes from the catalog, not a live product page.
               </p>
             </li>
           ) : null}

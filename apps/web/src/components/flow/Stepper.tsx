@@ -14,7 +14,8 @@ export interface StepperProps {
 /** Persistent two-phase, five-step stepper shown once generation finishes. */
 export function Stepper({ projectId, current, furthest }: StepperProps) {
   return (
-    <nav className="stepper" aria-label="Build steps" data-testid="stepper">
+    // tabIndex: on narrow screens the stepper scrolls sideways, so keyboard users need to reach it.
+    <nav className="stepper" aria-label="Build steps" tabIndex={0} data-testid="stepper">
       {PHASES.map((phase) => (
         <div key={phase.n} className="stepper__phase" data-phase={phase.n}>
           <span className="stepper__phase-label">

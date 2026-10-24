@@ -105,7 +105,7 @@ export default function HomePage() {
                 <i />
                 <i />
               </span>
-              From a prompt to real parts
+              Built for Rivet
             </p>
             <h1 id="home-title" className="mk-hero__title">
               Hardware designed &amp; built faster with AI

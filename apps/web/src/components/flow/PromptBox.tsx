@@ -113,6 +113,7 @@ export function PromptBox({
                 accept="image/png,image/jpeg,image/webp"
                 className="ui-sr-only"
                 tabIndex={-1}
+                aria-label="Attach a picture"
                 onChange={(e) => {
                   setImage(e.target.files?.[0] ?? null);
                   setError(null);

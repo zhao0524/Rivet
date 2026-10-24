@@ -55,11 +55,11 @@
 .buy-cart__link svg { flex: none; color: var(--ui-subtle); }
 
 /* ── Build ────────────────────────────────────────────── */
-.build { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 400px; min-height: calc(100vh - 290px); }
-.build__stage { position: relative; min-height: 460px; height: calc(100vh - 290px); background: var(--ui-sunken); border-top: 1px solid var(--ui-border); border-bottom: 1px solid var(--ui-border); }
+.build { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 400px; min-height: calc(100vh - 360px); }
+.build__stage { position: relative; min-height: 460px; height: calc(100vh - 360px); background: var(--ui-sunken); border-top: 1px solid var(--ui-border); border-bottom: 1px solid var(--ui-border); }
 .build__stage > [data-testid='rover-scene'], .build__stage > div:first-child { position: absolute; inset: 0; }
 .build__stage-label { position: absolute; left: 20px; bottom: 16px; z-index: 2; display: inline-flex; gap: 8px; align-items: center; padding: 6px 12px; border-radius: 999px; background: var(--ui-surface); border: 1px solid var(--ui-border); color: var(--ui-muted); font-size: 12px; font-weight: 500; }
-.build__panel { display: flex; flex-direction: column; gap: 16px; padding: 20px 20px 24px; background: var(--ui-surface); border-top: 1px solid var(--ui-border); border-bottom: 1px solid var(--ui-border); border-left: 1px solid var(--ui-border); overflow-y: auto; max-height: calc(100vh - 290px); }
+.build__panel { display: flex; flex-direction: column; gap: 16px; padding: 20px 20px 24px; background: var(--ui-surface); border-top: 1px solid var(--ui-border); border-bottom: 1px solid var(--ui-border); border-left: 1px solid var(--ui-border); overflow-y: auto; max-height: calc(100vh - 360px); }
 .build__panel-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .build__progress { height: 4px; border-radius: 999px; background: var(--ui-sunken); overflow: hidden; }
 .build__progress > span { display: block; height: 100%; background: var(--ui-accent); transition: width 300ms var(--ui-ease); }
