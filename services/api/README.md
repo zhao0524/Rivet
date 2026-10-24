@@ -135,6 +135,36 @@ Any uploaded photo or description can be rendered as an interactive 3D model. `P
 
 The stored plan is labelled: `provenance.catalog_version` `CONCEPT-1.0`, blocking `UNKNOWN` `concept.not_engineered`, advisory `concept.geometry_estimated` and `concept.internals_inferred`, `behavior: null`, `simulation.kind: "none"`. Plain-language edits (`{"base_revision", "instruction"}`) create new revisions (`422 CONCEPT_EDIT_NEEDS_TEXT` without text; `accepted: false` with `concept.edit_no_change` when nothing changes). BOM CSV and firmware exports are refused. If the concept cannot be built, the job builds the closest supported rover and records `A 3D concept of the upload could not be built, so this is the fallback rover (<CODE>)` in `provenance.notes`. Full contract: [`contracts/api.md`](../../contracts/api.md) "Concept models".
 
+## Geometry-first generation (v2)
+
+`rivet_api/design/` runs the staged pipeline (distill, concept and extra views, three candidate DesignSpecs, compile with streamed partial GLBs, mechanical and engineering checks, repair, six-camera renders, visual review, selection, one critic-guided revision, exports, persistence). Geometry, checks and exports come from `rivet_engine.design_compiler` (install the engine's `geometry` extra); electrical and firmware verdicts come from the engine via `rivet_engine.engineering_bridge`. Results are `DesignBundle` v2 revisions stored in `RIVET_DATA_ROOT/design/` (SQLite events and jobs, content-addressed assets); v1 BuildPlans are untouched, and an engineered bundle links the v1 plan the engine produced for its electronics.
+
+| Variable | Meaning |
+|---|---|
+| `RIVET_3D_MODE` | `live` uses real providers and never falls back; anything else runs the offline rule-based author, labelled `fixture` |
+| `RIVET_DESIGN_MODEL` | Chat/vision model for distill, authoring, critique and patches (default: `RIVET_VISION_MODEL`, then `gpt-4o`); needs `OPENAI_API_KEY` |
+| `RIVET_IMAGE_PROVIDER` | `openai` enables concept art and extra views; unset skips those stages with an explicit event |
+| `RIVET_IMAGE_MODEL`, `RIVET_IMAGE_SIZE`, `RIVET_IMAGE_QUALITY` | Image model and settings (defaults `gpt-image-1`, `1024x1024`, `medium`) |
+| `RIVET_RENDERER` | `raster` (default, deterministic CPU renders of the real GLB) or `chromium` (three.js through `apps/web/scripts/render-design.mjs`) |
+
+| Route | Purpose |
+|---|---|
+| `GET /api/v2/session` | Starts or confirms the caller's session (httponly cookie); every v2 route is scoped to it |
+| `POST /api/v2/assets/images` | Reference image upload (cleaned, content-addressed, hash recorded) |
+| `GET /api/v2/assets/{asset_id}` | Owner-only asset bytes (GLB, PNG, STEP, STL, JSON) |
+| `POST /api/v2/generations` | Starts a generation (`input`, `mode`, `quality`, `candidate_count`, `review_rounds`, `allow_cached`, budget); `allow_cached` replays a stored result with `provenance.cached: true` |
+| `GET /api/v2/generations/{job_id}` | Job status |
+| `GET /api/v2/generations/{job_id}/events` | SSE with resumable ids (`Last-Event-ID` or `last_event_id`) |
+| `POST /api/v2/generations/{job_id}/cancel` | Stops a running job at the next stage boundary; artifacts so far are kept |
+| `GET /api/v2/projects` | Saved designs of this session |
+| `GET /api/v2/projects/{build_id}/design` | DesignBundle (`?revision=N`) |
+| `GET /api/v2/projects/{build_id}/candidates` | Candidate summaries with renders, claims and reviews |
+| `GET /api/v2/projects/{build_id}/revisions` | Revision lineage |
+| `POST /api/v2/projects/{build_id}/select` | Choose a candidate (bound to its generation job) as a new revision |
+| `POST /api/v2/projects/{build_id}/revise` | Plain-language targeted edit as a job; rejected edits leave the design unchanged |
+| `POST /api/v2/projects/{build_id}/restore` | Undo/redo: copy an earlier revision forward without recomputing |
+| `GET /api/v2/projects/{build_id}/export` | `kind=glb|part_glb|step|stl|assembly_step|bom|assembly_steps|manifest|trace|firmware` (`422` with the reason when an export does not apply) |
+
 ## Endpoints
 
 Errors always use `{"error": {"code", "message", "details", "retryable"}}`.

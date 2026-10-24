@@ -1,0 +1,207 @@
+{
+  "$defs": {
+    "AssetReference": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "id",
+        "url"
+      ],
+      "title": "AssetReference",
+      "type": "object"
+    },
+    "GeometrySnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "geometry_digest": {
+          "title": "Geometry Digest",
+          "type": "string"
+        },
+        "is_partial": {
+          "title": "Is Partial",
+          "type": "boolean"
+        },
+        "part_manifest": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Part Manifest",
+          "type": "array"
+        },
+        "preview_revision": {
+          "title": "Preview Revision",
+          "type": "integer"
+        },
+        "scene_asset_url": {
+          "title": "Scene Asset Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scene_asset_url",
+        "part_manifest",
+        "geometry_digest",
+        "preview_revision",
+        "is_partial"
+      ],
+      "title": "GeometrySnapshot",
+      "type": "object"
+    }
+  },
+  "$id": "https://rivet.dev/contracts/geometry-preview-event.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "actor": {
+      "title": "Actor",
+      "type": "string"
+    },
+    "build_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Build Id"
+    },
+    "candidate_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Candidate Id"
+    },
+    "event_id": {
+      "title": "Event Id",
+      "type": "integer"
+    },
+    "is_partial": {
+      "default": false,
+      "title": "Is Partial",
+      "type": "boolean"
+    },
+    "job_id": {
+      "title": "Job Id",
+      "type": "string"
+    },
+    "message": {
+      "title": "Message",
+      "type": "string"
+    },
+    "preview_revision": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Preview Revision"
+    },
+    "provenance": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Provenance"
+    },
+    "references": {
+      "items": {
+        "$ref": "#/$defs/AssetReference"
+      },
+      "title": "References",
+      "type": "array"
+    },
+    "revision": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Revision"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GeometrySnapshot"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "stage": {
+      "title": "Stage",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "running",
+        "ok",
+        "warning",
+        "failed",
+        "cancelled"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "timestamp": {
+      "title": "Timestamp",
+      "type": "string"
+    }
+  },
+  "required": [
+    "event_id",
+    "job_id",
+    "timestamp",
+    "stage",
+    "actor",
+    "status",
+    "message"
+  ],
+  "title": "Rivet design job event v2",
+  "type": "object"
+}

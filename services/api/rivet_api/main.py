@@ -54,6 +54,7 @@ def create_app(
     resolutions: ResolutionStore | None = None,
     offers_provider=None,
     offer_sets: OfferSetStore | None = None,
+    design=None,
 ) -> FastAPI:
     settings = settings or get_settings()
     app = FastAPI(title="Rivet API", version="0.1.0")
@@ -84,7 +85,25 @@ def create_app(
     app.include_router(assets_routes.router)
     app.include_router(resolve_routes.router)
     app.include_router(offers_routes.router)
+    if design is not False:
+        try:
+            from rivet_api.design.setup import build_design_services
+            from rivet_api.routes import design_v2
+
+            app.state.design = design or build_design_services(settings, _engine_catalog())
+            app.include_router(design_v2.router)
+        except ImportError as exc:  # geometry extra not installed: v2 routes are absent, v1 keeps working
+            import logging
+
+            logging.getLogger("rivet_api").warning("v2 design routes disabled: %s", exc)
     return app
+
+
+def _engine_catalog() -> list[dict]:
+    """The real sourced catalog for v2 designs, even when v1 runs on the saved fixture."""
+    from rivet_engine import get_catalog
+
+    return get_catalog()
 
 
 app = create_app()

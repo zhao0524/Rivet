@@ -426,7 +426,7 @@ def decode_glb(data: bytes) -> tuple[dict[str, Any], list[tuple[str, TriMesh, di
                 scaled = world.copy()
                 mesh = mesh.transformed(scaled)
                 mesh.vertices *= MM_PER_M
-                out.append((node.get("name", f"node{index}"), mesh, node.get("extras", {})))
+                out.append((node.get("name", f"node{index}"), mesh, {**node.get("extras", {}), "_material": prim.get("material")}))
         for child in node.get("children", []):
             walk(child, world, depth + 1)
 

@@ -1,0 +1,917 @@
+{
+  "$defs": {
+    "BudgetSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "limit_usd": {
+          "title": "Limit Usd",
+          "type": "number"
+        },
+        "reserved_usd": {
+          "title": "Reserved Usd",
+          "type": "number"
+        },
+        "spent_usd": {
+          "title": "Spent Usd",
+          "type": "number"
+        }
+      },
+      "required": [
+        "limit_usd",
+        "spent_usd",
+        "reserved_usd"
+      ],
+      "title": "BudgetSnapshot",
+      "type": "object"
+    },
+    "Candidate": {
+      "additionalProperties": false,
+      "properties": {
+        "assembly_steps": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Assembly Steps",
+          "type": "array"
+        },
+        "bom": {
+          "additionalProperties": true,
+          "title": "Bom",
+          "type": "object"
+        },
+        "claims": {
+          "additionalProperties": true,
+          "title": "Claims",
+          "type": "object"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "feasible": {
+          "default": false,
+          "title": "Feasible",
+          "type": "boolean"
+        },
+        "functional": {
+          "additionalProperties": true,
+          "title": "Functional",
+          "type": "object"
+        },
+        "geometry_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Geometry Digest"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "iterations": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Iterations",
+          "type": "array"
+        },
+        "joints": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Joints",
+          "type": "array"
+        },
+        "manufacturing_assets": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Manufacturing Assets",
+          "type": "array"
+        },
+        "mechanical": {
+          "additionalProperties": true,
+          "title": "Mechanical",
+          "type": "object"
+        },
+        "part_manifest": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Part Manifest",
+          "type": "array"
+        },
+        "previews": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Previews",
+          "type": "array"
+        },
+        "scene_asset_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scene Asset Url"
+        },
+        "seed": {
+          "default": 0,
+          "title": "Seed",
+          "type": "integer"
+        },
+        "shots": {
+          "items": {
+            "$ref": "#/$defs/ModelShot"
+          },
+          "title": "Shots",
+          "type": "array"
+        },
+        "spec": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Spec"
+        },
+        "spec_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Spec Digest"
+        },
+        "status": {
+          "enum": [
+            "complete",
+            "failed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "strategy": {
+          "title": "Strategy",
+          "type": "string"
+        },
+        "visual": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VisualReview"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "strategy",
+        "status"
+      ],
+      "title": "Candidate",
+      "type": "object"
+    },
+    "DesignProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "cached": {
+          "title": "Cached",
+          "type": "boolean"
+        },
+        "catalog_digest": {
+          "title": "Catalog Digest",
+          "type": "string"
+        },
+        "generation_mode": {
+          "enum": [
+            "live",
+            "fixture"
+          ],
+          "title": "Generation Mode",
+          "type": "string"
+        },
+        "input_digest": {
+          "title": "Input Digest",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "providers": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Providers",
+          "type": "object"
+        },
+        "replay_of": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Replay Of"
+        },
+        "stages": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Stages",
+          "type": "array"
+        },
+        "view_consistency": {
+          "additionalProperties": true,
+          "title": "View Consistency",
+          "type": "object"
+        }
+      },
+      "required": [
+        "generation_mode",
+        "cached",
+        "replay_of",
+        "input_digest",
+        "catalog_digest"
+      ],
+      "title": "DesignProvenance",
+      "type": "object"
+    },
+    "DistilledIntent": {
+      "additionalProperties": false,
+      "properties": {
+        "archetype": {
+          "default": "object",
+          "maxLength": 40,
+          "title": "Archetype",
+          "type": "string"
+        },
+        "functional_behavior": {
+          "default": "",
+          "maxLength": 400,
+          "title": "Functional Behavior",
+          "type": "string"
+        },
+        "goals": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 12,
+          "title": "Goals",
+          "type": "array"
+        },
+        "image_observations": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Image Observations",
+          "type": "array"
+        },
+        "materials": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "title": "Materials",
+          "type": "array"
+        },
+        "mechanical_constraints": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 12,
+          "title": "Mechanical Constraints",
+          "type": "array"
+        },
+        "palette": {
+          "items": {
+            "$ref": "#/$defs/PaletteColor"
+          },
+          "maxItems": 8,
+          "title": "Palette",
+          "type": "array"
+        },
+        "proportions": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Proportions",
+          "type": "object"
+        },
+        "sensor_height": {
+          "anyOf": [
+            {
+              "enum": [
+                "low",
+                "mid",
+                "high"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sensor Height"
+        },
+        "signature_features": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 6,
+          "minItems": 3,
+          "title": "Signature Features",
+          "type": "array"
+        },
+        "simplifications": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 12,
+          "title": "Simplifications",
+          "type": "array"
+        },
+        "source": {
+          "default": "rules",
+          "enum": [
+            "model",
+            "rules"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "subject": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Subject",
+          "type": "string"
+        },
+        "summary": {
+          "maxLength": 2000,
+          "title": "Summary",
+          "type": "string"
+        },
+        "supported": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 12,
+          "title": "Supported",
+          "type": "array"
+        },
+        "target_size_mm": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "maxItems": 3,
+              "minItems": 3,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Size Mm"
+        },
+        "uncertainties": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 12,
+          "title": "Uncertainties",
+          "type": "array"
+        },
+        "unsupported": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 12,
+          "title": "Unsupported",
+          "type": "array"
+        },
+        "wheel_count": {
+          "anyOf": [
+            {
+              "maximum": 12,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Wheel Count"
+        }
+      },
+      "required": [
+        "subject",
+        "summary",
+        "signature_features"
+      ],
+      "title": "DistilledIntent",
+      "type": "object"
+    },
+    "ModelShot": {
+      "additionalProperties": false,
+      "properties": {
+        "camera": {
+          "additionalProperties": true,
+          "title": "Camera",
+          "type": "object"
+        },
+        "image_url": {
+          "title": "Image Url",
+          "type": "string"
+        },
+        "view": {
+          "title": "View",
+          "type": "string"
+        }
+      },
+      "required": [
+        "view",
+        "image_url",
+        "camera"
+      ],
+      "title": "ModelShot",
+      "type": "object"
+    },
+    "PaletteColor": {
+      "additionalProperties": false,
+      "properties": {
+        "hex": {
+          "pattern": "^#[0-9a-fA-F]{6}$",
+          "title": "Hex",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "hex"
+      ],
+      "title": "PaletteColor",
+      "type": "object"
+    },
+    "ReferenceView": {
+      "additionalProperties": false,
+      "properties": {
+        "camera": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Camera"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "image_url": {
+          "title": "Image Url",
+          "type": "string"
+        },
+        "provenance": {
+          "additionalProperties": true,
+          "title": "Provenance",
+          "type": "object"
+        },
+        "source": {
+          "enum": [
+            "upload",
+            "generated",
+            "render"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "view": {
+          "title": "View",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "view",
+        "image_url",
+        "source"
+      ],
+      "title": "ReferenceView",
+      "type": "object"
+    },
+    "VisualIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "body_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Body Id"
+        },
+        "observed": {
+          "title": "Observed",
+          "type": "string"
+        },
+        "patch": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Patch"
+        },
+        "proposed_change": {
+          "title": "Proposed Change",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "minor",
+            "major",
+            "critical"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        },
+        "view": {
+          "title": "View",
+          "type": "string"
+        }
+      },
+      "required": [
+        "body_id",
+        "view",
+        "severity",
+        "observed",
+        "target",
+        "proposed_change"
+      ],
+      "title": "VisualIssue",
+      "type": "object"
+    },
+    "VisualReview": {
+      "additionalProperties": false,
+      "properties": {
+        "issues": {
+          "items": {
+            "$ref": "#/$defs/VisualIssue"
+          },
+          "title": "Issues",
+          "type": "array"
+        },
+        "judge_model": {
+          "title": "Judge Model",
+          "type": "string"
+        },
+        "metrics": {
+          "additionalProperties": true,
+          "title": "Metrics",
+          "type": "object"
+        },
+        "overall": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Overall",
+          "type": "number"
+        },
+        "render_digest": {
+          "title": "Render Digest",
+          "type": "string"
+        },
+        "scores": {
+          "$ref": "#/$defs/VisualScores"
+        },
+        "subjective": {
+          "const": true,
+          "default": true,
+          "title": "Subjective",
+          "type": "boolean"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scores",
+        "overall",
+        "issues",
+        "summary",
+        "judge_model",
+        "render_digest"
+      ],
+      "title": "VisualReview",
+      "type": "object"
+    },
+    "VisualScores": {
+      "additionalProperties": false,
+      "properties": {
+        "colour_and_surface": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Colour And Surface",
+          "type": "number"
+        },
+        "pose_and_orientation": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Pose And Orientation",
+          "type": "number"
+        },
+        "proportions": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Proportions",
+          "type": "number"
+        },
+        "reference_consistency": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Reference Consistency",
+          "type": "number"
+        },
+        "signature_features": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Signature Features",
+          "type": "number"
+        },
+        "silhouette": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Silhouette",
+          "type": "number"
+        }
+      },
+      "required": [
+        "silhouette",
+        "proportions",
+        "signature_features",
+        "pose_and_orientation",
+        "colour_and_surface",
+        "reference_consistency"
+      ],
+      "title": "VisualScores",
+      "type": "object"
+    }
+  },
+  "$id": "https://rivet.dev/contracts/design-bundle.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "assembly": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Assembly",
+      "type": "array"
+    },
+    "budget": {
+      "$ref": "#/$defs/BudgetSnapshot"
+    },
+    "build_id": {
+      "title": "Build Id",
+      "type": "string"
+    },
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/Candidate"
+      },
+      "title": "Candidates",
+      "type": "array"
+    },
+    "change": {
+      "additionalProperties": true,
+      "title": "Change",
+      "type": "object"
+    },
+    "created_at": {
+      "title": "Created At",
+      "type": "string"
+    },
+    "distilled": {
+      "$ref": "#/$defs/DistilledIntent"
+    },
+    "exports": {
+      "additionalProperties": true,
+      "title": "Exports",
+      "type": "object"
+    },
+    "generation_trace_url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Generation Trace Url"
+    },
+    "job_id": {
+      "title": "Job Id",
+      "type": "string"
+    },
+    "linked_plan_url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Linked Plan Url"
+    },
+    "mode": {
+      "enum": [
+        "concept_only",
+        "engineered"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "model_versions": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Model Versions",
+      "type": "object"
+    },
+    "original_request": {
+      "additionalProperties": true,
+      "title": "Original Request",
+      "type": "object"
+    },
+    "parent_revision": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Parent Revision"
+    },
+    "provenance": {
+      "$ref": "#/$defs/DesignProvenance"
+    },
+    "recommendation": {
+      "additionalProperties": true,
+      "title": "Recommendation",
+      "type": "object"
+    },
+    "references": {
+      "items": {
+        "$ref": "#/$defs/ReferenceView"
+      },
+      "title": "References",
+      "type": "array"
+    },
+    "revision": {
+      "title": "Revision",
+      "type": "integer"
+    },
+    "scene_asset_url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Scene Asset Url"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "selected_candidate_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Selected Candidate Id"
+    },
+    "status": {
+      "enum": [
+        "complete",
+        "needs_review",
+        "unbuildable"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    }
+  },
+  "required": [
+    "build_id",
+    "revision",
+    "job_id",
+    "mode",
+    "status",
+    "title",
+    "original_request",
+    "distilled",
+    "references",
+    "candidates",
+    "selected_candidate_id",
+    "scene_asset_url",
+    "assembly",
+    "model_versions",
+    "provenance",
+    "budget",
+    "parent_revision",
+    "created_at"
+  ],
+  "title": "Rivet DesignBundle v2",
+  "type": "object"
+}

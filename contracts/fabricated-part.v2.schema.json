@@ -1,0 +1,135 @@
+{
+  "$id": "https://rivet.dev/contracts/fabricated-part.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "One fabricated (custom) part line: dimensioned by Rivet, never a distributor product.",
+  "properties": {
+    "bbox_mm": {
+      "items": {
+        "type": "number"
+      },
+      "title": "Bbox Mm",
+      "type": "array"
+    },
+    "body_id": {
+      "title": "Body Id",
+      "type": "string"
+    },
+    "checks": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Checks",
+      "type": "array"
+    },
+    "estimate_basis": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Estimate Basis"
+    },
+    "estimate_usd": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Estimate Usd"
+    },
+    "exports": {
+      "items": {
+        "enum": [
+          "step",
+          "stl"
+        ],
+        "type": "string"
+      },
+      "title": "Exports",
+      "type": "array"
+    },
+    "mass_g": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Mass G"
+    },
+    "material": {
+      "title": "Material",
+      "type": "string"
+    },
+    "min_wall_mm": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Min Wall Mm"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "representation": {
+      "enum": [
+        "brep",
+        "mesh"
+      ],
+      "title": "Representation",
+      "type": "string"
+    },
+    "route": {
+      "enum": [
+        "3d_print",
+        "cnc",
+        "sheet_cut",
+        "laser_cut",
+        "molded"
+      ],
+      "title": "Route",
+      "type": "string"
+    },
+    "volume_cm3": {
+      "title": "Volume Cm3",
+      "type": "number"
+    },
+    "watertight": {
+      "title": "Watertight",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "body_id",
+    "name",
+    "route",
+    "material",
+    "bbox_mm",
+    "volume_cm3",
+    "mass_g",
+    "min_wall_mm",
+    "watertight",
+    "representation",
+    "exports",
+    "checks",
+    "estimate_usd",
+    "estimate_basis"
+  ],
+  "title": "Rivet fabricated part v2",
+  "type": "object"
+}
