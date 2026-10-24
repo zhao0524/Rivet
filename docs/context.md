@@ -6,13 +6,13 @@ Shared status file for everyone working in this repo, human or agent.
 | | |
 |---|---|
 | **Last updated** | 2026-10-24 · [B] |
-| **Branch / commit** | `feat/b-p6-repair` (stacked on `feat/b-p5-exports`) + this update |
+| **Branch / commit** | `feat/b-p7-integration` (stacked on `feat/b-p6-repair`) + this update |
 | **Current phase** | Pre-bootstrap: only the specs exist |
 | **Next gate** | Hour 8: every lane demos itself from fixtures (`docs/implementation.md` §7) |
-| **In progress** | [B] P7 composition, edits and demo (next on `feat/b-p7-integration`) |
-| **Blocked** | none (1 open issue in §6) |
+| **In progress** | none for [B]; B-P0..B-P7 branches pushed, PRs not opened yet |
+| **Blocked** | [B] B0/B4 final checks wait on INT-1/INT-2 (see §6) |
 
-**Next up:** INT-0 → INT-1 → INT-2 (skeleton, contracts, fixtures). After that, all lanes can branch off and work in parallel.
+**Next up:** [B] Open PRs for `feat/b-p0-foundation` ... `feat/b-p7-integration` (stacked, merge in order). INT-0 → INT-1 → INT-2 (skeleton, contracts, fixtures) still needed for B0/B4 checks.
 
 **Contents:** [1. Rules](#1-rules) · [2. Repo state](#2-repo-state) · [3. Task board](#3-task-board) · [4. Log](#4-log) · [5. Decisions](#5-decisions) · [6. Issues and blockers](#6-issues-and-blockers) · [7. How to update this file](#7-how-to-update-this-file)
 
@@ -51,7 +51,7 @@ Source of truth: [`docs/implementation.md`](docs/implementation.md) for contract
 | `contracts/` | INT | Not created |
 | `fixtures/` | INT | Not created |
 | `services/api/` | A | Started: FastAPI app, settings, error envelope, `/api/health`; Pydantic models for IntentSpec, BuildPlan, JobEvent and a plan integrity guard (`contract.py`); engineering port with fixture and real (`rivet_engine`) adapters; file-backed revision store (`orchestration/versions.py`); job manager with SSE (`orchestration/jobs.py`); generation pipeline and routes: `POST /api/projects/generate`, `GET /api/projects/{id}` (+`?revision=`), `/revisions`, `POST /edits`, `/examples`, `GET /api/catalog`. safe image upload (`POST /api/assets/images`, `GET /api/assets/{id}/preview`). live vision provider (OpenAI Chat Completions backend, strict parse, one retry) and intent sanitizer. BOM CSV and `build.json` exports (`GET /api/projects/{id}/exports/bom.csv`, `build.json`). firmware ZIP export (`GET /api/projects/{id}/exports/firmware.zip`, optional `?compile=true`). Estelle grounder, smoke script and README not built yet |
-| `packages/engineering/` | B | Started: `rivet_engine` package (Python 3.11+, Pydantic v2, `uv.lock`); canonical wire models (`models.py`), internal types (`ports.py`), `INTERNAL_API.md`; sourced 15-part catalog (`data/components.json`, ledger `data/catalog_sources.md`, loader `catalog.py`); public `solve`/`apply_edit`/`verify`/`get_catalog` raise `ENGINE_NOT_IMPLEMENTED` until P7; private Appendix A copies and SYNTHETIC test data in `tests/support/` |
+| `packages/engineering/` | B | Working engine: `solve`/`apply_edit`/`verify`/`get_catalog` implemented (Python 3.11+, Pydantic v2, `uv.lock`); 15-part sourced catalog with ledger; rover_2wd placement; profile-driven netlist and pin map; validators; bounded repair; BOM/assembly/serialization; `python -m rivet_engine.demo`; 245 offline tests. Sourced default rover: 16 parts, 20 wires, 11 steps, 102.50 USD, `verified_with_warnings`. See `packages/engineering/README.md` |
 | `apps/web/` | C | Not created |
 | `design/` | DESIGN | Not created |
 
@@ -98,12 +98,12 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 |---|---|---|---|---|
 | B0 | Domain model and public entry points (`solve`, etc.) | IN PROGRESS | [B] | Models match `contracts/` |
 | B1 | Catalog of real components | DONE | [B] | Only real parts; unknown values stay `null` |
-| B2 | Parametric mechanical assembly and mounts | IN PROGRESS | [B] | Rover template produces consistent instances |
-| B3 | Electrical graph; driver and controller assignment | IN PROGRESS | [B] | Netlist references only valid pins |
+| B2 | Parametric mechanical assembly and mounts | DONE | [B] | Rover template produces consistent instances |
+| B3 | Electrical graph; driver and controller assignment | DONE | [B] | Netlist references only valid pins |
 | B4 | Deterministic validators: mechanical, electrical, budget, completeness | IN PROGRESS | [B] | Failing-driver fixture produces the expected finding |
-| B5 | Repair engine | IN PROGRESS | [B] | At least one failure repaired or honestly rejected |
-| B6 | BOM, assembly steps, serialization | IN PROGRESS | [B] | BOM rows match instance IDs |
-| B7 | Tests and standalone demo | TODO | — | `pytest` passes standalone |
+| B5 | Repair engine | DONE | [B] | At least one failure repaired or honestly rejected |
+| B6 | BOM, assembly steps, serialization | DONE | [B] | BOM rows match instance IDs |
+| B7 | Tests and standalone demo | DONE | [B] | `pytest` passes standalone |
 | B-P0 | Foundation: models, internal API, test inputs (`feat/b-p0-foundation`) | DONE | [B] | Clean install; offline model tests pass; `INTERNAL_API.md` freezes P1–P6 signatures |
 | B-P1 | Sourced catalog (`feat/b-p1-catalog`) | DONE | [B] | See `packages/engineering/WORK_ORDERS.md` P1 |
 | B-P2 | Mechanical placement (`feat/b-p2-mechanics`) | DONE | [B] | See WORK_ORDERS P2 |
@@ -111,7 +111,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | B-P4 | Validators (`feat/b-p4-validation`) | DONE | [B] | See WORK_ORDERS P4 |
 | B-P5 | BOM, assembly, serialization (`feat/b-p5-exports`) | DONE | [B] | See WORK_ORDERS P5 |
 | B-P6 | Repair (`feat/b-p6-repair`) | DONE | [B] | See WORK_ORDERS P6 |
-| B-P7 | Composition, edits, demo (`feat/b-p7-integration`) | TODO | — | See WORK_ORDERS P7 |
+| B-P7 | Composition, edits, demo (`feat/b-p7-integration`) | DONE | [B] | See WORK_ORDERS P7 |
 
 ### Developer C `[C]` · `apps/web/**`
 
@@ -152,6 +152,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
 
+- 2026-10-24 [B] B-P7: Added `configurator.py`, `demo.py`, public entry points in `__init__.py`, package `README.md`, `tests/test_integration.py`, `tests/test_edits.py`. `solve` composes selection -> placement -> wiring -> BOM/steps -> validators -> bounded repair, with runtime UTC `created_at`, deterministic `build_id`, derived simulation (wheel radius 0.0315 m, base 0.137 m, labeled nominal speed and sensor model) and firmware `compile_status` `not_checked` (never `passed`). Unsupported family/behavior/capabilities raise `UNSUPPORTED_REQUEST`; malformed input `INVALID_INPUT`. `apply_edit` supports all five services/api operations, keeps `build_id`, increments revision, never mutates input, rebuilds and re-verifies; out-of-range sensor height and non-sensor swaps are rejected with a finding. Checked: `uv run pytest -q` 245 passed, 6 skipped (4 retired P0 stub checks, 2 shared-fixture tests); clean install in a fresh copy passes; demo `--sample` gives `verified_with_warnings` (32 PASS, 6 WARN, 2 UNKNOWN advisory) and `--max-budget 60` gives `unbuildable`; engine output passes services/api `assert_build_plan_contract` and `render_project` writes the real pin map into `rivet_config.h` (run ad hoc with fastapi installed temporarily, not in B's tests). Engine repair shown on SYNTHETIC parts: over-current motor fixed by swapping to the higher-rated driver; a controller with too few pins is honestly rejected as unbuildable. Notes: B0 and B4 stay IN PROGRESS only because their checks name `contracts/` and the shared failing-driver fixture, which do not exist yet. Edit state rides in one `engine_state:` provenance note (no contract field exists).
 - 2026-10-24 [B] B-P6: Added `repair.py`: `repair_candidate` verifies, then for each blocking FAIL tries same-category catalog substitutions (all instances of that part at once) and optional injected layout corrections in a stable order, rebuilds and re-verifies through injected callbacks, and keeps the first change that removes a blocking failure without adding one; at most 3 rounds, repeated candidates and rebuild errors are logged and skipped. Substitutes must keep the real/synthetic kind and have evidence no weaker than the part they replace. UNKNOWNs are never repaired away, catalog and input are not mutated, the result carries only canonical plan fields plus a separate attempt log. Outcomes: unchanged / repaired / improved / rejected. Checked: `uv run pytest -q` 200 passed, 1 skipped. Notes: B5 is DONE only after P7 shows a real repair or honest rejection on engine-built plans.
 - 2026-10-24 [B] B-P5: Added `bom.py`, `assembly.py`, `serialize.py`. BOM rows grouped by catalog ID with quantity = instance count; prices only from the catalog, Decimal subtotal to the cent; a price in another currency is left out, not converted; `complete`/`incomplete`/`not_available` set truthfully; purchase links shown only when verified, otherwise `manufacturer_reference_only` or `not_available`. Assembly steps follow the parent graph (cycles raise), then signal, motor and ground wiring listing every connection, then a wiring check, and the step that connects batteries/USB supply comes last. JSON output is sorted, newline-terminated and round-trips; extra fields are rejected with `INVALID_INPUT`. Checked: `uv run pytest -q` 187 passed, 1 skipped. Notes: one BOM unit = one item as sold (jumper wire pack counts as 1). Simulation fields are derived in P7.
 - 2026-10-24 [B] B-P4: Added `rivet_engine/validators/` (`verify_candidate`, `aggregate`): referential integrity (duplicate IDs, parents/cycles, mounts, connection ports, BOM quantity/phantoms/subtotal, step references), family/behavior/capabilities, required roles, real parts, availability, mount mates, rotated-box overlap and ground contact via an injected bounds helper, size limits, signal types, GPIO usage (input-only, reserved, strapping, shared pins), supply and motor voltage ranges, logic levels, motor stall vs driver continuous current (WARN up to 1.5x, FAIL above; heuristic documented), common ground, required connections, I2C address collisions, supply capacity, Decimal budget with currency checks, pin-map backing and firmware profile support. Missing ratings give UNKNOWN; a PASS that relies on approximated catalog evidence becomes an advisory WARN. Findings are sorted and de-duplicated; aggregation follows spec B4. Also made the synthetic test plan physically consistent and spread the Shadow Chassis deck mounts so the power bank no longer overlaps the ESP32 board. Checked: `uv run pytest -q` 164 passed, 1 skipped (shared failing-driver fixture not landed). Notes: trial run of the sourced rover gives only advisory findings (out-of-stock ESP32, 1.5 A stall vs 1.2 A continuous, approximated battery voltage and geometry, battery capacity unknown). B4 stays IN PROGRESS until P7 runs it end to end.
@@ -188,7 +189,8 @@ Format: `YYYY-MM-DD: decision. Agreed by: [A] [B] [C]. Reason: why.`
 Open items only; delete an item once it's resolved and log the fix in §4.
 Format: `[LANE] TASK-ID: problem. Needs: who or what unblocks it.`
 
-- [A] A4 / [B] B3: `firmware.pin_map` format. [B] confirms A's proposal: keys `motor_left_pwm, motor_left_in1, motor_left_in2, motor_right_pwm, motor_right_in1, motor_right_in2, motor_standby, i2c_sda, i2c_scl`, values integer controller GPIO numbers (enforced in `rivet_engine/models.py`, documented in `packages/engineering/INTERNAL_API.md`). Still open until B's sourced plan carries a real pin map (B-P3/B-P7). Needs: [B] P3 wiring.
+- [B] B0/B4: B0's check needs `contracts/` schemas (INT-1) and B4's check needs `fixtures/plans/rover_failing_driver_v1.json` (INT-2). Engine tests already compare against them when present. Needs: [INT] INT-1/INT-2.
+- [A] A2 / [B] B7: services/api `RealEngineeringAdapter` turns any engine exception into a generic 500. Engine errors carry `code`, `http_status` and `to_envelope()` (`INVALID_INPUT` 400, `UNSUPPORTED_REQUEST` 422). Needs: [A] map `rivet_engine.EngineError` to its envelope in the adapter.
 - [INT] README: spec links point to root `project.md`/`implementation.md`, which moved to `docs/`. Needs: README link fix.
 
 ---

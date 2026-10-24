@@ -151,6 +151,11 @@ def get_catalog() -> list[dict]
 uses the packaged catalog. `apply_edit` accepts the operations in
 `services/api/rivet_api/agents/editor.py`.
 
+Implemented in `configurator.py` (P7). `verify` also accepts a list of catalog dicts
+or `{"catalog_version", "components"}`, and adds the wiring stage's findings. Edit state
+that the BuildPlan contract has no field for (requested budget, template offsets) is
+carried in a single `provenance.notes` entry starting `engine_state: ` followed by JSON.
+
 ## Test inputs (`tests/support`)
 
 - `appendix_*()` — exact Appendix A catalog/plan and §3.1 intent.
