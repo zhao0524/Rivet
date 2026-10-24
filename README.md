@@ -35,26 +35,31 @@ If the two conflict on schema or safety/verification rules, follow `implementati
 
 ## Quick start
 
-`apps/web`, `services/api` and `packages/engineering` exist. There is no root `package.json` or `pnpm-workspace.yaml` yet (INT-0), so install the web app from its own folder.
+`apps/web`, `services/api` and `packages/engineering` are available through the root workspace commands. The web app runs entirely from checked-in fixtures by default.
 
 ```bash
 # Env: .env is committed encrypted with git-crypt. Unlock it with the team key,
 # or fall back to .env.example when you have no key.
 scripts/setup-env.sh /path/to/soon-git-crypt.key
 
-# Python API + engineering (example with uv)
-cd services/api && uv sync
-cd ../../packages/engineering && uv sync
+# Install the JavaScript workspace and Python projects.
+pnpm install
+cd services/api && uv sync --extra dev
+cd ../../packages/engineering && uv sync --extra dev
+cd ../..
 
-# Dev processes (typical)
-# Terminal 1 — API
-cd services/api && uv run uvicorn rivet_api.main:app --reload --port 8000
+# Dev processes (use separate terminals).
+# Root scripts load the root .env before starting each process.
+pnpm dev:api
+pnpm dev:web
 
-# Terminal 2 — Web
-cd apps/web && pnpm install && pnpm dev
+# Lane checks from the repository root.
+pnpm test:api
+pnpm test:engineering
+pnpm test:web
 ```
 
-The API does not start on `main` right now: `rivet_api.exports` is missing (see `docs/context.md` §6). The web app runs on its own from fixtures.
+Without a git-crypt key, run `cp .env.example .env`; those defaults are sufficient for the offline web fixture flow. The API does not start on `main` right now because `rivet_api.exports` is missing (see `docs/context.md` §6).
 
 Default API: `http://localhost:8000`  
 Default web: `http://localhost:3000`
