@@ -6,10 +6,10 @@ Shared status file for everyone working in this repo, human or agent.
 | | |
 |---|---|
 | **Last updated** | 2026-10-24 · [B] |
-| **Branch / commit** | `feat/b-p0-foundation` + merge review |
+| **Branch / commit** | `feat/b-p1-catalog` + merge review |
 | **Current phase** | Engineering modules under sequential merge review; public composition pending |
 | **Next gate** | Hour 8: every lane demos itself from fixtures (`docs/implementation.md` §7) |
-| **In progress** | [B] Sequential branch review: `feat/b-p0-foundation` |
+| **In progress** | [B] Sequential branch review: `feat/b-p1-catalog` |
 | **Blocked** | none (1 open issue in §6) |
 
 **Next up:** INT-0 → INT-1 → INT-2 (skeleton, contracts, fixtures). After that, all lanes can branch off and work in parallel.
@@ -51,7 +51,7 @@ Source of truth: [`docs/implementation.md`](docs/implementation.md) for contract
 | `contracts/` | INT | Not created |
 | `fixtures/` | INT | Not created |
 | `services/api/` | A | Started: FastAPI app, settings, error envelope, `/api/health`; Pydantic models for IntentSpec, BuildPlan, JobEvent and a plan integrity guard (`contract.py`); engineering port with fixture and real (`rivet_engine`) adapters; file-backed revision store (`orchestration/versions.py`); job manager with SSE (`orchestration/jobs.py`); generation pipeline and routes: `POST /api/projects/generate`, `GET /api/projects/{id}` (+`?revision=`), `/revisions`, `POST /edits`, `/examples`, `GET /api/catalog`. safe image upload (`POST /api/assets/images`, `GET /api/assets/{id}/preview`). live vision provider (OpenAI Chat Completions backend, strict parse, one retry) and intent sanitizer. BOM CSV and `build.json` exports (`GET /api/projects/{id}/exports/bom.csv`, `build.json`). firmware ZIP export (`GET /api/projects/{id}/exports/firmware.zip`, optional `?compile=true`). Estelle grounding client (`GET /api/estelle/status`, `POST /api/estelle/ground`). Smoke script and README not built yet |
-| `packages/engineering/` | B | Started: `rivet_engine` package (Python 3.11+, Pydantic v2, `uv.lock`); canonical wire models (`models.py`), internal types and stage protocols (`ports.py`), `INTERNAL_API.md`; public `solve`/`apply_edit`/`verify`/`get_catalog` raise `ENGINE_NOT_IMPLEMENTED` until P7; private Appendix A copies and SYNTHETIC test data in `tests/support/` |
+| `packages/engineering/` | B | Started: `rivet_engine` package (Python 3.11+, Pydantic v2, `uv.lock`); canonical wire models (`models.py`), internal types (`ports.py`), `INTERNAL_API.md`; sourced 15-part catalog (`data/components.json`, ledger `data/catalog_sources.md`, loader `catalog.py`); public `solve`/`apply_edit`/`verify`/`get_catalog` raise `ENGINE_NOT_IMPLEMENTED` until P7; private Appendix A copies and SYNTHETIC test data in `tests/support/` |
 | `apps/web/` | C | Not created |
 | `design/` | DESIGN | Not created |
 
@@ -97,7 +97,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | ID | Task | Status | Owner | Check |
 |---|---|---|---|---|
 | B0 | Domain model and public entry points (`solve`, etc.) | IN PROGRESS | [B] | Models match `contracts/` |
-| B1 | Catalog of real components | TODO | — | Only real parts; unknown values stay `null` |
+| B1 | Catalog of real components | DONE | [B] | Only real parts; unknown values stay `null` |
 | B2 | Parametric mechanical assembly and mounts | TODO | — | Rover template produces consistent instances |
 | B3 | Electrical graph; driver and controller assignment | TODO | — | Netlist references only valid pins |
 | B4 | Deterministic validators: mechanical, electrical, budget, completeness | TODO | — | Failing-driver fixture produces the expected finding |
@@ -106,7 +106,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | B7 | Tests and standalone demo | TODO | — | `pytest` passes standalone |
 | B-PLAN | Parallel work orders and per-task branch/PR handoffs | DONE | [B] | B0–B7 covered; exclusive implementation/test paths and dependency gates reviewed |
 | B-P0 | Foundation: models, internal API, test inputs (`feat/b-p0-foundation`) | DONE | [B] | Clean install; offline model tests pass; `INTERNAL_API.md` freezes P1–P6 signatures |
-| B-P1 | Sourced catalog (`feat/b-p1-catalog`) | TODO | — | See `packages/engineering/WORK_ORDERS.md` P1 |
+| B-P1 | Sourced catalog (`feat/b-p1-catalog`) | DONE | [B] | See `packages/engineering/WORK_ORDERS.md` P1 |
 | B-P2 | Mechanical placement (`feat/b-p2-mechanics`) | TODO | — | See WORK_ORDERS P2 |
 | B-P3 | Wiring and pin allocation (`feat/b-p3-wiring`) | TODO | — | See WORK_ORDERS P3 |
 | B-P4 | Validators (`feat/b-p4-validation`) | TODO | — | See WORK_ORDERS P4 |
@@ -152,6 +152,10 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
+
+- 2026-10-24 [B] B-P1: Reviewed and reconciled with main for sequential merge. Checked: engineering pytest 71 passed; diff check passed. Notes: Source ledger and unknown metadata are preserved; catalog presence does not establish physical or electrical compatibility. Public composition remains pending.
+
+- 2026-10-24 [B] B-P1/B1: Added the sourced catalog `catalog-v1-2026-10-24`: 15 real parts (Espressif ESP32-DevKitC V4 via Adafruit 3269, Adafruit TB6612 2448, Adafruit TT motor 3777 and wheel 3766, SparkFun Shadow Chassis ROB-13301 with its nub caster and 4xAA holder, Adafruit VL53L0X 3317 and VL53L1X 3967, Adafruit power bank 4288, cables 4209/758/592, DC jack adapter 368, breadboard 64). Every rating cites a page read today; ledger in `rivet_engine/data/catalog_sources.md`. `load_catalog()` is offline, validates every record, rejects duplicates and malformed files. Checked: `uv run pytest -q` 71 passed. Notes: mount coordinates are approximated (not CAD); battery holder voltage is derived from 4 AA cells (4.8-6.0 V); TT motor fit in the Shadow motor mounts is assumed, not confirmed by SparkFun; Adafruit 3269 was out of stock today. Known electrical tension for P4: TT motor stall 1.5 A @6 V exceeds TB6612 1.2 A continuous (3 A peak for ~20 ms).
 
 - 2026-10-24 [B] B-P0: Added the `rivet_engine` foundation: Pydantic models for IntentSpec, CatalogComponent and BuildPlan (extra keys forbidden, every §3.4 enum, decimal-string money, nulls kept), internal `Catalog`, selection, placement, wiring, verification and repair types plus `EngineError` classes that carry the API error envelope; `INTERNAL_API.md` fixes the P1–P6 function signatures; public entry points raise instead of returning fake results. Test inputs: exact Appendix A catalog/plan and §3.1 intent, plus a SYNTHETIC TEST-ONLY complete rover catalog/plan with full netlist and adversarial parts. Checked: `cd packages/engineering && uv sync && uv run pytest -q` 49 passed (round-trip, null preservation, all enums, malformed rejection). Notes: no shared `contracts/` schemas exist yet, so validation is Pydantic only. `verify(plan, catalog=None)` takes an optional catalog because services/api calls `verify(plan)`. B0 stays IN PROGRESS until P7.
 
