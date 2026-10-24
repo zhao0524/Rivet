@@ -108,13 +108,14 @@ def _driver(catalog_id: str, logic_min: float = 2.7, logic_max: float = 5.5, cha
         _port("vcc", "power_in", logic_min, logic_max),
         _port("vm", "power_in", 4.5, 13.5),
         _port("gnd", "ground"),
-        _port("stby", "digital_input", logic=logic_min),
+        _port("stby", "digital_input"),
     ]
     for ch in ("a", "b"):
         ports += [
-            _port(f"pwm{ch}", "pwm_input", logic=logic_min),
-            _port(f"{ch}in1", "digital_input", logic=logic_min),
-            _port(f"{ch}in2", "digital_input", logic=logic_min),
+            # Inputs follow the Vcc logic supply, like a TB6612 breakout.
+            _port(f"pwm{ch}", "pwm_input"),
+            _port(f"{ch}in1", "digital_input"),
+            _port(f"{ch}in2", "digital_input"),
             _port(f"{ch}o1", "motor_output", current=channel_current),
             _port(f"{ch}o2", "motor_output", current=channel_current),
         ]
@@ -127,10 +128,10 @@ def _driver(catalog_id: str, logic_min: float = 2.7, logic_max: float = 5.5, cha
 
 def _motor(catalog_id: str, stall_current: float | None, price: str | None = "3.00", currency: str = "USD"):
     return _component(
-        catalog_id, "motor", (70, 22, 19),
+        catalog_id, "motor", (19, 22, 70),
         [
             _mount("base", "motor_bracket", mates=["motor_bracket"]),
-            _mount("shaft", "d_shaft", pos=(0, 0, 0), mates=["wheel_hub"]),
+            _mount("shaft", "d_shaft", pos=(9.5, 0, 0), mates=["wheel_hub"]),
         ],
         [_port("m_pos", "motor_power", 3.0, 6.0, stall_current), _port("m_neg", "motor_power", 3.0, 6.0, stall_current)],
         price=price, currency=currency, material="polymer",
@@ -139,7 +140,7 @@ def _motor(catalog_id: str, stall_current: float | None, price: str | None = "3.
 
 def _battery(catalog_id: str, volts: float):
     return _component(
-        catalog_id, "power_supply", (58, 16, 62),
+        catalog_id, "power_supply", (40, 16, 62),
         [_mount("base", "battery_bay", mates=["battery_bay"])],
         [_port("v_out", "power_output", volts, volts, 2.0), _port("gnd", "ground")],
         price="4.00", currency="USD", material="polymer",
@@ -165,8 +166,8 @@ def synthetic_catalog_records() -> list[dict[str, Any]]:
         _motor("synthetic.motor_unrated", stall_current=None, price=None),
         _motor("synthetic.motor_eur", stall_current=0.8, price="2.80", currency="EUR"),
         _component(
-            "synthetic.wheel", "wheel", (65, 26, 65),
-            [_mount("hub", "wheel_hub", rot=(0, 0, 90), mates=["d_shaft"])], [],
+            "synthetic.wheel", "wheel", (26, 65, 65),
+            [_mount("hub", "wheel_hub", pos=(-13, 0, 0), mates=["d_shaft"])], [],
             price="2.00", currency="USD", material="rubber",
         ),
         _component(
@@ -206,11 +207,11 @@ def synthetic_catalog_records() -> list[dict[str, Any]]:
 
 _COMPONENTS = [
     ("chassis-1", "synthetic.chassis", "chassis", None, None, None, (0, 40, 0), (0, 0, 0)),
-    ("motor-left-1", "synthetic.motor", "motor", "chassis-1", "motor_left", "base", (-40, 28, 30), (0, 180, 0)),
-    ("motor-right-1", "synthetic.motor", "motor", "chassis-1", "motor_right", "base", (40, 28, 30), (0, 0, 0)),
-    ("wheel-left-1", "synthetic.wheel", "wheel", "motor-left-1", "shaft", "hub", (-40, 28, 30), (0, 180, -90)),
-    ("wheel-right-1", "synthetic.wheel", "wheel", "motor-right-1", "shaft", "hub", (40, 28, 30), (0, 0, -90)),
-    ("caster-1", "synthetic.caster", "caster", "chassis-1", "caster_rear", "base", (0, 37, -70), (0, 0, 0)),
+    ("motor-left-1", "synthetic.motor", "motor", "chassis-1", "motor_left", "base", (-40, 32.5, 30), (0, 180, 0)),
+    ("motor-right-1", "synthetic.motor", "motor", "chassis-1", "motor_right", "base", (40, 32.5, 30), (0, 0, 0)),
+    ("wheel-left-1", "synthetic.wheel", "wheel", "motor-left-1", "shaft", "hub", (-62, 32.5, 30), (0, 180, 0)),
+    ("wheel-right-1", "synthetic.wheel", "wheel", "motor-right-1", "shaft", "hub", (62, 32.5, 30), (0, 0, 0)),
+    ("caster-1", "synthetic.caster", "caster", "chassis-1", "caster_rear", "base", (0, 9, -70), (0, 0, 0)),
     ("controller-1", "synthetic.controller", "controller", "chassis-1", "controller_deck", "base", (-22, 43, -20), (0, 0, 0)),
     ("driver-1", "synthetic.driver", "motor_driver", "chassis-1", "driver_deck", "base", (26, 43, -20), (0, 0, 0)),
     ("sensor-1", "synthetic.range_sensor", "distance_sensor", "chassis-1", "front_sensor", "base", (0, 52, 85), (0, 0, 0)),
