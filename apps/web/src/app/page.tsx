@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Logo } from '../components/flow/AppHeader';
 import { AssemblyScroll } from '../components/home/AssemblyScroll';
 import { Decor } from '../components/home/Decor';
+import { HeroParallax } from '../components/home/HeroParallax';
 import { ExampleButton, HeroFlow } from '../components/home/HeroFlow';
 import { Icon } from '../components/system/Icon';
 import { ThemeToggle } from '../components/system/ThemeToggle';
@@ -40,7 +41,8 @@ const HERO_DECOR = [
   { name: 'wrench-b', spot: 'hero-wrench' },
   { name: 'nut-cube', spot: 'hero-nut' },
   { name: 'spring', spot: 'hero-spring' },
-  { name: 'bolt', spot: 'hero-bolt' },
+  { name: 'nut-hex', spot: 'hero-hexnut' },
+  { name: 'crystal', spot: 'hero-crystal' },
 ] as const;
 
 const OUTPUTS = [
@@ -86,6 +88,7 @@ export default function HomePage() {
       <main>
         <section className="mk-hero" aria-labelledby="home-title">
           <Decor items={HERO_DECOR} eager />
+          <HeroParallax />
 
           <div className="mk-hero__copy">
             <p className="mk-pill">
@@ -251,7 +254,7 @@ export default function HomePage() {
         <section id="outputs" className="mk-section mk-proof" aria-labelledby="mk-proof-title">
           <div className="mk-proof__head">
             <div className="mk-proof__statwrap">
-              <Decor items={[{ name: 'crystal', spot: 'proof-crystal' }]} />
+              <Decor items={[{ name: 'bolt-tee', spot: 'proof-bolt' }]} />
               <p className="mk-proof__stat">19</p>
               <p className="mk-proof__label">Sourced parts behind every build</p>
             </div>
@@ -288,7 +291,7 @@ export default function HomePage() {
         <div className="mk-footer__cta">
           <Decor
             items={[
-              { name: 'bolt-tee', spot: 'cta-bolt' },
+              { name: 'bolt', spot: 'cta-bolt' },
               { name: 'nut-hex', spot: 'cta-nut' },
               { name: 'wrench-a', spot: 'cta-wrench' },
             ]}
