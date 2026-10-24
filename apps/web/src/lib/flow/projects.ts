@@ -31,6 +31,8 @@ export interface ProjectRecord {
   updatedAt: string;
   phase: ProjectPhase;
   intentId: string | null;
+  /** What Rivet assumed when it read the prompt (shown, collapsed, on Review). */
+  assumptions: string[];
   clarify: ClarifyAnswers;
   /** Saved example to open instead of a generated build ("See an example"). */
   exampleId: string | null;
@@ -145,6 +147,7 @@ export function createProjectRecord(input: Partial<ProjectRecord> & { prompt: st
     updatedAt: now,
     phase: input.phase ?? 'draft',
     intentId: null,
+    assumptions: input.assumptions ?? [],
     clarify: { max_budget: null, max_length_mm: null },
     exampleId: input.exampleId ?? null,
     buildId: input.buildId ?? null,

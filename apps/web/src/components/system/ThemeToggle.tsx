@@ -44,3 +44,15 @@ export function ThemeToggle() {
     </button>
   );
 }
+
+/** Current theme, kept in sync with <html data-theme>. Pass it to RoverScene's `themeMode`. */
+export function useThemeMode(): Theme {
+  const [theme, setTheme] = useState<Theme>('light');
+  useEffect(() => {
+    setTheme(currentTheme());
+    const observer = new MutationObserver(() => setTheme(currentTheme()));
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
+  }, []);
+  return theme;
+}
