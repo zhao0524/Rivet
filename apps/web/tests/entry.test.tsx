@@ -126,7 +126,7 @@ describe('Single intake flow (#53)', () => {
       within(dialog).getByRole('group', { name: /reference image/i }),
       within(dialog).getByLabelText(/what should it do/i),
       within(dialog).getByTestId('intake-constraints'),
-      within(dialog).getByRole('button', { name: 'Generate' }),
+      within(dialog).getByRole('button', { name: 'Review interpretation' }),
     ];
     for (let i = 1; i < order.length; i += 1) {
       expect(order[i - 1]!.compareDocumentPosition(order[i]!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();

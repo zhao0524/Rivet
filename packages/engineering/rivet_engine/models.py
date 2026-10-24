@@ -22,6 +22,7 @@ from pydantic import (
     StrictBool,
     StrictFloat,
     StrictInt,
+    model_validator,
 )
 
 SCHEMA_VERSION = "1.0"
@@ -145,6 +146,30 @@ class IntentRequirements(WireModel):
     preferred_color: str | None
 
 
+# Visible traits read from the reference image (optional, issue #67).
+RangeSensorPosition = Literal["front_low", "front_mid", "front_high", "none"]
+RangeSensorKind = Literal["time_of_flight", "ultrasonic", "infrared", "unknown"]
+WheelSize = Literal["small", "medium", "large"]
+ChassisSize = Literal["compact", "medium", "large"]
+IMAGE_TEXT_MAX_CHARS = 60
+ImageText = Annotated[str, Field(min_length=1, max_length=IMAGE_TEXT_MAX_CHARS)]
+
+
+class ImageFeatures(WireModel):
+    """What the image visibly shows. Every key is optional; None means "not seen with
+    confidence". These are requests, not facts: image_features.py maps each one onto the
+    catalog and template, or reports why it cannot."""
+
+    drive_wheel_count: Annotated[StrictInt, Field(ge=1, le=8)] | None = None
+    has_caster: StrictBool | None = None
+    range_sensor_position: RangeSensorPosition | None = None
+    range_sensor_kind: RangeSensorKind | None = None
+    wheel_size: WheelSize | None = None
+    chassis_size: ChassisSize | None = None
+    body_color: ImageText | None = None
+    visible_controller: ImageText | None = None
+
+
 class IntentSpec(WireModel):
     schema_version: Literal["1.0"]
     intent_id: str
@@ -157,6 +182,14 @@ class IntentSpec(WireModel):
     unknowns: list[str]
     confidence: Confidence
     support_status: SupportStatus
+    # Absent and null both mean "not extracted" (additive field; older intents omit it).
+    image_features: ImageFeatures | None = None
+
+    def to_wire(self) -> dict[str, Any]:
+        data = super().to_wire()
+        if data["image_features"] is None:
+            del data["image_features"]
+        return data
 
 
 # --- CatalogComponent (3.2) -------------------------------------------------------
@@ -202,15 +235,48 @@ class Port(WireModel):
     notes: str
 
 
+_HTTPS_URL = re.compile(r"https://[A-Za-z0-9.-]+(:\d+)?([/?#]\S*)?")
+_ISO_DATE = re.compile(r"\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d{1,6})?Z)?")
+
+
+def _https_url(value: str) -> str:
+    if not _HTTPS_URL.fullmatch(value):
+        raise ValueError(f"must be an https URL with a host: {value!r}")
+    return value
+
+
+def _iso_date(value: str) -> str:
+    # The two forms contracts/component.schema.json allows (date, or UTC timestamp ending in Z).
+    if not _ISO_DATE.fullmatch(value):
+        raise ValueError(f"not an ISO-8601 date (YYYY-MM-DD) or UTC timestamp ending in Z: {value!r}")
+    datetime.fromisoformat(value.removesuffix("Z"))  # rejects impossible dates such as 2026-02-30
+    return value
+
+
+HttpsUrl = Annotated[str, AfterValidator(_https_url)]
+IsoDate = Annotated[str, AfterValidator(_iso_date)]
+
+
 class Sourcing(WireModel):
-    manufacturer_reference_url: str | None
+    """Where a part is documented and sold. Purchase and manufacturer links are https only, and a
+    purchase link always carries the date it was verified (a date never stands without a link)."""
+
+    manufacturer_reference_url: HttpsUrl | None
     datasheet_url: str | None
-    purchase_url: str | None
-    purchase_url_verified_at: str | None
+    purchase_url: HttpsUrl | None
+    purchase_url_verified_at: IsoDate | None
     price_amount: DecimalString | None
     price_currency: str | None
-    price_checked_at: str | None
+    price_checked_at: IsoDate | None
     availability_status: AvailabilityStatus
+
+    @model_validator(mode="after")
+    def _purchase_link_is_dated(self) -> Sourcing:
+        if self.purchase_url is not None and self.purchase_url_verified_at is None:
+            raise ValueError("purchase_url needs purchase_url_verified_at (the date the link was checked)")
+        if self.purchase_url is None and self.purchase_url_verified_at is not None:
+            raise ValueError("purchase_url_verified_at is set but there is no purchase_url")
+        return self
 
 
 class Evidence(WireModel):
@@ -340,7 +406,7 @@ class Firmware(WireModel):
 
 
 class Provenance(WireModel):
-    input_mode: str
+    input_mode: InputKind  # contracts/build-plan.schema.json: the intent's input.kind values
     catalog_version: str
     generation_mode: GenerationMode
     notes: list[str]
@@ -385,6 +451,7 @@ __all__ = [
     "Finding",
     "Firmware",
     "Identity",
+    "ImageFeatures",
     "IntentInput",
     "IntentRequirements",
     "IntentSpec",

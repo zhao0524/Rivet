@@ -7,7 +7,8 @@
 #include <Adafruit_VL53L0X.h>
 #include "rivet_config.h"
 
-enum class State { DISABLED, FORWARD, STOP, TURN };
+// k-prefixed names: the ESP32 Arduino core defines DISABLED as a macro (esp32-hal-gpio.h).
+enum class State { kDisabled, kForward, kStop, kTurn };
 
 static const int PWM_FREQ_HZ = 20000;
 static const int PWM_RESOLUTION_BITS = 8;
@@ -16,7 +17,7 @@ static const int RIGHT_CHANNEL = 1;
 
 static Adafruit_VL53L0X lox;
 static bool sensor_ok = false;
-static State state = State::DISABLED;
+static State state = State::kDisabled;
 static unsigned long turn_started_ms = 0;
 
 // speed is -255..255; positive is forward.
@@ -61,7 +62,7 @@ int read_front_distance() {
 }
 
 static void disable_rover() {
-  state = State::DISABLED;
+  state = State::kDisabled;
   stop_motors();
   digitalWrite(PIN_MOTOR_STANDBY, LOW);
 }
@@ -74,8 +75,8 @@ static void handle_serial() {
       disable_rover();
       Serial.println("DISABLED");
     } else if (c == 'g' || c == 'G') {
-      if (state == State::DISABLED && sensor_ok) {
-        state = State::FORWARD;
+      if (state == State::kDisabled && sensor_ok) {
+        state = State::kForward;
         Serial.println("ENABLED");
       } else if (!sensor_ok) {
         Serial.println("Cannot enable: distance sensor not found");
@@ -111,13 +112,13 @@ void setup() {
   Serial.println(RIVET_PLAN_STATUS);
   Serial.println("Disabled at boot. Send 'g' to enable, 'x' to disable.");
   if (RIVET_START_ENABLED && sensor_ok) {
-    state = State::FORWARD;
+    state = State::kForward;
   }
 }
 
 void loop() {
   handle_serial();
-  if (state == State::DISABLED) {
+  if (state == State::kDisabled) {
     stop_motors();
     digitalWrite(PIN_MOTOR_STANDBY, LOW);
     delay(10);
@@ -126,27 +127,27 @@ void loop() {
   digitalWrite(PIN_MOTOR_STANDBY, HIGH);
 
   switch (state) {
-    case State::FORWARD: {
+    case State::kForward: {
       int distance_mm = read_front_distance();
       if (distance_mm < 0) {
         stop_motors();
       } else if (distance_mm < RIVET_OBSTACLE_STOP_MM) {
         stop_motors();
-        state = State::STOP;
+        state = State::kStop;
       } else {
         drive_forward();
       }
       break;
     }
-    case State::STOP:
+    case State::kStop:
       turn_started_ms = millis();
       turn_in_place();
-      state = State::TURN;
+      state = State::kTurn;
       break;
-    case State::TURN:
+    case State::kTurn:
       if (millis() - turn_started_ms >= RIVET_TURN_DURATION_MS) {
         stop_motors();
-        state = State::FORWARD;
+        state = State::kForward;
       }
       break;
     default:

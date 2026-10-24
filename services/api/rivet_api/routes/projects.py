@@ -6,7 +6,7 @@ from rivet_api.adapters.fixture import FixtureEngineeringAdapter
 from rivet_api.errors import ApiError
 from rivet_api.models.requests import EditRequest, GenerateRequest
 from rivet_api.provenance import is_synthetic_catalog_id, sourcing_summary
-from rivet_api.orchestration.pipeline import apply_edit_request, generate_project, planned_stages
+from rivet_api.orchestration.pipeline import apply_edit_request, generate_project, planned_stages, stored_intent_for
 
 router = APIRouter()
 
@@ -16,8 +16,9 @@ def generate(req: GenerateRequest, request: Request) -> dict[str, Any]:
     deps = request.app.state.deps
     if req.input.image_asset_id and not deps.assets.exists(req.input.image_asset_id):
         raise ApiError("ASSET_NOT_FOUND", "No such image asset", 404)
+    stored = stored_intent_for(req, deps)  # unknown/expired intent_id or another input: error, no job
     job = deps.jobs.create("generate", planned_stages=planned_stages(deps, req))
-    deps.jobs.run(job.job_id, lambda snapshot: generate_project(req, deps, snapshot))
+    deps.jobs.run(job.job_id, lambda snapshot: generate_project(req, deps, snapshot, stored))
     return {"job_id": job.job_id, "status": "queued", "build_id": None}
 
 
@@ -34,6 +35,11 @@ def get_project(build_id: str, request: Request, revision: int | None = Query(de
     plan = deps.store.get(build_id, revision)
     # Response-only: the engine rejects stored plans that carry keys it does not know.
     plan["provenance"]["sourcing"] = sourcing_summary(plan, deps.engine.get_catalog())
+    get_report = getattr(deps.engine, "get_sourcing_report", None)
+    if callable(get_report):
+        report = get_report()
+        ids = {item["catalog_id"] for item in plan["bom"]["items"]}
+        plan["provenance"]["sourcing"]["link_checks"] = {key: value for key, value in report.items() if key in ids}
     return plan
 
 

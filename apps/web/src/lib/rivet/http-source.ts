@@ -18,6 +18,7 @@ import type {
   EstelleStatusResponse,
   GenerateRequest,
   GenerateResponse,
+  InterpretResponse,
   HealthResponse,
   JobResponse,
   RevisionSummary,
@@ -36,6 +37,7 @@ import {
   extractApiErrorBody,
   generateRequestCheck,
   generateResponseCheck,
+  interpretResponseCheck,
   healthResponseCheck,
   jobResponseCheck,
   parseOrThrow,
@@ -199,6 +201,11 @@ export class HttpSource implements RivetDataSource {
       issues.push({ path: "$.revision", message: `expected ${revision}, got ${plan.revision}` });
     if (issues.length > 0) throw new RivetContractError(`BuildPlan from GET ${path}`, issues);
     return plan;
+  }
+
+  async interpret(input: GenerateRequest, options?: RequestOptions): Promise<InterpretResponse> {
+    assertValidRequest(generateRequestCheck, input, "InterpretRequest");
+    return this.request("POST", "/api/intents/interpret", interpretResponseCheck, "interpretation", { body: input, options: { timeoutMs: 90_000, ...options } });
   }
 
   async generate(input: GenerateRequest, options?: RequestOptions): Promise<GenerateResponse> {

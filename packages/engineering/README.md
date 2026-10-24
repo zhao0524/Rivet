@@ -47,6 +47,19 @@ Edit operations: `set_budget`, `set_behavior_parameter`, `replace_optional_senso
 Errors raise `rivet_engine.EngineError` subclasses with `.to_envelope()` in the API
 error format (`INVALID_INPUT` 400, `UNSUPPORTED_REQUEST` 422, ...).
 
+## Image features (issue #67)
+
+An intent may carry optional `image_features` (visible traits from the reference image).
+`image_features.py` maps them deterministically: `range_sensor_position` `front_low` /
+`front_high` sets the template's sensor bracket offset to −10 / +20 mm (the same bounded
+offset the edit uses, so every validator runs on it); `front_mid`, 2 drive wheels, a caster
+and a time-of-flight sensor already match. Everything else (other wheel counts, no caster,
+ultrasonic or infrared sensors, wheel or chassis size, body color, a visible controller) is
+ignored with a catalog-based reason. Each trait becomes one `provenance.notes` line starting
+with `Image applied:` or `Image ignored:`, plus `Image did not change the build:` when nothing
+changed. Notes are recomputed on every rebuild, so edits keep them true. Without
+`image_features` the plan is exactly what it was before.
+
 ## What the default rover is
 
 19-part sourced catalog `catalog-v1.2-2026-10-24` (`rivet_engine/data/components.json`, sources in
@@ -87,10 +100,15 @@ kinds only model geometry, and a fit counts as documented only with a cited sour
 | `bom.py`, `assembly.py`, `serialize.py` | BOM, ordered steps, deterministic JSON |
 | `repair.py` | Bounded (≤3 rounds) substitution/layout repair via injected callbacks |
 | `configurator.py` | Composition, simulation fields, edits |
+| `image_features.py` | Maps visible image traits onto the template; applied/ignored notes |
 | `demo.py` | CLI |
 
-Internal signatures: `INTERNAL_API.md`. Test inputs: `tests/support/` (Appendix A
-copies and clearly labeled SYNTHETIC test data).
+Internal signatures: `INTERNAL_API.md`. Test inputs: the shared repo `fixtures/`, read in
+place, and clearly labeled SYNTHETIC test data in `tests/support/`.
+`tests/test_contract_conformance.py` keeps `models.py` equal to `contracts/*.schema.json`
+(property names, required sets, nullability, enums; intended differences are listed with
+the reason) and validates engine output and the shared fixtures against the schemas. It
+fails, never skips, when `contracts/`, `fixtures/` or `jsonschema` (dev extra) is missing.
 
 ## Limits
 
@@ -104,8 +122,8 @@ copies and clearly labeled SYNTHETIC test data).
   budget in another currency is rejected for edits and reported UNKNOWN at solve time.
 - Loose kit items (wires, cells, breadboard, adapter) carry `render_overrides.visible = false`;
   they have no modeled 3D position.
-- Edit state (budget, sensor offset) rides in one `engine_state:` line in `provenance.notes`,
-  because the BuildPlan contract has no field for it.
+- Edit state (budget, sensor offset, image traits) rides in one `engine_state:` line in
+  `provenance.notes`, because the BuildPlan contract has no field for it.
 
 ## Sourcing: evidence, adapters and decomposition (`rivet_engine.sourcing`)
 

@@ -84,7 +84,40 @@ def test_main_uses_the_grounding_friendly_hal_names_and_a_disable_path(plan):
     main = text(generate_firmware(plan), "src/main.cpp")
     for name in ("drive_forward", "turn_in_place", "read_front_distance", "stop_motors"):
         assert re.search(rf"\b{name}\s*\(", main), name
-    assert "DISABLED" in main and "Serial" in main
+    assert "State::kDisabled" in main and 'Serial.println("DISABLED")' in main
+
+
+# Object-like macros from the ESP32 Arduino core (esp32-hal-gpio.h, esp32-hal.h). An identifier
+# with one of these names is rewritten by the preprocessor; `enum class State { DISABLED, ...}`
+# failed `pio run` on espressif32@6.9.0 this way.
+ESP32_CORE_MACROS = set(
+    "LOW HIGH INPUT OUTPUT PULLUP INPUT_PULLUP PULLDOWN INPUT_PULLDOWN OPEN_DRAIN OUTPUT_OPEN_DRAIN "
+    "ANALOG DISABLED RISING FALLING CHANGE ONLOW ONHIGH ONLOW_WE ONHIGH_WE".split()
+)
+
+
+def _code_only(source: str) -> str:
+    """C++ source without comments and string literals, so only identifiers remain."""
+    source = re.sub(r"//[^\n]*|/\*.*?\*/", " ", source, flags=re.S)
+    return re.sub(r'"(?:\\.|[^"\\])*"', '""', source)
+
+
+def test_state_names_do_not_collide_with_esp32_core_macros(plan):
+    code = _code_only(text(generate_firmware(plan), "src/main.cpp"))
+    enum = re.search(r"enum class State \{([^}]*)\}", code)
+    assert enum, "state enum not found"
+    names = [n.strip() for n in enum.group(1).split(",") if n.strip()]
+    assert names == ["kDisabled", "kForward", "kStop", "kTurn"]
+    assert not set(names) & ESP32_CORE_MACROS
+    used = set(re.findall(r"\bState::(\w+)", code))
+    assert used == set(names), used
+    assert not re.search(r"\bDISABLED\b", code), "bare DISABLED is the ESP32 core macro"
+
+
+def _lib_deps(ini: str) -> list[str]:
+    block = re.search(r"^lib_deps\s*=\s*\n((?:[ \t]+\S[^\n]*\n?)+)", ini, re.M)
+    assert block, "lib_deps not found"
+    return [line.strip() for line in block.group(1).splitlines() if line.strip()]
 
 
 def test_no_placeholders_survive_and_ini_pins_versions(plan):
@@ -93,7 +126,12 @@ def test_no_placeholders_survive_and_ini_pins_versions(plan):
         assert not re.search(r"\{\{[A-Z0-9_]+\}\}", data.decode()), name
     ini = text(bundle, "platformio.ini")
     assert re.search(r"platform\s*=\s*espressif32@\d+\.\d+\.\d+", ini)
-    assert re.search(r"VL53L0X@\d+\.\d+\.\d+", ini)
+    # PlatformIO registry ids are owner/name with no spaces; "adafruit/Adafruit VL53L0X"
+    # gave UnknownPackageError in CI. Every library is pinned to an exact version.
+    deps = _lib_deps(ini)
+    assert deps == ["adafruit/Adafruit_VL53L0X@1.2.4"]
+    for dep in deps:
+        assert re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+@\d+\.\d+\.\d+", dep), dep
 
 
 def test_review_status_and_fixture_label_are_stated_in_the_readme(plan):

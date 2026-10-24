@@ -134,6 +134,7 @@ Errors always use `{"error": {"code", "message", "details", "retryable"}}`.
 | POST | `/api/assets/images` | multipart `file`; PNG/JPEG/WebP only, 10 MB, EXIF stripped, large images downscaled, per-session quota (`X-Rivet-Session`) |
 | GET | `/api/assets/{asset_id}/preview` | The stored (re-encoded) image |
 | POST | `/api/projects/generate` | 202 `{job_id, status: "queued", build_id: null}`; body `{input: {kind, image_asset_id?, user_text?}, requirements?}` |
+| POST | `/api/intents/interpret` | Same body as generate; runs vision + sanitizer only (never the engine) and returns 200 `{intent_id, intent, supported, limitation, vision_mode}`, also for unsupported results (`limitation` = the 422 the support gate would raise). The intent is kept in memory for 1 h: generate with `intent_id` builds exactly it without calling vision again (404 `INTENT_NOT_FOUND`, 409 `INTENT_INPUT_MISMATCH`), and `interpretation_choice: "closest_supported_rover"` is the only way to build from an unsupported one (recorded in `provenance.notes` and a job event) |
 | GET | `/api/jobs/{job_id}` | `{status, stage, progress, build_id?, revision?, error?}`; `progress` is null unless real stages were planned |
 | GET | `/api/jobs/{job_id}/events` | Server-sent events with `id:` lines; reconnect with `Last-Event-ID` or `?last_event_id=` |
 | POST | `/api/resolve` | 202 `{job_id, status: "queued", resolution_id: null}`; body `{input: {kind, image_asset_id?, user_text?}}`. Poll `GET /api/jobs/{job_id}` until it carries `resolution_id`. 503 `RESOLVER_UNAVAILABLE` in live mode without a live resolver |
@@ -167,7 +168,8 @@ Verified by the automated tests (offline, fake backends): the whole API contract
 
 - **OpenAI vision, two-picture check:** the check in [Prove the model sees the image](#prove-the-model-sees-the-image) and `tests/test_live_vision_provider.py` have not been run against the real API (no key was available when they were written); someone with a key has to run them once. The provider itself ran once by hand on 2026-10-24 and read a drawn top-down 2WD rover as a rover with high confidence (`gpt-4o`, [`docs/e2e-review-2026-10-24.md`](../../docs/e2e-review-2026-10-24.md)).
 - **Backboard vision:** never completed a run (no LLM credit), so whether its model sees the image is unknown; unsupported for the demo (see [Vision providers](#vision-providers)).
-- **PlatformIO compile:** `pio` was not installed, so the generated firmware has never been built; the pinned `espressif32@6.9.0` and `Adafruit VL53L0X@1.2.4` versions are unverified. `main.cpp` only passed a syntax check against stub headers. Compile status is `not_checked` unless `?compile=true` succeeds.
+- **Firmware:** the default ESP32 rover compiled with the pinned platform and corrected library name after the template enum fix (RAM 7.0%, flash 23.9%). See `docs/final-verification.md`. No hardware flash or physical fit test was performed; individual exports stay `not_checked` unless their compile runs.
+
 - **Estelle:** the CLI was never run (not installed, no account). Its MCP tool parameters and `verify`/`gate` usage are undocumented, so only `estelle ask` and `estelle doctor` are used, and its output format is an assumption (see `rivet_api/firmware/estelle.py`).
 - **The real engine:** lane B's `rivet_engine` was not ready when this was written, so the real adapter is tested only against fakes.
 

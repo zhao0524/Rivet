@@ -420,6 +420,11 @@ export function Studio({
 
   const intakeNode = (
     <BuildIntake
+      key={store.dataSource.mode}
+      onInterpret={store.dataSource.interpret ? (request) => store.dataSource.interpret!({
+        input: request.input,
+        requirements: { ...request.requirements, max_budget: request.requirements.max_budget === null ? null : String(request.requirements.max_budget) },
+      }) : undefined}
       onUpload={async (file, options) => {
         const asset = await store.uploadImage(file, options);
         if (asset.preview_url) uploadPreviews.current.set(asset.asset_id, asset.preview_url);

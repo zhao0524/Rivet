@@ -58,7 +58,9 @@ test('prompt generation completes through the fixture job path and closes into t
   await page.getByTestId('header-toggle-intake').click();
   const dialog = page.getByRole('dialog', { name: 'New build' });
   await dialog.getByLabel(/What should it do/).fill('Build a small rover that avoids obstacles');
-  await dialog.getByRole('button', { name: 'Generate', exact: true }).click();
+  await dialog.getByRole('button', { name: 'Review interpretation', exact: true }).click();
+  await expect(dialog.getByTestId('interpretation-card')).toContainText('does not read your image');
+  await dialog.getByRole('button', { name: 'Confirm and build', exact: true }).click();
 
   // Fixture mode returns an already-complete saved job; the intake closes once that build is on screen,
   // and the trust banner keeps saying it is a saved example.

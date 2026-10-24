@@ -77,7 +77,22 @@
     "assumptions": { "$ref": "#/$defs/string_list" },
     "unknowns": { "$ref": "#/$defs/string_list" },
     "confidence": { "enum": ["low", "medium", "high"] },
-    "support_status": { "enum": ["supported", "limited", "planned", "unsupported"] }
+    "support_status": { "enum": ["supported", "limited", "planned", "unsupported"] },
+    "image_features": {
+      "description": "Optional, additive (issue #67). Visible traits read from the reference image; absent or null means not extracted. Every key is optional and nullable (null = not seen with confidence). The engine maps each trait onto catalog parts and the rover template and reports it in provenance.notes as 'Image applied: ...' or 'Image ignored: ...'.",
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "drive_wheel_count": { "type": ["integer", "null"], "minimum": 1, "maximum": 8 },
+        "has_caster": { "type": ["boolean", "null"] },
+        "range_sensor_position": { "enum": ["front_low", "front_mid", "front_high", "none", null] },
+        "range_sensor_kind": { "enum": ["time_of_flight", "ultrasonic", "infrared", "unknown", null] },
+        "wheel_size": { "enum": ["small", "medium", "large", null] },
+        "chassis_size": { "enum": ["compact", "medium", "large", null] },
+        "body_color": { "type": ["string", "null"], "minLength": 1, "maxLength": 60 },
+        "visible_controller": { "type": ["string", "null"], "minLength": 1, "maxLength": 60 }
+      }
+    }
   },
   "$defs": {
     "id": { "type": "string", "minLength": 1 },

@@ -9,6 +9,7 @@ import {
   assertPlanIntegrity,
   createRivetDataSource,
   describeBuildTrust,
+  estelleStatusState,
   type BuildPlan,
   type BuildTrust,
   type CatalogComponent,
@@ -17,7 +18,7 @@ import {
   type EditResponse,
   type EstelleGroundRequest,
   type EstelleGroundResponse,
-  type EstelleStatusResponse,
+  type EstelleStatusState,
   type JobResponse,
   type JobSubscription,
   type RevisionSummary,
@@ -166,10 +167,12 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
   const [lastEditResponse, setLastEditResponse] = useState<EditResponse | null>(null);
   const [editError, setEditError] = useState<string | null>(null);
 
-  const [estelleStatus, setEstelleStatus] = useState<EstelleStatusResponse | null>(null);
+  const [estelleStatus, setEstelleStatus] = useState<EstelleStatusState>({ kind: 'checking' });
   const [estelleGroundResult, setEstelleGroundResult] = useState<EstelleGroundResponse | null>(null);
   const [estelleLoading, setEstelleSingleLoading] = useState(false);
   const [estelleError, setEstelleError] = useState<string | null>(null);
+  // Bumped whenever the data source changes so late Estelle results from the old source are dropped.
+  const estelleEpochRef = useRef(0);
 
   const cancelInFlightRequests = useCallback(() => {
     buildRequestEpochRef.current += 1;
@@ -440,23 +443,6 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
           // Keep initial synthetic fallback if custom fixture has no default build
         }
       }
-      if (dataSource.getEstelleStatus) {
-        try {
-          const st = await dataSource.getEstelleStatus();
-          if (!cancelled && effectSourceEpoch === sourceEpochRef.current) setEstelleStatus(st);
-        } catch {
-          if (!cancelled && effectSourceEpoch === sourceEpochRef.current) {
-            setEstelleStatus({
-              status: 'unavailable',
-              enabled: false,
-              mode: dataSource.mode,
-              cli_found: false,
-              repo_valid: false,
-              reason: 'Could not reach /api/estelle/status.',
-            });
-          }
-        }
-      }
     }
     void syncSourceMetadata();
     return () => {
@@ -499,6 +485,8 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
           : null;
 
       const wireRequest = {
+        ...(request.intent_id ? { intent_id: request.intent_id } : {}),
+        ...(request.interpretation_choice ? { interpretation_choice: request.interpretation_choice } : {}),
         input: {
           kind: request.input.kind,
           image_asset_id: request.input.image_asset_id,
@@ -663,25 +651,68 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
     [dataSource, plan.build_id, plan.revision, loadBuildFromSource],
   );
 
+  // Estelle status belongs to the data source, not to the loaded build, so it is checked again only
+  // when the source changes. Disabled and unavailable are answers from the API and keep its reason;
+  // only a request that produced no valid answer becomes `network_error`.
+  useEffect(() => {
+    const source = dataSource;
+    const controller = new AbortController();
+    estelleEpochRef.current += 1;
+    setEstelleStatus((prev) => (prev.kind === 'checking' ? prev : { kind: 'checking' }));
+    setEstelleGroundResult(null);
+    setEstelleError(null);
+    setEstelleSingleLoading(false);
+    if (!source.getEstelleStatus) {
+      setEstelleStatus({
+        kind: 'unavailable',
+        status: {
+          enabled: false,
+          mode: source.mode,
+          available: false,
+          doctor: null,
+          reason: 'This data source cannot report Estelle status.',
+        },
+      });
+    } else {
+      // Wait longer than the API's own 30 s `estelle doctor` timeout, so the API can report it.
+      source.getEstelleStatus({ signal: controller.signal, timeoutMs: 35_000 }).then(
+        (status) => {
+          if (!controller.signal.aborted) setEstelleStatus(estelleStatusState(status, source.mode));
+        },
+        (err: unknown) => {
+          if (!controller.signal.aborted) {
+            setEstelleStatus({
+              kind: 'network_error',
+              message: formatError(err, 'Estelle status request failed'),
+            });
+          }
+        },
+      );
+    }
+    return () => controller.abort();
+  }, [dataSource]);
+
   const runEstelleGround = useCallback(
     async (req: EstelleGroundRequest) => {
+      const epoch = estelleEpochRef.current;
+      const isCurrent = () => epoch === estelleEpochRef.current;
       setEstelleSingleLoading(true);
       setEstelleError(null);
       try {
         if (dataSource.groundSymbol) {
           const result = await dataSource.groundSymbol(req);
-          setEstelleGroundResult(result);
+          if (isCurrent()) setEstelleGroundResult(result);
           return result;
         }
         const fallback = createCombinedFixtureSource();
         const result = await fallback.groundSymbol(req);
-        setEstelleGroundResult(result);
+        if (isCurrent()) setEstelleGroundResult(result);
         return result;
       } catch (err) {
-        setEstelleError(formatError(err, 'Estelle grounding call failed'));
+        if (isCurrent()) setEstelleError(formatError(err, 'Estelle grounding call failed'));
         return null;
       } finally {
-        setEstelleSingleLoading(false);
+        if (isCurrent()) setEstelleSingleLoading(false);
       }
     },
     [dataSource],

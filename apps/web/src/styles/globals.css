@@ -1,48 +1,9 @@
+/* Design tokens (--rv-*) live in tokens.css; reference: design/tokens.md. */
+@import "./tokens.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  color-scheme: dark;
-
-  /* Design tokens (interim layer until D2 / #37 lands; rename freely, keep the roles). */
-  --rv-bg: #0b0d11;
-  --rv-surface: #11141b;
-  --rv-surface-panel: #0f1218;
-  --rv-surface-raised: #161b24;
-  --rv-surface-hover: #1c2230;
-  --rv-border: #232a36;
-  --rv-border-strong: #334155;
-  --rv-text: #e5e7eb;
-  --rv-text-strong: #f8fafc;
-  --rv-text-muted: #a3b0c2;
-  --rv-accent: #2563eb;
-  --rv-accent-border: #3b82f6;
-  --rv-accent-text: #93c5fd;
-  --rv-warn-bg: #1c1917;
-  --rv-warn-border: #292524;
-  --rv-warn-text: #fde68a;
-  --rv-danger-text: #fca5a5;
-  --rv-focus: #60a5fa;
-
-  --rv-font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --rv-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
-  --rv-text-title: 15px;
-  --rv-text-section: 13px;
-  --rv-text-body: 13px;
-  --rv-text-caption: 12px;
-
-  --rv-space-1: 4px;
-  --rv-space-2: 8px;
-  --rv-space-3: 12px;
-  --rv-space-4: 16px;
-  --rv-radius-sm: 6px;
-  --rv-radius-md: 8px;
-  --rv-radius-lg: 12px;
-
-  --rv-topbar-height: 48px;
-  --rv-drawer-width: min(360px, 88vw);
-}
 
 * {
   box-sizing: border-box;
@@ -52,9 +13,9 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: #0b0d11;
-  color: #e5e7eb;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--rv-bg);
+  color: var(--rv-text);
+  font-family: var(--rv-font-sans);
 }
 
 .rivet-panel h2 {
@@ -66,7 +27,7 @@ body {
 .rivet-panel h3 {
   font-size: 12px;
   font-weight: 600;
-  color: #94a3b8;
+  color: var(--rv-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin: 12px 0 6px;
@@ -87,12 +48,12 @@ body {
 }
 
 .rivet-panel dt {
-  color: #94a3b8;
+  color: var(--rv-text-muted);
 }
 
 .rivet-panel dd {
   margin: 0;
-  color: #f1f5f9;
+  color: var(--rv-text-strong);
 }
 
 .rivet-panel table {
@@ -105,17 +66,17 @@ body {
 .rivet-panel th,
 .rivet-panel td {
   padding: 6px 6px;
-  border-bottom: 1px solid #1f2937;
+  border-bottom: 1px solid var(--rv-border);
   text-align: left;
   vertical-align: top;
 }
 
 .rivet-panel tr[data-selected="true"] {
-  background: rgba(37, 99, 235, 0.22);
+  background: var(--rv-accent-soft);
 }
 
 .rivet-panel a {
-  color: #60a5fa;
+  color: var(--rv-link);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -175,9 +136,10 @@ body {
   padding: 5px 12px;
   font: inherit;
   font-size: var(--rv-text-caption);
-  font-weight: 500;
+  font-weight: var(--rv-weight-medium);
   white-space: nowrap;
   cursor: pointer;
+  transition: var(--rv-transition-colors);
 }
 
 .rv-modenav__item:hover {
@@ -188,8 +150,8 @@ body {
 .rv-modenav__item[aria-current="page"] {
   background: var(--rv-accent);
   border-color: var(--rv-accent-border);
-  color: #ffffff;
-  font-weight: 600;
+  color: var(--rv-text-on-accent);
+  font-weight: var(--rv-weight-semibold);
 }
 
 .rv-topbar .rv-panel-toggle,
@@ -255,7 +217,7 @@ body {
   top: var(--rv-space-2);
   left: var(--rv-space-2);
   right: var(--rv-space-2);
-  z-index: 5;
+  z-index: var(--rv-z-toolbar);
   pointer-events: none;
 }
 
@@ -275,10 +237,10 @@ body {
 .rv-overlay {
   position: absolute;
   inset: 0;
-  z-index: 40;
+  z-index: var(--rv-z-overlay);
   overflow-y: auto;
   padding: var(--rv-space-4);
-  background: rgba(11, 13, 17, 0.97);
+  background: var(--rv-surface-overlay);
 }
 
 .rv-scrim {
@@ -328,8 +290,8 @@ body {
     display: block;
     position: absolute;
     inset: 0;
-    z-index: 25;
-    background: rgba(0, 0, 0, 0.5);
+    z-index: var(--rv-z-scrim);
+    background: var(--rv-scrim);
   }
 }
 
@@ -381,22 +343,24 @@ body {
 /* Controls                                                                   */
 /* ------------------------------------------------------------------------- */
 
+/* Base controls take sizes, states and the focus ring from tokens (design/tokens.md, "Base controls"). */
 .rv-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  min-height: 30px;
-  padding: 4px 10px;
+  gap: var(--rv-control-gap);
+  min-height: var(--rv-control-height);
+  padding: 4px var(--rv-control-padding-x);
   background: var(--rv-surface-raised);
   color: var(--rv-text);
   border: 1px solid var(--rv-border-strong);
   border-radius: var(--rv-radius-sm);
   font: inherit;
   font-size: var(--rv-text-caption);
-  line-height: 1.2;
+  line-height: var(--rv-leading-tight);
   white-space: nowrap;
   cursor: pointer;
+  transition: var(--rv-transition-colors);
 }
 
 .rv-btn:hover:not(:disabled) {
@@ -408,12 +372,14 @@ body {
 .rv-btn--primary {
   background: var(--rv-accent);
   border-color: var(--rv-accent-border);
-  color: #ffffff;
+  color: var(--rv-text-on-accent);
 }
 
+/* A pressed toggle keeps its accent fill on hover, like the primary button. */
+.rv-btn[aria-pressed="true"]:hover:not(:disabled),
 .rv-btn--primary:hover:not(:disabled) {
-  background: #1d4ed8;
-  color: #ffffff;
+  background: var(--rv-accent-hover);
+  color: var(--rv-text-on-accent);
 }
 
 .rv-btn--ghost {
@@ -422,12 +388,12 @@ body {
 }
 
 .rv-btn:disabled {
-  opacity: 0.55;
+  opacity: var(--rv-disabled-opacity);
   cursor: not-allowed;
 }
 
 .rv-select {
-  min-height: 30px;
+  min-height: var(--rv-control-height);
   padding: 4px 8px;
   background: var(--rv-surface-raised);
   color: var(--rv-text);
@@ -435,14 +401,25 @@ body {
   border-radius: var(--rv-radius-sm);
   font: inherit;
   font-size: var(--rv-text-caption);
+  cursor: pointer;
+  transition: var(--rv-transition-colors);
+}
+
+.rv-select:hover:not(:disabled) {
+  background: var(--rv-surface-hover);
+}
+
+.rv-select:disabled {
+  opacity: var(--rv-disabled-opacity);
+  cursor: not-allowed;
 }
 
 .rv-btn:focus-visible,
 .rv-select:focus-visible,
 .rv-modenav__item:focus-visible,
 .rv-menu__item:focus-visible {
-  outline: 2px solid var(--rv-focus);
-  outline-offset: 2px;
+  outline: var(--rv-focus-ring-width) solid var(--rv-focus);
+  outline-offset: var(--rv-focus-ring-offset);
 }
 
 /* Floating toolbar */
@@ -459,10 +436,10 @@ body {
   align-items: center;
   gap: 6px;
   padding: 4px;
-  background: rgba(17, 20, 27, 0.88);
+  background: var(--rv-surface-glass);
   border: 1px solid var(--rv-border);
   border-radius: var(--rv-radius-md);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(var(--rv-blur-glass));
 }
 
 .rv-toolbar__label {
@@ -479,19 +456,25 @@ body {
   display: inline-flex;
 }
 
+/* The trigger of an open menu reads as active. */
+.rv-menu > .rv-btn[aria-expanded="true"]:not(.rv-btn--primary) {
+  background: var(--rv-surface-hover);
+  color: var(--rv-text-strong);
+}
+
 .rv-menu__list {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + var(--rv-space-1));
   right: 0;
-  z-index: 50;
+  z-index: var(--rv-z-menu);
   min-width: 200px;
   margin: 0;
-  padding: 4px;
+  padding: var(--rv-space-1);
   list-style: none;
   background: var(--rv-surface);
   border: 1px solid var(--rv-border-strong);
   border-radius: var(--rv-radius-md);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--rv-shadow-md);
 }
 
 .rv-menu__list--start {
@@ -503,9 +486,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--rv-space-3);
   width: 100%;
-  padding: 7px 10px;
+  padding: 7px var(--rv-control-padding-x);
   background: transparent;
   color: var(--rv-text);
   border: none;
@@ -514,6 +497,7 @@ body {
   font-size: var(--rv-text-caption);
   text-align: left;
   cursor: pointer;
+  transition: var(--rv-transition-colors);
 }
 
 .rv-menu__item:hover:not(:disabled),
@@ -522,13 +506,13 @@ body {
 }
 
 .rv-menu__item:disabled {
-  opacity: 0.55;
+  opacity: var(--rv-disabled-opacity);
   cursor: not-allowed;
 }
 
 .rv-menu__check {
   color: var(--rv-accent-text);
-  font-weight: 700;
+  font-weight: var(--rv-weight-bold);
 }
 
 .rv-menu__separator {
@@ -541,12 +525,12 @@ body {
 .rv-dialog-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: var(--rv-z-dialog);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--rv-space-4);
-  background: rgba(0, 0, 0, 0.6);
+  background: var(--rv-backdrop);
 }
 
 .rv-dialog {
@@ -557,7 +541,7 @@ body {
   background: var(--rv-surface);
   border: 1px solid var(--rv-border-strong);
   border-radius: var(--rv-radius-lg);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+  box-shadow: var(--rv-shadow-lg);
 }
 
 .rv-dialog--wide {
@@ -577,7 +561,7 @@ body {
 .rv-dialog__title {
   margin: 0;
   font-size: var(--rv-text-title);
-  font-weight: 600;
+  font-weight: var(--rv-weight-semibold);
   color: var(--rv-text-strong);
 }
 
@@ -599,22 +583,24 @@ body {
 }
 
 [data-part="assembly-timeline"] button {
-  min-height: 28px;
-  padding: 3px 10px;
+  min-height: var(--rv-control-height);
+  padding: 3px var(--rv-control-padding-x);
   background: var(--rv-surface-raised);
   color: var(--rv-text);
   border: 1px solid var(--rv-border-strong);
   border-radius: var(--rv-radius-sm);
   font: inherit;
   cursor: pointer;
+  transition: var(--rv-transition-colors);
 }
 
 [data-part="assembly-timeline"] button:hover:not(:disabled) {
   background: var(--rv-surface-hover);
+  color: var(--rv-text-strong);
 }
 
 [data-part="assembly-timeline"] button:disabled {
-  opacity: 0.55;
+  opacity: var(--rv-disabled-opacity);
   cursor: not-allowed;
 }
 
@@ -622,13 +608,19 @@ body {
 [data-part="assembly-timeline"] button[data-part="pause"] {
   background: var(--rv-accent);
   border-color: var(--rv-accent-border);
-  color: #ffffff;
+  color: var(--rv-text-on-accent);
+}
+
+[data-part="assembly-timeline"] button[data-part="play"]:hover:not(:disabled),
+[data-part="assembly-timeline"] button[data-part="pause"]:hover:not(:disabled) {
+  background: var(--rv-accent-hover);
+  color: var(--rv-text-on-accent);
 }
 
 [data-part="assembly-timeline"] button:focus-visible,
 [data-part="assembly-timeline"] input:focus-visible {
-  outline: 2px solid var(--rv-focus);
-  outline-offset: 2px;
+  outline: var(--rv-focus-ring-width) solid var(--rv-focus);
+  outline-offset: var(--rv-focus-ring-offset);
 }
 
 [data-part="assembly-timeline"] [data-part="scrub"] {

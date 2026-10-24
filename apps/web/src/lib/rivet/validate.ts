@@ -35,6 +35,8 @@ import {
   type GenerateResponse,
   type HealthResponse,
   type IntentSpec,
+  type InterpretResponse,
+  type ImageFeatures,
   type JobResponse,
   type RevisionsResponse,
   type SavedExamplesResponse,
@@ -213,13 +215,33 @@ const schemaVersion = literal(SCHEMA_VERSION);
 // Contract validators
 // ---------------------------------------------------------------------------
 
+const featureText: Check<string> = (v, p, issues) => {
+  nonEmptyStr(v, p, issues);
+  if (typeof v === "string" && v.length > 60) fail(issues, p, "maximum 60 characters");
+  return v as string;
+};
+const wheelCount: Check<number> = (v, p, issues) => {
+  positiveInt(v, p, issues);
+  if (typeof v === "number" && v > 8) fail(issues, p, "maximum 8 drive wheels");
+  return v as number;
+};
+const imageFeaturesCheck = object<ImageFeatures>({
+  drive_wheel_count: optional(nullable(wheelCount)), has_caster: optional(nullable(bool)),
+  range_sensor_position: optional(nullable(oneOf(["front_low", "front_mid", "front_high", "none"] as const))),
+  range_sensor_kind: optional(nullable(oneOf(["time_of_flight", "ultrasonic", "infrared", "unknown"] as const))),
+  wheel_size: optional(nullable(oneOf(["small", "medium", "large"] as const))),
+  chassis_size: optional(nullable(oneOf(["compact", "medium", "large"] as const))),
+  body_color: optional(nullable(featureText)), visible_controller: optional(nullable(featureText)),
+});
+
 export const intentSpecCheck: Check<IntentSpec> = object<IntentSpec>({
   schema_version: schemaVersion,
   intent_id: nonEmptyStr,
+  image_features: optional(nullable(imageFeaturesCheck)),
   input: object({
     kind: oneOf(INPUT_KINDS),
     image_asset_id: nullable(str),
-    user_text: str,
+    user_text: nullable(str),
     image_interpretation_is_approximate: optional(bool),
   }),
   project_family: oneOf(PROJECT_FAMILIES),
@@ -238,6 +260,12 @@ export const intentSpecCheck: Check<IntentSpec> = object<IntentSpec>({
   unknowns: strArray,
   confidence: str,
   support_status: oneOf(SUPPORT_STATUSES),
+});
+
+export const interpretResponseCheck = object<InterpretResponse>({
+  intent_id: nonEmptyStr, intent: intentSpecCheck, supported: bool,
+  limitation: nullable(object({ code: str, message: str, details: plainObject })),
+  vision_mode: oneOf(["live", "fixture", "fallback"] as const),
 });
 
 export const catalogComponentCheck: Check<CatalogComponent> = object<CatalogComponent>({
@@ -395,6 +423,11 @@ export const buildPlanCheck: Check<BuildPlan> = object<BuildPlan>({
     compile_status: oneOf(COMPILE_STATUSES),
   }),
   provenance: object({
+    sourcing: optional(object({
+      synthetic: bool, synthetic_catalog_ids: strArray, unverified_link_count: int, sku_missing_count: int,
+      link_checks: optional(recordOf(object({ status: oneOf(["pass", "broken", "blocked", "error", "unchecked"] as const),
+        checked_at: nullable(str), catalog_verified_at: nullable(str), verified_at: nullable(str), fresh: bool, flags: strArray, detail: str }))),
+    })),
     input_mode: oneOf(INPUT_KINDS),
     catalog_version: nonEmptyStr,
     generation_mode: oneOf(GENERATION_MODES),
@@ -416,6 +449,8 @@ export const healthResponseCheck: Check<HealthResponse> = object<HealthResponse>
 
 export const generateRequestCheck: Check<GenerateRequest> = (v, p, issues) => {
   const req = object<GenerateRequest>({
+    intent_id: optional(nonEmptyStr),
+    interpretation_choice: optional(oneOf(["as_interpreted", "closest_supported_rover"] as const)),
     input: object({ kind: oneOf(INPUT_KINDS), image_asset_id: nullable(nonEmptyStr), user_text: nullable(str) }),
     requirements: optional(plainObject) as Check<GenerateRequest["requirements"]>,
   })(v, p, issues);
@@ -464,19 +499,19 @@ export const revisionsResponseCheck: Check<RevisionsResponse> = object<Revisions
   ),
 });
 
-const ESTELLE_STATUS_VALUES = ["ok", "ungrounded", "unavailable"] as const;
-
+/** The shape services/api really returns (see `EstelleStatusResponse`); disabled is a valid answer. */
 export const estelleStatusResponseCheck: Check<EstelleStatusResponse> = object<EstelleStatusResponse>({
-  status: oneOf(ESTELLE_STATUS_VALUES),
   enabled: bool,
   mode: str,
-  cli_found: bool,
-  repo_valid: bool,
+  available: bool,
+  doctor: nullable(object({ exit_code: int, output_tail: str })),
   reason: str,
 });
 
+const ESTELLE_GROUND_STATUSES = ["ok", "ungrounded", "unavailable"] as const;
+
 export const estelleGroundResponseCheck: Check<EstelleGroundResponse> = object<EstelleGroundResponse>({
-  status: oneOf(ESTELLE_STATUS_VALUES),
+  status: oneOf(ESTELLE_GROUND_STATUSES),
   tool: nullable(str),
   question: str,
   timestamp: str,

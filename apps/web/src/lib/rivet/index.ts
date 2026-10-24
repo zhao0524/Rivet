@@ -31,6 +31,7 @@ export {
   type ParseResult,
 } from "./validate";
 export { checkPlanIntegrity, assertPlanIntegrity } from "./integrity";
+export { estelleStatusState, type EstelleStatusState, type EstelleStatusKind } from "./estelle";
 export {
   SAVED_SYNTHETIC_EXAMPLE_LABEL,
   SAVED_BUILD_LABEL,

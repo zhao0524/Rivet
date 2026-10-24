@@ -14,6 +14,8 @@ from rivet_api.routes import estelle as estelle_routes
 from rivet_api.resolution.factory import build_resolver
 from rivet_api.resolution.store import ResolutionStore
 from rivet_api.routes import exports, health, jobs, projects
+from rivet_api.routes import intents as intents_routes
+
 from rivet_api.routes import resolve as resolve_routes
 
 
@@ -69,6 +71,7 @@ def create_app(
     app.include_router(health.router)
     app.include_router(jobs.router)
     app.include_router(projects.router)
+    app.include_router(intents_routes.router)
     app.include_router(exports.router)
     app.include_router(estelle_routes.router)
     app.include_router(assets_routes.router)

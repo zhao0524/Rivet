@@ -5,8 +5,11 @@ import rawPlan from './rivet/fixtures/synthetic-rover-obstacle-v1.json';
 import rawCatalog from './rivet/fixtures/synthetic-seed-components.json';
 import {
   FixtureSource,
+  SAVED_BUILD_LABEL,
+  SAVED_SYNTHETIC_EXAMPLE_LABEL,
   SYNTHETIC_ROVER_BUILD_ID,
   assertPlanIntegrity,
+  isSyntheticPlan,
   parseBuildPlan,
   parseCatalogComponents,
   parseIntentSpec,
@@ -49,10 +52,16 @@ export function getCombinedFixtureCatalog(): CatalogComponent[] {
 }
 
 export function createCombinedFixtureSource(defaultBuildId: string = SYNTHETIC_ROVER_BUILD_ID): FixtureSource {
+  const catalog = getCombinedFixtureCatalog();
+  const plans = [getSyntheticRoverPlan(), getSourcedRoverPlan()];
+  const opened = plans.find((p) => p.build_id === defaultBuildId);
   return new FixtureSource({
-    catalog: getCombinedFixtureCatalog(),
-    plans: [getSyntheticRoverPlan(), getSourcedRoverPlan()],
+    catalog,
+    plans,
     defaultBuildId,
+    // Names the build being opened in revision labels, edit findings and the saved-job event,
+    // so the sourced snapshot is never called synthetic (and the synthetic one always is).
+    label: opened && !isSyntheticPlan(opened, catalog) ? SAVED_BUILD_LABEL : SAVED_SYNTHETIC_EXAMPLE_LABEL,
   });
 }
 
@@ -72,7 +81,7 @@ export const DEFAULT_SAVED_EXAMPLES: readonly SavedExampleSummary[] = Object.fre
     example_id: SOURCED_ROVER_BUILD_ID,
     title: 'Indoor obstacle rover (Engine-Sourced Stack)',
     project_family: 'rover',
-    status: 'unbuildable',
+    status: 'needs_review',
     generation_mode: 'fixture',
   },
 ]);

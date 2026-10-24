@@ -163,9 +163,10 @@ def test_shared_intent_fixture(tmp_path):
     BuildPlan.model_validate(plan)
 
 
-def test_plan_matches_shared_schema_when_present(sample_plan):
-    schema_path = support.REPO_ROOT / "contracts" / "build-plan.schema.json"
-    if not schema_path.exists():
-        pytest.skip("shared contracts/ schemas not landed; plan is validated by the Pydantic models")
-    jsonschema = pytest.importorskip("jsonschema")
-    jsonschema.validate(sample_plan, json.loads(schema_path.read_text()))
+def test_plan_matches_shared_schema(sample_plan):
+    # contracts/ is on main (INT-1) and jsonschema is a dev dependency: either missing fails.
+    from jsonschema import Draft202012Validator
+
+    schema = json.loads((support.REPO_ROOT / "contracts" / "build-plan.schema.json").read_text())
+    validator = Draft202012Validator(schema, format_checker=Draft202012Validator.FORMAT_CHECKER)
+    assert [f"{e.json_path}: {e.message}" for e in validator.iter_errors(sample_plan)] == []

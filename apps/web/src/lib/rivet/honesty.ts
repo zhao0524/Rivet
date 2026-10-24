@@ -11,9 +11,21 @@ export interface BuildTrust {
   label: string;
   isSynthetic: boolean;
   isSaved: boolean;
+  /**
+   * When a saved build of sourced parts was captured: its `created_at`, which the engine
+   * stamps at run time (`scripts/capture_saved_example.py`). Null for live, fallback and
+   * synthetic builds.
+   */
+  capturedAt: string | null;
   /** True only for a non-synthetic, `verified` plan without blocking FAIL/UNKNOWN findings. */
   canDisplayAsVerified: boolean;
   reasons: string[];
+}
+
+/** "2026-10-24T18:20:34Z" -> "2026-10-24 18:20 UTC". String-only, so server and browser render the same text. */
+function formatUtc(iso: string): string {
+  const m = /^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})(?::\d{2}(?:\.\d+)?)?Z$/.exec(iso);
+  return m ? `${m[1]} ${m[2]} UTC` : iso;
 }
 
 const SYNTHETIC_MARKERS = /synthetic/i;
@@ -33,8 +45,16 @@ export function describeBuildTrust(
   const reasons: string[] = [];
   const isSynthetic = isSyntheticPlan(plan, catalog);
   const isSaved = sourceMode === "fixture" || plan.provenance.generation_mode === "fixture";
+  const capturedAt = isSaved && !isSynthetic ? plan.created_at : null;
+  if (capturedAt) reasons.push(`Captured ${formatUtc(capturedAt)}`);
   if (isSynthetic) reasons.push("Components are synthetic placeholders, not sourced parts");
-  if (isSaved) reasons.push("Loaded from a saved build, not freshly generated");
+  if (isSaved) {
+    reasons.push(
+      isSynthetic
+        ? "Loaded from a saved build, not freshly generated"
+        : "Sourced catalog parts, loaded from a saved build, not a live generation",
+    );
+  }
   if (plan.provenance.generation_mode === "fallback") reasons.push("Produced by a fallback path, not live generation");
   const blocking = plan.verification.findings.filter(
     (f) => f.severity === "blocking" && (f.result === "FAIL" || f.result === "UNKNOWN"),
@@ -48,7 +68,7 @@ export function describeBuildTrust(
   else if (isSaved) label = SAVED_BUILD_LABEL;
   else if (plan.provenance.generation_mode === "fallback") label = "Fallback output";
   else label = "Live generation";
-  return { label, isSynthetic, isSaved, canDisplayAsVerified, reasons };
+  return { label, isSynthetic, isSaved, capturedAt, canDisplayAsVerified, reasons };
 }
 
 export interface BomSummary {

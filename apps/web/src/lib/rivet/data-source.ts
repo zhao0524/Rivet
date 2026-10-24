@@ -9,6 +9,7 @@ import type {
   EstelleStatusResponse,
   GenerateRequest,
   GenerateResponse,
+  InterpretResponse,
   JobResponse,
   RevisionSummary,
   SavedExampleSummary,
@@ -44,6 +45,7 @@ export interface RivetDataSource {
   readonly mode: DataSourceMode;
   getCatalog(options?: RequestOptions): Promise<CatalogComponent[]>;
   getBuild(buildId: string, revision?: number, options?: RequestOptions): Promise<BuildPlan>;
+  interpret?(input: GenerateRequest, options?: RequestOptions): Promise<InterpretResponse>;
   generate(input: GenerateRequest, options?: RequestOptions): Promise<GenerateResponse>;
   edit(buildId: string, request: EditRequest, options?: RequestOptions): Promise<EditResponse>;
   getJob(jobId: string, options?: RequestOptions): Promise<JobResponse>;
@@ -52,6 +54,7 @@ export interface RivetDataSource {
   uploadImage?(file: File, options?: RequestOptions): Promise<UploadedImageAsset>;
   listExamples?(options?: RequestOptions): Promise<SavedExampleSummary[]>;
   listRevisions?(buildId: string, options?: RequestOptions): Promise<RevisionSummary[]>;
+  /** Resolves for every state the API reports (disabled, unavailable, available); rejects only without a valid answer. */
   getEstelleStatus?(options?: RequestOptions): Promise<EstelleStatusResponse>;
   groundSymbol?(request: EstelleGroundRequest, options?: RequestOptions): Promise<EstelleGroundResponse>;
   getExportUrl?(buildId: string, kind: ExportArtifactKind, revision?: number): string | null;

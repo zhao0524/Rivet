@@ -20,8 +20,9 @@ _ENTRY_POINTS_ARE_STUBS = False
 def _builder():
     from rivet_engine.catalog import load_fit_evidence
     from rivet_engine.configurator import Builder
+    from rivet_engine.link_checks import load_link_checks
 
-    return Builder(load_catalog(), fit_evidence=load_fit_evidence())
+    return Builder(load_catalog(), fit_evidence=load_fit_evidence(), link_checks=load_link_checks())
 
 
 def solve(intent: dict[str, Any]) -> dict[str, Any]:
@@ -70,9 +71,11 @@ def verify(plan: dict[str, Any], catalog: Any = None) -> dict[str, Any]:
     else:
         raise InvalidInputError("catalog must be None, a list of components, or {components: [...]}")
     from rivet_engine.catalog import fit_evidence_for
+    from rivet_engine.link_checks import load_link_checks
 
     # Fit evidence is always checked; it transfers only to records identical to the packaged ones.
-    report = Builder(resolved, fit_evidence=fit_evidence_for(resolved)).verify(model)
+    # Link checks apply only to records whose purchase URL and SKU match the checked ones.
+    report = Builder(resolved, fit_evidence=fit_evidence_for(resolved), link_checks=load_link_checks()).verify(model)
     return {"overall": report.overall, "findings": [f.to_wire() for f in report.findings]}
 
 
@@ -82,3 +85,35 @@ def get_catalog() -> list[dict[str, Any]]:
 
 
 __all__ = ["EngineError", "EngineNotImplementedError", "apply_edit", "get_catalog", "solve", "verify"]
+
+
+def get_sourcing_report(as_of: str | None = None) -> dict[str, Any]:
+    """Read-only purchase-link evidence for clients; never changes catalog or saved plans.
+
+    `as_of` is an ISO date for reproducible checks; serving callers use today's UTC date.
+    """
+    from datetime import datetime, timezone, date
+    from rivet_engine.link_checks import load_link_checks, parse_date
+    from rivet_engine.validators.sourcing import MAX_LINK_AGE_DAYS
+
+    today = date.fromisoformat(as_of) if as_of else datetime.now(timezone.utc).date()
+    report = load_link_checks()
+    result = {}
+    for component in load_catalog().components:
+        entry = report.entry_for(component) if report else None
+        catalog_day = parse_date(component.sourcing.purchase_url_verified_at)
+        passing_day = parse_date(entry.checked_at) if entry and entry.status == "pass" else None
+        days = [day for day in (catalog_day, passing_day) if day and day <= today]
+        verified = max(days) if days else None
+        result[component.catalog_id] = {
+            "status": entry.status if entry else "unchecked",
+            "checked_at": entry.checked_at if entry else None,
+            "catalog_verified_at": component.sourcing.purchase_url_verified_at,
+            "verified_at": verified.isoformat() if verified else None,
+            "fresh": bool(verified and (today - verified).days <= MAX_LINK_AGE_DAYS),
+            "flags": entry.flags if entry else [],
+            "detail": entry.detail if entry else (report.problem if report and report.problem else "No automated check recorded"),
+        }
+    return result
+
+__all__.append("get_sourcing_report")

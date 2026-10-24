@@ -35,6 +35,8 @@ jobs:
       - uses: astral-sh/setup-uv@v6
         with:
           version: ${{ env.UV_VERSION }}
+      - name: Development environment loader
+        run: uv run python -m unittest discover -s scripts/tests -v
       - name: Validate fixtures against contracts/ schemas
         run: uv run scripts/validate_contracts.py
 
@@ -69,6 +71,10 @@ jobs:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
           cache-dependency-glob: services/api/pyproject.toml
+      - name: Install real engine for integration cases
+        run: |
+          uv sync --extra dev
+          uv pip install --python .venv/bin/python -e ../../packages/engineering
       - name: pytest
         run: uv run --extra dev pytest -q
 
@@ -134,3 +140,36 @@ jobs:
       - name: Generate and compile firmware
         # Without pio on PATH the script reports compile_status not_checked and exits 0.
         run: uv run --project services/api python scripts/ci_firmware_check.py --plan "$RUNNER_TEMP/plan.json" --out "$RUNNER_TEMP/firmware"
+
+  browser:
+    name: Browser acceptance (real engine and offline vision)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+      - run: pnpm install --frozen-lockfile
+      - run: uv sync --project services/api --extra dev
+      - run: uv pip install --python services/api/.venv/bin/python -e packages/engineering
+      - run: pnpm --filter web exec playwright install --with-deps chromium
+      - name: Offline studio regressions
+        run: pnpm --filter web e2e
+      - name: Upload, interpretation, real engine, complete assembly and exports
+        run: pnpm --filter web e2e:acceptance
+        env:
+          RIVET_PYTHON: ${{ github.workspace }}/services/api/.venv/bin/python
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-evidence
+          path: |
+            apps/web/test-results/
+            apps/web/playwright-report/
+          retention-days: 14

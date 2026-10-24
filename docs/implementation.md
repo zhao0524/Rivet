@@ -218,6 +218,12 @@ Rules:
 - `input.kind` can be `image`, `text`, or `image_and_text`. `image_asset_id` may be null for text input.
 - Any unrecognized/unsupported intent should return a structured limitation and optionally a supported alternative, not an invented fully supported plan.
 
+Additive integration proposal (#67): optional `image_features` follows
+`contracts/intent.schema.json`: nullable wheel count/caster, bounded sensor position/kind,
+wheel/chassis size, body color and visible controller. Existing intents remain valid.
+Only supported template adjustments apply; applied/ignored traits are recorded in provenance.
+Exact-product resolution remains the separate roadmap in `plan-verified-parts.md`.
+
 ### 3.2 `CatalogComponent` (B owns; all consume)
 
 Example canonical catalog record (values are **illustrative schema samples**, not verified vendor specifications):
@@ -444,7 +450,7 @@ The engine decides hardware validity; the API additionally refuses to relay sour
 
 - A `bom.items[]` row may have `link_status = verified_product` only if its catalog entry has `identity.sku` and a `sourcing.purchase_url` (https) with `purchase_url_verified_at`, and the row's `purchase_url` equals it. A row's `unit_price_amount` must equal the catalog price in the BOM currency (both null otherwise). A violation is `502 ENGINE_CONTRACT_VIOLATION` and nothing is stored. Kit items with no SKU or link stay valid `manufacturer_reference_only` rows.
 - A plan with `generation_mode = live` that contains a synthetic part is `502 SYNTHETIC_PARTS_IN_LIVE_PLAN`. A part is synthetic if its `catalog_id` starts with `demo.` or `synthetic.`, its manufacturer contains `SYNTHETIC`, or the plan's `catalog_version` starts with `SYNTHETIC`. `fixture` and `fallback` plans are allowed and flagged.
-- Read responses add `provenance.sourcing = { synthetic, synthetic_catalog_ids, unverified_link_count, sku_missing_count }`. It is computed on read and not part of the stored `BuildPlan`, because the engine rejects unknown keys. Every export carries `X-Rivet-Synthetic: true|false`.
+- Read responses add `provenance.sourcing = { synthetic, synthetic_catalog_ids, unverified_link_count, sku_missing_count, link_checks? }` (supplier-check fields in `contracts/api.md`). It is computed on read and not part of the stored `BuildPlan`, because the engine rejects unknown keys. Every export carries `X-Rivet-Synthetic: true|false`.
 - `replace_optional_sensor` to a synthetic part or one without a SKU and a verified https purchase link is returned as `accepted: false` with finding `api.real_product_only`, before the engine is called.
 - Not checked: that a SKU or URL still resolves at the vendor. Verify links by hand before the demo (see the hour 34-36 gate).
 

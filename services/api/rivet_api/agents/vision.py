@@ -27,6 +27,7 @@ from rivet_api.config import Settings
 from rivet_api.errors import ApiError
 from rivet_api.models.intent import (
     Confidence,
+    ImageFeatures,
     IntentRequirements,
     IntentSpec,
     ProjectFamily,
@@ -54,6 +55,18 @@ Reply with ONE JSON object and nothing else, with exactly these keys:
   unknowns: list of short strings
   confidence: one of low | medium | high
   support_status: one of supported | limited | planned | unsupported
+  image_features: null when no image is attached; otherwise an object with what the image
+    visibly shows. Use null for any key you are not sure about. Keys:
+      drive_wheel_count: integer 1 to 8, powered wheels only (a caster is not a drive wheel)
+      has_caster: true or false, a free-rolling caster or skid is visible
+      range_sensor_position: one of front_low | front_mid | front_high | none
+      range_sensor_kind: one of time_of_flight | ultrasonic | infrared | unknown
+        (unknown when a sensor is visible but its type is not clear)
+      wheel_size: one of small | medium | large, relative to the body
+      chassis_size: one of compact | medium | large
+      body_color: main body color in a few words
+      visible_controller: a visible controller board in a few words, as seen
+    Never turn appearance into part numbers, ratings or dimensions.
 """
 
 _INTENT_RELATIVE = Path("intent") / "rover_obstacle_v1.json"
@@ -76,7 +89,8 @@ class VisionPort(Protocol):
 
 
 class MockVisionProvider:
-    """Offline stand-in: returns the saved rover intent. It does not look at the image."""
+    """Offline stand-in: returns the saved rover intent. It does not look at the image,
+    so it never reports image_features and the image cannot change the build."""
 
     mode: Literal["live", "fixture", "fallback"] = "fixture"
 
@@ -121,6 +135,8 @@ class _ModelIntent(BaseModel):
     unknowns: list[str] = []
     confidence: Confidence
     support_status: SupportStatus
+    # Visible traits; enums are checked here, text is cleaned and capped by the sanitizer.
+    image_features: ImageFeatures | None = None
 
 
 _FENCE_RE = re.compile(r"^```[a-zA-Z]*\s*\n?|\n?```\s*$")
@@ -232,12 +248,49 @@ def build_vision_port(settings: Settings) -> VisionPort:
     raise ValueError(f"Unknown RIVET_VISION_PROVIDER {provider!r} (expected mock, openai or backboard)")
 
 
-def ensure_supported(intent: IntentSpec) -> None:
+SUPPORTED_FAMILIES = ("rover",)
+
+
+def interpretation_summary(intent: IntentSpec, vision_mode: str | None = None) -> dict:
+    """What was understood, in the shape the intake card shows (contracts/api.md, Interpretations).
+
+    `vision_mode` is the mode of the provider that produced the intent (`live`, `fixture` or
+    `fallback`). The pipeline always passes it; it is null only for direct library callers.
+    """
+    return {
+        "intent_id": intent.intent_id,
+        "project_family": intent.project_family,
+        "requested_behavior": intent.requested_behavior,
+        "support_status": intent.support_status,
+        "confidence": intent.confidence,
+        "visual_features": list(intent.visual_features),
+        "assumptions": list(intent.assumptions),
+        "unknowns": list(intent.unknowns),
+        "vision_mode": vision_mode,
+    }
+
+
+def support_limitation(intent: IntentSpec, vision_mode: str | None = None) -> ApiError | None:
+    """None if the intent may be built, else the 422 the support gate raises for it."""
     if intent.project_family == "rover" and intent.support_status == "supported":
-        return
-    raise ApiError(
+        return None
+    if intent.project_family == "rover":
+        message = f"Rover behavior {intent.requested_behavior!r} is not supported in this version"
+    else:
+        message = f"Projects of family {intent.project_family!r} are not supported in this version"
+    return ApiError(
         "UNSUPPORTED_PROJECT_FAMILY",
-        f"Projects of family {intent.project_family!r} are not supported in this version",
+        message,
         422,
-        {"supported_families": ["rover"], "detected_family": intent.project_family},
+        {
+            "supported_families": list(SUPPORTED_FAMILIES),
+            "detected_family": intent.project_family,
+            "interpretation": interpretation_summary(intent, vision_mode),
+        },
     )
+
+
+def ensure_supported(intent: IntentSpec, vision_mode: str | None = None) -> None:
+    limitation = support_limitation(intent, vision_mode)
+    if limitation is not None:
+        raise limitation

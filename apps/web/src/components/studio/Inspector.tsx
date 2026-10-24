@@ -2,8 +2,12 @@
 
 import { useMemo } from 'react';
 import type { StudioActionMode } from '../../lib/plan-store';
-import { summarizeBom, type BuildPlan, type CatalogComponent } from '../../lib/rivet';
-import { BOMPanel, PartInspector, VerificationPanel } from './panels';
+import { type BuildPlan, type CatalogComponent } from '../../lib/rivet';
+import { BOMPanel, VerificationPanel } from './panels';
+import { BuildOverview } from './panels/BuildOverview';
+import { ProductCard } from './panels/ProductCard';
+import { KitItemBadge } from './panels/KitItemBadge';
+import { computeStepCoverage, isUnmodeledKitItem } from '../three/assembly/coverage';
 import type { BuildPlan as PanelBuildPlan, CatalogComponent as PanelCatalogComponent } from './panels/types';
 import {
   WiringStatusPanel,
@@ -101,65 +105,21 @@ export function Inspector({
   const panelPlan = plan as unknown as PanelBuildPlan;
   const panelCatalog = catalog as unknown as PanelCatalogComponent[];
 
-  const bomSummary = summarizeBom(plan);
-  const blockingCount = plan.verification.findings.filter(
-    (f) => f.severity === 'blocking' && (f.result === 'FAIL' || f.result === 'UNKNOWN'),
-  ).length;
-  const statusText: Record<BuildPlan['status'], string> = {
-    verified: 'Verified: every implemented check passed.',
-    verified_with_warnings: 'Verified with warnings.',
-    needs_review: 'Needs review before you build it.',
-    unbuildable: 'Unbuildable as designed.',
-  };
-
+  const selected = plan.components.find((c) => c.instance_id === selectedInstanceId);
+  const coverage = computeStepCoverage(plan);
   const buildSummary = (
-    <section aria-label="Build summary" data-testid="inspector-empty-state" style={card}>
-      <p style={{ margin: '0 0 12px', color: 'var(--rv-text)', lineHeight: 1.45 }}>
-        Click any part in the 3D view to see its SKU, price, and fit checks.
-      </p>
-      <dl
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'auto 1fr',
-          gap: '8px 12px',
-          margin: 0,
-          fontSize: 'var(--rv-text-caption)',
-        }}
-      >
-        <dt style={{ color: 'var(--rv-text-muted)' }}>Status</dt>
-        <dd style={{ margin: 0 }} data-testid="build-summary-status">
-          {statusText[plan.status]}
-          {blockingCount > 0 ? ` ${blockingCount} blocking check${blockingCount === 1 ? '' : 's'} failed or unknown.` : ''}
-        </dd>
-        <dt style={{ color: 'var(--rv-text-muted)' }}>Cost</dt>
-        <dd style={{ margin: 0 }} data-testid="build-summary-cost">
-          {bomSummary.knownSubtotal !== null
-            ? `${bomSummary.totalLabel === 'Total' ? 'Total' : 'Known so far'}: ${bomSummary.knownSubtotal} ${bomSummary.currency}`
-            : 'Unknown'}
-          {bomSummary.unpricedRowCount > 0 ? (
-            <span style={{ display: 'block', color: 'var(--rv-warn-text)' }} data-testid="build-summary-unpriced">
-              {bomSummary.unpricedRowCount} of {bomSummary.rowCount} parts have no price yet.
-            </span>
-          ) : null}
-        </dd>
-        <dt style={{ color: 'var(--rv-text-muted)' }}>Parts</dt>
-        <dd style={{ margin: 0 }}>
-          {plan.components.length} placed · {bomSummary.rowCount} to buy
-        </dd>
-      </dl>
+    <section data-testid="inspector-empty-state">
+      <p className="rv-hint">Click any part in the 3D view to see its SKU, price, and fit checks.</p>
+      <BuildOverview plan={panelPlan} catalog={panelCatalog} onSelectInstance={onSelectInstance} />
     </section>
   );
-
-  const partDetails = (
-    <div style={card}>
-      <PartInspector
-        plan={panelPlan}
-        catalog={panelCatalog}
-        selectedInstanceId={selectedInstanceId}
-        onSelectInstance={onSelectInstance}
-      />
-    </div>
-  );
+  const partDetails = selected ? (
+    <section data-testid="part-inspector" data-instance-id={selected.instance_id}>
+      <details><summary>Selected instance</summary><code data-testid="inspector-instance-id">{selected.instance_id}</code></details>
+      <ProductCard plan={panelPlan} catalog={panelCatalog} catalogId={selected.catalog_id} />
+    </section>
+  ) : null;
+  const imageNotes = plan.provenance.notes.filter((note) => /^Image (applied:|ignored:|did not change the build:)/.test(note));
 
   return (
     <div
@@ -168,9 +128,24 @@ export function Inspector({
       style={{ display: 'flex', flexDirection: 'column', gap: 12 }}
     >
       {mode === 'design' && (selectedInstanceId ? partDetails : buildSummary)}
+      {mode === 'design' && imageNotes.length > 0 && (
+        <section aria-label="How the image affected this build" style={card} data-testid="image-build-effects">
+          <h2 style={sectionTitle}>How the image affected this build</h2>
+          <ul>{imageNotes.map((note, i) => <li key={i}>{note}</li>)}</ul>
+        </section>
+      )}
 
       {mode === 'inspect' && (
         <>
+          {Object.entries(plan.provenance.sourcing?.link_checks ?? {}).some(([, c]) => c.status !== 'pass' || !c.fresh || c.flags.length > 0) && (
+            <section aria-label="Current supplier evidence" style={card} data-testid="supplier-evidence-warnings">
+              <h2 style={sectionTitle}>Current supplier evidence</h2>
+              <p>Build verification below describes the saved revision. These supplier observations are checked separately.</p>
+              <ul>{Object.entries(plan.provenance.sourcing?.link_checks ?? {}).filter(([, c]) => c.status !== 'pass' || !c.fresh || c.flags.length > 0).map(([id, c]) => (
+                <li key={id}>{catalog.find((part) => part.catalog_id === id)?.identity.model ?? id}: {c.status} · {c.detail}{!c.fresh ? ' · stale or missing evidence' : ''}{c.flags.length ? ` · ${c.flags.join(', ')}` : ''}</li>
+              ))}</ul>
+            </section>
+          )}
           <section aria-label="Bill of materials" data-testid="inspector-bom-section" style={{ ...card, overflowX: 'auto' }}>
             <BOMPanel
               plan={panelPlan}
@@ -179,6 +154,7 @@ export function Inspector({
               onSelectInstance={onSelectInstance}
             />
           </section>
+          {selectedInstanceId ? partDetails : null}
           <section aria-label="Verification" data-testid="inspector-verify-section" style={card}>
             <VerificationPanel plan={panelPlan} onSelectInstance={onSelectInstance} />
           </section>
@@ -355,6 +331,10 @@ export function Inspector({
         <>
           <section aria-label="Assembly steps" data-testid="inspector-assembly-steps" style={card}>
             <h2 style={sectionTitle}>Assembly steps ({plan.assembly_steps.length})</h2>
+            <p data-testid="assembly-bom-coverage" data-complete={coverage.complete ? 'true' : 'false'}>
+              {coverage.coveredCount} of {coverage.total} BOM lines covered.
+            </p>
+            {!coverage.complete && <p role="alert">Instructions are missing for {coverage.uncovered.map((line) => line.catalog_id).join(', ')}. Do not assume the guide is complete.</p>}
             <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 6 }}>
               {plan.assembly_steps.map((s, idx) => {
                 const stepIdx = idx + 1;
@@ -391,6 +371,16 @@ export function Inspector({
                         </div>
                       )}
                     </button>
+                    <ul aria-label={`Parts for step ${s.step}`} style={{ margin: '6px 0', paddingLeft: 18 }}>
+                      {s.instance_ids.map((id) => {
+                        const component = plan.components.find((c) => c.instance_id === id);
+                        const entry = catalog.find((c) => c.catalog_id === component?.catalog_id);
+                        return <li key={id} data-testid={`assembly-item-${s.step}-${id}`}>
+                          <button type="button" className="rv-btn" onClick={() => onSelectInstance(id)}>{entry?.identity.model ?? id}</button>
+                          {isUnmodeledKitItem(component) && <KitItemBadge />}
+                        </li>;
+                      })}
+                    </ul>
                   </li>
                 );
               })}

@@ -31,6 +31,7 @@ Validate fixtures or any JSON file with `uv run scripts/validate_contracts.py` (
 | POST | `/api/assets/images` | multipart `file` (image) | `200 { "asset_id", "mime_type", "size_bytes", "preview_url" }`. `preview_url` is server-controlled; clients never send paths |
 | GET | `/api/assets/{asset_id}/preview` | none | image bytes |
 | POST | `/api/projects/generate` | `{ "input": { "kind", "image_asset_id", "user_text" }, "requirements"? }` | `202 { "job_id", "status": "queued" \| "running" \| "complete" \| "failed", "build_id": null }` |
+| POST | `/api/intents/interpret` | same body as generate (same input rules) | `200 { "intent_id", "intent": IntentSpec, "supported": bool, "limitation": null \| { "code", "message", "details" }, "vision_mode": "live" \| "fixture" \| "fallback" }`; see [Interpretations](#interpretations) |
 | GET | `/api/jobs/{job_id}` | none | `200 { "job_id", "status", "stage", "progress", "error"?, "build_id"?, "revision"? }` |
 | GET | `/api/jobs/{job_id}/events` | optional `Last-Event-ID` header | `200 text/event-stream` of [job events](#job-events) |
 | GET | `/api/projects/{build_id}` | optional `?revision=<int ≥ 1>` (default latest) | `200 BuildPlan` |
@@ -46,9 +47,40 @@ Request details:
 - `generate.requirements` holds only what the user stated (`max_budget` decimal string or `null`, `currency`, `max_length_mm`, `max_width_mm`, `preferred_color`). The server never fills it from model output.
 - Job `progress` is a server-measured fraction `0..1` or `null`. Clients must not invent percentages.
 - Edits never mutate a revision. Accepted edits create `revision = base_revision + 1` with the same `build_id`. A rejected edit returns the blocking `finding` (BuildPlan finding shape) and keeps the previous revision current.
-- `GET /api/projects/{build_id}` may add an optional, response-only `provenance.sourcing` object (`synthetic`, `synthetic_catalog_ids`, `unverified_link_count`, `sku_missing_count`), computed from the catalog on read. Stored revisions, `build.json` exports and engine output never carry it. Clients should read `sourcing.synthetic` instead of searching notes for "SYNTHETIC".
+- `GET /api/projects/{build_id}` may add an optional, response-only `provenance.sourcing` object (`synthetic`, `synthetic_catalog_ids`, `unverified_link_count`, `sku_missing_count`, optional `link_checks`), computed from the catalog on read. Stored revisions, `build.json` exports and engine output never carry it. Clients should read `sourcing.synthetic` instead of searching notes for "SYNTHETIC".
 - Every export response carries `X-Rivet-Generation-Mode` and `X-Rivet-Synthetic: true|false`. A `verified_product` BOM row needs a catalog SKU and a verified https purchase link equal to the row's URL; a `live` plan with synthetic parts is refused with `502 SYNTHETIC_PARTS_IN_LIVE_PLAN`.
 - Every plan the API returns has passed schema and referential checks. Source mode is reported honestly in `provenance.generation_mode` (`live | fixture | fallback | manual_template`); a fallback is never presented as live output.
+- `generate` also takes optional `intent_id` (from `POST /api/intents/interpret`) and `interpretation_choice: "as_interpreted" | "closest_supported_rover"` (default `as_interpreted`); see [Interpretations](#interpretations).
+
+## Interpretations
+
+Additive (issue #66): a client can show what the vision step understood before anything is built, and recover from an unsupported result instead of ending at an error.
+
+- `POST /api/intents/interpret` runs the vision provider and the deterministic sanitizer only, never the engine. The sanitized `IntentSpec` is stored server-side under its `intent_id` (in memory, per process, bounded, expires after 1 h). `vision_mode` is the provider that answered: `fixture` is the offline mock, which does not look at the image.
+- An unsupported interpretation is a `200` with `supported: false` and `limitation = { code, message, details }`, the same values as the `422` the support gate raises from a generate job (below).
+- `generate` with `intent_id` builds exactly that interpretation and does not call vision again. `input` must equal the interpreted input, else `409 INTENT_INPUT_MISMATCH`; `requirements` are applied from the generate request. An unknown or expired id is `404 INTENT_NOT_FOUND`. Both errors come back before a job exists.
+- `interpretation_choice: "closest_supported_rover"` requires `intent_id` and is the only way to build from an unsupported interpretation. The server sets `project_family = rover`, `support_status = supported` and `requested_behavior = obstacle_avoidance` (the only supported behavior), keeps visible features, unknowns and confidence, adds an assumption, and records the choice in `provenance.notes` (carried to later revisions) and in an `understand` job event with status `warning`, e.g. `User chose to build the closest supported rover; the image was interpreted as rc_car (medium confidence, live vision); requested behavior manual_drive replaced by obstacle_avoidance`. It changes nothing for an interpretation that already is a supported obstacle-avoiding rover. Without the choice, an unsupported interpretation fails as before.
+- When the support gate refuses an intent, the `422 UNSUPPORTED_PROJECT_FAMILY` details (and a failed job's `error.details`) are:
+
+```json
+{
+  "supported_families": ["rover"],
+  "detected_family": "rc_car",
+  "interpretation": {
+    "intent_id": "intent-1a2b3c4d5e6f",
+    "project_family": "rc_car",
+    "requested_behavior": "manual_drive",
+    "support_status": "planned",
+    "confidence": "medium",
+    "visual_features": ["four wheels", "low body"],
+    "assumptions": ["Hidden electronics are not inferable from the image"],
+    "unknowns": ["Motor and battery specifications"],
+    "vision_mode": "live"
+  }
+}
+```
+
+`interpretation.intent_id` is stored as well, so a client can offer the closest-rover choice from a failed job. Job events have no `details` field, so for accepted runs the interpretation comes from `POST /api/intents/interpret`.
 
 ## Errors
 
@@ -84,7 +116,9 @@ Codes in use in v1. Clients must treat unlisted codes by their HTTP status; new 
 |---|---|---|
 | `BAD_REQUEST`, `BAD_BUILD_ID`, `INVALID_IMAGE`, `INVALID_SYMBOL`, `PATH_NOT_ALLOWED` | 400 | no |
 | `PROJECT_NOT_FOUND`, `REVISION_NOT_FOUND`, `JOB_NOT_FOUND`, `ASSET_NOT_FOUND` | 404 | no |
+| `INTENT_NOT_FOUND` (unknown or expired `intent_id`) | 404 | no |
 | `STALE_REVISION`, `PROJECT_EXISTS` | 409 | no |
+| `INTENT_INPUT_MISMATCH` (`intent_id` interpreted from another input) | 409 | no |
 | `FILE_TOO_LARGE` | 413 | no |
 | `UNSUPPORTED_PROJECT_FAMILY`, `UNSUPPORTED_EDIT`, `FIRMWARE_NOT_SUPPORTED`, `FIRMWARE_REFUSED`, `FIRMWARE_INVALID_PIN_MAP`, `FIRMWARE_INVALID_PARAMETER`, `EXPORT_REFUSED_SYNTHETIC` | 422 | no |
 | `PROVIDER_QUOTA` | 429 | yes |
@@ -149,3 +183,22 @@ uv run scripts/validate_contracts.py --intent i.json --component c.json --error 
 Exit code `0` means every check passed. Not machine-checked: that each `pin_map` signal maps to a specific controller port, since signal names are profile-specific (B's wiring profiles own that rule).
 
 Examples: [`examples/error-unsupported-project-family.json`](examples/error-unsupported-project-family.json) (valid) and [`examples/invalid/section-3.3-shape-only-plan.json`](examples/invalid/section-3.3-shape-only-plan.json) (must be rejected).
+
+### Supplier-check metadata
+
+`provenance.sourcing.link_checks` is an optional map keyed by catalog ID. Each entry has
+`status` (`pass`, `broken`, `blocked`, `error`, or `unchecked`), nullable `checked_at`,
+`catalog_verified_at`, `verified_at`, boolean `fresh`, string-array `flags`, and `detail`.
+It comes from the engine's public `get_sourcing_report(as_of=None)` entry point and only
+covers parts in the response. `fresh` means dated verification within 30 days, not a new
+stock or price guarantee. A later broken check disables purchase actions; blocked/error
+checks do not become passes. Stored revision status and export contents stay immutable.
+The scheduled supplier workflow produces reviewable evidence, never silently rewrites catalog facts.
+
+### Bounded visible features
+
+`IntentSpec.image_features` is optional/null for older callers. The schema defines nullable
+wheel count (1–8), caster presence, sensor position/kind, wheel/chassis size, body color and
+visible controller. Missing means unknown. Strings are capped at 60 characters. Only supported
+rover-template adjustments are applied; each applied or ignored trait is recorded in plan notes.
+This does not identify exact products, infer electronics, or add product families.

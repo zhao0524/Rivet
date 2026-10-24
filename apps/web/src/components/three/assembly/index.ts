@@ -37,3 +37,11 @@ export {
   type AssemblyTimelineControlsProps,
   type AssemblyTimelineStepLabel,
 } from './AssemblyTimelineControls';
+export {
+  computeStepCoverage,
+  instructionFor,
+  isUnmodeledKitItem,
+  type BomLineCoverage,
+  type CoveragePlan,
+  type StepCoverage,
+} from './coverage';

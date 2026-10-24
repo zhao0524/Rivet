@@ -102,10 +102,10 @@ describe('Inspector empty state (#56)', () => {
     await renderStudio();
     const empty = screen.getByTestId('inspector-empty-state');
     expect(empty.textContent).toContain('Click any part in the 3D view to see its SKU, price, and fit checks');
-    expect(screen.getByTestId('build-summary-status').textContent).toContain('Needs review');
-    expect(screen.getByTestId('build-summary-status').textContent).toContain('2 blocking checks failed or unknown');
-    expect(screen.getByTestId('build-summary-cost').textContent).toContain('Unknown');
-    expect(screen.getByTestId('build-summary-unpriced').textContent).toBe('9 of 9 parts have no price yet.');
+    expect(screen.getByTestId('overview-status').textContent).toContain('Needs review');
+    expect(screen.getByTestId('overview-blocking').textContent).toContain('2 blocking findings unresolved');
+    expect(screen.getByTestId('overview-price').textContent).toContain('Unknown');
+    expect(screen.getByTestId('overview-unpriced').textContent).toBe('9 of 9 lines with no price');
   });
 
   it('is replaced by part details once a part is selected', async () => {

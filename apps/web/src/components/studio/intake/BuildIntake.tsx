@@ -1,6 +1,7 @@
 "use client";
 
-import { useId, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import type { InterpretResponse } from "../../../lib/rivet/types";
 import { GenerationStatus } from "./GenerationStatus";
 import { ImageDropzone } from "./ImageDropzone";
 import { SavedExampleLauncher } from "./SavedExampleLauncher";
@@ -15,6 +16,8 @@ import type {
 import { MAX_IMAGE_BYTES } from "./validation";
 
 export interface BuildIntakeProps {
+  /** Reads the input without calling the engine; generation requires explicit confirmation. */
+  onInterpret?: (request: GenerateRequest) => Promise<InterpretResponse>;
   /** Uploads the image (`POST /api/assets/images`). Only called after the user clicks Generate. */
   onUpload: (file: File, options?: UploadOptions) => Promise<UploadedImageAsset>;
   /** Starts a job (`POST /api/projects/generate`). Job state comes back through `job`/`events`. */
@@ -33,7 +36,7 @@ export interface BuildIntakeProps {
   className?: string;
 }
 
-type Phase = "idle" | "uploading" | "submitting";
+type Phase = "idle" | "uploading" | "interpreting" | "submitting";
 
 /** The demo request from README "Demo target"; offered as a one-click quick fill. */
 export const SAMPLE_PROMPT =
@@ -65,6 +68,7 @@ function parseBudget(raw: string): { ok: true; value: number | null } | { ok: fa
 }
 
 export function BuildIntake({
+  onInterpret,
   onUpload,
   onGenerate,
   job = null,
@@ -77,6 +81,17 @@ export function BuildIntake({
   maxImageBytes = MAX_IMAGE_BYTES,
   className,
 }: BuildIntakeProps) {
+  const [interpretation, setInterpretation] = useState<InterpretResponse | null>(null);
+  const [interpretedRequest, setInterpretedRequest] = useState<GenerateRequest | null>(null);
+  const requestEpoch = useRef(0);
+  useEffect(() => () => { requestEpoch.current += 1; uploadAbort.current?.abort(); }, []);
+  function clearInterpretation() {
+    requestEpoch.current += 1;
+    setInterpretation(null);
+    setInterpretedRequest(null);
+    setLastRequest(null);
+    setPhase("idle");
+  }
   const promptId = useId();
   const budgetId = useId();
   const [file, setFile] = useState<File | null>(null);
@@ -96,6 +111,7 @@ export function BuildIntake({
   const hasInput = !!file || prompt.trim().length > 0;
 
   function selectFile(next: File | null) {
+    clearInterpretation();
     setFile(next);
     setAsset(null);
     setFormError(null);
@@ -109,7 +125,11 @@ export function BuildIntake({
       setLastRequest(request);
     } catch (error) {
       setLastRequest(request);
-      setFormError(errorMessage(error, "Could not start generation."));
+      const code = (error as { code?: string })?.code;
+      if (code === "INTENT_NOT_FOUND" || code === "INTENT_INPUT_MISMATCH") {
+        clearInterpretation();
+        setFormError("This interpretation expired or the input changed. Review the input again before building.");
+      } else setFormError(errorMessage(error, "Could not start generation."));
     } finally {
       setPhase("idle");
     }
@@ -157,7 +177,20 @@ export function BuildIntake({
       },
       requirements: { max_budget: parsedBudget.value, currency },
     };
-    await submit(request);
+    if (onInterpret) {
+      const epoch = ++requestEpoch.current;
+      setPhase("interpreting");
+      try {
+        const result = await onInterpret(request);
+        if (epoch !== requestEpoch.current) return;
+        setInterpretation(result);
+        setInterpretedRequest(request);
+      } catch (error) {
+        if (epoch === requestEpoch.current) setFormError(errorMessage(error, "Could not interpret this input. Try another image or describe it in words."));
+      } finally {
+        if (epoch === requestEpoch.current) setPhase("idle");
+      }
+    } else await submit(request);
   }
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -183,7 +216,7 @@ export function BuildIntake({
   function retry() {
     setFormError(null);
     setNotice(null);
-    if (lastRequest) {
+    if (lastRequest && (!onInterpret || interpretation)) {
       void submit(lastRequest);
     } else {
       void generate();
@@ -211,7 +244,7 @@ export function BuildIntake({
           <textarea
             id={promptId}
             value={prompt}
-            onChange={(event) => setPrompt(event.target.value)}
+            onChange={(event) => { clearInterpretation(); setPrompt(event.target.value); }}
             disabled={busy}
             rows={3}
             className="rv-input"
@@ -226,7 +259,7 @@ export function BuildIntake({
                 data-testid="intake-sample-prompt"
                 disabled={busy}
                 title={SAMPLE_PROMPT}
-                onClick={() => setPrompt(SAMPLE_PROMPT)}
+                onClick={() => { clearInterpretation(); setPrompt(SAMPLE_PROMPT); }}
               >
                 Try: “Design something like this that can avoid obstacles…”
               </button>
@@ -247,7 +280,7 @@ export function BuildIntake({
               min={0}
               step="any"
               value={budget}
-              onChange={(event) => setBudget(event.target.value)}
+              onChange={(event) => { clearInterpretation(); setBudget(event.target.value); }}
               disabled={busy}
               className="rv-input"
               style={{ width: 160 }}
@@ -258,7 +291,7 @@ export function BuildIntake({
 
         <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
           <button type="submit" disabled={busy || !hasInput} className="rv-btn rv-btn--primary" style={{ minHeight: 36, padding: "6px 16px" }}>
-            {file && !asset ? "Upload and generate" : "Generate"}
+            {onInterpret ? "Review interpretation" : file && !asset ? "Upload and generate" : "Generate"}
           </button>
           {phase === "uploading" ? (
             <button type="button" onClick={cancel} className="rv-btn">
@@ -271,7 +304,7 @@ export function BuildIntake({
             </button>
           ) : null}
           <p role="status" aria-live="polite" className="rv-hint" data-testid="intake-phase">
-            {phase === "uploading" ? "Uploading image…" : phase === "submitting" ? "Starting generation…" : notice ?? ""}
+            {phase === "uploading" ? "Uploading image…" : phase === "interpreting" ? "Reading the input…" : phase === "submitting" ? "Starting generation…" : notice ?? ""}
           </p>
         </div>
         {formError ? (
@@ -280,6 +313,31 @@ export function BuildIntake({
           </p>
         ) : null}
       </form>
+
+      {interpretation && interpretedRequest ? (
+        <section aria-label="What we understood" data-testid="interpretation-card" className="rv-details" style={{ padding: 12 }}>
+          <h2>Here is what we understood</h2>
+          <p><strong>{interpretation.intent.project_family.replace(/_/g, " ")}</strong> · {interpretation.intent.confidence} confidence</p>
+          {interpretation.vision_mode !== "live" && <p role="note">Offline example interpretation: this provider does not read your image.</p>}
+          {interpretation.intent.confidence === "low" && <p role="note">Low confidence. Check the interpretation and correct your description before continuing.</p>}
+          {([
+            ["Visible features", interpretation.intent.visual_features],
+            ["Assumptions", interpretation.intent.assumptions],
+            ["Missing information", interpretation.intent.unknowns],
+          ] as const).map(([label, items]) => <div key={label}><h3>{label}</h3>{items.length ? <ul>{items.map((item, i) => <li key={i}>{item}</li>)}</ul> : <p>None reported.</p>}</div>)}
+          {interpretation.limitation && <p role="alert">{interpretation.limitation.message}</p>}
+          <p>The current rover template supports bounded front-sensor height changes. Other image features may be ignored; the resulting build explains which ones.</p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            <button type="button" className="rv-btn rv-btn--primary" disabled={busy}
+              onClick={() => void submit({ ...interpretedRequest, intent_id: interpretation.intent_id,
+                interpretation_choice: interpretation.supported ? "as_interpreted" : "closest_supported_rover" })}>
+              {interpretation.supported ? "Confirm and build" : "Build the closest supported rover"}
+            </button>
+            <button type="button" className="rv-btn" disabled={busy} onClick={() => { selectFile(null); document.querySelector<HTMLInputElement>('[data-testid="image-dropzone-input"]')?.focus(); }}>Replace image</button>
+            <button type="button" className="rv-btn" disabled={busy} onClick={() => { selectFile(null); document.getElementById(promptId)?.focus(); }}>Describe it in words</button>
+          </div>
+        </section>
+      ) : null}
 
       {job ? (
         <GenerationStatus

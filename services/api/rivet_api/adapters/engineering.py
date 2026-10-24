@@ -24,7 +24,9 @@ class EngineeringPort(Protocol):
 class RealEngineeringAdapter:
     def __init__(self) -> None:
         try:
+            import rivet_engine
             from rivet_engine import apply_edit, get_catalog, solve, verify
+            self._get_sourcing_report = getattr(rivet_engine, "get_sourcing_report", None)
         except ImportError as exc:
             raise ApiError(
                 "ENGINE_UNAVAILABLE",
@@ -94,6 +96,9 @@ class RealEngineeringAdapter:
 
     def verify(self, plan: dict[str, Any]) -> dict[str, Any]:
         return self._call(self._verify, plan)
+
+    def get_sourcing_report(self) -> dict[str, Any]:
+        return self._call(self._get_sourcing_report) if self._get_sourcing_report else {}
 
     def get_catalog(self) -> list[dict[str, Any]]:
         return self._call(self._get_catalog)

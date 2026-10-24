@@ -11,10 +11,10 @@ from collections.abc import Sequence
 
 from rivet_engine.models import BuildPlan, Finding, PlanStatus
 from rivet_engine.ports import Catalog, VerificationContext, VerificationReport
-from rivet_engine.validators import budget, electrical, firmware, integrity, mechanical, requirements
+from rivet_engine.validators import budget, electrical, firmware, integrity, mechanical, requirements, sourcing
 from rivet_engine.validators.common import PlanView
 
-CHECKS = (integrity, requirements, mechanical, electrical, budget, firmware)
+CHECKS = (integrity, requirements, mechanical, electrical, budget, firmware, sourcing)
 
 
 def aggregate(findings: Sequence[Finding]) -> PlanStatus:

@@ -131,10 +131,11 @@ describe('3D Studio, Inspector, Timeline, Wiring & Edit Integration (C1–C7)', 
     expect(outcome.textContent).toContain('edits cannot be validated in fixture mode');
   });
 
-  it('renders Developer B sourced rover plan with priced BOM ($105.45 USD), 9 GPIO pins, and 55 verification findings', async () => {
+  it('renders the saved engine-sourced rover (catalog v1.2) with its capture time, priced BOM ($110.80 USD) and 54 findings', async () => {
+    const plan = getSourcedRoverPlan();
     const sourcedFixture = new FixtureSource({
       catalog: getSourcedCatalog(),
-      plans: [getSourcedRoverPlan()],
+      plans: [plan],
       defaultBuildId: SOURCED_ROVER_BUILD_ID,
     });
 
@@ -144,17 +145,33 @@ describe('3D Studio, Inspector, Timeline, Wiring & Edit Integration (C1–C7)', 
       expect(screen.getByTestId('studio-build-identity').textContent).toContain(SOURCED_ROVER_BUILD_ID);
     });
 
+    // Banner: "Saved demo build" with the capture time; real parts, not synthetic, not a live run.
+    // (A banner that keeps the reasons behind a Details toggle is expanded first.)
+    const banner = screen.getByTestId('provenance-trust-banner');
+    expect(banner.getAttribute('data-trust-label')).toBe('Saved demo build');
+    expect(banner.getAttribute('data-synthetic')).toBe('false');
+    const detailsToggle = screen.queryByTestId('trust-banner-details-toggle');
+    if (detailsToggle) fireEvent.click(detailsToggle);
+    const captured = `${plan.created_at.slice(0, 10)} ${plan.created_at.slice(11, 16)} UTC`;
+    expect(banner.textContent).toContain('Saved demo build');
+    expect(banner.textContent).toContain(`Captured ${captured}`);
+    expect(banner.textContent).toContain('Sourced catalog parts, loaded from a saved build, not a live generation');
+    expect(banner.textContent).not.toMatch(/synthetic/i);
+
     // Loose kit accessories are marked as unmodeled in the component tree
     expect(screen.getByTestId('tree-select-accessory-4').textContent).toContain('unmodeled kit item');
 
-    // Inspect mode shows the complete total of 105.45 USD and verified Adafruit/SparkFun product links
+    // Inspect mode shows the complete total of 110.80 USD and verified Adafruit/SparkFun product links
     fireEvent.click(screen.getByTestId('studio-mode-inspect'));
-    expect(screen.getByTestId('bom-total').textContent).toContain('Total: 105.45 USD');
+    expect(screen.getByTestId('bom-total').textContent).toContain('Total: 110.80 USD');
     expect(screen.getByTestId('bom-link-board.esp32_devkitc_v4_wroom32e').getAttribute('href')).toBe(
       'https://www.adafruit.com/product/3269',
     );
+    expect(screen.getByTestId('bom-link-motor.adafruit_tt_bimetal_1to90_3801').getAttribute('href')).toBe(
+      'https://www.adafruit.com/product/3801',
+    );
 
-    // Inspect mode also renders all 55 findings (including multiple mechanical.fit_evidence findings)
+    // Inspect mode also renders the findings (including multiple mechanical.fit_evidence findings)
     expect(screen.getAllByTestId('finding-mechanical.fit_evidence').length).toBeGreaterThan(1);
 
     // Wiring mode shows all 20 electrical connections and the 9 ESP32 GPIO pins in pin_map

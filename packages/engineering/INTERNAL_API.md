@@ -120,8 +120,10 @@ def plan_from_dict(data: dict) -> BuildPlan       # InvalidInputError on schema 
 - BOM rows grouped by `catalog_id` in ID order, `quantity == len(instance_ids)`.
 - Mixed currencies raise nothing; they make the affected rows' prices excluded from the
   subtotal and `total_status = "incomplete"`.
-- Steps: structural order from the parent graph, then wiring, then a check step; power
-  connection only after the wiring check. Cycles raise `PlacementError`.
+- Steps: structural order from the parent graph, then wiring, then a check step, then inserting
+  cells; connecting power is the last step. Each loose kit item is named in the step that uses it
+  (`assembly.KIT_USES`), or in a "Kit items not used by this plan" step, so every BOM line appears
+  in at least one step. Cycles raise `PlacementError`.
 
 ### P6 — `rivet_engine/repair.py`
 

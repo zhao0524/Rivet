@@ -93,7 +93,8 @@ export type StageEventStatus = (typeof STAGE_EVENT_STATUSES)[number];
 export interface IntentInput {
   kind: InputKind;
   image_asset_id: string | null;
-  user_text: string;
+  /** `null` for image-only input (contracts/intent.schema.json allows string or null). */
+  user_text: string | null;
   image_interpretation_is_approximate?: boolean;
 }
 
@@ -110,7 +111,27 @@ export interface IntentRequirements {
 
 export type IntentConfidence = OpenString<"low" | "medium" | "high">;
 
+export interface ImageFeatures {
+  drive_wheel_count?: number | null;
+  has_caster?: boolean | null;
+  range_sensor_position?: "front_low" | "front_mid" | "front_high" | "none" | null;
+  range_sensor_kind?: "time_of_flight" | "ultrasonic" | "infrared" | "unknown" | null;
+  wheel_size?: "small" | "medium" | "large" | null;
+  chassis_size?: "compact" | "medium" | "large" | null;
+  body_color?: string | null;
+  visible_controller?: string | null;
+}
+
+export interface InterpretResponse {
+  intent_id: string;
+  intent: IntentSpec;
+  supported: boolean;
+  limitation: { code: string; message: string; details: Record<string, unknown> } | null;
+  vision_mode: "live" | "fixture" | "fallback";
+}
+
 export interface IntentSpec {
+  image_features?: ImageFeatures | null;
   schema_version: SchemaVersion;
   intent_id: string;
   input: IntentInput;
@@ -317,7 +338,18 @@ export interface FirmwareSpec {
   compile_status: CompileStatus;
 }
 
+export interface LinkCheckSummary {
+  status: "pass" | "broken" | "blocked" | "error" | "unchecked";
+  checked_at: string | null;
+  catalog_verified_at: string | null;
+  verified_at: string | null;
+  fresh: boolean;
+  flags: string[];
+  detail: string;
+}
+
 export interface Provenance {
+  sourcing?: { synthetic: boolean; synthetic_catalog_ids: string[]; unverified_link_count: number; sku_missing_count: number; link_checks?: Record<string, LinkCheckSummary> };
   input_mode: InputKind;
   catalog_version: string;
   generation_mode: GenerationMode;
@@ -354,6 +386,8 @@ export interface HealthResponse {
 }
 
 export interface GenerateRequest {
+  intent_id?: string;
+  interpretation_choice?: "as_interpreted" | "closest_supported_rover";
   input: {
     kind: InputKind;
     image_asset_id: string | null;
@@ -394,6 +428,7 @@ export interface RevisionsResponse {
   revisions: RevisionSummary[];
 }
 
+/** `status` of one grounding result (`POST /api/estelle/ground`); the status endpoint has no such field. */
 export type EstelleStatusValue = "ok" | "ungrounded" | "unavailable";
 
 export interface EstelleCitation {
@@ -402,12 +437,24 @@ export interface EstelleCitation {
   symbol_in_file: boolean;
 }
 
+/** `estelle doctor` result; present only when the API actually ran the CLI. */
+export interface EstelleDoctorResult {
+  exit_code: number;
+  output_tail: string;
+}
+
+/**
+ * `GET /api/estelle/status` exactly as services/api returns it (`RepoGrounder.status()` in
+ * `rivet_api/firmware/estelle.py`); contracts/api.md does not list the Estelle endpoints.
+ * Every state is a 200 answer: `available` is true only when Estelle is enabled and
+ * `estelle doctor` exited 0, otherwise `reason` says why (flag off, CLI missing, doctor failed...).
+ */
 export interface EstelleStatusResponse {
-  status: EstelleStatusValue;
   enabled: boolean;
+  /** `RIVET_ESTELLE_MODE` on the API (`cli` or `mcp`); `fixture` from FixtureSource. */
   mode: string;
-  cli_found: boolean;
-  repo_valid: boolean;
+  available: boolean;
+  doctor: EstelleDoctorResult | null;
   reason: string;
 }
 

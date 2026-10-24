@@ -11,7 +11,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "e2e": "playwright test",
-    "e2e:install": "playwright install chromium"
+    "e2e:install": "playwright install chromium",
+    "e2e:acceptance": "playwright test -c playwright.acceptance.config.ts"
   },
   "dependencies": {
     "@react-three/drei": "9.122.0",

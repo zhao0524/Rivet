@@ -9,7 +9,8 @@ from __future__ import annotations
 
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from dataclasses import dataclass, field
-from typing import Any, Literal, Protocol
+from datetime import date
+from typing import TYPE_CHECKING, Any, Literal, Protocol
 
 from rivet_engine.models import (
     AssemblyStep,
@@ -27,6 +28,9 @@ from rivet_engine.models import (
     RequestedBehavior,
     Verification,
 )
+
+if TYPE_CHECKING:  # link_checks imports models only; a runtime import here is not needed
+    from rivet_engine.link_checks import LinkChecks
 
 Vec3 = tuple[float, float, float]
 
@@ -216,6 +220,11 @@ class VerificationContext:
     # Injected mount transform (parent instance, parent mount, child mount) -> expected child
     # world position in mm. None => pose consistency is reported as not checked.
     expected_position: Callable[[ComponentInstance, Mount, Mount], Sequence[float]] | None = None
+    # Latest purchase-link check report (link_checks.load_link_checks()). None => no report:
+    # link freshness uses catalog verification dates only and no link counts as broken.
+    link_checks: LinkChecks | None = None
+    # Date link freshness is judged against; None => the plan's created_at date.
+    as_of: date | None = None
 
 
 @dataclass(frozen=True)

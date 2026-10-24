@@ -4,8 +4,9 @@
                -> bounded repair (re-verifying after every change) -> BuildPlan
 
 Selections come from a fixed, catalog-backed default stack; the intent only steers
-supported choices (preferred controller, sensor). Nothing here calls a model, the
-network or the renderer.
+supported choices (preferred controller, sensor). Visible traits from the image steer only
+what the template supports (image_features.py) and are reported either way. Nothing here
+calls a model, the network or the renderer.
 """
 
 from __future__ import annotations
@@ -22,13 +23,14 @@ from typing import Annotated
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from rivet_engine import assembly, bom, mounts, repair, wiring
+from rivet_engine import assembly, bom, image_features, mounts, repair, wiring
 from rivet_engine.models import (
     Behavior,
     DecimalString,
     RequestedBehavior,
     BuildPlan,
     Firmware,
+    ImageFeatures,
     IntentRequirements,
     IntentSpec,
     Provenance,
@@ -52,6 +54,7 @@ from rivet_engine.ports import (
 )
 from rivet_engine.validators import aggregate, sort_findings, verify_candidate
 from rivet_engine.validators.firmware import BEHAVIOR_BOUNDS
+from rivet_engine.link_checks import LinkChecks
 
 PROFILE_ID = "rover.obstacle_avoidance.v1"
 FIRMWARE_TARGET = "esp32_arduino_platformio"
@@ -109,6 +112,7 @@ class _StateNote(BaseModel):
     max_length_mm: Annotated[_Finite, Field(gt=0)] | None = None
     max_width_mm: Annotated[_Finite, Field(gt=0)] | None = None
     mount_offsets: dict[str, Annotated[list[_Finite], Field(min_length=3, max_length=3)]] = {}
+    image_features: ImageFeatures | None = None
 
 
 @dataclass(frozen=True)
@@ -121,9 +125,11 @@ class EngineState:
     max_length_mm: float | None = None
     max_width_mm: float | None = None
     mount_offsets: Mapping[str, tuple[float, float, float]] = field(default_factory=dict)
+    # The intent's image traits, kept so every rebuild can report them against the current build.
+    image_features: ImageFeatures | None = None
 
     def note(self) -> str:
-        data = {
+        data: dict[str, Any] = {
             "max_budget": self.max_budget,
             "currency": self.currency,
             "requested_behavior": self.requested_behavior,
@@ -131,6 +137,8 @@ class EngineState:
             "max_width_mm": self.max_width_mm,
             "mount_offsets": {k: list(v) for k, v in sorted(self.mount_offsets.items())},
         }
+        if self.image_features is not None:
+            data["image_features"] = self.image_features.model_dump(mode="json", exclude_none=True)
         return STATE_PREFIX + json.dumps(data, sort_keys=True)
 
     @classmethod
@@ -153,6 +161,7 @@ class EngineState:
             max_length_mm=data.max_length_mm,
             max_width_mm=data.max_width_mm,
             mount_offsets={k: tuple(float(x) for x in v) for k, v in data.mount_offsets.items()},
+            image_features=data.image_features,
         )
 
     def requirements(self) -> IntentRequirements | None:
@@ -291,6 +300,8 @@ class Builder:
     generation_mode: str = "live"
     # Physical-fit evidence; None means "not checked" (e.g. synthetic test catalogs).
     fit_evidence: Mapping[str, Mapping[str, Any]] | None = None
+    # Latest purchase-link check report (link_checks.load_link_checks()); None means no report.
+    link_checks: LinkChecks | None = None
 
     def assemble(
         self,
@@ -316,6 +327,14 @@ class Builder:
             f"Placed from template {placed.template_id}; poses are computed, not model-generated",
             "Verification covers the engine's implemented rules only; it is not a physical safety certification",
             *extra_notes,
+            *image_features.describe(
+                state.image_features,
+                input_kind=input_mode,
+                selection=selection,
+                mount_offsets=state.mount_offsets,
+                catalog=self.catalog,
+                profiles=self.profiles,
+            ),
             state.note(),
         ]
         if any(self.catalog.require(c.catalog_id).is_synthetic for c in components):
@@ -333,7 +352,7 @@ class Builder:
             connections=list(wired.connections),
             verification=Verification(overall="needs_review", findings=[]),
             assembly_steps=assembly.build_assembly_steps(components, wired.connections, self.catalog),
-            bom=bom.build_bom(components, self.catalog, CATALOG_CURRENCY),
+            bom=bom.build_bom(components, self.catalog, CATALOG_CURRENCY, self.link_checks),
             behavior=Behavior(profile_id=PROFILE_ID, controller_catalog_id=controller.catalog_id, parameters=dict(parameters)),
             simulation=_simulation(components, self.catalog, selection.distance_sensor),
             firmware=Firmware(
@@ -359,6 +378,7 @@ class Builder:
             bounds=mounts.world_aabb,
             fit_evidence=self.fit_evidence,
             expected_position=mounts.expected_position,
+            link_checks=self.link_checks,
         )
         report = verify_candidate(plan, self.catalog, context)
         if any(c.catalog_id not in self.catalog for c in plan.components):
@@ -429,6 +449,8 @@ def solve_intent(intent: IntentSpec, builder: Builder, created_at: str | None = 
         max_length_mm=intent.requirements.max_length_mm,
         max_width_mm=intent.requirements.max_width_mm,
         requested_behavior=intent.requested_behavior if intent.requested_behavior == "obstacle_avoidance" else None,
+        mount_offsets=image_features.mount_offsets(intent.image_features, intent.input.kind),
+        image_features=intent.image_features,
     )
     plan = builder.assemble(
         selection=selection,

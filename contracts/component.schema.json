@@ -5,18 +5,48 @@
   "description": "One catalog record. B owns; all consume. docs/implementation.md section 3.2. Unknown source data is null, never a guessed value. FROZEN v1.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "catalog_id", "identity", "physical", "mounts", "ports", "sourcing", "evidence"],
+  "required": [
+    "schema_version",
+    "catalog_id",
+    "identity",
+    "physical",
+    "mounts",
+    "ports",
+    "sourcing",
+    "evidence"
+  ],
   "properties": {
-    "schema_version": { "const": "1.0" },
-    "catalog_id": { "$ref": "#/$defs/id" },
+    "schema_version": {
+      "const": "1.0"
+    },
+    "catalog_id": {
+      "$ref": "#/$defs/id"
+    },
     "identity": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["manufacturer", "model", "sku", "category"],
+      "required": [
+        "manufacturer",
+        "model",
+        "sku",
+        "category"
+      ],
       "properties": {
-        "manufacturer": { "type": "string", "minLength": 1 },
-        "model": { "type": "string", "minLength": 1 },
-        "sku": { "type": ["string", "null"], "minLength": 1 },
+        "manufacturer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sku": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
         "category": {
           "enum": [
             "chassis",
@@ -38,39 +68,108 @@
     "physical": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["dimensions_mm", "mass_g", "bounds_verified", "geometry_kind", "asset_path", "material_preset"],
+      "required": [
+        "dimensions_mm",
+        "mass_g",
+        "bounds_verified",
+        "geometry_kind",
+        "asset_path",
+        "material_preset"
+      ],
       "properties": {
         "dimensions_mm": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["x", "y", "z"],
+          "required": [
+            "x",
+            "y",
+            "z"
+          ],
           "properties": {
-            "x": { "type": "number", "exclusiveMinimum": 0 },
-            "y": { "type": "number", "exclusiveMinimum": 0 },
-            "z": { "type": "number", "exclusiveMinimum": 0 }
+            "x": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "y": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "z": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
           }
         },
-        "mass_g": { "$ref": "#/$defs/non_negative_or_null" },
-        "bounds_verified": { "type": "boolean" },
-        "geometry_kind": { "enum": ["procedural", "glb"] },
-        "asset_path": { "type": ["string", "null"] },
-        "material_preset": { "type": "string" }
+        "mass_g": {
+          "$ref": "#/$defs/non_negative_or_null"
+        },
+        "bounds_verified": {
+          "type": "boolean"
+        },
+        "geometry_kind": {
+          "enum": [
+            "procedural",
+            "glb"
+          ]
+        },
+        "asset_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "material_preset": {
+          "type": "string"
+        }
       },
-      "if": { "properties": { "geometry_kind": { "const": "glb" } } },
-      "then": { "properties": { "asset_path": { "type": "string", "minLength": 1 } } }
+      "if": {
+        "properties": {
+          "geometry_kind": {
+            "const": "glb"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "asset_path": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
     },
     "mounts": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["mount_id", "kind", "position_mm", "rotation_deg", "allowed_mates"],
+        "required": [
+          "mount_id",
+          "kind",
+          "position_mm",
+          "rotation_deg",
+          "allowed_mates"
+        ],
         "properties": {
-          "mount_id": { "$ref": "#/$defs/id" },
-          "kind": { "type": "string", "minLength": 1 },
-          "position_mm": { "$ref": "#/$defs/vec3" },
-          "rotation_deg": { "$ref": "#/$defs/vec3" },
-          "allowed_mates": { "type": "array", "items": { "type": "string" } }
+          "mount_id": {
+            "$ref": "#/$defs/id"
+          },
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "position_mm": {
+            "$ref": "#/$defs/vec3"
+          },
+          "rotation_deg": {
+            "$ref": "#/$defs/vec3"
+          },
+          "allowed_mates": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         }
       }
     },
@@ -79,9 +178,19 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["port_id", "signal", "voltage_min_v", "voltage_max_v", "current_limit_a", "logic_level_v", "notes"],
+        "required": [
+          "port_id",
+          "signal",
+          "voltage_min_v",
+          "voltage_max_v",
+          "current_limit_a",
+          "logic_level_v",
+          "notes"
+        ],
         "properties": {
-          "port_id": { "$ref": "#/$defs/id" },
+          "port_id": {
+            "$ref": "#/$defs/id"
+          },
           "signal": {
             "enum": [
               "power_in",
@@ -100,11 +209,21 @@
               "analog_input"
             ]
           },
-          "voltage_min_v": { "$ref": "#/$defs/non_negative_or_null" },
-          "voltage_max_v": { "$ref": "#/$defs/non_negative_or_null" },
-          "current_limit_a": { "$ref": "#/$defs/non_negative_or_null" },
-          "logic_level_v": { "$ref": "#/$defs/non_negative_or_null" },
-          "notes": { "type": "string" }
+          "voltage_min_v": {
+            "$ref": "#/$defs/non_negative_or_null"
+          },
+          "voltage_max_v": {
+            "$ref": "#/$defs/non_negative_or_null"
+          },
+          "current_limit_a": {
+            "$ref": "#/$defs/non_negative_or_null"
+          },
+          "logic_level_v": {
+            "$ref": "#/$defs/non_negative_or_null"
+          },
+          "notes": {
+            "type": "string"
+          }
         }
       }
     },
@@ -122,57 +241,197 @@
         "availability_status"
       ],
       "properties": {
-        "manufacturer_reference_url": { "$ref": "#/$defs/url_or_null" },
-        "datasheet_url": { "$ref": "#/$defs/url_or_null" },
-        "purchase_url": { "$ref": "#/$defs/url_or_null" },
-        "purchase_url_verified_at": { "$ref": "#/$defs/date_or_null" },
-        "price_amount": {
-          "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/decimal_string" }]
+        "manufacturer_reference_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^https://[A-Za-z0-9.-]+(:\\d+)?([/?#]\\S*)?$"
         },
-        "price_currency": { "type": ["string", "null"], "pattern": "^[A-Z]{3}$" },
-        "price_checked_at": { "$ref": "#/$defs/date_or_null" },
-        "availability_status": { "enum": ["in_stock", "out_of_stock", "discontinued", "unknown"] }
+        "datasheet_url": {
+          "$ref": "#/$defs/url_or_null"
+        },
+        "purchase_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^https://[A-Za-z0-9.-]+(:\\d+)?([/?#]\\S*)?$"
+        },
+        "purchase_url_verified_at": {
+          "$ref": "#/$defs/date_or_null"
+        },
+        "price_amount": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/decimal_string"
+            }
+          ]
+        },
+        "price_currency": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Z]{3}$"
+        },
+        "price_checked_at": {
+          "$ref": "#/$defs/date_or_null"
+        },
+        "availability_status": {
+          "enum": [
+            "in_stock",
+            "out_of_stock",
+            "discontinued",
+            "unknown"
+          ]
+        }
       },
       "allOf": [
         {
           "description": "Section 9.5: record timestamp and currency for every captured price.",
-          "if": { "properties": { "price_amount": { "type": "string" } }, "required": ["price_amount"] },
-          "then": { "properties": { "price_currency": { "type": "string" }, "price_checked_at": { "type": "string" } } }
+          "if": {
+            "properties": {
+              "price_amount": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "price_amount"
+            ]
+          },
+          "then": {
+            "properties": {
+              "price_currency": {
+                "type": "string"
+              },
+              "price_checked_at": {
+                "type": "string"
+              }
+            }
+          }
         },
         {
           "description": "A verification date is only meaningful for an actual purchase link.",
-          "if": { "properties": { "purchase_url": { "type": "null" } }, "required": ["purchase_url"] },
-          "then": { "properties": { "purchase_url_verified_at": { "type": "null" } } }
+          "if": {
+            "properties": {
+              "purchase_url": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "purchase_url"
+            ]
+          },
+          "then": {
+            "properties": {
+              "purchase_url_verified_at": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "description": "A purchase link needs a recorded verification date.",
+          "if": {
+            "properties": {
+              "purchase_url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "purchase_url"
+            ]
+          },
+          "then": {
+            "properties": {
+              "purchase_url_verified_at": {
+                "type": "string"
+              }
+            }
+          }
         }
       ]
     },
     "evidence": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["dimensions", "electrical", "price", "notes"],
+      "required": [
+        "dimensions",
+        "electrical",
+        "price",
+        "notes"
+      ],
       "properties": {
-        "dimensions": { "$ref": "#/$defs/evidence_level" },
-        "electrical": { "$ref": "#/$defs/evidence_level" },
-        "price": { "$ref": "#/$defs/evidence_level" },
-        "notes": { "type": "array", "items": { "type": "string" } }
+        "dimensions": {
+          "$ref": "#/$defs/evidence_level"
+        },
+        "electrical": {
+          "$ref": "#/$defs/evidence_level"
+        },
+        "price": {
+          "$ref": "#/$defs/evidence_level"
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     }
   },
   "$defs": {
-    "id": { "type": "string", "minLength": 1 },
-    "vec3": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 },
-    "non_negative_or_null": { "type": ["number", "null"], "minimum": 0 },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "vec3": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "non_negative_or_null": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
     "decimal_string": {
       "description": "Non-negative decimal amount serialized as a string, e.g. \"12.50\".",
       "type": "string",
       "pattern": "^[0-9]+(\\.[0-9]+)?$"
     },
-    "url_or_null": { "type": ["string", "null"], "pattern": "^https?://" },
+    "url_or_null": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^https?://"
+    },
     "date_or_null": {
       "description": "ISO-8601 date (YYYY-MM-DD) or UTC timestamp ending in Z.",
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}(T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,6})?Z)?$"
     },
-    "evidence_level": { "enum": ["verified", "approximated", "synthetic_approximation", "unverified", "unknown"] }
+    "evidence_level": {
+      "enum": [
+        "verified",
+        "approximated",
+        "synthetic_approximation",
+        "unverified",
+        "unknown"
+      ]
+    }
   }
 }

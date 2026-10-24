@@ -89,7 +89,18 @@ export interface Bom {
   items: BomItem[];
 }
 
+export interface LinkCheckSummary {
+  status: "pass" | "broken" | "blocked" | "error" | "unchecked";
+  checked_at: string | null;
+  catalog_verified_at: string | null;
+  verified_at: string | null;
+  fresh: boolean;
+  flags: string[];
+  detail: string;
+}
+
 export interface Provenance {
+  sourcing?: { synthetic: boolean; synthetic_catalog_ids: string[]; unverified_link_count: number; sku_missing_count: number; link_checks?: Record<string, LinkCheckSummary> };
   input_mode: string;
   catalog_version: string;
   generation_mode: GenerationMode;

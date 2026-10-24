@@ -12,12 +12,11 @@ test('selecting a part in PartsPanel shows its catalog data and matching BOM row
   await expect(inspector).toBeVisible();
   await expect(page.getByTestId('inspector-title')).toHaveText('Front Range Sensor');
   await expect(page.getByTestId('inspector-instance-id')).toHaveText('sensor-1');
-  await expect(page.getByTestId('inspector-role')).toHaveText('distance_sensor');
   await expect(page.getByTestId('inspector-catalog-id')).toHaveText('demo.range');
   // Synthetic fixture: price and purchase link stay honestly unknown.
   await expect(page.getByTestId('inspector-price')).toContainText('Unknown');
   await expect(page.getByTestId('inspector-link-status')).toHaveAttribute('data-link-status', 'not_available');
-  await expect(page.getByTestId('inspector-bom-quantity')).toContainText('1');
+  await expect(page.getByTestId('product-instances')).toContainText('1');
 
   // Inspect mode shows the same catalog row the inspector reported.
   await page.getByTestId('studio-mode-inspect').click();

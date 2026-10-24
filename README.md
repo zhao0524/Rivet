@@ -35,38 +35,66 @@ If the two conflict on schema or safety/verification rules, follow `implementati
 
 ## Quick start
 
-`apps/web`, `services/api` and `packages/engineering` are available through the root workspace commands. The web app runs entirely from checked-in fixtures by default.
+Install the workspace, then start both services with one command. No team key or paid
+provider is needed for the saved examples.
 
 ```bash
-# Env: .env is committed encrypted with git-crypt. Unlock it with the team key,
-# or fall back to .env.example when you have no key.
-scripts/setup-env.sh /path/to/soon-git-crypt.key
-
-# Install the JavaScript workspace and Python projects.
 pnpm install
-cd services/api && uv sync --extra dev
-cd ../../packages/engineering && uv sync --extra dev
+# Recommended Python setup:
+cd services/api
+uv sync --extra dev
 cd ../..
-
-# Dev processes (use separate terminals).
-# Root scripts load the root .env before starting each process.
-pnpm dev:api
-pnpm dev:web
-
-# Lane checks from the repository root.
-pnpm test:api
-pnpm test:engineering
-pnpm test:web
+pnpm dev
 ```
 
-CI (`.github/workflows/ci.yml`) runs the same checks as independent jobs on every PR and push to `main`: contract/fixture validation (`uv run scripts/validate_contracts.py`), engine and API `pytest`, web lint/typecheck/test/build, and an optional PlatformIO compile (`scripts/ci_firmware_check.py`) that never fails the run.
+Without `uv`, install the same dependencies into a standard virtual environment:
 
-Without a git-crypt key, run `cp .env.example .env`; those defaults are sufficient for the offline web fixture flow.
+```bash
+python3 -m venv services/api/.venv
+services/api/.venv/bin/pip install -e 'services/api[dev]' -e 'packages/engineering[dev]'
+pnpm dev
+```
 
-Default API: `http://localhost:8000`  
-Default web: `http://localhost:3000`
+The supervisor labels API/web output, checks ports, and stops both services on Ctrl-C.
+Defaults: web `http://localhost:3000/studio`, API `http://localhost:8000/api/health`.
+`pnpm dev:api` / `pnpm dev:web` start individual services. Set `RIVET_API_PORT` or
+`RIVET_WEB_PORT` to avoid an existing server. It never overwrites `apps/web/.env.local`.
 
-Set `RIVET_MODE=fixture` and `NEXT_PUBLIC_RIVET_USE_FIXTURES=true` so every lane can demo from checked-in fixtures without live AI.
+Environment priority is nonempty shell variables, root `.env.local`, then root `.env`.
+If `.env` is encrypted or missing, `.env.example` supplies safe defaults automatically.
+Personal credentials belong in gitignored root `.env.local`; never replace the tracked
+encrypted `.env` with plaintext. Team-key users can run `scripts/setup-env.sh /path/to/key`.
+Only the two public web settings are written to a missing `apps/web/.env.local`; provider
+keys are removed from the web subprocess environment.
+
+For the real engine with offline interpretation, set `RIVET_MODE=live` and
+`RIVET_VISION_PROVIDER=mock` in root `.env.local`, then run `pnpm dev`. The studio uses
+HTTP automatically unless `NEXT_PUBLIC_RIVET_USE_FIXTURES` explicitly overrides it.
+Mock interpretation does not read the image and is disclosed as fallback. Intake shows an
+interpretation for confirmation before generation; unsupported families require an explicit
+closest-rover choice. Saved examples open immediately without a provider.
+
+For live image interpretation, install `services/api[live]`, then configure
+`RIVET_MODE=live`, `RIVET_VISION_PROVIDER=openai`, `RIVET_VISION_MODEL=gpt-4o` and
+`OPENAI_API_KEY` in root `.env.local`. See [provider verification](services/api/README.md)
+for the opt-in tests. Backboard image input remains unsupported for the demo.
+
+```bash
+pnpm test:web
+pnpm test:api
+pnpm test:engineering
+pnpm --filter web e2e
+pnpm --filter web e2e:acceptance
+python3 scripts/final_verification.py --offline
+```
+
+The lane scripts prefer `uv` and fall back to `python3`; for a virtual environment use its Python with
+`-m pytest` in each Python project. Browser tests require
+`pnpm --filter web exec playwright install chromium` (Linux CI also installs system dependencies).
+CI checks contracts, Python suites, web typecheck/tests/build, offline browser regressions,
+and real-engine browser acceptance. Firmware compilation is a separate optional job.
+The [verification receipt](docs/final-verification.md) distinguishes executed software checks
+from live-provider, hardware-fit and human rehearsal gates.
 
 ## Team lanes
 

@@ -4,10 +4,12 @@ import {
   FixtureSource,
   HttpSource,
   SAVED_BUILD_LABEL,
+  SAVED_SYNTHETIC_EXAMPLE_LABEL,
   SYNTHETIC_ROVER_BUILD_ID,
   assertPlanIntegrity,
   checkPlanIntegrity,
   describeBuildTrust,
+  isSyntheticPlan,
   summarizeBom,
   type BuildPlan,
   type RivetDataSource,
@@ -15,6 +17,7 @@ import {
 import {
   DEFAULT_SAVED_EXAMPLES,
   SOURCED_ROVER_BUILD_ID,
+  createCombinedFixtureSource,
   getSourcedCatalog,
   getSourcedRoverPlan,
   getSyntheticCatalog,
@@ -105,7 +108,7 @@ describe('Canonical contract & cross-module integration checks (C7)', () => {
     expect(revisions[0].revision).toBe(1);
 
     const estelle = await fixture.getEstelleStatus();
-    expect(estelle.status).toBe('unavailable');
+    expect(estelle.available).toBe(false);
     const grounded = await fixture.groundSymbol({ kind: 'locate', name: 'read_front_distance' });
     expect(grounded.status).toBe('unavailable');
     expect(grounded.citations).toEqual([]);
@@ -130,16 +133,30 @@ describe('Canonical contract & cross-module integration checks (C7)', () => {
     );
   });
 
-  it('validates Developer B sourced engine output (16 catalog items, 17 components, 20 wires) and skips rendering visible:false accessories', () => {
+  it('validates the saved engine-sourced snapshot (catalog v1.2: 19 catalog items, 17 components, 20 wires) and skips rendering visible:false accessories', () => {
     const catalog = getSourcedCatalog();
     const plan = getSourcedRoverPlan();
 
-    expect(catalog).toHaveLength(16);
+    expect(catalog).toHaveLength(19);
     expect(plan.build_id).toBe(SOURCED_ROVER_BUILD_ID);
+    expect(plan.revision).toBe(1);
+    expect(plan.provenance.catalog_version).toBe('catalog-v1.2-2026-10-24');
     expect(plan.components).toHaveLength(17);
     expect(plan.connections).toHaveLength(20);
     expect(plan.assembly_steps).toHaveLength(11);
     expect(checkPlanIntegrity(plan, catalog)).toEqual([]);
+
+    // Issue #32 default rover: needs_review with no FAIL; the blocking findings are the
+    // undocumented TT motor fit in the Shadow Chassis, and the BOM is fully priced.
+    expect(plan.status).toBe('needs_review');
+    expect(plan.verification.findings.filter((f) => f.result === 'FAIL')).toEqual([]);
+    const blocking = plan.verification.findings.filter((f) => f.severity === 'blocking' && f.result !== 'PASS');
+    expect(blocking.map((f) => `${f.rule_id}:${f.result}`)).toEqual([
+      'mechanical.fit_evidence:UNKNOWN',
+      'mechanical.fit_evidence:UNKNOWN',
+    ]);
+    expect(plan.bom).toMatchObject({ currency: 'USD', known_subtotal_amount: '110.80', total_status: 'complete' });
+    expect(summarizeBom(plan).totalLabel).toBe('Total');
 
     // Accessories (accessory-1..6) carry render_overrides.visible = false
     const accessories = plan.components.filter((c) => c.render_overrides?.visible === false);
@@ -183,6 +200,63 @@ describe('Canonical contract & cross-module integration checks (C7)', () => {
     expect(wiringLayout.counts.electrical_connections).toBe(20);
     expect(wiringLayout.counts.drawn).toBe(20);
     expect(wiringLayout.counts.rejected).toBe(0);
+  });
+
+  it('labels the engine-sourced snapshot a Saved demo build with its capture time, and keeps the synthetic example synthetic', async () => {
+    const catalog = getSourcedCatalog();
+    const plan = getSourcedRoverPlan();
+
+    // Captured by scripts/capture_saved_example.py: stamped fixture, capture note names the engine run time.
+    expect(plan.provenance.generation_mode).toBe('fixture');
+    expect(plan.created_at).toMatch(/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$/);
+    expect(plan.provenance.notes[0]).toMatch(
+      new RegExp(`^Saved demo build captured ${plan.created_at} by scripts/capture_saved_example\\.py .*not a live generation$`),
+    );
+    expect(isSyntheticPlan(plan, catalog)).toBe(false);
+    // The launcher's fallback summary must not drift from the snapshot.
+    expect(DEFAULT_SAVED_EXAMPLES.find((e) => e.example_id === SOURCED_ROVER_BUILD_ID)?.status).toBe(plan.status);
+    expect(DEFAULT_SAVED_EXAMPLES.find((e) => e.example_id === SYNTHETIC_ROVER_BUILD_ID)?.status).toBe(
+      getSyntheticRoverPlan().status,
+    );
+
+    const captured = `${plan.created_at.slice(0, 10)} ${plan.created_at.slice(11, 16)} UTC`;
+    const trust = describeBuildTrust(plan, 'fixture', catalog);
+    expect(trust).toMatchObject({
+      label: SAVED_BUILD_LABEL,
+      isSynthetic: false,
+      isSaved: true,
+      capturedAt: plan.created_at,
+      canDisplayAsVerified: false,
+    });
+    expect(trust.reasons[0]).toBe(`Captured ${captured}`);
+    expect(trust.reasons).toContain('Sourced catalog parts, loaded from a saved build, not a live generation');
+    expect(trust.reasons.join(' ')).not.toMatch(/synthetic/i);
+
+    // The synthetic example keeps its synthetic label and has no capture time.
+    const synthetic = describeBuildTrust(getSyntheticRoverPlan(), 'fixture', getSyntheticCatalog());
+    expect(synthetic).toMatchObject({ label: SAVED_SYNTHETIC_EXAMPLE_LABEL, isSynthetic: true, capturedAt: null });
+    expect(synthetic.reasons).toContain('Components are synthetic placeholders, not sourced parts');
+
+    // The same sourced plan arriving over HTTP as live or fallback output is never called saved.
+    const asMode = (mode: BuildPlan['provenance']['generation_mode']): BuildPlan => ({
+      ...plan,
+      provenance: { ...plan.provenance, generation_mode: mode },
+    });
+    expect(describeBuildTrust(asMode('live'), 'http', catalog)).toMatchObject({ label: 'Live generation', isSaved: false, capturedAt: null });
+    expect(describeBuildTrust(asMode('fallback'), 'http', catalog)).toMatchObject({ label: 'Fallback output', isSaved: false, capturedAt: null });
+
+    // Revision labels and fixture edit findings name the build that is open.
+    const sourcedSource = createCombinedFixtureSource(SOURCED_ROVER_BUILD_ID);
+    expect(sourcedSource.label).toBe(SAVED_BUILD_LABEL);
+    expect((await sourcedSource.listRevisions(SOURCED_ROVER_BUILD_ID)).map((r) => r.label)).toEqual([SAVED_BUILD_LABEL]);
+    const edit = await sourcedSource.edit(SOURCED_ROVER_BUILD_ID, { base_revision: 1, instruction: 'Raise the sensor' });
+    expect(edit.accepted).toBe(false);
+    expect(edit.finding?.message).toMatch(/^Saved demo build: edits cannot be validated in fixture mode/);
+    const syntheticSource = createCombinedFixtureSource();
+    expect(syntheticSource.label).toBe(SAVED_SYNTHETIC_EXAMPLE_LABEL);
+    expect((await syntheticSource.listRevisions(SYNTHETIC_ROVER_BUILD_ID)).map((r) => r.label)).toEqual([
+      SAVED_SYNTHETIC_EXAMPLE_LABEL,
+    ]);
   });
 
   it('routes browser HttpSource calls through the same-origin /api proxy (baseUrl: "") when NEXT_PUBLIC_RIVET_USE_FIXTURES=false', () => {
@@ -260,7 +334,9 @@ describe('Canonical contract & cross-module integration checks (C7)', () => {
     expect(result.current.sourceMode).toBe('fixture');
     expect(result.current.trust.label).toBe(SAVED_BUILD_LABEL);
     expect(result.current.trust.isSaved).toBe(true);
+    expect(result.current.trust.capturedAt).toBe(result.current.plan.created_at);
     expect(result.current.trust.canDisplayAsVerified).toBe(false);
+    expect(result.current.revisions.map((r) => r.label)).toEqual([SAVED_BUILD_LABEL]);
     expect(result.current.dataSource.getExportUrl?.(SOURCED_ROVER_BUILD_ID, 'bom.csv', 1)).toBeNull();
 
     // Submitting an edit against the loaded sourced snapshot uses the owning FixtureSource (no BUILD_NOT_FOUND)

@@ -292,6 +292,15 @@ def test_line_following_is_unsupported_even_for_a_rover():
     assert out.support_status == "unsupported"
 
 
+def test_manual_drive_is_unsupported_even_for_a_rover():
+    # The engine refuses manual_drive (check_supported), so the interpretation card must
+    # not call it supported; the user gets the closest-supported-rover choice instead.
+    out = sanitize_intent(raw_intent(requested_behavior="manual_drive"), CATALOG_IDS, TEXT_REQ)
+    assert out.support_status == "unsupported"
+    with pytest.raises(ApiError):
+        ensure_supported(out)
+
+
 def test_unknown_controller_id_is_nulled_known_one_kept():
     bad = raw_intent(requirements=with_requirements(preferred_controller_catalog_id="board.invented_v9"))
     assert sanitize_intent(bad, CATALOG_IDS, TEXT_REQ).requirements.preferred_controller_catalog_id is None

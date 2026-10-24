@@ -57,6 +57,9 @@ export function BOMPanel({ plan, catalog, selectedInstanceId, onSelectInstance }
         <tbody>
           {bom.items.map((item) => {
             const entry = byId.get(item.catalog_id);
+            const check = plan.provenance.sourcing?.link_checks?.[item.catalog_id];
+            const displayItem: BomItem = check?.status === "broken"
+              ? { ...item, purchase_url: null, link_status: "not_available" } : item;
             const unitPrice = formatAmount(item.unit_price_amount, bom.currency);
             const selected = !!selectedInstanceId && item.instance_ids.includes(selectedInstanceId);
             return (
@@ -82,9 +85,10 @@ export function BOMPanel({ plan, catalog, selectedInstanceId, onSelectInstance }
                   {unitPrice ?? "Unknown"}
                 </td>
                 <td>
-                  <PurchaseLink item={item} />
+                  <PurchaseLink item={displayItem} />
+                  {check && check.status !== "pass" && <p role="note">Latest supplier check: {check.status}. {check.detail}</p>}
                 </td>
-                <td data-testid={`bom-link-status-${item.catalog_id}`}>{LINK_STATUS_LABEL[item.link_status]}</td>
+                <td data-testid={`bom-link-status-${item.catalog_id}`}>{LINK_STATUS_LABEL[displayItem.link_status]}</td>
                 <td>
                   <ul aria-label={`Instances of ${item.catalog_id}`}>
                     {item.instance_ids.map((id) => {

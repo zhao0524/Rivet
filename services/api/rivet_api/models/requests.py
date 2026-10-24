@@ -57,10 +57,27 @@ class GenerateRequirements(_Strict):
         return value
 
 
-class GenerateRequest(_Strict):
+InterpretationChoice = Literal["as_interpreted", "closest_supported_rover"]
+
+
+class InterpretRequest(_Strict):
+    """`POST /api/intents/interpret`: the same input and requirements generate accepts."""
+
     input: GenerateInput
     requirements: GenerateRequirements | None = None
 
+
+class GenerateRequest(InterpretRequest):
+    # Build from an interpretation stored by /api/intents/interpret instead of reading the input again.
+    intent_id: str | None = Field(default=None, pattern=r"^[A-Za-z0-9_-]{1,80}$")
+    # The only way to build from an unsupported interpretation is the user's explicit choice.
+    interpretation_choice: InterpretationChoice = "as_interpreted"
+
+    @model_validator(mode="after")
+    def _choice_needs_a_seen_interpretation(self) -> "GenerateRequest":
+        if self.interpretation_choice == "closest_supported_rover" and self.intent_id is None:
+            raise ValueError("interpretation_choice 'closest_supported_rover' requires intent_id (interpret first)")
+        return self
 
 class ResolveRequest(_Strict):
     """Image or text in; the same input rules as generate, with no build requirements."""

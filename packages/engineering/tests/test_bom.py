@@ -1,7 +1,10 @@
 from decimal import Decimal
 
-from rivet_engine.bom import build_bom
+import pytest
+
+from rivet_engine.bom import build_bom, link_status
 from rivet_engine.catalog import catalog_from_records, load_catalog
+from rivet_engine.ports import CatalogError
 from tests import support
 
 
@@ -61,16 +64,23 @@ def test_link_status_truthful():
     catalog = _records(
         **{
             "synthetic.caster": {"sourcing": {"purchase_url": "https://example.test/caster", "purchase_url_verified_at": "2026-10-24"}},
-            "synthetic.wheel": {"sourcing": {"purchase_url": "https://example.test/wheel"}},
             "synthetic.chassis": {"sourcing": {"manufacturer_reference_url": "https://example.test/chassis"}},
         }
     )
     items = {i.catalog_id: i for i in build_bom(support.synthetic_plan().components, catalog).items}
     assert items["synthetic.caster"].link_status == "verified_product"
     assert items["synthetic.caster"].purchase_url == "https://example.test/caster"
-    # An unverified purchase link is never shown.
-    assert items["synthetic.wheel"].link_status == "not_available" and items["synthetic.wheel"].purchase_url is None
     assert items["synthetic.chassis"].link_status == "manufacturer_reference_only"
+
+
+def test_unverified_purchase_link_is_rejected_and_never_shown():
+    # The catalog schema refuses a purchase link without its verification date (issue #68)...
+    with pytest.raises(CatalogError):
+        _records(**{"synthetic.wheel": {"sourcing": {"purchase_url": "https://example.test/wheel"}}})
+    # ...and the BOM still never shows one if validation was bypassed.
+    wheel = support.synthetic_catalog().require("synthetic.wheel")
+    undated = wheel.model_copy(update={"sourcing": wheel.sourcing.model_copy(update={"purchase_url": "https://example.test/wheel"})})
+    assert link_status(undated) == "not_available"
 
 
 def test_pack_items_count_as_one_unit_each():

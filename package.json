@@ -8,10 +8,10 @@
     "pnpm": ">=10"
   },
   "scripts": {
-    "dev": "pnpm dev:web",
-    "dev:web": "set -a && . ./.env && set +a && pnpm --filter web dev",
-    "dev:api": "set -a && . ./.env && set +a && cd services/api && if command -v uv >/dev/null 2>&1; then uv run uvicorn rivet_api.main:app --reload --port 8000; else python3 -m uvicorn rivet_api.main:app --reload --port 8000; fi",
-    "build": "set -a && . ./.env && set +a && pnpm --filter web build",
+    "dev": "bash scripts/dev.sh",
+    "dev:web": "bash scripts/dev.sh web",
+    "dev:api": "bash scripts/dev.sh api",
+    "build": "bash scripts/load-env.sh --web pnpm --filter web build",
     "lint": "pnpm --filter web lint",
     "typecheck": "pnpm --filter web typecheck",
     "test": "pnpm test:web && pnpm test:engineering && pnpm test:api",

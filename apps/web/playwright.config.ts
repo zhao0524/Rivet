@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const PORT = Number(process.env.E2E_PORT ?? 3100);
+const PORT = Number(process.env.E2E_PORT ?? 3918);
 const BASE_URL = process.env.E2E_BASE_URL ?? `http://localhost:${PORT}`;
 
 /**
@@ -29,7 +29,7 @@ export default defineConfig({
     : {
         command: `npx next dev --port ${PORT}`,
         url: BASE_URL,
-        reuseExistingServer: !process.env.CI,
+        reuseExistingServer: false,
         timeout: 180_000,
         env: {
           NEXT_PUBLIC_RIVET_USE_FIXTURES: 'true',

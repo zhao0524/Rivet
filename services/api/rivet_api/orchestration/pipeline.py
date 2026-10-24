@@ -5,21 +5,29 @@ checks the result is structurally coherent (contract guard), stamps provenance
 honestly, and stores whatever the engine said, status and findings untouched.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from pydantic import ValidationError
 
 from rivet_api.agents.editor import EditSelector, parse_edit
 from rivet_api.agents.intent_sanitizer import sanitize_intent
-from rivet_api.agents.vision import VisionPort, ensure_supported
+from rivet_api.agents.vision import VisionPort, ensure_supported, support_limitation
 from rivet_api.adapters.engineering import EngineeringPort
 from rivet_api.config import Settings
 from rivet_api.contract import ContractViolation, assert_build_plan_contract
 from rivet_api.errors import ApiError
 from rivet_api.models.intent import IntentSpec
 from rivet_api.models.plan import BuildPlan
-from rivet_api.models.requests import EditRequest, GenerateRequest
+from rivet_api.models.requests import EditRequest, GenerateRequest, InterpretRequest
+from rivet_api.models.responses import InterpretResponse, Limitation
+from rivet_api.orchestration.interpretation import (
+    CLOSEST_ROVER_NOTE,
+    IntentStore,
+    StoredIntent,
+    check_same_input,
+    closest_supported_rover,
+)
 from rivet_api.orchestration.jobs import JobManager, JobSnapshot
 from rivet_api.orchestration.versions import ProjectStore
 from rivet_api.provenance import check_bom_links, is_verified_product, is_synthetic_catalog_id, plan_is_synthetic, plan_synthetic_ids
@@ -35,6 +43,8 @@ class Deps:
     assets: Any  # exists(asset_id) -> bool; read_bytes(asset_id) -> (bytes, mime)
     edit_selector: EditSelector | None = None
     grounder: Any = None  # RepoGrounder; optional so tests can omit it
+    intents: IntentStore = field(default_factory=IntentStore)
+
     resolver: Any = None  # ProductResolver (resolution/resolver.py)
     resolutions: Any = None  # ResolutionStore
 
@@ -104,7 +114,55 @@ def _finding_counts(plan: dict[str, Any]) -> str:
     return ", ".join(f"{results.count(r)} {r}" for r in ("PASS", "WARN", "FAIL", "UNKNOWN"))
 
 
-def generate_project(req: GenerateRequest, deps: Deps, job: JobSnapshot) -> tuple[str, int]:
+def _record_choice(plan: dict[str, Any], note: str) -> None:
+    notes = plan["provenance"].get("notes")
+    if isinstance(notes, list) and note not in notes:
+        notes.append(note)
+
+
+def _carry_choice_notes(previous: dict[str, Any], plan: dict[str, Any]) -> None:
+    """Preserve input provenance and explicit choices when engines rebuild revisions."""
+    if not isinstance(plan.get("provenance"), dict):
+        return  # check_plan rejects it
+    previous_prov = previous.get("provenance", {})
+    if plan["provenance"].get("generation_mode") == "live" and previous_prov.get("generation_mode") in {"fixture", "fallback", "manual_template"}:
+        plan["provenance"]["generation_mode"] = previous_prov["generation_mode"]
+    for note in previous_prov.get("notes", []):
+        if isinstance(note, str) and note.startswith((CLOSEST_ROVER_NOTE, "Intent came from the ")):
+            _record_choice(plan, note)
+
+
+def interpret_request(req: InterpretRequest, deps: Deps) -> dict[str, Any]:
+    """Vision port + sanitizer only (no engine solve). The result is stored for a later build."""
+    as_generate = GenerateRequest(input=req.input, requirements=req.requirements)
+    image = deps.assets.read_bytes(req.input.image_asset_id) if req.input.image_asset_id else None
+    raw, vision_mode = deps.vision.interpret(as_generate, image), deps.vision.mode
+    catalog_ids = {c["catalog_id"] for c in deps.engine.get_catalog()}
+    intent = sanitize_intent(raw, catalog_ids, as_generate)
+    deps.intents.put(intent, vision_mode)
+    refused = support_limitation(intent, vision_mode)
+    limitation = None if refused is None else Limitation(code=refused.code, message=refused.message, details=refused.details)
+    return InterpretResponse(
+        intent_id=intent.intent_id,
+        intent=intent,
+        supported=refused is None,
+        limitation=limitation,
+        vision_mode=vision_mode,
+    ).model_dump(mode="json")
+
+
+def stored_intent_for(req: GenerateRequest, deps: Deps) -> StoredIntent | None:
+    """Resolve `intent_id` before a job exists: 404 INTENT_NOT_FOUND, 409 INTENT_INPUT_MISMATCH."""
+    if req.intent_id is None:
+        return None
+    stored = deps.intents.get(req.intent_id)
+    check_same_input(stored.intent, req)
+    return stored
+
+
+def generate_project(
+    req: GenerateRequest, deps: Deps, job: JobSnapshot, stored: StoredIntent | None = None
+) -> tuple[str, int]:
     jobs, job_id = deps.jobs, job.job_id
 
     image = None
@@ -112,17 +170,40 @@ def generate_project(req: GenerateRequest, deps: Deps, job: JobSnapshot) -> tupl
         image = deps.assets.read_bytes(req.input.image_asset_id)
         jobs.emit(job_id, "upload", "system", "ok", f"Image received ({len(image[0])} bytes, {image[1]})")
 
-    jobs.emit(job_id, "understand", "vision", "running", "Reading the request")
-    intent: IntentSpec = deps.vision.interpret(req, image)
+    if stored is None:
+        jobs.emit(job_id, "understand", "vision", "running", "Reading the request")
+        raw: IntentSpec = deps.vision.interpret(req, image)
+        vision_mode: str = deps.vision.mode
+    else:
+        raw, vision_mode = stored.intent, stored.vision_mode
+        jobs.emit(
+            job_id,
+            "understand",
+            "system",
+            "running",
+            f"Using the confirmed interpretation {raw.intent_id} ({vision_mode} vision); the input is not read again",
+        )
     catalog_ids = {c["catalog_id"] for c in deps.engine.get_catalog()}
-    intent = sanitize_intent(intent, catalog_ids, req)
-    ensure_supported(intent)
+    # Requirements always come from this request, also for a stored interpretation.
+    intent = sanitize_intent(raw, catalog_ids, req)
+    if stored is None:
+        deps.intents.put(intent, vision_mode)  # a refused job can still be built as the closest rover
+
+    choice_note = None
+    if req.interpretation_choice == "closest_supported_rover":
+        intent, choice_note = closest_supported_rover(intent, vision_mode)
+        if choice_note is not None:
+            intent = sanitize_intent(intent, catalog_ids, req)  # support status stays decided by code
+            jobs.emit(job_id, "understand", "system", "warning", choice_note)
+    ensure_supported(intent, vision_mode)
     jobs.emit(
         job_id,
         "understand",
-        "vision",
+        "vision" if stored is None else "system",
         "ok",
-        f"Interpreted as a {intent.project_family} ({intent.confidence} confidence, {deps.vision.mode} vision)",
+        f"Interpreted as a {intent.project_family} ({intent.confidence} confidence, {vision_mode} vision)"
+        if choice_note is None
+        else "Building the closest supported rover, as the user chose",
     )
 
     saved_label = getattr(deps.engine, "generation_mode", None)  # set only by fixture adapters
@@ -140,7 +221,9 @@ def generate_project(req: GenerateRequest, deps: Deps, job: JobSnapshot) -> tupl
 
     plan = deps.engine.solve(intent.model_dump(mode="json"))
     if isinstance(plan, dict) and isinstance(plan.get("provenance"), dict):
-        _label_provenance(plan, deps.vision.mode)
+        _label_provenance(plan, vision_mode)
+        if choice_note is not None:
+            _record_choice(plan, choice_note)
     check_plan(plan, deps.engine)
 
     if saved_label is None:
@@ -160,9 +243,9 @@ def generate_project(req: GenerateRequest, deps: Deps, job: JobSnapshot) -> tupl
             f"Engine reported {overall}: {_finding_counts(plan)}",
         )
 
-    stored = deps.store.create(plan)
-    jobs.complete(job_id, stored["build_id"], stored["revision"])
-    return stored["build_id"], stored["revision"]
+    saved = deps.store.create(plan)
+    jobs.complete(job_id, saved["build_id"], saved["revision"])
+    return saved["build_id"], saved["revision"]
 
 
 def apply_edit_request(build_id: str, req: EditRequest, deps: Deps) -> dict[str, Any]:
@@ -209,6 +292,7 @@ def apply_edit_request(build_id: str, req: EditRequest, deps: Deps) -> dict[str,
             return {"accepted": False, "build_id": build_id, "finding": finding}
         if not isinstance(result.get("plan"), dict):
             raise ApiError("ENGINE_CONTRACT_VIOLATION", "Engine accepted an edit without a plan", 502)
+        _carry_choice_notes(current, result["plan"])
         check_plan(result["plan"], deps.engine)
         revision = deps.store.append_revision(build_id, req.base_revision, result["plan"])
     except ApiError as err:

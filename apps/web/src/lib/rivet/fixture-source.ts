@@ -23,6 +23,8 @@ import type {
   EstelleStatusResponse,
   GenerateRequest,
   GenerateResponse,
+  InterpretResponse,
+  IntentSpec,
   JobResponse,
   RevisionSummary,
   SavedExampleSummary,
@@ -31,6 +33,7 @@ import type {
 } from "./types";
 import { assertValidRequest, editRequestCheck, generateRequestCheck, parseBuildPlan, parseCatalogComponents } from "./validate";
 import syntheticCatalog from "./fixtures/synthetic-seed-components.json";
+import syntheticIntent from "./fixtures/synthetic-intent-rover-obstacle-v1.json";
 import syntheticRoverPlan from "./fixtures/synthetic-rover-obstacle-v1.json";
 
 export const SYNTHETIC_ROVER_BUILD_ID = "rivet-synthetic-rover-fixture";
@@ -150,6 +153,15 @@ export class FixtureSource implements RivetDataSource {
       });
     }
     return clone(plan);
+  }
+
+  async interpret(input: GenerateRequest, options?: RequestOptions): Promise<InterpretResponse> {
+    throwIfAborted(options);
+    assertValidRequest(generateRequestCheck, input, "InterpretRequest");
+    const intent = clone(syntheticIntent) as IntentSpec;
+    intent.input = { ...input.input, user_text: input.input.user_text ?? "", image_interpretation_is_approximate: true };
+    intent.assumptions = ["Saved example only: the image and description are not read in offline mode.", ...intent.assumptions];
+    return { intent_id: intent.intent_id, intent, supported: true, limitation: null, vision_mode: "fixture" };
   }
 
   /** Returns the saved example as an already-complete job; no generation is simulated. */
@@ -294,14 +306,14 @@ export class FixtureSource implements RivetDataSource {
       }));
   }
 
+  /** Saved fixtures never run Estelle: always unavailable, with the reason. */
   async getEstelleStatus(options?: RequestOptions): Promise<EstelleStatusResponse> {
     throwIfAborted(options);
     return {
-      status: "unavailable",
       enabled: false,
       mode: "fixture",
-      cli_found: false,
-      repo_valid: false,
+      available: false,
+      doctor: null,
       reason: "Estelle grounding is unavailable in offline fixture mode.",
     };
   }

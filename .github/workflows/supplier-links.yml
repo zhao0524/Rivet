@@ -1,0 +1,40 @@
+name: Supplier link evidence
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.13.5'
+          python-version: '3.11'
+      - name: Check catalog purchase links without changing catalog facts
+        run: uv run --project packages/engineering python -m rivet_engine.verify_links --write --output "$RUNNER_TEMP/link-checks.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: supplier-link-evidence
+          path: ${{ runner.temp }}/link-checks.json
+          retention-days: 30
+      # A broken link must not stay invisible: the packaged link_checks.json is only
+      # refreshed by a human-reviewed commit, so a failed run opens one tracked issue
+      # instead of rewriting catalog facts or failing silently.
+      - name: Track broken links as an issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          open_count=$(gh issue list --search "Supplier link evidence check failed in:title" --state open --json number --jq 'length')
+          if [ "$open_count" = "0" ]; then
+            gh issue create \
+              --title "Supplier link evidence check failed ($(date -u +%F))" \
+              --body "The scheduled supplier-link check failed. Evidence: the supplier-link-evidence artifact on ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}. Catalog facts were not changed; refresh packages/engineering/rivet_engine/data/link_checks.json in a reviewed commit after checking the vendor pages."
+          fi

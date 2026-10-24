@@ -320,6 +320,9 @@ PLAN_REJECTIONS: tuple[tuple[str, Mutation, str], ...] = (
 OTHER_REJECTIONS: tuple[tuple[str, str, Mutation, str], ...] = (
     ("intent: unknown project_family", "intent", _set("project_family", "spaceship"), "is not one of"),
     ("intent: image input without an asset id", "intent", _set("input.image_asset_id", None), "None is not of type"),
+    ("intent: unknown image_features enum", "intent", _set("image_features", {"range_sensor_position": "roof"}), "is not one of"),
+    ("intent: undocumented image_features key", "intent", _set("image_features", {"wheel_count": 4}), "Additional properties"),
+    ("intent: image_features wheel count out of range", "intent", _set("image_features", {"drive_wheel_count": 9}), "greater than the maximum"),
     ("component: unknown category", "component", _set("identity.category", "laser"), "is not one of"),
     ("component: invented negative current", "component", _set("ports.0.current_limit_a", -1), "less than the minimum"),
     ("error: envelope without retryable", "error", lambda d: d["error"].pop("retryable"), "'retryable' is a required"),
