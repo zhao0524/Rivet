@@ -14,6 +14,7 @@ from typing import Literal, Protocol
 
 from pydantic import BaseModel, ConfigDict, ValidationError
 
+from rivet_api.adapters.backboard_provider import DEFAULT_BASE_URL, BackboardBackend
 from rivet_api.adapters.vision_provider import OpenAIBackend, VisionBackend
 from rivet_api.config import Settings
 from rivet_api.errors import ApiError
@@ -188,7 +189,20 @@ def build_vision_port(settings: Settings) -> VisionPort:
             raise ValueError("The openai package is not installed (pip install 'openai>=1.40')") from None
         client = openai.OpenAI(api_key=key, timeout=45.0)
         return LiveVisionProvider(OpenAIBackend(client, settings.vision_model), settings.vision_model)
-    raise ValueError(f"Unknown RIVET_VISION_PROVIDER {provider!r} (expected mock or openai)")
+    if provider == "backboard":
+        if not settings.vision_model:
+            raise ValueError("RIVET_VISION_MODEL must be set for the backboard vision provider")
+        key = os.environ.get("BACKBOARD_API_KEY")
+        if not key:
+            raise ValueError("BACKBOARD_API_KEY must be set for the backboard vision provider")
+        backend = BackboardBackend(
+            key,
+            settings.vision_model,
+            os.environ.get("BACKBOARD_LLM_PROVIDER") or "openai",
+            os.environ.get("BACKBOARD_BASE_URL") or DEFAULT_BASE_URL,
+        )
+        return LiveVisionProvider(backend, settings.vision_model)
+    raise ValueError(f"Unknown RIVET_VISION_PROVIDER {provider!r} (expected mock, openai or backboard)")
 
 
 def ensure_supported(intent: IntentSpec) -> None:
