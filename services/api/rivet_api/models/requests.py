@@ -14,7 +14,7 @@ class _Strict(BaseModel):
 class GenerateInput(_Strict):
     kind: Literal["image", "text", "image_and_text"]
     image_asset_id: str | None = None
-    user_text: str | None = None
+    user_text: str | None = Field(default=None, max_length=2000)
 
     @field_validator("image_asset_id")
     @classmethod

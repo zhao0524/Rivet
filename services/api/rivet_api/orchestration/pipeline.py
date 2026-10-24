@@ -11,12 +11,13 @@ from typing import Any
 from pydantic import ValidationError
 
 from rivet_api.agents.editor import EditSelector, parse_edit
+from rivet_api.agents.intent_sanitizer import sanitize_intent
 from rivet_api.agents.vision import VisionPort, ensure_supported
 from rivet_api.adapters.engineering import EngineeringPort
 from rivet_api.config import Settings
 from rivet_api.contract import ContractViolation, assert_build_plan_contract
 from rivet_api.errors import ApiError
-from rivet_api.models.intent import IntentInput, IntentSpec
+from rivet_api.models.intent import IntentSpec
 from rivet_api.models.plan import BuildPlan
 from rivet_api.models.requests import EditRequest, GenerateRequest
 from rivet_api.orchestration.jobs import JobManager, JobSnapshot
@@ -93,17 +94,8 @@ def generate_project(req: GenerateRequest, deps: Deps, job: JobSnapshot) -> tupl
 
     jobs.emit(job_id, "understand", "vision", "running", "Reading the request")
     intent: IntentSpec = deps.vision.interpret(req, image)
-    # The request is the source of truth for what the user supplied and stated.
-    intent.input = IntentInput(
-        kind=req.input.kind,
-        image_asset_id=req.input.image_asset_id,
-        user_text=req.input.user_text,
-        image_interpretation_is_approximate=True,
-    )
-    if req.requirements:
-        intent.requirements = intent.requirements.model_copy(
-            update=req.requirements.model_dump(exclude_none=True)
-        )
+    catalog_ids = {c["catalog_id"] for c in deps.engine.get_catalog()}
+    intent = sanitize_intent(intent, catalog_ids, req)
     ensure_supported(intent)
     jobs.emit(
         job_id,
