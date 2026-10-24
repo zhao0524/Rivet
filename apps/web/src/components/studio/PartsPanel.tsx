@@ -8,8 +8,8 @@ import type {
   EditResponse,
   RevisionSummary,
 } from '../../lib/rivet/types';
-import { ProjectRevisionPicker } from './panels';
 import type { PartSelectionApi } from '../three/interactions';
+import { PLAN_STATUS_LABEL } from './panels/helpers';
 
 export interface PartsPanelProps {
   plan: BuildPlan;
@@ -24,7 +24,26 @@ export interface PartsPanelProps {
   editError?: string | null;
   onSubmitEdit: (instruction: string, operation?: EditOperation) => Promise<EditResponse | null>;
   onOpenIntake?: () => void;
+  /** What was asked for: reference image, original prompt and stated constraints. */
+  request?: BuildRequestSummary | null;
 }
+
+export interface BuildRequestSummary {
+  prompt: string | null;
+  imageUrl: string | null;
+  /** `generated`: requested in this session; `saved`: the intent stored with a saved example. */
+  origin: 'generated' | 'saved';
+  requirements: string[];
+}
+
+const STATUS_TONE: Record<string, 'ok' | 'warn' | 'bad'> = {
+  verified: 'ok',
+  verified_with_warnings: 'warn',
+  needs_review: 'warn',
+  unbuildable: 'bad',
+};
+
+const CHANGE_PLACEHOLDER = 'Make it cheaper and move the sensor higher';
 
 type EditOpKind =
   | 'set_behavior_parameter'
@@ -46,8 +65,12 @@ export function PartsPanel({
   editError = null,
   onSubmitEdit,
   onOpenIntake,
+  request = null,
 }: PartsPanelProps) {
   const catalogById = new Map(catalog.map((c) => [c.catalog_id, c]));
+  const [changeText, setChangeText] = useState('');
+  const orderedRevisions = [...revisions].sort((a, b) => b.revision - a.revision);
+  const latestRevision = orderedRevisions[0]?.revision;
 
   const [opKind, setOpKind] = useState<EditOpKind>('set_behavior_parameter');
   const [instruction, setInstruction] = useState('Make it cheaper and move the sensor higher');
@@ -102,177 +125,411 @@ export function PartsPanel({
     void onSubmitEdit(desc, op);
   }
 
+  function handleChangeRequest(e: FormEvent) {
+    e.preventDefault();
+    const text = changeText.trim();
+    if (!text || editPending) return;
+    void onSubmitEdit(text);
+  }
+
+  const presetButtons = (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }} aria-label="Example changes" role="group">
+      <button
+        type="button"
+        className="rv-chip"
+        data-testid="preset-edit-sensor-higher"
+        disabled={editPending}
+        onClick={() => {
+          setOpKind('set_mount_offset_within_template');
+          setInstruction(CHANGE_PLACEHOLDER);
+          setOffsetY('12');
+          void onSubmitEdit(CHANGE_PLACEHOLDER, {
+            op: 'set_mount_offset_within_template',
+            instance_id: 'sensor-1',
+            offset_mm: [0, 12, 0],
+          });
+        }}
+      >
+        Move sensor 12 mm higher
+      </button>
+      <button
+        type="button"
+        className="rv-chip"
+        data-testid="preset-edit-stop-distance"
+        disabled={editPending}
+        onClick={() => {
+          setOpKind('set_behavior_parameter');
+          setBehaviorParam('obstacle_stop_distance_m');
+          setBehaviorValue('0.4');
+          setInstruction('Increase obstacle stop distance to 0.40 m');
+          void onSubmitEdit('Increase obstacle stop distance to 0.40 m', {
+            op: 'set_behavior_parameter',
+            name: 'obstacle_stop_distance_m',
+            value: 0.4,
+          });
+        }}
+      >
+        Stop at 0.40 m
+      </button>
+      <button
+        type="button"
+        className="rv-chip"
+        data-testid="preset-edit-color"
+        disabled={editPending}
+        onClick={() => {
+          const target = selection.selectedInstanceId ?? 'chassis-1';
+          setOpKind('change_appearance_color');
+          setTargetInstanceId(target);
+          setColorHex('#2563EB');
+          setInstruction(`Change ${target} color to #2563EB`);
+          void onSubmitEdit(`Change ${target} color to #2563EB`, {
+            op: 'change_appearance_color',
+            instance_id: target,
+            color: '#2563EB',
+          });
+        }}
+      >
+        Tint it blue
+      </button>
+    </div>
+  );
+
   return (
-    <div data-testid="parts-panel" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-      {/* New Build / Upload Trigger */}
-      {onOpenIntake ? (
-        <button
-          type="button"
-          data-testid="open-intake-button"
-          onClick={onOpenIntake}
-          style={{
-            background: '#2563eb',
-            color: '#ffffff',
-            border: '1px solid #3b82f6',
-            borderRadius: 6,
-            padding: '8px 12px',
-            fontSize: 13,
-            fontWeight: 600,
-            cursor: 'pointer',
-            textAlign: 'center',
-          }}
-        >
-          + Upload image / New build
-        </button>
-      ) : null}
-
-      {/* Project Revision Switcher (work_(9)) */}
-      <div
-        style={{
-          background: '#141821',
-          border: '1px solid #222938',
-          borderRadius: 8,
-          padding: 10,
-        }}
-      >
-        <ProjectRevisionPicker
-          buildId={plan.build_id}
-          revisions={revisions}
-          currentRevision={plan.revision}
-          onSelectRevision={onSelectRevision}
-          pending={revisionPending}
-          error={revisionError}
-        />
-      </div>
-
-      {/* Component Hierarchy & Visibility List */}
-      <section
-        aria-label="Placed components"
-        data-testid="component-tree"
-        style={{
-          background: '#141821',
-          border: '1px solid #222938',
-          borderRadius: 8,
-          padding: 10,
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: 8,
-          }}
-        >
-          <h2 style={{ fontSize: 13, fontWeight: 600, margin: 0 }}>
-            Components ({plan.components.length})
-          </h2>
-          {selection.state.hidden_instance_ids.size > 0 && (
-            <button
-              type="button"
-              onClick={() => selection.showAll()}
-              data-testid="tree-show-all"
-              style={{
-                background: 'transparent',
-                color: '#60a5fa',
-                border: 'none',
-                fontSize: 11,
-                cursor: 'pointer',
-              }}
-            >
-              Unhide all ({selection.state.hidden_instance_ids.size})
-            </button>
+    <div data-testid="parts-panel" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <section aria-label="Request" data-testid="request-summary" className="rv-section">
+        <h2 className="rv-section__title">Request</h2>
+        <div className="rv-request">
+          {request?.imageUrl ? (
+            <img className="rv-request__image" src={request.imageUrl} alt="Reference image" data-testid="request-image" />
+          ) : (
+            <div className="rv-request__image rv-request__no-image" role="img" aria-label="No reference image">
+              No image
+            </div>
           )}
+          <div style={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {request?.prompt ? (
+              <p className="rv-request__prompt" data-testid="request-prompt">
+                “{request.prompt}”
+              </p>
+            ) : (
+              <p className="rv-hint" data-testid="request-prompt-missing">
+                No prompt is stored with this build.
+              </p>
+            )}
+            {request?.origin === 'saved' ? (
+              <span className="rv-hint">Saved with the example, not typed in this session.</span>
+            ) : null}
+          </div>
         </div>
+        {request && request.requirements.length > 0 ? (
+          <ul aria-label="Stated constraints" style={{ display: 'flex', flexWrap: 'wrap', gap: 6, margin: 0, padding: 0, listStyle: 'none' }}>
+            {request.requirements.map((r) => (
+              <li key={r} className="rv-badge rv-badge--neutral">
+                {r}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </section>
 
-        <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 4 }}>
+      <section aria-label="Change request" data-testid="design-edit-panel" className="rv-section">
+        <form onSubmit={handleChangeRequest} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <label htmlFor="rv-change-request" className="rv-section__title">
+            Ask for a change
+          </label>
+          <textarea
+            id="rv-change-request"
+            data-testid="change-request-input"
+            className="rv-input"
+            rows={2}
+            value={changeText}
+            placeholder={CHANGE_PLACEHOLDER}
+            disabled={editPending}
+            onChange={(e) => setChangeText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleChangeRequest(e);
+            }}
+          />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <button
+              type="submit"
+              data-testid="change-request-submit"
+              className="rv-btn rv-btn--primary"
+              disabled={editPending || changeText.trim() === ''}
+            >
+              {editPending ? 'Checking change…' : 'Request change'}
+            </button>
+            <span className="rv-hint">Creates revision {plan.revision + 1} if the checks accept it.</span>
+          </div>
+        </form>
+        {presetButtons}
+
+        {lastEditResponse && (
+          <p
+            role="status"
+            data-testid="edit-outcome-banner"
+            data-accepted={lastEditResponse.accepted ? 'true' : 'false'}
+            className={`rv-callout rv-callout--${lastEditResponse.accepted ? 'ok' : 'warn'}`}
+          >
+            {lastEditResponse.accepted ? (
+              <>
+                Change accepted. Created revision <strong>{lastEditResponse.revision}</strong>.
+              </>
+            ) : (
+              <>
+                <strong>Change not applied; revision {plan.revision} is unchanged.</strong>{' '}
+                {lastEditResponse.finding?.message ?? 'Rejected by validator.'}
+              </>
+            )}
+          </p>
+        )}
+
+        {editError && (
+          <p role="alert" data-testid="edit-error-banner" className="rv-callout rv-callout--bad">
+            {editError}
+          </p>
+        )}
+
+        <details className="rv-details" data-testid="advanced-edit">
+          <summary>Advanced: apply an exact operation</summary>
+          <form onSubmit={handleEditSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <label className="rv-field rv-hint">
+              <span>Operation type</span>
+              <select
+                data-testid="edit-operation-select"
+                value={opKind}
+                onChange={(e) => setOpKind(e.target.value as EditOpKind)}
+                  className="rv-input"
+              >
+                <option value="set_behavior_parameter">set_behavior_parameter</option>
+                <option value="change_appearance_color">change_appearance_color</option>
+                <option value="set_mount_offset_within_template">set_mount_offset_within_template</option>
+                <option value="set_budget">set_budget</option>
+                <option value="replace_optional_sensor">replace_optional_sensor</option>
+              </select>
+            </label>
+
+            {opKind === 'set_behavior_parameter' && (
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 90px', gap: 6 }}>
+                <select
+                  data-testid="edit-behavior-name"
+                  value={behaviorParam}
+                  onChange={(e) => setBehaviorParam(e.target.value)}
+                  className="rv-input"
+                >
+                  <option value="obstacle_stop_distance_m">obstacle_stop_distance_m</option>
+                  <option value="turn_duration_ms">turn_duration_ms</option>
+                  <option value="forward_speed_fraction">forward_speed_fraction</option>
+                </select>
+                <input
+                  type="number"
+                  step="any"
+                  data-testid="edit-behavior-value"
+                  value={behaviorValue}
+                  onChange={(e) => setBehaviorValue(e.target.value)}
+                  className="rv-input"
+                />
+              </div>
+            )}
+
+            {opKind === 'change_appearance_color' && (
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 70px', gap: 6 }}>
+                <select
+                  data-testid="edit-color-instance"
+                  value={selection.selectedInstanceId ?? targetInstanceId}
+                  onChange={(e) => setTargetInstanceId(e.target.value)}
+                  className="rv-input"
+                >
+                  {plan.components.map((c) => (
+                    <option key={c.instance_id} value={c.instance_id}>
+                      {c.instance_id}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="text"
+                  data-testid="edit-color-hex"
+                  value={colorHex}
+                  onChange={(e) => setColorHex(e.target.value)}
+                  className="rv-input"
+                />
+              </div>
+            )}
+
+            {opKind === 'set_mount_offset_within_template' && (
+              <label className="rv-field rv-hint">
+                <span>Vertical offset Y (mm) on {selection.selectedInstanceId ?? 'sensor-1'}</span>
+                <input
+                  type="number"
+                  step="1"
+                  data-testid="edit-mount-offset-y"
+                  value={offsetY}
+                  onChange={(e) => setOffsetY(e.target.value)}
+                  className="rv-input"
+                />
+              </label>
+            )}
+
+            {opKind === 'set_budget' && (
+              <label className="rv-field rv-hint">
+                <span>Max budget ({plan.bom.currency || 'USD'})</span>
+                <input
+                  type="text"
+                  data-testid="edit-budget-amount"
+                  value={budgetAmount}
+                  onChange={(e) => setBudgetAmount(e.target.value)}
+                  className="rv-input"
+                />
+              </label>
+            )}
+
+            {opKind === 'replace_optional_sensor' && (
+              <label className="rv-field rv-hint">
+                <span>Replacement sensor catalog ID</span>
+                <input
+                  type="text"
+                  data-testid="edit-sensor-catalog-id"
+                  value={sensorCatalogId}
+                  onChange={(e) => setSensorCatalogId(e.target.value)}
+                  className="rv-input"
+                />
+              </label>
+            )}
+
+            <label className="rv-field rv-hint">
+              <span>Instruction note</span>
+              <input
+                type="text"
+                data-testid="edit-instruction-input"
+                value={instruction}
+                onChange={(e) => setInstruction(e.target.value)}
+                  className="rv-input"
+              />
+            </label>
+
+            <button
+              type="submit"
+              data-testid="edit-submit-button"
+              disabled={editPending}
+              className="rv-btn"
+            >
+              {editPending ? 'Validating edit…' : `Apply edit to r${plan.revision}`}
+            </button>
+          </form>
+        </details>
+      </section>
+
+      <section aria-label="Revision history" data-testid="revision-history" className="rv-section" aria-busy={revisionPending}>
+        <h2 className="rv-section__title">History</h2>
+        <ol className="rv-history">
+          {orderedRevisions.map((r) => {
+            const current = r.revision === plan.revision;
+            return (
+              <li key={r.revision}>
+                <button
+                  type="button"
+                  className="rv-history__item"
+                  data-testid={`revision-history-${r.revision}`}
+                  aria-current={current ? 'true' : undefined}
+                  disabled={revisionPending}
+                  onClick={() => {
+                    if (!current) onSelectRevision(r.revision);
+                  }}
+                >
+                  <span style={{ minWidth: 0 }}>
+                    <strong>Revision {r.revision}</strong>
+                    {r.revision === latestRevision ? ' · latest' : ''}
+                    {r.label || r.title ? (
+                      <span className="rv-hint" style={{ display: 'block', overflowWrap: 'anywhere' }}>
+                        {r.label ?? r.title}
+                      </span>
+                    ) : null}
+                  </span>
+                  {r.status ? (
+                    <span className={`rv-badge rv-badge--${STATUS_TONE[r.status] ?? 'warn'}`}>
+                      {PLAN_STATUS_LABEL[r.status].replace(' (implemented checks passed)', '')}
+                    </span>
+                  ) : null}
+                </button>
+              </li>
+            );
+          })}
+        </ol>
+        {revisionPending ? <p className="rv-hint">Loading revision…</p> : null}
+        {!revisionPending && latestRevision !== undefined && plan.revision !== latestRevision ? (
+          <p className="rv-hint" data-testid="revision-state" style={{ color: 'var(--rv-warn-text)' }}>
+            Viewing an older revision; latest is {latestRevision}.
+          </p>
+        ) : null}
+        {revisionError ? (
+          <p role="alert" data-testid="revision-error" className="rv-callout rv-callout--bad">
+            {revisionError}
+          </p>
+        ) : null}
+      </section>
+
+      <details open aria-label="Placed components" data-testid="component-tree" className="rv-section">
+        <summary className="rv-section__title">Parts ({plan.components.length})</summary>
+        {selection.state.hidden_instance_ids.size > 0 ? (
+          <button
+            type="button"
+            onClick={() => selection.showAll()}
+            data-testid="tree-show-all"
+            className="rv-btn rv-btn--ghost rv-btn--small"
+            style={{ alignSelf: 'flex-start', color: 'var(--rv-accent-text)' }}
+          >
+            Show all ({selection.state.hidden_instance_ids.size} hidden)
+          </button>
+        ) : null}
+        <ul className="rv-tree">
           {plan.components.map((comp) => {
             const cat = catalogById.get(comp.catalog_id);
             const visual = selection.getVisualState(comp.instance_id);
             const isSelected = selection.selectedInstanceId === comp.instance_id;
             const isIsolated = selection.state.isolated_instance_id === comp.instance_id;
+            const name = cat?.identity.model ?? comp.catalog_id;
             return (
               <li
                 key={comp.instance_id}
                 data-testid={`tree-item-${comp.instance_id}`}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: 6,
-                  padding: '5px 7px',
-                  borderRadius: 6,
-                  background: isSelected ? '#1e3a8a' : '#10141c',
-                  border: isSelected ? '1px solid #3b82f6' : '1px solid #1e2430',
-                  opacity: visual.hidden ? 0.5 : 1,
-                }}
+                className="rv-tree-row"
+                data-selected={isSelected}
+                data-hidden={visual.hidden}
+                data-isolated={isIsolated}
               >
                 <button
                   type="button"
                   data-testid={`tree-select-${comp.instance_id}`}
+                  className="rv-tree-row__select"
+                  aria-pressed={isSelected}
                   onClick={() => selection.select(comp.instance_id, { reason: 'api', reveal: true })}
-                  style={{
-                    flex: 1,
-                    background: 'transparent',
-                    border: 'none',
-                    color: '#e2e8f0',
-                    textAlign: 'left',
-                    cursor: 'pointer',
-                    padding: 0,
-                    fontSize: 12,
-                  }}
                 >
-                  <div style={{ fontWeight: 500 }}>
-                    {cat?.identity.model ?? comp.catalog_id}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 11,
-                      color: '#94a3b8',
-                      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-                    }}
-                  >
-                    {comp.instance_id} · {comp.role}
+                  <span className="rv-tree-row__name">{name}</span>
+                  <span className="rv-mono">
+                    {comp.instance_id}
                     {comp.render_overrides?.visible === false ? ' · unmodeled kit item' : ''}
-                  </div>
+                  </span>
                 </button>
-
-                <div style={{ display: 'flex', gap: 4 }}>
+                <div className="rv-tree-row__actions">
                   <button
                     type="button"
+                    className="rv-btn rv-btn--small"
                     data-testid={`tree-isolate-${comp.instance_id}`}
-                    title={isIsolated ? 'Exit isolation' : `Isolate ${comp.instance_id}`}
+                    title={isIsolated ? 'Show all parts' : `Show only ${name}`}
+                    aria-label={isIsolated ? 'Show all parts' : `Show only ${name}`}
                     aria-pressed={isIsolated}
-                    onClick={() =>
-                      isIsolated ? selection.exitIsolation() : selection.isolate(comp.instance_id)
-                    }
-                    style={{
-                      background: isIsolated ? '#2563eb' : '#1a202c',
-                      color: '#cbd5e1',
-                      border: '1px solid #2d3748',
-                      borderRadius: 4,
-                      padding: '2px 6px',
-                      fontSize: 10,
-                      cursor: 'pointer',
-                    }}
+                    onClick={() => (isIsolated ? selection.exitIsolation() : selection.isolate(comp.instance_id))}
                   >
                     {isIsolated ? 'All' : 'Solo'}
                   </button>
                   <button
                     type="button"
+                    className="rv-btn rv-btn--small"
                     data-testid={`tree-hide-${comp.instance_id}`}
-                    title={visual.hidden ? `Show ${comp.instance_id}` : `Hide ${comp.instance_id}`}
+                    title={visual.hidden ? `Show ${name}` : `Hide ${name}`}
+                    aria-label={visual.hidden ? `Show ${name}` : `Hide ${name}`}
                     aria-pressed={visual.hidden}
                     onClick={() => selection.toggleHidden(comp.instance_id)}
-                    style={{
-                      background: visual.hidden ? '#374151' : '#1a202c',
-                      color: '#cbd5e1',
-                      border: '1px solid #2d3748',
-                      borderRadius: 4,
-                      padding: '2px 6px',
-                      fontSize: 10,
-                      cursor: 'pointer',
-                    }}
                   >
                     {visual.hidden ? 'Show' : 'Hide'}
                   </button>
@@ -281,353 +538,7 @@ export function PartsPanel({
             );
           })}
         </ul>
-      </section>
-
-      {/* Declarative Design Edits (project.md §2 / implementation.md A3) */}
-      <section
-        aria-label="Design revision edits"
-        data-testid="design-edit-panel"
-        style={{
-          background: '#141821',
-          border: '1px solid #222938',
-          borderRadius: 8,
-          padding: 10,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 8,
-        }}
-      >
-        <h2 style={{ fontSize: 13, fontWeight: 600, margin: 0 }}>Propose design edit</h2>
-        <p style={{ fontSize: 11, color: '#94a3b8', margin: 0 }}>
-          Edits run through the backend validator and create a new immutable revision if accepted.
-        </p>
-
-        {/* Quick Demo Presets */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
-          <button
-            type="button"
-            data-testid="preset-edit-sensor-higher"
-            disabled={editPending}
-            onClick={() => {
-              setOpKind('set_mount_offset_within_template');
-              setInstruction('Make it cheaper and move the sensor higher');
-              setOffsetY('12');
-              void onSubmitEdit('Make it cheaper and move the sensor higher', {
-                op: 'set_mount_offset_within_template',
-                instance_id: 'sensor-1',
-                offset_mm: [0, 12, 0],
-              });
-            }}
-            style={{
-              background: '#1e293b',
-              color: '#e2e8f0',
-              border: '1px solid #334155',
-              borderRadius: 5,
-              padding: '4px 8px',
-              fontSize: 11,
-              cursor: 'pointer',
-            }}
-          >
-            Move sensor +12 mm higher
-          </button>
-          <button
-            type="button"
-            data-testid="preset-edit-stop-distance"
-            disabled={editPending}
-            onClick={() => {
-              setOpKind('set_behavior_parameter');
-              setBehaviorParam('obstacle_stop_distance_m');
-              setBehaviorValue('0.4');
-              setInstruction('Increase obstacle stop distance to 0.40 m');
-              void onSubmitEdit('Increase obstacle stop distance to 0.40 m', {
-                op: 'set_behavior_parameter',
-                name: 'obstacle_stop_distance_m',
-                value: 0.4,
-              });
-            }}
-            style={{
-              background: '#1e293b',
-              color: '#e2e8f0',
-              border: '1px solid #334155',
-              borderRadius: 5,
-              padding: '4px 8px',
-              fontSize: 11,
-              cursor: 'pointer',
-            }}
-          >
-            Stop distance → 0.40 m
-          </button>
-          <button
-            type="button"
-            data-testid="preset-edit-color"
-            disabled={editPending}
-            onClick={() => {
-              const target = selection.selectedInstanceId ?? 'chassis-1';
-              setOpKind('change_appearance_color');
-              setTargetInstanceId(target);
-              setColorHex('#2563EB');
-              setInstruction(`Change ${target} color to #2563EB`);
-              void onSubmitEdit(`Change ${target} color to #2563EB`, {
-                op: 'change_appearance_color',
-                instance_id: target,
-                color: '#2563EB',
-              });
-            }}
-            style={{
-              background: '#1e293b',
-              color: '#e2e8f0',
-              border: '1px solid #334155',
-              borderRadius: 5,
-              padding: '4px 8px',
-              fontSize: 11,
-              cursor: 'pointer',
-            }}
-          >
-            Tint cobalt (#2563EB)
-          </button>
-        </div>
-
-        <form onSubmit={handleEditSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-          <label style={{ fontSize: 11, color: '#cbd5e1', display: 'flex', flexDirection: 'column', gap: 3 }}>
-            <span>Operation type</span>
-            <select
-              data-testid="edit-operation-select"
-              value={opKind}
-              onChange={(e) => setOpKind(e.target.value as EditOpKind)}
-              style={{
-                background: '#0f131a',
-                color: '#f1f5f9',
-                border: '1px solid #2d3748',
-                borderRadius: 5,
-                padding: '4px 6px',
-                fontSize: 12,
-              }}
-            >
-              <option value="set_behavior_parameter">set_behavior_parameter</option>
-              <option value="change_appearance_color">change_appearance_color</option>
-              <option value="set_mount_offset_within_template">set_mount_offset_within_template</option>
-              <option value="set_budget">set_budget</option>
-              <option value="replace_optional_sensor">replace_optional_sensor</option>
-            </select>
-          </label>
-
-          {opKind === 'set_behavior_parameter' && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 90px', gap: 6 }}>
-              <select
-                data-testid="edit-behavior-name"
-                value={behaviorParam}
-                onChange={(e) => setBehaviorParam(e.target.value)}
-                style={{
-                  background: '#0f131a',
-                  color: '#f1f5f9',
-                  border: '1px solid #2d3748',
-                  borderRadius: 5,
-                  padding: '4px 6px',
-                  fontSize: 12,
-                }}
-              >
-                <option value="obstacle_stop_distance_m">obstacle_stop_distance_m</option>
-                <option value="turn_duration_ms">turn_duration_ms</option>
-                <option value="forward_speed_fraction">forward_speed_fraction</option>
-              </select>
-              <input
-                type="number"
-                step="any"
-                data-testid="edit-behavior-value"
-                value={behaviorValue}
-                onChange={(e) => setBehaviorValue(e.target.value)}
-                style={{
-                  background: '#0f131a',
-                  color: '#f1f5f9',
-                  border: '1px solid #2d3748',
-                  borderRadius: 5,
-                  padding: '4px 6px',
-                  fontSize: 12,
-                }}
-              />
-            </div>
-          )}
-
-          {opKind === 'change_appearance_color' && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 70px', gap: 6 }}>
-              <select
-                data-testid="edit-color-instance"
-                value={selection.selectedInstanceId ?? targetInstanceId}
-                onChange={(e) => setTargetInstanceId(e.target.value)}
-                style={{
-                  background: '#0f131a',
-                  color: '#f1f5f9',
-                  border: '1px solid #2d3748',
-                  borderRadius: 5,
-                  padding: '4px 6px',
-                  fontSize: 12,
-                }}
-              >
-                {plan.components.map((c) => (
-                  <option key={c.instance_id} value={c.instance_id}>
-                    {c.instance_id}
-                  </option>
-                ))}
-              </select>
-              <input
-                type="text"
-                data-testid="edit-color-hex"
-                value={colorHex}
-                onChange={(e) => setColorHex(e.target.value)}
-                style={{
-                  background: '#0f131a',
-                  color: '#f1f5f9',
-                  border: '1px solid #2d3748',
-                  borderRadius: 5,
-                  padding: '4px 6px',
-                  fontSize: 12,
-                }}
-              />
-            </div>
-          )}
-
-          {opKind === 'set_mount_offset_within_template' && (
-            <label style={{ fontSize: 11, color: '#cbd5e1', display: 'flex', flexDirection: 'column', gap: 3 }}>
-              <span>Vertical offset Y (mm) on {selection.selectedInstanceId ?? 'sensor-1'}</span>
-              <input
-                type="number"
-                step="1"
-                data-testid="edit-mount-offset-y"
-                value={offsetY}
-                onChange={(e) => setOffsetY(e.target.value)}
-                style={{
-                  background: '#0f131a',
-                  color: '#f1f5f9',
-                  border: '1px solid #2d3748',
-                  borderRadius: 5,
-                  padding: '4px 6px',
-                  fontSize: 12,
-                }}
-              />
-            </label>
-          )}
-
-          {opKind === 'set_budget' && (
-            <label style={{ fontSize: 11, color: '#cbd5e1', display: 'flex', flexDirection: 'column', gap: 3 }}>
-              <span>Max budget ({plan.bom.currency || 'USD'})</span>
-              <input
-                type="text"
-                data-testid="edit-budget-amount"
-                value={budgetAmount}
-                onChange={(e) => setBudgetAmount(e.target.value)}
-                style={{
-                  background: '#0f131a',
-                  color: '#f1f5f9',
-                  border: '1px solid #2d3748',
-                  borderRadius: 5,
-                  padding: '4px 6px',
-                  fontSize: 12,
-                }}
-              />
-            </label>
-          )}
-
-          {opKind === 'replace_optional_sensor' && (
-            <label style={{ fontSize: 11, color: '#cbd5e1', display: 'flex', flexDirection: 'column', gap: 3 }}>
-              <span>Replacement sensor catalog ID</span>
-              <input
-                type="text"
-                data-testid="edit-sensor-catalog-id"
-                value={sensorCatalogId}
-                onChange={(e) => setSensorCatalogId(e.target.value)}
-                style={{
-                  background: '#0f131a',
-                  color: '#f1f5f9',
-                  border: '1px solid #2d3748',
-                  borderRadius: 5,
-                  padding: '4px 6px',
-                  fontSize: 12,
-                }}
-              />
-            </label>
-          )}
-
-          <label style={{ fontSize: 11, color: '#cbd5e1', display: 'flex', flexDirection: 'column', gap: 3 }}>
-            <span>Instruction note</span>
-            <input
-              type="text"
-              data-testid="edit-instruction-input"
-              value={instruction}
-              onChange={(e) => setInstruction(e.target.value)}
-              style={{
-                background: '#0f131a',
-                color: '#f1f5f9',
-                border: '1px solid #2d3748',
-                borderRadius: 5,
-                padding: '4px 6px',
-                fontSize: 12,
-              }}
-            />
-          </label>
-
-          <button
-            type="submit"
-            data-testid="edit-submit-button"
-            disabled={editPending}
-            style={{
-              background: '#1d4ed8',
-              color: '#ffffff',
-              border: '1px solid #3b82f6',
-              borderRadius: 5,
-              padding: '6px 10px',
-              fontSize: 12,
-              fontWeight: 600,
-              cursor: editPending ? 'not-allowed' : 'pointer',
-            }}
-          >
-            {editPending ? 'Validating edit…' : `Apply edit to r${plan.revision}`}
-          </button>
-        </form>
-
-        {lastEditResponse && (
-          <div
-            role="status"
-            data-testid="edit-outcome-banner"
-            data-accepted={lastEditResponse.accepted ? 'true' : 'false'}
-            style={{
-              padding: '7px 9px',
-              borderRadius: 6,
-              fontSize: 11,
-              background: lastEditResponse.accepted ? '#064e3b' : '#3f2e1e',
-              border: lastEditResponse.accepted ? '1px solid #10b981' : '1px solid #f59e0b',
-              color: '#f8fafc',
-            }}
-          >
-            {lastEditResponse.accepted ? (
-              <span>
-                Edit accepted → created immutable revision <strong>r{lastEditResponse.revision}</strong>.
-              </span>
-            ) : (
-              <div>
-                <strong>Edit not applied (revision r{plan.revision} preserved):</strong>{' '}
-                {lastEditResponse.finding?.message ?? 'Rejected by validator.'}
-              </div>
-            )}
-          </div>
-        )}
-
-        {editError && (
-          <div
-            role="alert"
-            data-testid="edit-error-banner"
-            style={{
-              padding: '7px 9px',
-              borderRadius: 6,
-              fontSize: 11,
-              background: '#450a0a',
-              border: '1px solid #ef4444',
-              color: '#fecaca',
-            }}
-          >
-            {editError}
-          </div>
-        )}
-      </section>
+      </details>
     </div>
   );
 }

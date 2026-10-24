@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useStudioPlanStore, type StudioActionMode } from '../../lib/plan-store';
-import type { BuildStatus, RivetDataSource } from '../../lib/rivet';
+import { getSyntheticRoverIntent } from '../../lib/fixtures';
+import type { BuildStatus, IntentSpec, RivetDataSource } from '../../lib/rivet';
 import { SimView } from '../sim';
 import { RoverScene } from '../three/RoverScene';
 import {
@@ -18,7 +19,8 @@ import { Dialog } from '../ui/Dialog';
 import { MenuButton } from '../ui/MenuButton';
 import { ExportPanel } from './ExportPanel';
 import { Inspector } from './Inspector';
-import { PartsPanel } from './PartsPanel';
+import { PartsPanel, type BuildRequestSummary } from './PartsPanel';
+import type { GenerateRequest } from './intake';
 import { StepTimeline } from './StepTimeline';
 import { StudioShell } from './StudioShell';
 import { Toolbar } from './Toolbar';
@@ -33,6 +35,26 @@ export interface StudioProps {
   initialIntakeFocus?: 'image' | 'prompt';
   /** Show developer controls: data source switch, render stats, raw build id and revision (#54). */
   devMode?: boolean;
+}
+
+const SAVED_INTENT: IntentSpec = getSyntheticRoverIntent();
+
+function describeConstraints(requirements: {
+  max_budget?: string | number | null;
+  currency?: string | null;
+  required_capabilities?: readonly string[];
+} | null | undefined): string[] {
+  if (!requirements) return [];
+  const out = [
+    requirements.max_budget != null
+      ? `Budget up to ${requirements.max_budget} ${requirements.currency ?? ''}`.trim()
+      : 'No budget limit',
+  ];
+  for (const capability of requirements.required_capabilities ?? []) {
+    const words = capability.replace(/_/g, ' ');
+    out.push(words.charAt(0).toUpperCase() + words.slice(1));
+  }
+  return out;
 }
 
 const STATUS_CHIP: Record<BuildStatus, { label: string; tone: 'ok' | 'warn' | 'bad' }> = {
@@ -54,6 +76,19 @@ export function Studio({
 
   const [intakeOpen, setIntakeOpen] = useState(initialIntakeOpen);
   const [exportOpen, setExportOpen] = useState(false);
+  const [trustDetailsOpen, setTrustDetailsOpen] = useState(false);
+
+  // What was asked for in this session, so the left panel can show the prompt and image (#56).
+  const uploadPreviews = useRef(new Map<string, string>());
+  const [lastGeneration, setLastGeneration] = useState<{
+    request: GenerateRequest;
+    imageUrl: string | null;
+    buildId: string | null;
+  } | null>(null);
+  useEffect(() => {
+    const builtId = store.job?.status === 'complete' ? store.job.build_id : null;
+    if (builtId) setLastGeneration((g) => (g && !g.buildId ? { ...g, buildId: builtId } : g));
+  }, [store.job?.status, store.job?.build_id]);
 
   // Landing page "Describe a build" lands with the prompt focused. Runs after Dialog's own
   // initial focus (child effects run first), so it wins only for that first open.
@@ -277,33 +312,63 @@ export function Studio({
     </>
   );
 
+  const blockingFindings = plan.verification.findings.filter(
+    (f) => f.severity === 'blocking' && (f.result === 'FAIL' || f.result === 'UNKNOWN'),
+  ).length;
+  const trustShort = [
+    trust.isSynthetic
+      ? 'Saved example · synthetic parts, not sourced'
+      : trust.isSaved
+        ? 'Saved build · not freshly generated'
+        : trust.label,
+    blockingFindings > 0 ? `${blockingFindings} blocking check${blockingFindings === 1 ? '' : 's'} unresolved` : null,
+  ]
+    .filter(Boolean)
+    .join(' · ');
+
   const bannerNode = (
     <div
       role="status"
       data-testid="provenance-trust-banner"
       data-trust-label={trust.label}
       data-synthetic={trust.isSynthetic ? 'true' : 'false'}
-      style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: 8,
-        color: trust.isSynthetic ? 'var(--rv-warn-text)' : '#bae6fd',
-      }}
+      style={{ color: trust.isSynthetic ? 'var(--rv-warn-text)' : '#bae6fd' }}
     >
-      <div
-        title={trust.reasons.join(' · ')}
-        style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
-      >
-        <strong>{trust.label}</strong>
-        {trust.reasons.length > 0 ? ` — ${trust.reasons.join(' · ')}` : ''}
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '2px 10px' }}>
+        <strong data-testid="trust-banner-summary" style={{ fontWeight: 600 }}>
+          {trustShort}
+        </strong>
+        {trust.reasons.length > 0 ? (
+          <button
+            type="button"
+            className="rv-btn rv-btn--ghost rv-btn--small"
+            data-testid="trust-banner-details-toggle"
+            aria-expanded={trustDetailsOpen}
+            aria-controls="rv-trust-details"
+            onClick={() => setTrustDetailsOpen((o) => !o)}
+            style={{ color: 'inherit', textDecoration: 'underline', padding: '0 4px', minHeight: 20 }}
+          >
+            {trustDetailsOpen ? 'Hide details' : 'Details'}
+          </button>
+        ) : null}
+        {store.contractError && (
+          <span role="alert" data-testid="studio-contract-error" style={{ color: 'var(--rv-danger-text)' }}>
+            Contract error: {store.contractError}
+          </span>
+        )}
       </div>
-      {store.contractError && (
-        <span role="alert" data-testid="studio-contract-error" style={{ color: '#fca5a5' }}>
-          Contract error: {store.contractError}
-        </span>
-      )}
+      {trustDetailsOpen ? (
+        <ul
+          id="rv-trust-details"
+          data-testid="trust-banner-details"
+          style={{ margin: '4px 0 2px', paddingLeft: 18, listStyle: 'disc', color: 'var(--rv-text)' }}
+        >
+          <li>{trust.label}</li>
+          {trust.reasons.map((r) => (
+            <li key={r}>{r}</li>
+          ))}
+        </ul>
+      ) : null}
     </div>
   );
 
@@ -319,10 +384,42 @@ export function Studio({
     };
   }, [store.job]);
 
+  const requestSummary = useMemo<BuildRequestSummary | null>(() => {
+    if (lastGeneration && lastGeneration.buildId === plan.build_id) {
+      return {
+        prompt: lastGeneration.request.input.user_text,
+        imageUrl: lastGeneration.imageUrl,
+        origin: 'generated',
+        requirements: describeConstraints(lastGeneration.request.requirements),
+      };
+    }
+    if (plan.source_intent_id === SAVED_INTENT.intent_id) {
+      return {
+        prompt: SAVED_INTENT.input.user_text,
+        imageUrl: null,
+        origin: 'saved',
+        requirements: describeConstraints(SAVED_INTENT.requirements),
+      };
+    }
+    return null;
+  }, [lastGeneration, plan.build_id, plan.source_intent_id]);
+
   const intakeNode = (
     <BuildIntake
-      onUpload={store.uploadImage}
-      onGenerate={store.startGeneration}
+      onUpload={async (file, options) => {
+        const asset = await store.uploadImage(file, options);
+        if (asset.preview_url) uploadPreviews.current.set(asset.asset_id, asset.preview_url);
+        return asset;
+      }}
+      onGenerate={(request) => {
+        const assetId = request.input.image_asset_id;
+        setLastGeneration({
+          request,
+          imageUrl: assetId ? uploadPreviews.current.get(assetId) ?? null : null,
+          buildId: null,
+        });
+        return store.startGeneration(request);
+      }}
       job={intakeJob}
       events={store.jobEvents}
       onCancelJob={store.cancelJob}
@@ -460,6 +557,7 @@ export function Studio({
       lastEditResponse={store.lastEditResponse}
       editError={store.editError}
       onSubmitEdit={store.submitEdit}
+      request={requestSummary}
     />
   );
 

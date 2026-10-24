@@ -147,8 +147,8 @@ export function StepTimeline({
 
       {/* Step Quick-Jump Pills */}
       <div
-        role="list"
-        aria-label="Assembly steps list"
+        role="group"
+        aria-label="Assembly steps"
         style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}
       >
         <button

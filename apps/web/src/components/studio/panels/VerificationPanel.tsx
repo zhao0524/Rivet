@@ -7,11 +7,35 @@ export interface VerificationPanelProps {
 }
 
 const RESULT_LABEL: Record<FindingResult, string> = {
-  PASS: "PASS",
-  WARN: "WARN",
-  FAIL: "FAIL",
-  UNKNOWN: "UNKNOWN",
+  PASS: "Passed",
+  WARN: "Warning",
+  FAIL: "Failed",
+  UNKNOWN: "Unknown",
 };
+
+const RESULT_TONE: Record<FindingResult, "ok" | "warn" | "bad" | "neutral"> = {
+  PASS: "ok",
+  WARN: "warn",
+  FAIL: "bad",
+  UNKNOWN: "warn",
+};
+
+const CATEGORY_LABEL: Record<string, string> = {
+  electrical: "Electrical",
+  mechanical: "Mechanical",
+  completeness: "Completeness",
+  budget: "Budget",
+  firmware: "Firmware",
+  requirements: "Requirements",
+  integrity: "Plan integrity",
+  fixture: "Saved example",
+};
+
+/** Plain-language category from a rule id prefix (`electrical.motor_current` → "Electrical"). */
+export function findingCategory(ruleId: string): string {
+  const prefix = ruleId.split(".")[0] ?? ruleId;
+  return CATEGORY_LABEL[prefix] ?? prefix.charAt(0).toUpperCase() + prefix.slice(1).replace(/_/g, " ");
+}
 
 export function VerificationPanel({ plan, onSelectInstance }: VerificationPanelProps) {
   const { overall, findings } = plan.verification;
@@ -64,9 +88,12 @@ export function VerificationPanel({ plan, onSelectInstance }: VerificationPanelP
               data-severity={f.severity}
               data-blocking={isBlocking(f) ? "true" : "false"}
             >
-              <p>
-                <strong data-testid={`finding-result-${f.rule_id}`}>{RESULT_LABEL[f.result]}</strong> ·{" "}
-                {isBlocking(f) ? "Blocking" : f.severity} · <code>{f.rule_id}</code>
+              <p style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 6 }}>
+                <span className={`rv-badge rv-badge--${RESULT_TONE[f.result]}`} data-testid={`finding-result-${f.rule_id}`}>
+                  {RESULT_LABEL[f.result]}
+                </span>
+                <strong>{findingCategory(f.rule_id)}</strong>
+                {isBlocking(f) ? <span>· Blocking</span> : null}
               </p>
               <p>{f.message}</p>
               {f.affected_instance_ids.length > 0 && (
@@ -85,16 +112,22 @@ export function VerificationPanel({ plan, onSelectInstance }: VerificationPanelP
                   ))}
                 </ul>
               )}
-              {f.evidence_urls.length > 0 ? (
-                <ul aria-label={`Evidence for ${f.rule_id}`}>
-                  {f.evidence_urls.map((u) => {
-                    const href = usableUrl(u);
-                    return <li key={u}>{href ? <a href={href} target="_blank" rel="noopener noreferrer">{href}</a> : u}</li>;
-                  })}
-                </ul>
-              ) : (
-                <p data-testid={`finding-no-evidence-${f.rule_id}`}>No evidence links provided.</p>
-              )}
+              <details className="rv-details">
+                <summary>Technical detail</summary>
+                <p>
+                  Rule <code>{f.rule_id}</code> · severity {f.severity}
+                </p>
+                {f.evidence_urls.length > 0 ? (
+                  <ul aria-label={`Evidence for ${f.rule_id}`}>
+                    {f.evidence_urls.map((u) => {
+                      const href = usableUrl(u);
+                      return <li key={u}>{href ? <a href={href} target="_blank" rel="noopener noreferrer">{href}</a> : u}</li>;
+                    })}
+                  </ul>
+                ) : (
+                  <p data-testid={`finding-no-evidence-${f.rule_id}`}>No evidence links provided.</p>
+                )}
+              </details>
             </li>
           ))}
         </ul>

@@ -48,7 +48,7 @@ test('timeline scrubbing steps through assembly and links step parts to the insp
 
   // Step parts jump straight to the selected part in the inspector.
   await page.getByTestId('timeline-step-instance-motor-left-1').click();
-  await expect(page.getByTestId('tree-item-motor-left-1')).toHaveCSS('background-color', 'rgb(30, 58, 138)');
+  await expect(page.getByTestId('tree-item-motor-left-1')).toHaveAttribute('data-selected', 'true');
   await page.getByTestId('studio-mode-design').click();
   await expect(page.getByTestId('inspector-instance-id')).toHaveText('motor-left-1');
   await page.getByTestId('studio-mode-assemble').click();

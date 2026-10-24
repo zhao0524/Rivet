@@ -140,14 +140,26 @@ describe("BOMPanel", () => {
   });
 });
 
+const PLAIN_RESULT: Record<string, string> = { PASS: "Passed", WARN: "Warning", FAIL: "Failed", UNKNOWN: "Unknown" };
+
 describe("VerificationPanel", () => {
+  it("leads each finding with plain language and keeps the raw rule id in expanded detail (#57)", () => {
+    render(<VerificationPanel plan={makePlan()} />);
+    const row = screen.getByTestId("finding-electrical.motor_current");
+    const summary = row.querySelector("p")!;
+    expect(summary.textContent).toContain("Failed");
+    expect(summary.textContent).toContain("Electrical");
+    expect(summary.textContent).not.toContain("electrical.motor_current");
+    expect(row.querySelector("details")!.textContent).toContain("electrical.motor_current");
+  });
+
   it("displays each result distinctly and surfaces blocking findings first", () => {
     render(<VerificationPanel plan={makePlan()} />);
     expect(screen.getByTestId("verification-overall").dataset.status).toBe("needs_review");
     expect(screen.getByTestId("verification-overall").textContent).toContain("Needs review");
     expect(screen.getByTestId("verification-overall").textContent).not.toMatch(/Verified/);
     for (const r of ["PASS", "WARN", "FAIL", "UNKNOWN"]) {
-      expect(screen.getByTestId(`verification-count-${r}`).textContent).toBe(`${r}: 1`);
+      expect(screen.getByTestId(`verification-count-${r}`).textContent).toBe(`${PLAIN_RESULT[r]}: 1`);
     }
     expect(screen.getByTestId("verification-blocking-summary").textContent).toContain("2 blocking findings");
     const items = within(screen.getByRole("list", { name: "Findings" })).getAllByTestId(/^finding-[a-z.\_]+$/);

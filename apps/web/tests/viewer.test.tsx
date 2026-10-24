@@ -112,15 +112,15 @@ describe('3D Studio, Inspector, Timeline, Wiring & Edit Integration (C1–C7)', 
       expect(screen.getByTestId('studio-build-identity').textContent).toContain('rev 2');
     });
 
-    // Switch back to revision 1 using ProjectRevisionPicker
+    // Switch back to revision 1 from the left-panel history
     await act(async () => {
-      fireEvent.change(screen.getByTestId('revision-select'), { target: { value: '1' } });
+      fireEvent.click(screen.getByTestId('revision-history-1'));
     });
     expect(screen.getByTestId('studio-build-identity').textContent).toContain('rev 1');
 
     // Switch back to revision 2 and propose an edit in fixture mode -> rejected honestly without mutating revision 2
     await act(async () => {
-      fireEvent.change(screen.getByTestId('revision-select'), { target: { value: '2' } });
+      fireEvent.click(screen.getByTestId('revision-history-2'));
     });
     await act(async () => {
       fireEvent.click(screen.getByTestId('preset-edit-sensor-higher'));

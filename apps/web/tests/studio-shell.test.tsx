@@ -75,7 +75,7 @@ describe('Single navigation (#51)', () => {
   it('marks the active mode and lets the mode decide what the right panel shows', async () => {
     await renderStudio();
     const expected: Record<string, string> = {
-      design: 'part-inspector',
+      design: 'inspector-empty-state',
       inspect: 'inspector-bom-section',
       wiring: 'inspector-wiring-tab',
       assemble: 'inspector-assembly-steps',
@@ -92,7 +92,7 @@ describe('Single navigation (#51)', () => {
   it('never loses the selected part or the revision when switching modes', async () => {
     await renderStudio();
     fireEvent.click(screen.getByTestId('tree-select-driver-1'));
-    const revision = (screen.getByTestId('revision-select') as HTMLSelectElement).value;
+    const revision = screen.getByTestId('revision-history-1').getAttribute('aria-current');
     const title = screen.getByTestId('studio-build-title').textContent;
 
     for (const mode of [...STUDIO_MODES.map((m) => m.id), 'design']) {
@@ -100,7 +100,8 @@ describe('Single navigation (#51)', () => {
     }
 
     expect(screen.getByTestId('inspector-instance-id').textContent).toBe('driver-1');
-    expect((screen.getByTestId('revision-select') as HTMLSelectElement).value).toBe(revision);
+    expect(revision).toBe('true');
+    expect(screen.getByTestId('revision-history-1').getAttribute('aria-current')).toBe('true');
     expect(screen.getByTestId('studio-build-title').textContent).toBe(title);
   });
 

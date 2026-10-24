@@ -151,6 +151,7 @@ export function StudioShell({
         <aside
           id="rv-studio-sidebar"
           data-slot="sidebar"
+          tabIndex={0}
           data-open={openDrawer === 'sidebar'}
           aria-label="Project controls and components"
           className="rv-panel rv-panel--left"
@@ -184,6 +185,7 @@ export function StudioShell({
         <aside
           id="rv-studio-inspector"
           data-slot="inspector"
+          tabIndex={0}
           data-open={openDrawer === 'inspector'}
           aria-label={`${activeMode?.label ?? 'Studio'} details`}
           className="rv-panel rv-panel--right"

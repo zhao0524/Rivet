@@ -966,3 +966,230 @@ button.rv-card__title:disabled {
     padding-top: var(--rv-space-4);
   }
 }
+
+/* ------------------------------------------------------------------------- */
+/* Left panel (#56) and readability (#57)                                     */
+/* ------------------------------------------------------------------------- */
+
+.rv-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rv-space-2);
+  padding: var(--rv-space-3);
+  background: var(--rv-surface-raised);
+  border: 1px solid var(--rv-border);
+  border-radius: var(--rv-radius-md);
+}
+
+.rv-section__title {
+  margin: 0;
+  font-size: var(--rv-text-section);
+  font-weight: 600;
+  color: var(--rv-text-strong);
+}
+
+details.rv-section > summary {
+  cursor: pointer;
+  list-style-position: inside;
+}
+
+details.rv-section > summary:focus-visible {
+  outline: 2px solid var(--rv-focus);
+  outline-offset: 2px;
+}
+
+.rv-request {
+  display: flex;
+  gap: var(--rv-space-3);
+  align-items: flex-start;
+}
+
+.rv-request__image {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--rv-radius-sm);
+  border: 1px solid var(--rv-border);
+  object-fit: cover;
+  background: var(--rv-bg);
+}
+
+.rv-request__no-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--rv-text-muted);
+}
+
+.rv-request__prompt {
+  margin: 0;
+  color: var(--rv-text);
+  font-size: var(--rv-text-body);
+  line-height: 1.45;
+}
+
+.rv-mono {
+  font-family: var(--rv-font-mono);
+  font-size: 11px;
+  color: var(--rv-text-muted);
+}
+
+.rv-tree {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rv-tree-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border: 1px solid transparent;
+  border-radius: var(--rv-radius-sm);
+}
+
+.rv-tree-row:hover {
+  background: var(--rv-surface-hover);
+}
+
+.rv-tree-row[data-selected="true"] {
+  background: rgba(37, 99, 235, 0.22);
+  border-color: var(--rv-accent-border);
+}
+
+.rv-tree-row[data-hidden="true"] .rv-tree-row__select {
+  opacity: 0.6;
+}
+
+.rv-tree-row__select {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 2px 0;
+  background: transparent;
+  border: none;
+  color: var(--rv-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.rv-tree-row__select:focus-visible {
+  outline: 2px solid var(--rv-focus);
+  outline-offset: 2px;
+}
+
+.rv-tree-row__name {
+  display: block;
+  font-size: var(--rv-text-caption);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* Solo / Hide only appear on hover, keyboard focus, selection, or while the part is hidden/isolated. */
+.rv-tree-row__actions {
+  display: flex;
+  gap: 4px;
+  visibility: hidden;
+}
+
+.rv-tree-row:hover .rv-tree-row__actions,
+.rv-tree-row:focus-within .rv-tree-row__actions,
+.rv-tree-row[data-selected="true"] .rv-tree-row__actions,
+.rv-tree-row[data-hidden="true"] .rv-tree-row__actions,
+.rv-tree-row[data-isolated="true"] .rv-tree-row__actions {
+  visibility: visible;
+}
+
+@media (hover: none) {
+  .rv-tree-row__actions {
+    visibility: visible;
+  }
+}
+
+.rv-btn--small {
+  min-height: 24px;
+  padding: 2px 8px;
+  font-size: 11px;
+}
+
+.rv-history {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rv-history__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 8px;
+  background: transparent;
+  color: var(--rv-text);
+  border: 1px solid var(--rv-border);
+  border-radius: var(--rv-radius-sm);
+  font: inherit;
+  font-size: var(--rv-text-caption);
+  text-align: left;
+  cursor: pointer;
+}
+
+.rv-history__item:hover:not(:disabled) {
+  background: var(--rv-surface-hover);
+}
+
+.rv-history__item[aria-current="true"] {
+  border-color: var(--rv-accent-border);
+  background: rgba(37, 99, 235, 0.16);
+}
+
+.rv-history__item:focus-visible {
+  outline: 2px solid var(--rv-focus);
+  outline-offset: 2px;
+}
+
+.rv-callout {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: var(--rv-radius-sm);
+  font-size: var(--rv-text-caption);
+  line-height: 1.45;
+}
+
+.rv-callout--ok {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #d1fae5;
+}
+
+.rv-callout--warn {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  color: #fef3c7;
+}
+
+.rv-callout--bad {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: #fee2e2;
+}
+
+/* Scrollable panels are focusable for keyboard scrolling; show focus only for keyboard users. */
+.rv-panel:focus {
+  outline: none;
+}
+
+.rv-panel:focus-visible {
+  outline: 2px solid var(--rv-focus);
+  outline-offset: -2px;
+}

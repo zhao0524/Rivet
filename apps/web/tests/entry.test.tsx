@@ -163,13 +163,11 @@ describe('Developer controls (#54)', () => {
     expect(screen.getByRole('banner').textContent).not.toContain('rivet-synthetic-rover-fixture');
   });
 
-  it('revision picker is a compact "Revision N" dropdown without the build id', async () => {
+  it('shows revisions as "Revision N" without the build id', async () => {
     await renderAsync(<Studio initialDataSource={new FixtureSource()} />);
-    const picker = screen.getByTestId('revision-picker');
-    expect(picker.textContent).not.toContain('rivet-synthetic-rover-fixture');
-    expect((screen.getByTestId('revision-select') as HTMLSelectElement).selectedOptions[0]!.textContent).toMatch(
-      /^Revision 1 \(latest\)/,
-    );
+    const history = screen.getByTestId('revision-history');
+    expect(history.textContent).not.toContain('rivet-synthetic-rover-fixture');
+    expect(screen.getByTestId('revision-history-1').textContent).toMatch(/^Revision 1 · latest/);
   });
 
   it('?dev=1 shows the Developer menu with the data source switch and raw identity', async () => {

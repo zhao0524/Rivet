@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import type { StudioActionMode } from '../../lib/plan-store';
-import type { BuildPlan, CatalogComponent } from '../../lib/rivet';
+import { summarizeBom, type BuildPlan, type CatalogComponent } from '../../lib/rivet';
 import { BOMPanel, PartInspector, VerificationPanel } from './panels';
 import type { BuildPlan as PanelBuildPlan, CatalogComponent as PanelCatalogComponent } from './panels/types';
 import {
@@ -101,6 +101,55 @@ export function Inspector({
   const panelPlan = plan as unknown as PanelBuildPlan;
   const panelCatalog = catalog as unknown as PanelCatalogComponent[];
 
+  const bomSummary = summarizeBom(plan);
+  const blockingCount = plan.verification.findings.filter(
+    (f) => f.severity === 'blocking' && (f.result === 'FAIL' || f.result === 'UNKNOWN'),
+  ).length;
+  const statusText: Record<BuildPlan['status'], string> = {
+    verified: 'Verified: every implemented check passed.',
+    verified_with_warnings: 'Verified with warnings.',
+    needs_review: 'Needs review before you build it.',
+    unbuildable: 'Unbuildable as designed.',
+  };
+
+  const buildSummary = (
+    <section aria-label="Build summary" data-testid="inspector-empty-state" style={card}>
+      <p style={{ margin: '0 0 12px', color: 'var(--rv-text)', lineHeight: 1.45 }}>
+        Click any part in the 3D view to see its SKU, price, and fit checks.
+      </p>
+      <dl
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'auto 1fr',
+          gap: '8px 12px',
+          margin: 0,
+          fontSize: 'var(--rv-text-caption)',
+        }}
+      >
+        <dt style={{ color: 'var(--rv-text-muted)' }}>Status</dt>
+        <dd style={{ margin: 0 }} data-testid="build-summary-status">
+          {statusText[plan.status]}
+          {blockingCount > 0 ? ` ${blockingCount} blocking check${blockingCount === 1 ? '' : 's'} failed or unknown.` : ''}
+        </dd>
+        <dt style={{ color: 'var(--rv-text-muted)' }}>Cost</dt>
+        <dd style={{ margin: 0 }} data-testid="build-summary-cost">
+          {bomSummary.knownSubtotal !== null
+            ? `${bomSummary.totalLabel === 'Total' ? 'Total' : 'Known so far'}: ${bomSummary.knownSubtotal} ${bomSummary.currency}`
+            : 'Unknown'}
+          {bomSummary.unpricedRowCount > 0 ? (
+            <span style={{ display: 'block', color: 'var(--rv-warn-text)' }} data-testid="build-summary-unpriced">
+              {bomSummary.unpricedRowCount} of {bomSummary.rowCount} parts have no price yet.
+            </span>
+          ) : null}
+        </dd>
+        <dt style={{ color: 'var(--rv-text-muted)' }}>Parts</dt>
+        <dd style={{ margin: 0 }}>
+          {plan.components.length} placed · {bomSummary.rowCount} to buy
+        </dd>
+      </dl>
+    </section>
+  );
+
   const partDetails = (
     <div style={card}>
       <PartInspector
@@ -118,7 +167,7 @@ export function Inspector({
       data-mode={mode}
       style={{ display: 'flex', flexDirection: 'column', gap: 12 }}
     >
-      {mode === 'design' && partDetails}
+      {mode === 'design' && (selectedInstanceId ? partDetails : buildSummary)}
 
       {mode === 'inspect' && (
         <>
