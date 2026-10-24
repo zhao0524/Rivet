@@ -110,11 +110,24 @@ def test_readme_exists_and_documents_every_route():
 
 def test_readme_documents_every_environment_variable():
     text = README.read_text()
-    config = (Path(__file__).parents[1] / "rivet_api" / "config.py").read_text()
+    package = Path(__file__).parents[1] / "rivet_api"
+    config = (package / "config.py").read_text()
     used = set(re.findall(r'"(RIVET_[A-Z_]+)"', config)) | set(re.findall(r'_flag\("(RIVET_[A-Z_]+)"', config))
-    used.add("OPENAI_API_KEY")
+    # Variables read outside config.py too, such as the provider keys in agents/vision.py.
+    for source in package.rglob("*.py"):
+        used |= set(re.findall(r'(?:os\.environ\.get\(|os\.environ\[|os\.getenv\()\s*"([A-Z][A-Z0-9_]*)"', source.read_text()))
+    assert {"OPENAI_API_KEY", "BACKBOARD_API_KEY"} <= used  # the scan is not vacuous
     missing = sorted(v for v in used if v not in text)
     assert not missing, f"README.md does not mention: {missing}"
+
+
+def test_readme_has_a_row_for_every_vision_provider():
+    text = README.read_text()
+    vision = (Path(__file__).parents[1] / "rivet_api" / "agents" / "vision.py").read_text()
+    providers = set(re.findall(r'provider == "([a-z_]+)"', vision))
+    assert {"mock", "openai", "backboard"} <= providers  # the scan is not vacuous
+    missing = sorted(p for p in providers if not re.search(rf"^\| `{p}`", text, re.MULTILINE))
+    assert not missing, f"README.md has no vision provider row for: {missing}"
 
 
 def test_readme_is_honest_about_what_was_never_run():

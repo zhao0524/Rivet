@@ -33,21 +33,95 @@ To use the real engine: `.venv/bin/pip install -e ../../packages/engineering`, t
 
 ## Environment variables
 
+The API reads only the process environment, never a `.env` file: export the variables in the shell that starts uvicorn.
+
 | Variable | Default | Meaning |
 |---|---|---|
 | `RIVET_MODE` | `fixture` | `fixture` or `live` |
 | `RIVET_ENV` | `development` | Free-form environment label |
 | `RIVET_DATA_ROOT` | `./data` | Where projects, jobs, uploads and Estelle evidence are written (gitignored) |
 | `RIVET_DEMO_FIXTURE` | `rover_obstacle_v1` | Which saved build the fixture engine serves |
-| `RIVET_VISION_PROVIDER` | `mock` | `mock` or `openai`. A bad value fails at startup |
-| `RIVET_VISION_MODEL` | empty | Required for `openai` |
-| `OPENAI_API_KEY` | unset | Server side only; required for `openai`. Never logged or returned |
+| `RIVET_VISION_PROVIDER` | `mock` | `mock`, `openai` or `backboard` (see [Vision providers](#vision-providers)). Any other value fails at startup |
+| `RIVET_VISION_MODEL` | empty | Model name sent to the provider. Required for `openai` (the demo uses `gpt-4o`, the only model tried) and for `backboard`; ignored by `mock` |
+| `OPENAI_API_KEY` | unset | Required for `openai`. Server side only; never logged or returned |
+| `BACKBOARD_API_KEY` | unset | Required for `backboard`. Server side only; never logged or returned |
+| `BACKBOARD_LLM_PROVIDER` | `openai` | `backboard` only: which LLM provider Backboard routes the request to |
+| `BACKBOARD_BASE_URL` | `https://app.backboard.io/api` | `backboard` only: Backboard API base URL |
 | `RIVET_RESOLVER` | `stub` | Product resolver. Only `stub` exists until lane B's resolver lands; it is labeled a saved example and is refused in `RIVET_MODE=live` |
 | `RIVET_ENABLE_ESTELLE` | `false` | Turn on the Estelle grounding client |
 | `RIVET_ESTELLE_MODE` | `cli` | `cli` works; `mcp` always reports unavailable (tool parameters are undocumented) |
 | `RIVET_ESTELLE_REPO` | this repo | Repository Estelle should ground against |
+| `RIVET_LIVE_VISION_TEST` | unset | Tests only: `1` enables the paid, opt-in `tests/test_live_vision_provider.py` (see [Prove the model sees the image](#prove-the-model-sees-the-image)) |
 
-(`RIVET_CATALOG_PATH` in the root `.env.example` is not read by this API.)
+A missing model, key or `openai` package for the selected provider fails at startup with a message that names it. (`RIVET_CATALOG_PATH` in the root `.env.example` is not read by this API.) The `openai` SDK also honors its own variables such as `OPENAI_BASE_URL`, `OPENAI_ORG_ID` and `OPENAI_PROJECT_ID` if they are set; this API never sets or reads them.
+
+### Vision providers
+
+The provider turns the request (image and/or text) into a proposed `IntentSpec`; code then sanitizes it and decides support (only `rover` is supported). **`openai` is the live provider for the demo** (decision in [`docs/context.md`](../../docs/context.md) §5, 2026-10-24).
+
+| `RIVET_VISION_PROVIDER` | Status | Needs | What the model receives |
+|---|---|---|---|
+| `mock` (default) | Offline stand-in, not a model | nothing | Nothing: it ignores the image and answers every request with the saved rover intent, except that the text keywords `drone`, `quadcopter`, `robot arm` and `robotic arm` turn it into an unsupported drone or robot-arm intent. Job events say `fixture vision` |
+| `openai` | **Live provider for the demo**, the only one proven end to end ([`docs/e2e-review-2026-10-24.md`](../../docs/e2e-review-2026-10-24.md)) | `RIVET_VISION_MODEL=gpt-4o`, `OPENAI_API_KEY`, `pip install -e '.[live]'` | A Chat Completions call in JSON mode with the system prompt, the user text and the uploaded image (re-encoded, metadata stripped) inline as a base64 `image_url` data URI |
+| `backboard` | In code, **unsupported for the demo** | `RIVET_VISION_MODEL`, `BACKBOARD_API_KEY`; optional `BACKBOARD_LLM_PROVIDER`, `BACKBOARD_BASE_URL` | One stateless `POST /threads/messages` (memory and web search off, `json_output` on) with the image as a multipart `files` attachment |
+
+`backboard` is unsupported for the demo for two reasons: (1) image input is unverified: Backboard's docs describe `files` as RAG attachments and `input_image` as image generation, not vision chat, so nothing shows the model sees the picture; (2) the team account has no LLM credit (runs fail with "free credit is reserved for Memory & RAG", which this API reports as 502 `PROVIDER_ERROR`). The code and its tests stay (`adapters/backboard_provider.py`, `tests/test_backboard.py`) in case both are resolved.
+
+Provider failures end the job with a typed error and none of the provider's text: 429 `PROVIDER_QUOTA`, 502 `PROVIDER_AUTH` (bad key), 503 `PROVIDER_UNAVAILABLE`, 502 `PROVIDER_ERROR`. A reply that is not a valid intent twice in a row (one retry) is 502 `VISION_PARSE_FAILED`.
+
+## Prove the model sees the image
+
+`mock` never looks at the picture, so this check needs the live `openai` provider. Send two clearly different pictures, a 2WD rover and a drone, with the same request and no text. If the model reads the picture, the detected `project_family` differs: the rover is accepted and its job completes; the drone is refused with 422 `UNSUPPORTED_PROJECT_FAMILY` and `details.detected_family == "drone"`. If both come back the same, the model is not seeing the image.
+
+1. Install the live extra and draw the two test pictures (original drawings with no text in them; any two clear photos work too):
+
+   ```bash
+   cd services/api
+   .venv/bin/pip install -e '.[dev,live]'
+   .venv/bin/python tests/test_live_vision_provider.py /tmp/rivet-vision-check
+   # writes /tmp/rivet-vision-check/rover-2wd.png and /tmp/rivet-vision-check/drone-quadcopter.png
+   ```
+
+2. Start the API with the live provider. Fixture mode is enough, since only the vision step is under test. Export `OPENAI_API_KEY` in this shell first; keep a personal key in the gitignored root `.env.local`, never in the shared `.env` or any tracked file.
+
+   ```bash
+   RIVET_MODE=fixture RIVET_VISION_PROVIDER=openai RIVET_VISION_MODEL=gpt-4o \
+     .venv/bin/python -m uvicorn rivet_api.main:app --port 8000
+   ```
+
+3. In a second shell, upload each picture, generate from the image alone and read the job (the events stream ends when the job does):
+
+   ```bash
+   check() {
+     asset=$(curl -s -F "file=@$1" localhost:8000/api/assets/images | python3 -c 'import json,sys; print(json.load(sys.stdin)["asset_id"])')
+     job=$(curl -s -X POST localhost:8000/api/projects/generate -H 'content-type: application/json' \
+       -d "{\"input\": {\"kind\": \"image\", \"image_asset_id\": \"$asset\"}}" | python3 -c 'import json,sys; print(json.load(sys.stdin)["job_id"])')
+     curl -sN "localhost:8000/api/jobs/$job/events" | grep '^data:'
+     curl -s "localhost:8000/api/jobs/$job"; echo
+   }
+   check /tmp/rivet-vision-check/rover-2wd.png
+   check /tmp/rivet-vision-check/drone-quadcopter.png
+   ```
+
+Expected, in the key lines (ids vary, and so may the confidence):
+
+```text
+rover-2wd.png:        data: {..., "stage": "understand", "actor": "vision", "status": "ok", "message": "Interpreted as a rover (high confidence, live vision)", ...}
+                      {"job_id":"job-...","status":"complete","stage":"complete","progress":1.0,"build_id":"rivet-...","revision":1}
+drone-quadcopter.png: data: {..., "stage": "failed", "actor": "system", "status": "failed", "message": "Projects of family 'drone' are not supported in this version", ...}
+                      {"job_id":"job-...","status":"failed","stage":"failed","progress":0.25,"error":{"code":"UNSUPPORTED_PROJECT_FAMILY","message":"Projects of family 'drone' are not supported in this version","details":{"supported_families":["rover"],"detected_family":"drone"},"retryable":false}}
+```
+
+`live vision` shows the `openai` provider answered. With `mock`, both pictures give `Interpreted as a rover (medium confidence, fixture vision)` and both builds complete: that is why `mock` proves nothing here.
+
+The automated version of this check is opt-in, skipped by default and in CI, and makes at least two paid calls. It sends the same two pictures through upload, generate and the job with the real `LiveVisionProvider` + `OpenAIBackend` (model from `RIVET_VISION_MODEL`, default `gpt-4o`) and asserts rover → `rover` (job complete) and drone → `drone` (refused as above):
+
+```bash
+cd services/api
+RIVET_LIVE_VISION_TEST=1 .venv/bin/python -m pytest -q tests/test_live_vision_provider.py -rs   # with OPENAI_API_KEY exported
+```
+
+Without the flag, the key or the `openai` package, the two live tests are reported as skipped with the reason, for example `needs RIVET_LIVE_VISION_TEST=1, OPENAI_API_KEY`.
 
 ## Endpoints
 
@@ -91,7 +165,8 @@ Verified by the automated tests (offline, fake backends): the whole API contract
 
 **Has not been run for real (needs a human with the right setup):**
 
-- **OpenAI vision:** the request shape in `OpenAIBackend` was never sent to the real API (no key was available).
+- **OpenAI vision, two-picture check:** the check in [Prove the model sees the image](#prove-the-model-sees-the-image) and `tests/test_live_vision_provider.py` have not been run against the real API (no key was available when they were written); someone with a key has to run them once. The provider itself ran once by hand on 2026-10-24 and read a drawn top-down 2WD rover as a rover with high confidence (`gpt-4o`, [`docs/e2e-review-2026-10-24.md`](../../docs/e2e-review-2026-10-24.md)).
+- **Backboard vision:** never completed a run (no LLM credit), so whether its model sees the image is unknown; unsupported for the demo (see [Vision providers](#vision-providers)).
 - **PlatformIO compile:** `pio` was not installed, so the generated firmware has never been built; the pinned `espressif32@6.9.0` and `Adafruit VL53L0X@1.2.4` versions are unverified. `main.cpp` only passed a syntax check against stub headers. Compile status is `not_checked` unless `?compile=true` succeeds.
 - **Estelle:** the CLI was never run (not installed, no account). Its MCP tool parameters and `verify`/`gate` usage are undocumented, so only `estelle ask` and `estelle doctor` are used, and its output format is an assumption (see `rivet_api/firmware/estelle.py`).
 - **The real engine:** lane B's `rivet_engine` was not ready when this was written, so the real adapter is tested only against fakes.
