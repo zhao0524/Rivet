@@ -59,6 +59,11 @@ export type PartVisibility = boolean | 'visible' | 'ghost' | 'hidden';
 export interface PoseOverride {
   position_mm?: Vec3;
   rotation_deg?: Vec3;
+  /**
+   * Full explode displacement (mm). Inside an `ExplodeAnimator` the part is drawn at
+   * `position_mm + explode_offset_mm * progress`; without one it is ignored.
+   */
+  explode_offset_mm?: Readonly<Vec3>;
 }
 
 export interface Size3 {

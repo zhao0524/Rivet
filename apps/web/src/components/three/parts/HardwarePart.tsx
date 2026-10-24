@@ -1,6 +1,7 @@
-import { memo, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useLayoutEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import type { ThreeEvent } from '@react-three/fiber';
+import { useExplodeAnimator } from '../assembly/ExplodeAnimator';
 import { cachedGeometry } from './geometry';
 import { PartRenderContext } from './materials';
 import { RECIPES, resolveRecipe, resolveSide, resolveSize } from './recipes';
@@ -8,38 +9,11 @@ import { GlbPart, isLocalModelPath } from './recipes/GlbPart';
 import type { PartCatalogItem, PartSelectEvent, PartVisibility, PlanComponentOccurrence, PoseOverride, Vec3 } from './types';
 
 const DEG = Math.PI / 180;
-const SELECT_COLOR = '#4f9dff';
-const HOVER_COLOR = '#9cc8ff';
-const STEP_HIGHLIGHT_COLOR = '#fbbf24';
 const MOUNT_COLOR = '#34d399';
-const selectLine = new THREE.LineBasicMaterial({ color: SELECT_COLOR, depthTest: false, transparent: true, opacity: 0.95 });
-const hoverLine = new THREE.LineBasicMaterial({ color: HOVER_COLOR, depthTest: false, transparent: true, opacity: 0.55 });
-const stepHighlightLine = new THREE.LineBasicMaterial({ color: STEP_HIGHLIGHT_COLOR, depthTest: false, transparent: true, opacity: 0.85 });
+/** Pointer travel (px) between press and release above which a click is an orbit/pan drag. */
+export const PART_CLICK_DRAG_THRESHOLD_PX = 4;
 const mountDotMat = new THREE.MeshBasicMaterial({ color: MOUNT_COLOR, depthTest: false, transparent: true, opacity: 0.9 });
-const unitEdges = () => cachedGeometry('unit-box-edges', () => new THREE.EdgesGeometry(new THREE.BoxGeometry(1, 1, 1)));
 const mountDotGeom = () => cachedGeometry('mount-dot-sphere', () => new THREE.SphereGeometry(1.6, 10, 8));
-
-/** Bounds of every mesh under `root`, expressed in `root`'s local frame. */
-function localBounds(root: THREE.Object3D): THREE.Box3 {
-  root.updateMatrixWorld(true);
-  const toLocal = new THREE.Matrix4().copy(root.matrixWorld).invert();
-  const box = new THREE.Box3();
-  const m = new THREE.Matrix4();
-  root.traverse((o) => {
-    const mesh = o as THREE.Mesh & Partial<THREE.InstancedMesh>;
-    if (!mesh.isMesh || !mesh.geometry) return;
-    let local: THREE.Box3 | null;
-    if (mesh.isInstancedMesh) {
-      if (!mesh.boundingBox) mesh.computeBoundingBox!();
-      local = mesh.boundingBox ?? null;
-    } else {
-      if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
-      local = mesh.geometry.boundingBox;
-    }
-    if (local && !local.isEmpty()) box.union(local.clone().applyMatrix4(m.multiplyMatrices(toLocal, mesh.matrixWorld)));
-  });
-  return box;
-}
 
 export function toRadians(deg: Vec3): Vec3 {
   return [deg[0] * DEG, deg[1] * DEG, deg[2] * DEG];
@@ -86,9 +60,9 @@ export const HardwarePart = memo(function HardwarePart({
   onSelect,
   onHover,
 }: HardwarePartProps) {
+  const rootRef = useRef<THREE.Group>(null);
   const visualRef = useRef<THREE.Group>(null);
-  const [hovered, setHovered] = useState(false);
-  const [bounds, setBounds] = useState<THREE.Box3 | null>(null);
+  const explode = useExplodeAnimator();
   const mode = normalizeVisibility(visibility, component.render_overrides);
   const recipeId = resolveRecipe(component, catalogItem);
   const Recipe = RECIPES[recipeId];
@@ -116,13 +90,35 @@ export const HardwarePart = memo(function HardwarePart({
         mesh.receiveShadow = true;
       }
     });
-    const box = localBounds(g);
-    setBounds(box.isEmpty() ? null : box);
   }, [recipeId, size, side, mode]);
+
+  // Exploded view: the animator owns this group's position while bound. The whole
+  // PartNode moves as one rigid body, so child meshes keep their local transforms.
+  const offset = poseOverride?.explode_offset_mm;
+  const bound = explode != null && offset != null;
+  const [px, py, pz] = position;
+  const [ox, oy, oz] = offset ?? [0, 0, 0];
+  const staticPosition = useRef(position);
+  staticPosition.current = position;
+  useLayoutEffect(() => {
+    const g = rootRef.current;
+    if (!bound || !explode || !g) return;
+    const unregister = explode.register(g, [px, py, pz], [ox, oy, oz]);
+    return () => {
+      unregister();
+      // Unbound: fall back to the static presentation pose (re-registering overwrites this).
+      const [x, y, z] = staticPosition.current;
+      g.position.set(x, y, z);
+    };
+    // Keyed on the numbers, not array identity, so re-renders do not re-register.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [explode, bound, px, py, pz, ox, oy, oz]);
 
   const handleClick = useCallback(
     (e: ThreeEvent<MouseEvent>) => {
       e.stopPropagation();
+      // A press that travelled is an orbit/pan drag, not a pick.
+      if ((e.delta ?? 0) > PART_CLICK_DRAG_THRESHOLD_PX) return;
       onSelect?.({ instanceId: component.instance_id, catalogId: component.catalog_id });
     },
     [onSelect, component.instance_id, component.catalog_id],
@@ -130,24 +126,20 @@ export const HardwarePart = memo(function HardwarePart({
   const handleOver = useCallback(
     (e: ThreeEvent<PointerEvent>) => {
       e.stopPropagation();
-      setHovered(true);
       onHover?.(component.instance_id);
     },
     [onHover, component.instance_id],
   );
   const handleOut = useCallback(() => {
-    setHovered(false);
     onHover?.(null);
   }, [onHover]);
 
   const interactive = mode !== 'hidden';
-  const outline = interactive && bounds && (selected || hovered || highlighted);
-  const center = bounds?.getCenter(new THREE.Vector3()).toArray();
-  const extent = bounds?.getSize(new THREE.Vector3()).addScalar(1.2).toArray();
   const mounts = catalogItem?.mounts ?? [];
 
   return (
     <group
+      ref={rootRef}
       name={`part:${component.instance_id}`}
       position={position}
       rotation={rotation}
@@ -159,6 +151,8 @@ export const HardwarePart = memo(function HardwarePart({
         role: component.role ?? null,
         recipe: recipeId,
         fallback: recipeId === 'unknown',
+        selected,
+        highlighted,
       }}
       onClick={interactive ? handleClick : undefined}
       onPointerOver={interactive ? handleOver : undefined}
@@ -169,18 +163,6 @@ export const HardwarePart = memo(function HardwarePart({
           {useAsset ? <GlbPart path={physical!.asset_path!} size={size} fallback={procedural} /> : procedural}
         </group>
       </PartRenderContext.Provider>
-      {outline && center && extent ? (
-        <lineSegments
-          name="selection-outline"
-          geometry={unitEdges()}
-          material={selected ? selectLine : hovered ? hoverLine : stepHighlightLine}
-          position={center}
-          scale={extent}
-          renderOrder={10}
-          raycast={() => null}
-          userData={{ decorative: true }}
-        />
-      ) : null}
       {showMounts && interactive && mounts.length > 0 ? (
         <group name="mount-frames" userData={{ decorative: true }}>
           {mounts.map((m) => (

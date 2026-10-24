@@ -119,22 +119,34 @@ describe('PartAssembly', () => {
     ]);
   });
 
-  it('marks the selected part with an outline and honours visibility', async () => {
+  it('flags the selected part without drawing a bounding box, and honours visibility', async () => {
     const r = await ReactThreeTestRenderer.create(
       <PartAssembly
         plan={roverPlan}
         catalog={roverCatalog}
         selectedInstanceId="controller-1"
+        highlightedInstanceIds={['driver-1']}
         visibility={{ 'power-control-1': 'hidden', 'power-motor-1': 'ghost' }}
       />,
     );
-    const outlines = r.scene.findAll((n) => n.instance.name === 'selection-outline');
-    expect(outlines).toHaveLength(1);
-    expect(outlines[0].parent?.instance.userData.instanceId).toBe('controller-1');
+    // Outlines are a screen-space post-process (SelectionOutline), never box helpers in the part.
+    expect(r.scene.findAll((n) => n.instance.name === 'selection-outline')).toHaveLength(0);
+    expect(byInstance(r, 'controller-1').instance.userData.selected).toBe(true);
+    expect(byInstance(r, 'driver-1').instance.userData.highlighted).toBe(true);
+    expect(partNodes(r).filter((n) => n.instance.userData.selected)).toHaveLength(1);
     expect((byInstance(r, 'power-control-1').instance as THREE.Object3D).visible).toBe(false);
     const ghostMeshes = byInstance(r, 'power-motor-1').findAll((n) => (n.instance as THREE.Mesh).isMesh === true);
     expect(ghostMeshes.every((m) => ((m.instance as THREE.Mesh).material as THREE.Material).transparent)).toBe(true);
     expect(partNodes(r)).toHaveLength(roverPlan.components.length);
+  });
+
+  it('ignores a click whose press travelled (orbit/pan drag) and selects on a real click', async () => {
+    const onSelect = vi.fn();
+    const r = await ReactThreeTestRenderer.create(<PartAssembly plan={roverPlan} catalog={roverCatalog} onSelect={onSelect} />);
+    await r.fireEvent(byInstance(r, 'motor-left-1'), 'onClick', { stopPropagation: () => {}, delta: 40 });
+    expect(onSelect).not.toHaveBeenCalled();
+    await r.fireEvent(byInstance(r, 'motor-left-1'), 'onClick', { stopPropagation: () => {}, delta: 2 });
+    expect(onSelect).toHaveBeenCalledWith({ instanceId: 'motor-left-1', catalogId: 'demo.tt_motor' });
   });
 
   it('accepts a catalog keyed by catalog_id', async () => {

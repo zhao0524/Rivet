@@ -23,10 +23,17 @@ const overrides = toPoseOverrides(view); // Record<instance_id, AssemblyPoseOver
 - Explode offsets are computed once per plan (cached by object identity): roots
   stay put, children move by role (wheels/motors sideways, electronics/power up,
   caster down, sensor forward) far enough to clear their parent's and siblings'
-  bounds, and inherit their parent's offset.
+  bounds (and always at least one gap), and inherit their parent's offset. Parts
+  with `render_overrides.visible === false` ride with their parent and are left out
+  of the gap and sibling packing, so loose kit items cannot push visible parts away.
+- `ExplodeAnimator` (inside the R3F canvas) animates the explode fraction with a
+  critically damped spring (~350 ms, smooth reversal, exact rest). Parts bound via
+  `PoseOverride.explode_offset_mm` are drawn at `position_mm + offset * progress`;
+  positions are written in the frame loop, so the animation causes no React renders.
 - `scrubToStep` / `stepToScrub` / `advancePlayback` map a continuous timeline
   position in `[0, stepCount]` to `{step, progress}`.
 - `AssemblyTimelineControls` is controlled and unstyled (`data-part` hooks).
 
-Limitations: bounds are axis-aligned; rotated parts use a conservative cube;
-missing dimensions fall back to 20 mm; unscheduled parts stay ghosted in step mode.
+Limitations: bounds are axis-aligned (rotated parts use the exact axis-aligned
+envelope of their rotated box); missing dimensions fall back to 20 mm; unscheduled
+parts stay ghosted in step mode.

@@ -94,12 +94,17 @@ function halfExtents(c: AssemblyComponent, dims: DimensionsByCatalogId | undefin
     ok(d?.z) ? d.z / 2 : FALLBACK_HALF_MM,
   ];
   const rot = vec(c.pose?.rotation_deg);
-  if (rot.some((r) => Math.abs(r % 360) > 1e-6)) {
-    // Conservative envelope for rotated parts: a sphere-like cube of the max half extent.
-    const m = Math.hypot(h[0], h[1], h[2]);
-    return [m, m, m];
-  }
-  return h;
+  if (!rot.some((r) => Math.abs(r % 360) > 1e-6)) return h;
+  // Exact axis-aligned envelope of the rotated box: |R| * h, with R from XYZ Euler
+  // degrees (the renderer's order). Mirrored left/right parts get identical envelopes.
+  const [rx, ry, rz] = rot.map((deg) => (deg * Math.PI) / 180);
+  const cx = Math.cos(rx), sx = Math.sin(rx), cy = Math.cos(ry), sy = Math.sin(ry), cz = Math.cos(rz), sz = Math.sin(rz);
+  const m = [
+    [cy * cz, -cy * sz, sy],
+    [cx * sz + sx * cz * sy, cx * cz - sx * sz * sy, -sx * cy],
+    [sx * sz - cx * cz * sy, sx * cz + cx * sz * sy, cx * cy],
+  ];
+  return m.map((row) => Math.abs(row[0]) * h[0] + Math.abs(row[1]) * h[1] + Math.abs(row[2]) * h[2]) as MutVec3;
 }
 
 const halfAlong = (h: Vec3, dir: Vec3): number =>
@@ -192,12 +197,14 @@ export function createAssemblyModel(
     half[c.instance_id] = halfExtents(c, dims);
   }
 
-  // Model bounds drive the separation gap.
+  // Model bounds drive the separation gap. Never-rendered kit items (e.g. a 3 ft
+  // cable) are excluded so they cannot inflate the gap of the visible assembly.
+  const rendered = components.filter((c) => c.render_overrides?.visible !== false);
   let extent = 0;
-  if (components.length) {
+  if (rendered.length) {
     const lo: MutVec3 = [Infinity, Infinity, Infinity];
     const hi: MutVec3 = [-Infinity, -Infinity, -Infinity];
-    for (const c of components) {
+    for (const c of rendered) {
       const p = position[c.instance_id];
       const h = half[c.instance_id];
       for (let i = 0; i < 3; i++) {
@@ -244,15 +251,24 @@ export function createAssemblyModel(
 
     const placed: { center: Vec3; half: Vec3 }[] = [];
     for (const e of entries) {
+      // Never-rendered parts (loose kit items) ride with their parent and take no
+      // space, so they cannot push visible siblings away.
+      if (e.c.render_overrides?.visible === false) {
+        explodeOffsets[e.c.instance_id] = explodeOffsets[parentId] ?? ZERO;
+        queue.push(e.c.instance_id);
+        continue;
+      }
       const h = half[e.c.instance_id];
       const selfHalf = halfAlong(h, e.dir);
-      let t = Math.max(e.proj, halfAlong(parentHalf, e.dir) + gap + selfHalf);
+      // Clear the parent envelope, and always travel at least one gap so parts that
+      // already sit at the periphery (wheels, front sensor) still visibly separate.
+      let t = Math.max(e.proj + gap, halfAlong(parentHalf, e.dir) + gap + selfHalf);
       const at = (tt: number): Vec3 => add(e.rel, scale(e.dir, tt - e.proj));
       // Push outward past any already-placed sibling it would overlap.
       for (let guard = 0; guard <= placed.length; guard++) {
         let moved = false;
         for (const p of placed) {
-          if (aabbOverlap(at(t), h, p.center, p.half, gap / 2)) {
+          if (aabbOverlap(at(t), h, p.center, p.half, gap / 4)) {
             const pt = dot(p.center, e.dir);
             t = Math.max(t, pt + halfAlong(p.half, e.dir) + gap + selfHalf);
             moved = true;

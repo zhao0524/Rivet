@@ -23,6 +23,15 @@ export {
   setRaycastEnabled,
 } from "./raycast";
 export { SelectablePart } from "./SelectablePart";
+export {
+  HIGHLIGHT_OUTLINE,
+  HOVER_OUTLINE,
+  SELECTED_OUTLINE,
+  SelectionOutline,
+  findPartNode,
+  resolveOutlineTargets,
+} from "./SelectionOutline";
+export type { OutlineStyle, SelectionOutlineProps } from "./SelectionOutline";
 export type { SelectablePartProps } from "./SelectablePart";
 export { computeVisualState, createPartSelectionController } from "./selection-controller";
 export type {

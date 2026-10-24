@@ -4,13 +4,17 @@ import { useCallback, useMemo, useState, type CSSProperties } from 'react';
 import { buildDimensionsByCatalogId, computePlanBoundsMm } from '../../lib/geometry';
 import type { BuildPlan, CatalogComponent } from '../../lib/rivet/types';
 import {
+  ExplodeAnimator,
   computeAssemblyView,
+  easeAssembly,
+  getAssemblyModel,
   type AssemblyMode,
   type AssemblyView,
   type PreviousComponentsDisplay,
 } from './assembly';
 import {
   PartSelectionProvider,
+  SelectionOutline,
   usePartSelection,
   type PartSelectionApi,
 } from './interactions';
@@ -152,6 +156,13 @@ export function RoverScene({
     ],
   );
 
+  // Full (progress = 1) role-aware explode offsets; the animator scales them per frame.
+  const explodeOffsets = useMemo(
+    () => getAssemblyModel(plan, { dimensionsByCatalogId }).explodeOffsets,
+    [plan, dimensionsByCatalogId],
+  );
+  const explodeTarget = computedView.mode === 'exploded' ? easeAssembly(computedView.progress) : 0;
+
   const [wireHighlightedIds, setWireHighlightedIds] = useState<string[]>([]);
   const [hoveredWire, setHoveredWire] = useState<WireRoute | null>(null);
 
@@ -176,7 +187,17 @@ export function RoverScene({
         ? [asmItem.rotation_deg[0], asmItem.rotation_deg[1], asmItem.rotation_deg[2]]
         : [comp.pose.rotation_deg[0], comp.pose.rotation_deg[1], comp.pose.rotation_deg[2]];
 
-      poses[id] = { position_mm: displayPos, rotation_deg: displayRot };
+      // In exploded mode the base is the canonical pose and the animator adds the
+      // explode offset; other modes (step seat-in) keep their own display position.
+      const explodeShown = computedView.mode === 'exploded' && asmItem ? asmItem.offset_mm : null;
+      const basePos: [number, number, number] = explodeShown
+        ? [displayPos[0] - explodeShown[0], displayPos[1] - explodeShown[1], displayPos[2] - explodeShown[2]]
+        : displayPos;
+      poses[id] = {
+        position_mm: basePos,
+        rotation_deg: displayRot,
+        explode_offset_mm: explodeOffsets[id] ?? [0, 0, 0],
+      };
       posMm[id] = displayPos;
 
       let partVis: PartVisibility = 'visible';
@@ -216,7 +237,7 @@ export function RoverScene({
       highlightedIds: highlights,
       counts: { visibleCount, ghostCount, hiddenCount },
     };
-  }, [plan.components, computedView, selection, isolatedOutBehavior, wireHighlightedIds]);
+  }, [plan.components, computedView, selection, isolatedOutBehavior, wireHighlightedIds, explodeOffsets]);
 
   const boundsMm = useMemo(() => {
     const isolatedId = selection.state.isolated_instance_id;
@@ -334,17 +355,24 @@ export function RoverScene({
           onBackgroundClick={selection.canvasProps.onPointerMissed}
           label={`3D assembly studio for ${plan.title} (${plan.build_id} rev ${plan.revision})`}
         >
-          <PartAssembly
-            plan={plan}
-            catalog={catalog}
+          <ExplodeAnimator target={explodeTarget}>
+            <PartAssembly
+              plan={plan}
+              catalog={catalog}
+              selectedInstanceId={selection.selectedInstanceId}
+              highlightedInstanceIds={highlightedIds}
+              wireframe={wireframe}
+              showMounts={showMounts}
+              visibility={visibilityMap}
+              poseOverrides={poseOverrides}
+              onSelect={handlePartSelect}
+              onHover={handlePartHover}
+            />
+          </ExplodeAnimator>
+          <SelectionOutline
             selectedInstanceId={selection.selectedInstanceId}
+            hoveredInstanceId={selection.hoveredInstanceId}
             highlightedInstanceIds={highlightedIds}
-            wireframe={wireframe}
-            showMounts={showMounts}
-            visibility={visibilityMap}
-            poseOverrides={poseOverrides}
-            onSelect={handlePartSelect}
-            onHover={handlePartHover}
           />
           {showWiring ? (
             <WiringOverlay

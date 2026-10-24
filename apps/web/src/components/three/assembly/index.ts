@@ -20,6 +20,19 @@ export {
   type PlaybackOptions,
 } from './timeline';
 export {
+  EXPLODE_SPRING_OMEGA,
+  explodedPosition,
+  isExplodeSettled,
+  stepExplodeSpring,
+  type ExplodeSpringState,
+} from './explodeAnimation';
+export {
+  ExplodeAnimator,
+  useExplodeAnimator,
+  type ExplodeAnimatorApi,
+  type ExplodeAnimatorProps,
+} from './ExplodeAnimator';
+export {
   AssemblyTimelineControls,
   type AssemblyTimelineControlsProps,
   type AssemblyTimelineStepLabel,

@@ -65,6 +65,8 @@ Use `findBomItemForInstance(plan, instance_id)` to find the BOM row to highlight
 
 `resolvePartHighlight(state)` returns neutral hints (`outline`, `emissive`, `emissive_intensity`, `opacity`, `transparent`). Renderers map them onto their own materials or outline pass. Final colors come from design tokens through a custom `PartHighlightPalette`.
 
+`<SelectionOutline selectedInstanceId hoveredInstanceId highlightedInstanceIds />` (inside the canvas) draws screen-space silhouette outlines with three's `EffectComposer` + `OutlinePass`: it follows the rendered geometry of the whole PartNode (`part:<instance_id>`, every child mesh), keeps a constant pixel width under zoom, dims edges hidden behind other geometry, and never touches part materials. With nothing outlined it renders the scene directly.
+
 ## Without React
 
 `createPartSelectionController({ plan, callbacks })` is the same state machine with no React dependency. `usePartSelection` wraps it.
