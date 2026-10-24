@@ -15,6 +15,8 @@ from rivet_api.errors import ApiError
 log = logging.getLogger("rivet_api")
 
 DEFAULT_BASE_URL = "https://app.backboard.io/api"
+# Backboard validates the upload's file extension, so a bare name like "image" is a 400.
+_IMAGE_EXTENSIONS = {"image/png": ".png", "image/jpeg": ".jpg", "image/webp": ".webp"}
 
 
 def _status_error(status: int) -> ApiError:
@@ -56,7 +58,9 @@ class BackboardBackend:
             "json_output": "true",
             "stream": "false",
         }
-        files = {"files": ("image", image[0], image[1])} if image is not None else None
+        files = None
+        if image is not None:
+            files = {"files": (f"image{_IMAGE_EXTENSIONS.get(image[1], '')}", image[0], image[1])}
         try:
             response = self.client.post(
                 f"{self.base_url}/threads/messages",
@@ -74,7 +78,15 @@ class BackboardBackend:
             log.warning("vision provider call failed: HTTP %s", response.status_code)
             raise _status_error(response.status_code)
         try:
-            content = response.json().get("content")
+            body = response.json()
         except ValueError:
-            content = None
+            body = None
+        if not isinstance(body, dict):
+            return ""
+        # A failed run still answers HTTP 200: `content` then holds the provider's own message
+        # (for example "add credits"), which must never be parsed as the model's reply.
+        if str(body.get("status", "")).upper() == "FAILED":
+            log.warning("vision provider run failed: %s", str(body.get("content", ""))[:200])
+            raise ApiError("PROVIDER_ERROR", "The vision provider could not complete the request", 502)
+        content = body.get("content")
         return content if isinstance(content, str) else ""

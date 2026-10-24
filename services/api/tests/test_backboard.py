@@ -28,6 +28,31 @@ def test_sends_stateless_json_request_with_image():
         assert needle in seen["body"]
 
 
+@pytest.mark.parametrize("mime,ext", [("image/png", b'filename="image.png"'), ("image/jpeg", b'filename="image.jpg"'), ("image/webp", b'filename="image.webp"')])
+def test_image_upload_filename_has_an_extension_backboard_accepts(mime, ext):
+    seen = {}
+
+    def handler(req: httpx.Request):
+        seen["body"] = req.content
+        return httpx.Response(200, json={"content": "{}"})
+
+    _backend(handler).complete_json("s", "u", (b"data", mime))
+    assert ext in seen["body"]
+
+
+def test_failed_run_with_http_200_is_an_error_not_model_output():
+    reply = {"content": "Add credits or start a subscription", "status": "FAILED"}
+    b = _backend(lambda r: httpx.Response(200, json=reply))
+    with pytest.raises(ApiError) as e:
+        b.complete_json("s", "u", None)
+    assert e.value.code == "PROVIDER_ERROR" and "credits" not in e.value.message
+
+
+def test_completed_run_content_is_returned():
+    b = _backend(lambda r: httpx.Response(200, json={"content": '{"a": 1}', "status": "COMPLETED"}))
+    assert b.complete_json("s", "u", None) == '{"a": 1}'
+
+
 @pytest.mark.parametrize("status,code", [(401, "PROVIDER_AUTH"), (429, "PROVIDER_QUOTA"), (500, "PROVIDER_UNAVAILABLE"), (400, "PROVIDER_ERROR")])
 def test_status_errors_do_not_leak(status, code):
     b = _backend(lambda r: httpx.Response(status, text="bb-secret details"))
