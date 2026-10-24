@@ -6,10 +6,10 @@ Shared status file for everyone working in this repo, human or agent.
 | | |
 |---|---|
 | **Last updated** | 2026-10-24 · [B] |
-| **Branch / commit** | `feat/b-p2-mechanics` + merge review |
+| **Branch / commit** | `feat/b-p3-wiring` + merge review |
 | **Current phase** | Engineering modules under sequential merge review; public composition pending |
 | **Next gate** | Hour 8: every lane demos itself from fixtures (`docs/implementation.md` §7) |
-| **In progress** | [B] Sequential branch review: `feat/b-p2-mechanics` |
+| **In progress** | [B] Sequential branch review: `feat/b-p3-wiring` |
 | **Blocked** | none (1 open issue in §6) |
 
 **Next up:** INT-0 → INT-1 → INT-2 (skeleton, contracts, fixtures). After that, all lanes can branch off and work in parallel.
@@ -99,7 +99,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | B0 | Domain model and public entry points (`solve`, etc.) | IN PROGRESS | [B] | Models match `contracts/` |
 | B1 | Catalog of real components | DONE | [B] | Only real parts; unknown values stay `null` |
 | B2 | Parametric mechanical assembly and mounts | IN PROGRESS | [B] | Rover template produces consistent instances |
-| B3 | Electrical graph; driver and controller assignment | TODO | — | Netlist references only valid pins |
+| B3 | Electrical graph; driver and controller assignment | IN PROGRESS | [B] | Netlist references only valid pins |
 | B4 | Deterministic validators: mechanical, electrical, budget, completeness | TODO | — | Failing-driver fixture produces the expected finding |
 | B5 | Repair engine | TODO | — | At least one failure repaired or honestly rejected |
 | B6 | BOM, assembly steps, serialization | TODO | — | BOM rows match instance IDs |
@@ -108,7 +108,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | B-P0 | Foundation: models, internal API, test inputs (`feat/b-p0-foundation`) | DONE | [B] | Clean install; offline model tests pass; `INTERNAL_API.md` freezes P1–P6 signatures |
 | B-P1 | Sourced catalog (`feat/b-p1-catalog`) | DONE | [B] | See `packages/engineering/WORK_ORDERS.md` P1 |
 | B-P2 | Mechanical placement (`feat/b-p2-mechanics`) | DONE | [B] | See WORK_ORDERS P2 |
-| B-P3 | Wiring and pin allocation (`feat/b-p3-wiring`) | TODO | — | See WORK_ORDERS P3 |
+| B-P3 | Wiring and pin allocation (`feat/b-p3-wiring`) | DONE | [B] | See WORK_ORDERS P3 |
 | B-P4 | Validators (`feat/b-p4-validation`) | TODO | — | See WORK_ORDERS P4 |
 | B-P5 | BOM, assembly, serialization (`feat/b-p5-exports`) | TODO | — | See WORK_ORDERS P5 |
 | B-P6 | Repair (`feat/b-p6-repair`) | TODO | — | See WORK_ORDERS P6 |
@@ -152,6 +152,10 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
+
+- 2026-10-24 [B] B-P3: Reviewed and reconciled with main for sequential merge. Checked: engineering pytest 120 passed; diff check passed. Notes: Unknown supply/current facts remain findings; wiring does not establish firmware compilation or physical readiness.
+
+- 2026-10-24 [B] B-P3: Added `wiring.py` and profile `data/wiring_profiles/esp32_devkitc_tb6612.json` (exact ESP32-DevKitC V4 + Adafruit TB6612 IDs; reserved GPIOs with reasons: flash 6-11, strapping 0/2/5/12/15, UART0 1/3, input-only 34-39). `wire_rover` builds a structured netlist: 7 driver control lines, I2C SDA/SCL on 21/22, 3.3 V logic to driver and sensor, both motor channels, motor and controller supplies, common ground. Sourced pin map: motor_left_pwm 25, in1 26, in2 27, motor_right_pwm 32, in1 33, in2 16, standby 17, i2c_sda 21, i2c_scl 22 (format A's firmware expects). No profile -> no pins plus a blocking UNKNOWN; exhausted pins, missing ports, non-I2C sensors and a logic supply outside a part's range become findings. Checked: `uv run pytest -q` 120 passed. Notes: the USB power bank has no ground port (ground runs in the USB cable). Current and power ratings are left to P4; nothing here marks firmware compiled.
 
 - 2026-10-24 [B] B-P2: Reviewed and reconciled with main for sequential merge. Checked: engineering pytest 103 passed; diff check passed. Notes: Mount and geometry approximations remain labeled; placement is not proof of physical fit. Public composition remains pending.
 
