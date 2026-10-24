@@ -5,8 +5,8 @@ Shared status file for everyone working in this repo, human or agent.
 
 | | |
 |---|---|
-| **Last updated** | 2026-10-24 · [INT] |
-| **Branch / commit** | `main` @ `08fc92f` + this update |
+| **Last updated** | 2026-10-24 · [B] |
+| **Branch / commit** | `plan/b-parallel-work-orders` based on `7747a9b` + this update |
 | **Current phase** | Pre-bootstrap: only the specs exist |
 | **Next gate** | Hour 8: every lane demos itself from fixtures (`docs/implementation.md` §7) |
 | **In progress** | none |
@@ -51,7 +51,7 @@ Source of truth: [`docs/implementation.md`](docs/implementation.md) for contract
 | `contracts/` | INT | Not created |
 | `fixtures/` | INT | Not created |
 | `services/api/` | A | Not created |
-| `packages/engineering/` | B | Not created |
+| `packages/engineering/` | B | Planning handoff exists; implementation not created |
 | `apps/web/` | C | Not created |
 | `design/` | DESIGN | Not created |
 
@@ -93,6 +93,12 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | A6 | Tests and standalone demo | TODO | — | `pytest` passes in fixture mode |
 
 ### Developer B `[B]` · `packages/engineering/**`
+
+Planning handoff: `packages/engineering/WORK_ORDERS.md`; P0 first, P1–P6 concurrently, P7 after integration. Implementation B0–B7 remains TODO.
+
+| ID | Task | Status | Owner | Check |
+|---|---|---|---|---|
+| B-PLAN | Parallel work orders and per-task branch/PR handoffs | DONE | [B] | B0–B7 covered; exclusive implementation/test paths and dependency gates reviewed |
 
 | ID | Task | Status | Owner | Check |
 |---|---|---|---|---|
@@ -144,6 +150,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
 
+- 2026-10-24 [B] B-PLAN: Added eight scoped work orders with foundation, six concurrent tasks, integration, and individual branch/PR instructions. Checked: B0–B7 coverage and file ownership; documentation only.
 - 2026-10-24 [INT] setup: Rebased on `08fc92f` (specs moved to `docs/`, protocol added); updated paths. Checked: links resolve. Notes: `README.md` still links `project.md`/`implementation.md` at root.
 - 2026-10-24 [INT] setup: Cloned `main` (`cb7ec40`); added `context.md`, `AGENTS.md`, `CLAUDE.md`. Checked: task board matches `docs/implementation.md` §2, §6, §7. Notes: no code yet; start with INT-0.
 
