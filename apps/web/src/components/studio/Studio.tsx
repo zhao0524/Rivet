@@ -101,14 +101,6 @@ export function Studio({
     if (builtId) setLastGeneration((g) => (g && !g.buildId ? { ...g, buildId: builtId } : g));
   }, [store.job?.status, store.job?.build_id]);
 
-  // Landing page "Describe a build" lands with the prompt focused. Runs after Dialog's own
-  // initial focus (child effects run first), so it wins only for that first open.
-  useEffect(() => {
-    if (!initialIntakeOpen || initialIntakeFocus !== 'prompt') return;
-    document.querySelector<HTMLTextAreaElement>('[data-rivet="build-intake"] textarea')?.focus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   // Intake closes into the studio once the generated build is the one on screen.
   useEffect(() => {
     if (intakeOpen && store.job?.status === 'complete' && store.job.build_id === plan.build_id) {
@@ -626,6 +618,7 @@ export function Studio({
       title="New build"
       wide
       testId="intake-dialog"
+      initialFocus={initialIntakeOpen && initialIntakeFocus === 'prompt' ? 'textarea' : undefined}
     >
       {intakeNode}
     </Dialog>

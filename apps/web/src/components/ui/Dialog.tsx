@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useRef, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 export interface DialogProps {
@@ -11,6 +11,8 @@ export interface DialogProps {
   /** Wider layout for content-heavy dialogs (intake, exports). */
   wide?: boolean;
   testId?: string;
+  /** CSS selector of the control to focus on open (default: first control in the body). */
+  initialFocus?: string;
 }
 
 const FOCUSABLE =
@@ -20,18 +22,22 @@ const FOCUSABLE =
  * Accessible modal dialog: portal to `document.body`, Escape and backdrop close,
  * focus moves to the first control in the body on open, Tab is trapped inside, focus returns to the opener on close.
  */
-export function Dialog({ open, onClose, title, children, wide = false, testId }: DialogProps) {
+export function Dialog({ open, onClose, title, children, wide = false, testId, initialFocus }: DialogProps) {
   const titleId = useId();
   const panelRef = useRef<HTMLDivElement>(null);
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
+  // Portals cannot be server-rendered; mount first so SSR and the first client render agree.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open || !mounted) return;
     const opener = document.activeElement as HTMLElement | null;
     const panel = panelRef.current;
-    // First control in the body (not the header close button), else the dialog itself.
-    (panel?.querySelector<HTMLElement>(`.rv-dialog__body :is(${FOCUSABLE})`) ?? panel)?.focus();
+    // Requested control, else first control in the body (not the header close button), else the dialog.
+    const requested = initialFocus ? panel?.querySelector<HTMLElement>(initialFocus) : null;
+    (requested ?? panel?.querySelector<HTMLElement>(`.rv-dialog__body :is(${FOCUSABLE})`) ?? panel)?.focus();
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -57,9 +63,9 @@ export function Dialog({ open, onClose, title, children, wide = false, testId }:
       document.removeEventListener('keydown', onKeyDown);
       opener?.focus?.();
     };
-  }, [open]);
+  }, [open, mounted]);
 
-  if (!open || typeof document === 'undefined') return null;
+  if (!open || !mounted) return null;
 
   return createPortal(
     <div

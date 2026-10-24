@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 from pydantic import BaseModel, ConfigDict, Field
 
 HostTier = Literal["manufacturer", "distributor", "teardown", "community"]
-Extractor = Literal["jsonld", "datasheet", "llm-extract"]
+Extractor = Literal["jsonld", "datasheet", "page-text", "llm-extract"]
 Support = Literal["verified", "inferred", "stale", "rejected"]
 
 TRUSTED_TIERS: frozenset[str] = frozenset({"manufacturer", "distributor"})

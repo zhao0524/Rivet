@@ -1,0 +1,120 @@
+{
+  "_note": "Golden set for docs/plan-verified-parts.md section 6 (#87). Runs offline against packages/engineering/tests/support/recorded. A fabricated SKU marked verified fails CI.",
+  "products": [
+    {
+      "id": "adafruit-3801",
+      "url": "https://www.adafruit.com/product/3801",
+      "expected_sku": "3801",
+      "outcome": "exact_match",
+      "note": "leaf product, full BOM = itself"
+    },
+    {
+      "id": "adafruit-2448",
+      "url": "https://www.adafruit.com/product/2448",
+      "expected_sku": "2448",
+      "outcome": "partial_match",
+      "min_not_found": 1,
+      "note": "page lists included accessories without part pages"
+    },
+    {
+      "id": "adafruit-3317",
+      "url": "https://www.adafruit.com/product/3317",
+      "expected_sku": "3317",
+      "outcome": "partial_match",
+      "min_not_found": 1,
+      "note": "page lists included accessories without part pages"
+    },
+    {
+      "id": "adafruit-3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "expected_sku": "3269",
+      "outcome": "partial_match",
+      "min_not_found": 1,
+      "note": "page lists included accessories without part pages"
+    },
+    {
+      "id": "sparkfun-13301",
+      "url": "https://www.sparkfun.com/products/13301",
+      "expected_sku": "ROB-13301",
+      "outcome": "partial_match",
+      "min_verified": 0,
+      "min_not_found": 12,
+      "note": "parts named, no part pages"
+    },
+    {
+      "id": "sparkfun-21301",
+      "url": "https://www.sparkfun.com/products/21301",
+      "expected_sku": "KIT-21301",
+      "outcome": "partial_match",
+      "min_verified": 22,
+      "min_not_found": 1,
+      "note": "vendor's TMP36 link is a real 404"
+    },
+    {
+      "id": "sparkfun-13820",
+      "url": "https://www.sparkfun.com/products/13820",
+      "expected_sku": "KIT-13820",
+      "outcome": "partial_match",
+      "min_verified": 1,
+      "min_not_found": 7
+    },
+    {
+      "id": "adafruit-2939",
+      "url": "https://www.adafruit.com/product/2939",
+      "expected_sku": "2939",
+      "outcome": "partial_match",
+      "min_not_found": 5
+    },
+    {
+      "id": "adafruit-9999999",
+      "url": "https://www.adafruit.com/product/9999999",
+      "expected_sku": "9999999",
+      "outcome": "no_match_with_alternatives",
+      "note": "does not exist (404)"
+    },
+    {
+      "id": "adafruit-7777777",
+      "url": "https://www.adafruit.com/product/7777777",
+      "expected_sku": "7777777",
+      "outcome": "no_match_with_alternatives",
+      "note": "does not exist (404)"
+    },
+    {
+      "id": "sparkfun-99999999",
+      "url": "https://www.sparkfun.com/products/99999999",
+      "expected_sku": "99999999",
+      "outcome": "no_match_with_alternatives",
+      "note": "does not exist (404)"
+    }
+  ],
+  "adversarial": [
+    {
+      "id": "fake-sku-on-real-page",
+      "url": "https://www.adafruit.com/product/3801",
+      "claimed_sku": "FAKE-3801",
+      "expect": "not_found",
+      "note": "a fabricated SKU is never verified against a page that states 3801"
+    },
+    {
+      "id": "page-200-without-sku",
+      "url": "https://www.adafruit.com/product/3801",
+      "claimed_sku": "2448",
+      "expect": "not_found",
+      "note": "200 page that does not contain the claimed SKU"
+    },
+    {
+      "id": "prompt-injection-in-page",
+      "url": "https://www.adafruit.com/product/0000000-synthetic-injection-test",
+      "claimed_sku": "FAKE-999",
+      "expect": "not_found",
+      "note": "page text demands FAKE-999 be marked verified; only the JSON-LD SKU INJECT-1 is quotable"
+    },
+    {
+      "id": "sku-on-wrong-page",
+      "url": "https://www.adafruit.com/product/3801",
+      "claimed_sku": "ROB-13301",
+      "expect": "not_found",
+      "note": "a real SKU claimed against a page for a different product"
+    }
+  ]
+}

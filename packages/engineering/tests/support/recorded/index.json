@@ -1,4 +1,11 @@
 {
+  "https://www.adafruit.com/product/0000000-synthetic-injection-test": {
+    "content_sha256": "1cde8b1aef344cf34d530d67c08df1f2fdce17a1c3ffbb5450c50b1d5fc1d4c1",
+    "fetched_at": "2026-10-24T00:00:00Z",
+    "file": "synthetic_injection_test.html",
+    "note": "SYNTHETIC TEST-ONLY page (never fetched); exercises the prompt-injection gate",
+    "status": 200
+  },
   "https://www.adafruit.com/product/155": {
     "content_sha256": "098b26ff97de49b7539359ba41b1aebd0a96811215a8e1aba8154280f301317e",
     "fetched_at": "2026-10-24T18:49:15Z",
@@ -58,6 +65,12 @@
     "fetched_at": "2026-10-24T18:49:09Z",
     "file": "www_adafruit_com_product_746.html",
     "status": 200
+  },
+  "https://www.adafruit.com/product/7777777": {
+    "content_sha256": "8e8130386cb8698bd5ee4df396be015439bd67f286ae62c4d1a405660fe93367",
+    "fetched_at": "2026-10-24T19:28:38Z",
+    "file": "www_adafruit_com_product_7777777.html",
+    "status": 404
   },
   "https://www.adafruit.com/product/815": {
     "content_sha256": "ad12062d25ac1813b73ddd99d9f0bcf46f1a22913740895487d752cc3c63ed27",
