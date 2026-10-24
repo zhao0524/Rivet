@@ -3,10 +3,10 @@
 Thumbs.db
 
 # Env / secrets
-.env
 .env.local
 .env.*.local
 !.env.example
+# .env is committed encrypted via git-crypt (see .gitattributes)
 
 # Node / pnpm
 node_modules/
