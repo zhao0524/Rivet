@@ -1,6 +1,8 @@
 'use client';
 
-/** Placeholder until the screen lands. */
+import { WiringStep } from '../../../../../components/steps/wiring/WiringStep';
+
+/** Step 3 of 5: Wiring & firmware. */
 export default function Page() {
-  return <p className="ui-muted">wiring: coming soon.</p>;
+  return <WiringStep />;
 }

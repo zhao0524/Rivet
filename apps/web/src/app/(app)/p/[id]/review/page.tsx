@@ -1,6 +1,8 @@
 'use client';
 
-/** Placeholder until the screen lands. */
+import { ReviewStep } from '../../../../../components/steps/review/ReviewStep';
+
+/** Step 1 of 5: Review. */
 export default function Page() {
-  return <p className="ui-muted">review: coming soon.</p>;
+  return <ReviewStep />;
 }
