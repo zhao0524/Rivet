@@ -1,0 +1,56 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Env / secrets
+.env.local
+.env.*.local
+!.env.example
+# .env is committed encrypted via git-crypt (see .gitattributes)
+
+# Node / pnpm
+node_modules/
+.pnpm-store/
+dist/
+.next/
+out/
+*.tsbuildinfo
+.turbo/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.uv/
+
+# PlatformIO / firmware
+.pio/
+.vscode/.browse.c_cpp.db*
+.clang_complete
+.gcc-flags.json
+
+# IDE / editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+
+# Logs / coverage / misc
+*.log
+coverage/
+.nyc_output/
+htmlcov/
+.cache/
+tmp/
+temp/
+
+# Generated artifacts
+*.zip
+exports/

@@ -1,0 +1,29 @@
+# Rivet firmware: {{TITLE}}
+
+Build `{{BUILD_ID}}`, revision {{REVISION}}, profile `{{PROFILE_ID}}`.
+
+Plan status when this was generated: **{{PLAN_STATUS}}**. This is a starter, not a certified
+design. `manifest.json` records the compile result (`compile_status`); "not_checked" means
+nobody compiled it.
+{{FIXTURE_WARNING}}
+## Before you power anything
+
+- Verify wiring against `include/rivet_config.h`. Every pin number came from the plan's pin
+  map. Rivet's API did not choose them, and nobody has checked them against your board.
+- Motor current must go through a motor driver, never through ESP32 pins.
+- Supervise the rover and keep a way to cut motor power. The sketch also has a serial
+  command: send `x` to DISABLE immediately, `g` to enable.
+- The rover starts **disabled** at boot (`RIVET_START_ENABLED 0`).
+- The distance sensor needs calibration on your hardware. A missing sensor reading makes
+  the rover stop.
+
+## Behavior
+
+FORWARD until the front distance is below `RIVET_OBSTACLE_STOP_MM`, then STOP, then TURN for
+`RIVET_TURN_DURATION_MS`, then FORWARD again. The browser simulation approximates this
+policy. It does not run this code and does not prove real-world behavior.
+
+## Build
+
+Install PlatformIO, then run `pio run` in this folder. Library and platform versions are pinned
+in `platformio.ini` but are only known to work if `compile_status` is "passed".

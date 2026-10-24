@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "intent_id": "intent-rover-001",
+  "input": {
+    "kind": "image_and_text",
+    "image_asset_id": "asset-rover-reference-001",
+    "user_text": "Build a small rover that avoids obstacles",
+    "image_interpretation_is_approximate": true
+  },
+  "project_family": "rover",
+  "requested_behavior": "obstacle_avoidance",
+  "visual_features": [
+    "compact chassis",
+    "two visible drive wheels",
+    "front-facing range sensor"
+  ],
+  "requirements": {
+    "max_budget": null,
+    "currency": "USD",
+    "max_length_mm": null,
+    "max_width_mm": null,
+    "preferred_controller_catalog_id": "board.esp32_devkit_v1",
+    "required_capabilities": [
+      "differential_drive",
+      "distance_sensing"
+    ],
+    "preferred_color": "charcoal"
+  },
+  "assumptions": [
+    "Hidden electronics are not inferable from the image"
+  ],
+  "unknowns": [
+    "Actual source robot dimensions",
+    "Motor and battery specifications"
+  ],
+  "confidence": "medium",
+  "support_status": "supported"
+}
