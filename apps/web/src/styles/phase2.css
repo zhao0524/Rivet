@@ -1,0 +1,99 @@
+/* Phase 2 (Buy, Build, Done) and the Iterate modal. Colors come only from --ui-* tokens. */
+
+/* ── Shared ───────────────────────────────────────────── */
+/* Single-column grids get an explicit minmax(0, 1fr) track so nowrap titles never widen the page. */
+.p2-stack, .p2-grid__side, .p2-skeleton-lines, .buy-oos, .build__safety, .build__firmware, .build__firmware-meta, .done__list { grid-template-columns: minmax(0, 1fr); }
+.p2-stack { display: grid; gap: 16px; }
+.p2-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(280px, 1fr); gap: 20px; align-items: start; }
+.p2-grid__side { display: grid; gap: 16px; position: sticky; top: 76px; }
+.p2-kv { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.p2-amount { font-size: 34px; line-height: 1.1; font-weight: 600; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.p2-note { margin: 8px 0 0; font-size: 13px; color: var(--ui-muted); }
+.p2-row-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.p2-skeleton-lines { display: grid; gap: 10px; }
+.p2-status { min-height: 20px; font-size: 13px; color: var(--ui-muted); }
+.p2-check-inline { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ui-muted); white-space: nowrap; }
+.p2-check-inline input { width: 16px; height: 16px; margin: 0; accent-color: var(--ui-accent); }
+.p2-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.p2-steps { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: 14px; }
+.p2-steps li::marker { color: var(--ui-subtle); }
+.p2-details > summary { cursor: pointer; font-size: 14px; font-weight: 500; color: var(--ui-accent-text); list-style: none; display: inline-flex; align-items: center; gap: 6px; }
+.p2-details > summary::-webkit-details-marker { display: none; }
+.p2-details > summary::before { content: '▸'; font-size: 12px; transition: transform 150ms var(--ui-ease); }
+.p2-details[open] > summary::before { transform: rotate(90deg); }
+.p2-details__body { margin-top: 10px; }
+.p2-stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+.p2-stat { padding: 14px 16px; border-radius: var(--ui-r); background: var(--ui-raised); }
+.p2-stat__n { display: block; font-size: 26px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.p2-stat__l { display: block; margin-top: 4px; font-size: 13px; color: var(--ui-muted); }
+
+/* ── Buy ──────────────────────────────────────────────── */
+.buy-vendor__row { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 56px; padding: 10px 14px; border: 0; background: var(--ui-surface); text-align: left; cursor: pointer; }
+.buy-vendor__row:hover { background: var(--ui-raised); }
+.buy-vendor__caret { flex: none; color: var(--ui-subtle); transition: transform 150ms var(--ui-ease); }
+.buy-vendor__row[aria-expanded='true'] .buy-vendor__caret { transform: rotate(90deg); }
+.buy-vendor__sub { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.buy-lines { margin: 0; padding: 0; list-style: none; background: var(--ui-raised); border-top: 1px solid var(--ui-border); }
+.buy-line { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; padding: 12px 14px 12px 36px; border-top: 1px solid var(--ui-border); }
+.buy-line:first-child { border-top: 0; }
+.buy-line__name { font-size: 14px; font-weight: 500; }
+.buy-line__meta { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 13px; color: var(--ui-muted); }
+.buy-line__stock { display: inline-flex; align-items: center; gap: 6px; }
+.buy-line__right { display: grid; justify-items: end; gap: 6px; text-align: right; }
+.buy-line__price { font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.buy-line[data-owned='true'] .buy-line__name, .buy-line[data-owned='true'] .buy-line__price { text-decoration: line-through; color: var(--ui-subtle); }
+.buy-oos { display: grid; gap: 10px; }
+.buy-oos__card { padding: 14px 16px; border-radius: var(--ui-r); border: 1px solid var(--ui-border); background: var(--ui-surface); }
+.buy-oos__head { display: flex; gap: 8px; align-items: flex-start; }
+.buy-cart__vendor { padding: 12px 0; border-top: 1px solid var(--ui-border); }
+.buy-cart__vendor:first-child { border-top: 0; padding-top: 0; }
+.buy-cart__list { margin: 8px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; min-width: 0; }
+.buy-cart__link { min-width: 0; }
+.buy-cart__link { display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 6px 10px; margin: 0 -10px; border-radius: var(--ui-r-sm); color: var(--ui-text); }
+.buy-cart__link:hover { background: var(--ui-raised); }
+.buy-cart__link .buy-line__price { margin-left: auto; }
+.buy-cart__link svg { flex: none; color: var(--ui-subtle); }
+
+/* ── Build ────────────────────────────────────────────── */
+.build { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 400px; min-height: calc(100vh - 290px); }
+.build__stage { position: relative; min-height: 460px; height: calc(100vh - 290px); background: var(--ui-sunken); border-top: 1px solid var(--ui-border); border-bottom: 1px solid var(--ui-border); }
+.build__stage > [data-testid='rover-scene'], .build__stage > div:first-child { position: absolute; inset: 0; }
+.build__stage-label { position: absolute; left: 20px; bottom: 16px; z-index: 2; display: inline-flex; gap: 8px; align-items: center; padding: 6px 12px; border-radius: 999px; background: var(--ui-surface); border: 1px solid var(--ui-border); color: var(--ui-muted); font-size: 12px; font-weight: 500; }
+.build__panel { display: flex; flex-direction: column; gap: 16px; padding: 20px 20px 24px; background: var(--ui-surface); border-top: 1px solid var(--ui-border); border-bottom: 1px solid var(--ui-border); border-left: 1px solid var(--ui-border); overflow-y: auto; max-height: calc(100vh - 290px); }
+.build__panel-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.build__progress { height: 4px; border-radius: 999px; background: var(--ui-sunken); overflow: hidden; }
+.build__progress > span { display: block; height: 100%; background: var(--ui-accent); transition: width 300ms var(--ui-ease); }
+.build__instructions { margin: 0; font-size: 15px; line-height: 1.55; white-space: pre-line; }
+.build__parts { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; min-width: 0; }
+.build__part { display: flex; align-items: center; gap: 10px; min-height: 36px; min-width: 0; padding: 6px 10px; border-radius: var(--ui-r-sm); background: var(--ui-raised); font-size: 14px; }
+.build__part-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.build__part-id { font-family: var(--ui-mono); font-size: 12px; color: var(--ui-subtle); }
+.build__safety { display: grid; gap: 10px; }
+.build__safety ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.build__firmware { display: grid; gap: 12px; padding: 16px; border-radius: var(--ui-r); border: 1px solid var(--ui-border); background: var(--ui-raised); }
+.build__firmware-head { display: flex; align-items: center; gap: 8px; }
+.build__firmware-meta { display: grid; gap: 2px; font-size: 13px; color: var(--ui-muted); }
+.build__missing { font-size: 13px; color: var(--ui-muted); }
+.build__radio { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px; border-radius: var(--ui-r-sm); cursor: pointer; }
+.build__radio:hover { background: var(--ui-raised); }
+.build__radio input { width: 18px; height: 18px; margin: 0; accent-color: var(--ui-accent); }
+
+/* ── Done ─────────────────────────────────────────────── */
+.done__list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.done__item { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; }
+.done__item svg { flex: none; margin-top: 2px; }
+
+/* ── Iterate ──────────────────────────────────────────── */
+.iter__chips { margin-top: 10px; }
+
+@media (max-width: 900px) {
+  .p2-grid { grid-template-columns: minmax(0, 1fr); }
+  .p2-grid > * { min-width: 0; }
+  .p2-grid__side { position: static; }
+  .build { grid-template-columns: 1fr; min-height: 0; }
+  .build__stage { height: 42vh; min-height: 300px; }
+  .build__stage-label { left: 16px; bottom: 12px; }
+  .build__panel { max-height: none; border-left: 0; border-top: 0; padding: 16px 16px 20px; }
+  .buy-line { grid-template-columns: 1fr; padding-left: 14px; }
+  .buy-line__right { justify-items: start; text-align: left; }
+}

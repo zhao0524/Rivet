@@ -1,6 +1,8 @@
 'use client';
 
-/** Placeholder until the screen lands. */
+import { BuildStep } from '../../../../../components/steps/build/BuildStep';
+
+/** Step 5 Build. */
 export default function Page() {
-  return <p className="ui-muted">build: coming soon.</p>;
+  return <BuildStep />;
 }

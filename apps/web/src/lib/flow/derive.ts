@@ -236,7 +236,8 @@ export function formatMoney(amount: number, currency: string): string {
 
 export function formatCheckedAt(iso: string | null): string {
   if (!iso) return 'Price never checked';
-  const d = new Date(iso);
+  // A bare date is a calendar day, not UTC midnight; parse it as local so it never shifts a day.
+  const d = new Date(/^\d{4}-\d{2}-\d{2}$/.test(iso) ? `${iso}T00:00:00` : iso);
   if (Number.isNaN(d.getTime())) return 'Price never checked';
   return `Checked ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
 }

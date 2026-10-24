@@ -1,6 +1,8 @@
 'use client';
 
-/** Placeholder until the screen lands. */
+import { DoneStep } from '../../../../../components/steps/done/DoneStep';
+
+/** Done: the build is finished. */
 export default function Page() {
-  return <p className="ui-muted">done: coming soon.</p>;
+  return <DoneStep />;
 }

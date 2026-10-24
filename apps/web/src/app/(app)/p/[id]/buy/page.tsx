@@ -1,6 +1,8 @@
 'use client';
 
-/** Placeholder until the screen lands. */
+import { BuyStep } from '../../../../../components/steps/buy/BuyStep';
+
+/** Step 4 Buy. */
 export default function Page() {
-  return <p className="ui-muted">buy: coming soon.</p>;
+  return <BuyStep />;
 }
