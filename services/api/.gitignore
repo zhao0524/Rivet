@@ -1,2 +1,3 @@
-# runtime state written by the API (projects, jobs, uploads)
-data/
+# runtime state written by the API (projects, jobs, uploads, Estelle evidence)
+# Anchored: an unanchored "data/" also hid rivet_api/data/fixtures from git.
+/data/

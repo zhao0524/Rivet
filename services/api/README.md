@@ -1,0 +1,99 @@
+# Rivet API (`services/api`)
+
+Developer A's lane: image or text in, a validated `IntentSpec` out, a versioned `BuildPlan` back from the engineering engine, plus jobs with live events, edits, exports, firmware and an Estelle grounding client.
+
+**What it does not do:** it never decides whether hardware is valid. The engineering engine (`packages/engineering`, lane B) owns `status`, `verification` and every finding. This API stores exactly what the engine returns and only checks that the plan is structurally coherent (unique ids, references that resolve, BOM counts).
+
+Specs: [`docs/implementation.md`](../../docs/implementation.md) (contracts, section 6 lane A), [`docs/project.md`](../../docs/project.md). Status of the whole repo: [`docs/context.md`](../../docs/context.md).
+
+## Quick start
+
+```bash
+cd services/api
+python3.12 -m venv .venv                      # Python 3.11+ (uv works too: `uv sync`)
+.venv/bin/pip install -e '.[dev]'             # add '.[live]' for the OpenAI vision provider
+RIVET_MODE=fixture .venv/bin/python -m uvicorn rivet_api.main:app --port 8000
+
+.venv/bin/python -m pytest -q                 # all tests run offline, no keys needed
+.venv/bin/python scripts/smoke.py --in-process                 # end-to-end check, own temp data dir
+.venv/bin/python scripts/smoke.py --base-url http://localhost:8000   # against a running server
+```
+
+Fixture mode needs nothing else: no engine package, no API keys, no PlatformIO, no Estelle.
+
+## Modes and honest labels
+
+| Mode | What you get | How it is labeled |
+|---|---|---|
+| `RIVET_MODE=fixture` (default) | A saved **synthetic** rover (`demo.*` parts, no real SKUs, no prices) | `provenance.generation_mode = "fixture"`, one `system` job event saying a saved demo build was loaded, `X-Rivet-Generation-Mode: fixture` on exports, a SAVED FIXTURE warning in firmware READMEs |
+| `RIVET_MODE=live`, engine installed and ready | The engine's real plan | `generation_mode = "live"` (or `"fallback"` if the vision provider is the mock: the intent was not live) |
+| `RIVET_MODE=live`, engine missing or not ready | The saved fixture again | `generation_mode = "fallback"` with a note. Set `allow_fallback=False` in code to get a 503 `ENGINE_UNAVAILABLE` instead |
+
+To use the real engine: `.venv/bin/pip install -e ../../packages/engineering`, then `RIVET_MODE=live`. The API imports only `solve`, `apply_edit`, `verify` and `get_catalog` from `rivet_engine`. An engine whose entry points still raise `EngineNotImplementedError` counts as not ready.
+
+## Environment variables
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `RIVET_MODE` | `fixture` | `fixture` or `live` |
+| `RIVET_ENV` | `development` | Free-form environment label |
+| `RIVET_DATA_ROOT` | `./data` | Where projects, jobs, uploads and Estelle evidence are written (gitignored) |
+| `RIVET_DEMO_FIXTURE` | `rover_obstacle_v1` | Which saved build the fixture engine serves |
+| `RIVET_VISION_PROVIDER` | `mock` | `mock` or `openai`. A bad value fails at startup |
+| `RIVET_VISION_MODEL` | empty | Required for `openai` |
+| `OPENAI_API_KEY` | unset | Server side only; required for `openai`. Never logged or returned |
+| `RIVET_ENABLE_ESTELLE` | `false` | Turn on the Estelle grounding client |
+| `RIVET_ESTELLE_MODE` | `cli` | `cli` works; `mcp` always reports unavailable (tool parameters are undocumented) |
+| `RIVET_ESTELLE_REPO` | this repo | Repository Estelle should ground against |
+
+(`RIVET_CATALOG_PATH` in the root `.env.example` is not read by this API.)
+
+## Endpoints
+
+Errors always use `{"error": {"code", "message", "details", "retryable"}}`.
+
+| Method | Path | Notes |
+|---|---|---|
+| GET | `/api/health` | `{ok, mode}`; every response also carries `X-Rivet-Mode` |
+| GET | `/api/catalog` | `?category=` filters by `identity.category` |
+| POST | `/api/assets/images` | multipart `file`; PNG/JPEG/WebP only, 10 MB, EXIF stripped, large images downscaled, per-session quota (`X-Rivet-Session`) |
+| GET | `/api/assets/{asset_id}/preview` | The stored (re-encoded) image |
+| POST | `/api/projects/generate` | 202 `{job_id, status: "queued", build_id: null}`; body `{input: {kind, image_asset_id?, user_text?}, requirements?}` |
+| GET | `/api/jobs/{job_id}` | `{status, stage, progress, build_id?, revision?, error?}`; `progress` is null unless real stages were planned |
+| GET | `/api/jobs/{job_id}/events` | Server-sent events with `id:` lines; reconnect with `Last-Event-ID` or `?last_event_id=` |
+| GET | `/api/projects/examples` | The saved build, labeled `fixture` |
+| GET | `/api/projects/{build_id}` | `?revision=` optional |
+| GET | `/api/projects/{build_id}/revisions` | Revision summaries |
+| POST | `/api/projects/{build_id}/edits` | `{base_revision, operation, instruction?}`; 409 on a stale `base_revision`; 422 `UNSUPPORTED_EDIT` for anything but the five allowed operations |
+| GET | `/api/projects/{build_id}/exports/bom.csv` | Null prices stay empty cells; the subtotal is the engine's, never computed here |
+| GET | `/api/projects/{build_id}/exports/build.json` | The stored revision |
+| GET | `/api/projects/{build_id}/exports/firmware.zip` | `?revision=`, `?compile=true`; header `X-Rivet-Compile-Status` |
+| GET | `/api/estelle/status` | Enabled/available, plus the output of `estelle doctor` when reachable |
+| POST | `/api/estelle/ground` | `{kind: "locate" \| "dependencies", name: "<identifier>"}` |
+
+Allowed edit operations: `set_budget`, `set_behavior_parameter`, `replace_optional_sensor`, `set_mount_offset_within_template`, `change_appearance_color` (each with `"op"` and its own fields; see `rivet_api/agents/editor.py`).
+
+```bash
+curl -s -X POST localhost:8000/api/projects/generate -H 'content-type: application/json' \
+  -d '{"input": {"kind": "text", "user_text": "small rover that avoids obstacles"}}'
+curl -sN localhost:8000/api/jobs/<job_id>/events
+curl -s -X POST localhost:8000/api/projects/<build_id>/edits -H 'content-type: application/json' \
+  -d '{"base_revision": 1, "operation": {"op": "set_behavior_parameter", "name": "turn_duration_ms", "value": 800}}'
+```
+
+## What has and has not been run
+
+Verified by the automated tests (offline, fake backends): the whole API contract above, storage and revisions, SSE replay, upload hardening, sanitizing of model output, exports, firmware generation, engine error mapping.
+
+**Has not been run for real (needs a human with the right setup):**
+
+- **OpenAI vision:** the request shape in `OpenAIBackend` was never sent to the real API (no key was available).
+- **PlatformIO compile:** `pio` was not installed, so the generated firmware has never been built; the pinned `espressif32@6.9.0` and `Adafruit VL53L0X@1.2.4` versions are unverified. `main.cpp` only passed a syntax check against stub headers. Compile status is `not_checked` unless `?compile=true` succeeds.
+- **Estelle:** the CLI was never run (not installed, no account). Its MCP tool parameters and `verify`/`gate` usage are undocumented, so only `estelle ask` and `estelle doctor` are used, and its output format is an assumption (see `rivet_api/firmware/estelle.py`).
+- **The real engine:** lane B's `rivet_engine` was not ready when this was written, so the real adapter is tested only against fakes.
+
+**Open contract gap:** `BuildPlan.firmware.pin_map` has no defined format in the spec. The firmware template needs nine integer GPIO signals (`motor_left_pwm`, `motor_left_in1`, `motor_left_in2`, `motor_right_pwm`, `motor_right_in1`, `motor_right_in2`, `motor_standby`, `i2c_sda`, `i2c_scl`), and this API chose none of the numbers. Every current fixture ships an empty `pin_map`, so `firmware.zip` returns 422 until lane B provides one. Board-specific pin limits are lane B's check.
+
+## Safety notes
+
+Generated firmware boots with the motors disabled (serial `g` enables, `x` disables), stops when the distance sensor gives no valid reading, and states the plan status and fixture label in its README. Nothing here is a certification, and the browser simulation is not the compiled code.

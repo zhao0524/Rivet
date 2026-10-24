@@ -39,18 +39,64 @@ class RealEngineeringAdapter:
             verify,
             get_catalog,
         )
+        # Startup probe: an engine whose entry points are still placeholders imports fine
+        # but cannot serve requests, so it must count as unavailable (and trigger the
+        # labeled fallback) rather than fail every job later.
+        try:
+            self._call(self._get_catalog)
+        except ApiError as err:
+            raise ApiError(
+                "ENGINE_UNAVAILABLE",
+                "The engineering engine is installed but not ready",
+                503,
+                {"reason": err.code, **err.details},
+            ) from None
+
+    @staticmethod
+    def _envelope_error(exc: Exception) -> ApiError | None:
+        """Use the engine's own envelope (rivet_engine.ports.EngineError) when it has one."""
+        to_envelope, status = getattr(exc, "to_envelope", None), getattr(exc, "http_status", None)
+        if not callable(to_envelope) or not isinstance(status, int):
+            return None
+        try:
+            err = to_envelope()["error"]
+            return ApiError(
+                str(err["code"]),
+                str(err["message"]),
+                status,
+                dict(err.get("details") or {}),
+                bool(err.get("retryable", False)),
+            )
+        except (KeyError, TypeError, ValueError):
+            return None
+
+    @classmethod
+    def _call(cls, fn, *args):
+        """Map engine exceptions to API errors. Only engine-authored envelopes are shown."""
+        try:
+            return fn(*args)
+        except ApiError:
+            raise
+        except Exception as exc:
+            name = type(exc).__name__
+            log.warning("engine call failed: %s", name)
+            mapped = cls._envelope_error(exc)
+            if mapped is not None:
+                raise mapped from None
+            # Not a structured engine error: say nothing about its text (it may hold paths).
+            raise ApiError("ENGINE_ERROR", "The engineering engine failed", 502, {"engine_error": name}) from None
 
     def solve(self, intent: dict[str, Any]) -> dict[str, Any]:
-        return self._solve(intent)
+        return self._call(self._solve, intent)
 
     def apply_edit(self, plan: dict[str, Any], operation: dict[str, Any]) -> dict[str, Any]:
-        return self._apply_edit(plan, operation)
+        return self._call(self._apply_edit, plan, operation)
 
     def verify(self, plan: dict[str, Any]) -> dict[str, Any]:
-        return self._verify(plan)
+        return self._call(self._verify, plan)
 
     def get_catalog(self) -> list[dict[str, Any]]:
-        return self._get_catalog()
+        return self._call(self._get_catalog)
 
 
 def build_engineering_port(settings: Settings) -> EngineeringPort:

@@ -5,7 +5,7 @@ import zipfile
 from fastapi import APIRouter, Query, Request
 from fastapi.responses import Response
 
-from rivet_api.exports.bom import bom_to_csv
+from rivet_api.bom_csv import bom_to_csv
 from rivet_api.firmware.generate import generate_firmware
 
 router = APIRouter()

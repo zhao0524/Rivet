@@ -4,7 +4,7 @@ import json
 
 import pytest
 
-from rivet_api.exports.bom import bom_to_csv
+from rivet_api.bom_csv import bom_to_csv
 
 BEHAVIOR_EDIT = {
     "base_revision": 1,
