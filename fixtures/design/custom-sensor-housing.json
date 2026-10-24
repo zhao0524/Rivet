@@ -1,0 +1,262 @@
+{
+  "schema_version": "2.0",
+  "mode": "engineered",
+  "subject": "angled-front sensor enclosure for an ESP32 and a time-of-flight sensor",
+  "seed": 0,
+  "strategy": "simpler_manufacture",
+  "visual_goal": {
+    "signature_features": [
+      "sloped front panel with a sensor window",
+      "rounded top edges",
+      "flat screw-down base plate"
+    ],
+    "description": "Printed enclosure: lofted body with a 30 degree sloped front, filleted top edges, open bottom shell, window for the ToF optics, base plate with four M3 holes.",
+    "palette": [
+      {
+        "name": "body",
+        "hex": "#e8eaed"
+      },
+      {
+        "name": "base",
+        "hex": "#30343b"
+      }
+    ]
+  },
+  "constraints": {
+    "max_bounds_mm": [
+      200,
+      200,
+      200
+    ],
+    "min_wall_mm": 1.6,
+    "min_general_clearance_mm": 0.8,
+    "must_be_stable": true
+  },
+  "bodies": [
+    {
+      "id": "base_plate",
+      "name": "Base plate",
+      "role": "base",
+      "kind": "fabricated",
+      "manufacturing": "3d_print",
+      "material": {
+        "name": "PETG",
+        "color": "#30343b"
+      },
+      "shape": {
+        "type": "plate",
+        "dimensions_mm": [
+          84,
+          4,
+          64
+        ]
+      },
+      "features": [
+        {
+          "id": "plate_round",
+          "type": "fillet",
+          "radius_mm": 4,
+          "edges": "vertical"
+        },
+        {
+          "id": "holes_front",
+          "type": "hole",
+          "radius_mm": 1.6,
+          "depth_mm": 10,
+          "position_mm": [
+            0,
+            0,
+            27
+          ],
+          "count": 2,
+          "spacing_mm": 74,
+          "pattern_axis": "X",
+          "required": true
+        },
+        {
+          "id": "holes_back",
+          "type": "hole",
+          "radius_mm": 1.6,
+          "depth_mm": 10,
+          "position_mm": [
+            0,
+            0,
+            -27
+          ],
+          "count": 2,
+          "spacing_mm": 74,
+          "pattern_axis": "X",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "housing",
+      "name": "Angled housing",
+      "role": "enclosure",
+      "tags": [
+        "signature",
+        "enclosure"
+      ],
+      "kind": "fabricated",
+      "manufacturing": "3d_print",
+      "parent_id": "base_plate",
+      "material": {
+        "name": "PETG",
+        "color": "#e8eaed",
+        "roughness": 0.4
+      },
+      "shape": {
+        "type": "loft",
+        "ruled": true,
+        "sections": [
+          [
+            [
+              -40,
+              -30
+            ],
+            [
+              40,
+              -30
+            ],
+            [
+              40,
+              30
+            ],
+            [
+              -40,
+              30
+            ]
+          ],
+          [
+            [
+              -40,
+              -30
+            ],
+            [
+              40,
+              -30
+            ],
+            [
+              40,
+              6
+            ],
+            [
+              -40,
+              6
+            ]
+          ]
+        ],
+        "section_heights_mm": [
+          0,
+          42
+        ]
+      },
+      "features": [
+        {
+          "id": "hollow",
+          "type": "shell",
+          "wall_mm": 2.4,
+          "open_face": "bottom",
+          "required": true
+        },
+        {
+          "id": "top_round",
+          "type": "fillet",
+          "radius_mm": 3,
+          "edges": "top"
+        },
+        {
+          "id": "sensor_window",
+          "type": "window",
+          "width_mm": 10,
+          "length_mm": 14,
+          "depth_mm": 30,
+          "axis": "Z",
+          "pattern_axis": "X",
+          "position_mm": [
+            0,
+            0,
+            18
+          ],
+          "required": true
+        }
+      ],
+      "anchors": [
+        {
+          "id": "sensor_mount",
+          "frame": {
+            "position_mm": [
+              0,
+              -1.19,
+              15.92
+            ],
+            "rotation_deg": [
+              -119.74,
+              0,
+              0
+            ]
+          },
+          "kind": "face"
+        }
+      ],
+      "attachment": {
+        "parent_anchor": "top",
+        "child_anchor": "bottom",
+        "contact": "fastened",
+        "fasteners": {
+          "spec": "M3",
+          "count": 4,
+          "length_mm": 8
+        }
+      }
+    },
+    {
+      "id": "controller",
+      "name": "ESP32 controller",
+      "role": "controller",
+      "kind": "purchased",
+      "catalog_id": "board.esp32_devkitc_v4_wroom32e",
+      "parent_id": "base_plate",
+      "internal": true,
+      "attachment": {
+        "parent_anchor": "top",
+        "child_anchor": "bottom",
+        "rotation_deg": [
+          0,
+          90,
+          0
+        ],
+        "offset_mm": [
+          0,
+          0,
+          -8
+        ],
+        "contact": "fastened",
+        "fasteners": {
+          "spec": "adhesive",
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "range_sensor",
+      "name": "VL53L0X time-of-flight sensor",
+      "role": "distance_sensor",
+      "kind": "purchased",
+      "catalog_id": "sensor.adafruit_vl53l0x_3317",
+      "parent_id": "housing",
+      "internal": true,
+      "attachment": {
+        "parent_anchor": "sensor_mount",
+        "child_anchor": "top",
+        "contact": "fastened",
+        "fasteners": {
+          "spec": "M2.5",
+          "count": 2,
+          "length_mm": 6
+        }
+      }
+    }
+  ]
+}

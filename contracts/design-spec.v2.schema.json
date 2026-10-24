@@ -1,0 +1,1315 @@
+{
+  "$defs": {
+    "Anchor": {
+      "additionalProperties": false,
+      "description": "An explicit named frame in body-local coordinates. Its +Y axis is the outward normal\nof the mating face; attached bodies meet it with their own anchor normal opposed.",
+      "properties": {
+        "accepts": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Accepts",
+          "type": "array"
+        },
+        "bolt_pattern_mm": {
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array"
+          },
+          "maxItems": 64,
+          "title": "Bolt Pattern Mm",
+          "type": "array"
+        },
+        "diameter_mm": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Diameter Mm"
+        },
+        "frame": {
+          "$ref": "#/$defs/Frame"
+        },
+        "id": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,79}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "default": "rigid",
+          "enum": [
+            "rigid",
+            "hinge",
+            "shaft",
+            "slide",
+            "bolt",
+            "face",
+            "slot",
+            "side"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "verified": {
+          "const": false,
+          "default": false,
+          "title": "Verified",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "Anchor",
+      "type": "object"
+    },
+    "Attachment": {
+      "additionalProperties": false,
+      "description": "How a child meets its parent: the child's `child_anchor` face is placed against the\nparent's `parent_anchor` face (normals opposed, upright when possible). offset_mm then\nmoves the child along the PARENT body's axes (x right, y up, z front); rotation_deg\n(XYZ Euler) and the joint `axis` turn it about the parent anchor point, in the parent's\naxes. Hinge `value`/`limits` are degrees, slide ones millimetres.",
+      "properties": {
+        "adjust_mm": {
+          "default": 0,
+          "maximum": 500,
+          "minimum": 0,
+          "title": "Adjust Mm",
+          "type": "number"
+        },
+        "axis": {
+          "default": "Y",
+          "enum": [
+            "X",
+            "Y",
+            "Z"
+          ],
+          "title": "Axis",
+          "type": "string"
+        },
+        "child_anchor": {
+          "default": "bottom",
+          "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,79}$",
+          "title": "Child Anchor",
+          "type": "string"
+        },
+        "clearance_mm": {
+          "default": 0,
+          "maximum": 1000,
+          "minimum": 0,
+          "title": "Clearance Mm",
+          "type": "number"
+        },
+        "contact": {
+          "default": "touch",
+          "enum": [
+            "touch",
+            "fastened",
+            "clearance",
+            "embedded"
+          ],
+          "title": "Contact",
+          "type": "string"
+        },
+        "fasteners": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Fastener"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "joint": {
+          "default": "rigid",
+          "enum": [
+            "rigid",
+            "hinge",
+            "shaft",
+            "slide",
+            "bolt",
+            "face",
+            "slot",
+            "side"
+          ],
+          "title": "Joint",
+          "type": "string"
+        },
+        "limits": {
+          "default": [
+            0,
+            0
+          ],
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Limits",
+          "type": "array"
+        },
+        "offset_mm": {
+          "default": [
+            0,
+            0,
+            0
+          ],
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Offset Mm",
+          "type": "array"
+        },
+        "parent_anchor": {
+          "default": "top",
+          "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,79}$",
+          "title": "Parent Anchor",
+          "type": "string"
+        },
+        "rotation_deg": {
+          "default": [
+            0,
+            0,
+            0
+          ],
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Rotation Deg",
+          "type": "array"
+        },
+        "value": {
+          "default": 0,
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "title": "Attachment",
+      "type": "object"
+    },
+    "Constraints": {
+      "additionalProperties": false,
+      "properties": {
+        "handedness": {
+          "const": "right",
+          "default": "right",
+          "title": "Handedness",
+          "type": "string"
+        },
+        "max_bounds_mm": {
+          "default": [
+            20000,
+            20000,
+            20000
+          ],
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            },
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            },
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            }
+          ],
+          "title": "Max Bounds Mm",
+          "type": "array"
+        },
+        "mesh_tolerance_mm": {
+          "default": 0.15,
+          "maximum": 2,
+          "minimum": 0.01,
+          "title": "Mesh Tolerance Mm",
+          "type": "number"
+        },
+        "min_general_clearance_mm": {
+          "default": 0.5,
+          "maximum": 1000,
+          "minimum": 0,
+          "title": "Min General Clearance Mm",
+          "type": "number"
+        },
+        "min_wall_mm": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Min Wall Mm",
+          "type": "number"
+        },
+        "must_be_stable": {
+          "default": true,
+          "title": "Must Be Stable",
+          "type": "boolean"
+        },
+        "printer_volume_mm": {
+          "default": [
+            256,
+            256,
+            256
+          ],
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            },
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            },
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            }
+          ],
+          "title": "Printer Volume Mm",
+          "type": "array"
+        },
+        "units": {
+          "const": "mm",
+          "default": "mm",
+          "title": "Units",
+          "type": "string"
+        },
+        "up_axis": {
+          "const": "Y",
+          "default": "Y",
+          "title": "Up Axis",
+          "type": "string"
+        }
+      },
+      "title": "Constraints",
+      "type": "object"
+    },
+    "DesignBody": {
+      "additionalProperties": false,
+      "properties": {
+        "anchors": {
+          "items": {
+            "$ref": "#/$defs/Anchor"
+          },
+          "maxItems": 64,
+          "title": "Anchors",
+          "type": "array"
+        },
+        "attachment": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Attachment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "catalog_id": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Catalog Id"
+        },
+        "features": {
+          "items": {
+            "$ref": "#/$defs/Feature"
+          },
+          "maxItems": 128,
+          "title": "Features",
+          "type": "array"
+        },
+        "frame": {
+          "$ref": "#/$defs/Frame"
+        },
+        "id": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,79}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "internal": {
+          "default": false,
+          "title": "Internal",
+          "type": "boolean"
+        },
+        "kind": {
+          "default": "concept_visual",
+          "enum": [
+            "purchased",
+            "fabricated",
+            "concept_visual"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "manufacturing": {
+          "default": "none",
+          "enum": [
+            "none",
+            "3d_print",
+            "cnc",
+            "sheet_cut",
+            "laser_cut",
+            "molded"
+          ],
+          "title": "Manufacturing",
+          "type": "string"
+        },
+        "material": {
+          "$ref": "#/$defs/Material"
+        },
+        "name": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "parent_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Id"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "required": {
+          "default": true,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "role": {
+          "default": "body",
+          "maxLength": 60,
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Role",
+          "type": "string"
+        },
+        "shape": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Shape"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "standalone": {
+          "default": false,
+          "title": "Standalone",
+          "type": "boolean"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Tags",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "DesignBody",
+      "type": "object"
+    },
+    "Fastener": {
+      "additionalProperties": false,
+      "properties": {
+        "count": {
+          "default": 2,
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Count",
+          "type": "integer"
+        },
+        "length_mm": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Length Mm"
+        },
+        "spec": {
+          "default": "M3",
+          "pattern": "^(M[1-9](\\.[0-9])?|#[0-9]{1,2}|adhesive|press_fit|snap_fit|zip_tie)$",
+          "title": "Spec",
+          "type": "string"
+        }
+      },
+      "title": "Fastener",
+      "type": "object"
+    },
+    "Feature": {
+      "additionalProperties": false,
+      "description": "A bounded feature applied to the body's solid, in the body's local frame.\n\nhole/counterbore: radius_mm, depth_mm along `axis` from position_mm (count/spacing_mm\n  repeat along pattern_axis). boss/rib: additive cylinder / plate. fillet/chamfer:\n  radius_mm on edge set `edges`. shell: hollow with wall_mm, open on `open_face`.\nslot/window/pocket: width_mm x length_mm cut, depth_mm deep (window cuts through).\ngrill: `count` slots of width_mm x length_mm, spacing_mm apart.",
+      "properties": {
+        "axis": {
+          "default": "Y",
+          "enum": [
+            "X",
+            "Y",
+            "Z"
+          ],
+          "title": "Axis",
+          "type": "string"
+        },
+        "count": {
+          "default": 1,
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Count",
+          "type": "integer"
+        },
+        "counterbore_depth_mm": {
+          "default": 2,
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Counterbore Depth Mm",
+          "type": "number"
+        },
+        "counterbore_radius_mm": {
+          "default": 4,
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Counterbore Radius Mm",
+          "type": "number"
+        },
+        "depth_mm": {
+          "default": 10,
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Depth Mm",
+          "type": "number"
+        },
+        "edges": {
+          "default": "all",
+          "enum": [
+            "all",
+            "vertical",
+            "horizontal",
+            "top",
+            "bottom"
+          ],
+          "title": "Edges",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,79}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "length_mm": {
+          "default": 10,
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Length Mm",
+          "type": "number"
+        },
+        "open_face": {
+          "default": "top",
+          "enum": [
+            "none",
+            "top",
+            "bottom",
+            "left",
+            "right",
+            "front",
+            "back"
+          ],
+          "title": "Open Face",
+          "type": "string"
+        },
+        "pattern_axis": {
+          "default": "X",
+          "enum": [
+            "X",
+            "Y",
+            "Z"
+          ],
+          "title": "Pattern Axis",
+          "type": "string"
+        },
+        "position_mm": {
+          "default": [
+            0,
+            0,
+            0
+          ],
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Position Mm",
+          "type": "array"
+        },
+        "radius_mm": {
+          "default": 2,
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Radius Mm",
+          "type": "number"
+        },
+        "required": {
+          "default": false,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "spacing_mm": {
+          "default": 5,
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Spacing Mm",
+          "type": "number"
+        },
+        "type": {
+          "enum": [
+            "hole",
+            "counterbore",
+            "boss",
+            "fillet",
+            "chamfer",
+            "shell",
+            "slot",
+            "grill",
+            "pocket",
+            "window",
+            "rib"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "wall_mm": {
+          "default": 2,
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Wall Mm",
+          "type": "number"
+        },
+        "width_mm": {
+          "default": 2,
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Width Mm",
+          "type": "number"
+        }
+      },
+      "required": [
+        "id",
+        "type"
+      ],
+      "title": "Feature",
+      "type": "object"
+    },
+    "Frame": {
+      "additionalProperties": false,
+      "properties": {
+        "position_mm": {
+          "default": [
+            0,
+            0,
+            0
+          ],
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Position Mm",
+          "type": "array"
+        },
+        "rotation_deg": {
+          "default": [
+            0,
+            0,
+            0
+          ],
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Rotation Deg",
+          "type": "array"
+        }
+      },
+      "title": "Frame",
+      "type": "object"
+    },
+    "Material": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "default": "#a8b4c0",
+          "pattern": "^#[0-9a-fA-F]{6}$",
+          "title": "Color",
+          "type": "string"
+        },
+        "density_g_cm3": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 30,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Density G Cm3"
+        },
+        "density_source": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Density Source"
+        },
+        "metallic": {
+          "default": 0,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Metallic",
+          "type": "number"
+        },
+        "name": {
+          "default": "plastic",
+          "maxLength": 80,
+          "title": "Name",
+          "type": "string"
+        },
+        "opacity": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Opacity",
+          "type": "number"
+        },
+        "roughness": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Roughness",
+          "type": "number"
+        }
+      },
+      "title": "Material",
+      "type": "object"
+    },
+    "PaletteEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "hex": {
+          "pattern": "^#[0-9a-fA-F]{6}$",
+          "title": "Hex",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 60,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "hex"
+      ],
+      "title": "PaletteEntry",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "license": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "License"
+        },
+        "notes": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Notes",
+          "type": "array"
+        },
+        "origin": {
+          "default": "prompted",
+          "enum": [
+            "prompted",
+            "calculated",
+            "imported",
+            "measured",
+            "inferred"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "maxLength": 2048,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        }
+      },
+      "title": "Provenance",
+      "type": "object"
+    },
+    "Shape": {
+      "additionalProperties": false,
+      "description": "One semantic solid. Fields that a type does not use are ignored by the compiler.\n\nbox/rounded_box/plate: dimensions_mm [x, y, z]; rounded_box corner radius radius_mm.\ncylinder/tube/cone/capsule: radius_mm, height_mm along `axis`; cone top radius\n  radius_top_mm (0 = apex); tube wall wall_mm.\nsphere: radius_mm. ellipsoid: dimensions_mm are the three diameters.\ntorus: ring in the plane normal to `axis`; radius_mm (centre of tube), minor_radius_mm.\nwheel: axle along `axis` (default X); radius_mm outer radius, height_mm width,\n  wall_mm tyre thickness, spokes (0 = solid disc hub).\nextrude_profile: profile_mm points in the plane normal to `axis`, extruded height_mm,\n  centred on the origin.\nrevolve_profile: profile_mm points (radius, height) revolved about `axis` by angle_deg.\nloft: sections (polygons in the plane normal to `axis`) at section_heights_mm.\nsweep: circular profile radius_mm (or polygon profile_mm) along path_mm.\nshell: hollows its single child with wall_mm, optionally open on one face.\nboolean: children combined by `operation` (first child minus the rest for difference).\noccupancy: implicit-surface blend of primitive children with smoothing_mm, meshed at\n  pitch_mm; optional hollow shell of wall_mm. Visual or printable mesh, never STEP.\nmesh_reference: an imported mesh asset scaled to fit dimensions_mm.",
+      "properties": {
+        "angle_deg": {
+          "default": 360,
+          "exclusiveMinimum": 0,
+          "maximum": 360,
+          "title": "Angle Deg",
+          "type": "number"
+        },
+        "asset_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Asset Id"
+        },
+        "axis": {
+          "anyOf": [
+            {
+              "enum": [
+                "X",
+                "Y",
+                "Z"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Axis"
+        },
+        "children": {
+          "items": {
+            "$ref": "#/$defs/Shape"
+          },
+          "maxItems": 64,
+          "title": "Children",
+          "type": "array"
+        },
+        "dimensions_mm": {
+          "default": [
+            20,
+            20,
+            20
+          ],
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            },
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            },
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            }
+          ],
+          "title": "Dimensions Mm",
+          "type": "array"
+        },
+        "frame": {
+          "$ref": "#/$defs/Frame"
+        },
+        "height_mm": {
+          "default": 20,
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Height Mm",
+          "type": "number"
+        },
+        "hollow": {
+          "default": false,
+          "title": "Hollow",
+          "type": "boolean"
+        },
+        "minor_radius_mm": {
+          "default": 2,
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Minor Radius Mm",
+          "type": "number"
+        },
+        "open_face": {
+          "default": "none",
+          "enum": [
+            "none",
+            "top",
+            "bottom",
+            "left",
+            "right",
+            "front",
+            "back"
+          ],
+          "title": "Open Face",
+          "type": "string"
+        },
+        "operation": {
+          "default": "union",
+          "enum": [
+            "union",
+            "difference",
+            "intersection",
+            "smooth_union"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "path_mm": {
+          "items": {
+            "maxItems": 3,
+            "minItems": 3,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array"
+          },
+          "maxItems": 128,
+          "title": "Path Mm",
+          "type": "array"
+        },
+        "pitch_mm": {
+          "default": 2,
+          "maximum": 100,
+          "minimum": 0.2,
+          "title": "Pitch Mm",
+          "type": "number"
+        },
+        "profile_mm": {
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array"
+          },
+          "maxItems": 256,
+          "title": "Profile Mm",
+          "type": "array"
+        },
+        "radius_mm": {
+          "default": 5,
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Radius Mm",
+          "type": "number"
+        },
+        "radius_top_mm": {
+          "default": 0,
+          "maximum": 100000,
+          "minimum": 0,
+          "title": "Radius Top Mm",
+          "type": "number"
+        },
+        "ruled": {
+          "default": false,
+          "title": "Ruled",
+          "type": "boolean"
+        },
+        "section_heights_mm": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 32,
+          "title": "Section Heights Mm",
+          "type": "array"
+        },
+        "sections": {
+          "items": {
+            "items": {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "type": "array"
+            },
+            "type": "array"
+          },
+          "maxItems": 32,
+          "title": "Sections",
+          "type": "array"
+        },
+        "smoothing_mm": {
+          "default": 2,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Smoothing Mm",
+          "type": "number"
+        },
+        "spokes": {
+          "default": 0,
+          "maximum": 24,
+          "minimum": 0,
+          "title": "Spokes",
+          "type": "integer"
+        },
+        "type": {
+          "enum": [
+            "box",
+            "rounded_box",
+            "plate",
+            "cylinder",
+            "tube",
+            "sphere",
+            "ellipsoid",
+            "cone",
+            "capsule",
+            "torus",
+            "wheel",
+            "extrude_profile",
+            "revolve_profile",
+            "loft",
+            "sweep",
+            "shell",
+            "boolean",
+            "occupancy",
+            "mesh_reference"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "wall_mm": {
+          "default": 2,
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Wall Mm",
+          "type": "number"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "title": "Shape",
+      "type": "object"
+    },
+    "VisualGoal": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "default": "",
+          "maxLength": 8000,
+          "title": "Description",
+          "type": "string"
+        },
+        "palette": {
+          "items": {
+            "$ref": "#/$defs/PaletteEntry"
+          },
+          "maxItems": 16,
+          "title": "Palette",
+          "type": "array"
+        },
+        "proportion_targets": {
+          "additionalProperties": {
+            "exclusiveMinimum": 0,
+            "maximum": 100,
+            "type": "number"
+          },
+          "maxProperties": 12,
+          "title": "Proportion Targets",
+          "type": "object"
+        },
+        "reference_image_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 24,
+          "title": "Reference Image Ids",
+          "type": "array"
+        },
+        "signature_features": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 12,
+          "title": "Signature Features",
+          "type": "array"
+        },
+        "target_size_mm": {
+          "anyOf": [
+            {
+              "maxItems": 3,
+              "minItems": 3,
+              "prefixItems": [
+                {
+                  "exclusiveMinimum": 0,
+                  "maximum": 100000,
+                  "type": "number"
+                },
+                {
+                  "exclusiveMinimum": 0,
+                  "maximum": 100000,
+                  "type": "number"
+                },
+                {
+                  "exclusiveMinimum": 0,
+                  "maximum": 100000,
+                  "type": "number"
+                }
+              ],
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Size Mm"
+        },
+        "uncertainties": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Uncertainties",
+          "type": "array"
+        }
+      },
+      "title": "VisualGoal",
+      "type": "object"
+    }
+  },
+  "$id": "https://rivet.dev/contracts/design-spec.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "bodies": {
+      "items": {
+        "$ref": "#/$defs/DesignBody"
+      },
+      "maxItems": 128,
+      "minItems": 1,
+      "title": "Bodies",
+      "type": "array"
+    },
+    "constraints": {
+      "$ref": "#/$defs/Constraints"
+    },
+    "mode": {
+      "default": "concept_only",
+      "enum": [
+        "engineered",
+        "concept_only"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "notes": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Notes",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seed": {
+      "default": 0,
+      "maximum": 2147483647,
+      "minimum": 0,
+      "title": "Seed",
+      "type": "integer"
+    },
+    "strategy": {
+      "default": "closest_to_reference",
+      "enum": [
+        "closest_to_reference",
+        "simpler_manufacture",
+        "signature_geometry",
+        "revision",
+        "user"
+      ],
+      "title": "Strategy",
+      "type": "string"
+    },
+    "subject": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Subject",
+      "type": "string"
+    },
+    "visual_goal": {
+      "$ref": "#/$defs/VisualGoal"
+    }
+  },
+  "required": [
+    "subject",
+    "bodies"
+  ],
+  "title": "Rivet DesignSpec v2",
+  "type": "object"
+}

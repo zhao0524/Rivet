@@ -1,0 +1,379 @@
+{
+  "schema_version": "2.0",
+  "mode": "engineered",
+  "subject": "four-wheel skid-steer rover",
+  "seed": 0,
+  "strategy": "closest_to_reference",
+  "visual_goal": {
+    "signature_features": [
+      "four exposed wheels",
+      "long flat deck",
+      "boxy cover",
+      "front sensor pod"
+    ],
+    "description": "Four-wheel rover; the geometry has four anchored wheels, but no tested four-motor wiring profile exists.",
+    "palette": [
+      {
+        "name": "shell",
+        "hex": "#3a7bd5"
+      },
+      {
+        "name": "deck",
+        "hex": "#1f2328"
+      }
+    ],
+    "target_size_mm": [
+      170,
+      80,
+      220
+    ]
+  },
+  "constraints": {
+    "max_bounds_mm": [
+      260,
+      200,
+      300
+    ],
+    "min_wall_mm": 1.6,
+    "min_general_clearance_mm": 1.0,
+    "must_be_stable": true
+  },
+  "bodies": [
+    {
+      "id": "deck",
+      "name": "Long deck",
+      "role": "chassis",
+      "tags": [
+        "chassis"
+      ],
+      "kind": "fabricated",
+      "manufacturing": "3d_print",
+      "material": {
+        "name": "PETG",
+        "color": "#1f2328"
+      },
+      "shape": {
+        "type": "box",
+        "dimensions_mm": [
+          100,
+          6,
+          200
+        ]
+      },
+      "features": [
+        {
+          "id": "deck_round",
+          "type": "fillet",
+          "radius_mm": 4,
+          "edges": "vertical"
+        }
+      ]
+    },
+    {
+      "id": "motor_front_right",
+      "name": "Front-right motor",
+      "role": "motor",
+      "kind": "purchased",
+      "catalog_id": "motor.adafruit_tt_bimetal_1to90_3801",
+      "parent_id": "deck",
+      "attachment": {
+        "parent_anchor": "bottom_right",
+        "child_anchor": "top_right",
+        "joint": "bolt",
+        "offset_mm": [
+          4,
+          0,
+          55
+        ],
+        "contact": "fastened",
+        "fasteners": {
+          "spec": "M3",
+          "count": 2
+        }
+      }
+    },
+    {
+      "id": "motor_rear_right",
+      "name": "Rear-right motor",
+      "role": "motor",
+      "kind": "purchased",
+      "catalog_id": "motor.adafruit_tt_bimetal_1to90_3801",
+      "parent_id": "deck",
+      "attachment": {
+        "parent_anchor": "bottom_right",
+        "child_anchor": "top_right",
+        "joint": "bolt",
+        "offset_mm": [
+          4,
+          0,
+          -55
+        ],
+        "contact": "fastened",
+        "fasteners": {
+          "spec": "M3",
+          "count": 2
+        }
+      }
+    },
+    {
+      "id": "motor_front_left",
+      "name": "Front-left motor",
+      "role": "motor",
+      "kind": "purchased",
+      "catalog_id": "motor.adafruit_tt_bimetal_1to90_3801",
+      "parent_id": "deck",
+      "attachment": {
+        "parent_anchor": "bottom_left",
+        "child_anchor": "bottom_right",
+        "joint": "bolt",
+        "offset_mm": [
+          -4,
+          0,
+          55
+        ],
+        "contact": "fastened",
+        "fasteners": {
+          "spec": "M3",
+          "count": 2
+        }
+      }
+    },
+    {
+      "id": "motor_rear_left",
+      "name": "Rear-left motor",
+      "role": "motor",
+      "kind": "purchased",
+      "catalog_id": "motor.adafruit_tt_bimetal_1to90_3801",
+      "parent_id": "deck",
+      "attachment": {
+        "parent_anchor": "bottom_left",
+        "child_anchor": "bottom_right",
+        "joint": "bolt",
+        "offset_mm": [
+          -4,
+          0,
+          -55
+        ],
+        "contact": "fastened",
+        "fasteners": {
+          "spec": "M3",
+          "count": 2
+        }
+      }
+    },
+    {
+      "id": "wheel_front_right",
+      "name": "Front-right wheel",
+      "role": "wheel",
+      "kind": "purchased",
+      "catalog_id": "wheel.adafruit_tt_wheel_3766",
+      "parent_id": "motor_front_right",
+      "attachment": {
+        "parent_anchor": "right",
+        "child_anchor": "left",
+        "joint": "shaft",
+        "contact": "fastened"
+      }
+    },
+    {
+      "id": "wheel_rear_right",
+      "name": "Rear-right wheel",
+      "role": "wheel",
+      "kind": "purchased",
+      "catalog_id": "wheel.adafruit_tt_wheel_3766",
+      "parent_id": "motor_rear_right",
+      "attachment": {
+        "parent_anchor": "right",
+        "child_anchor": "left",
+        "joint": "shaft",
+        "contact": "fastened"
+      }
+    },
+    {
+      "id": "wheel_front_left",
+      "name": "Front-left wheel",
+      "role": "wheel",
+      "kind": "purchased",
+      "catalog_id": "wheel.adafruit_tt_wheel_3766",
+      "parent_id": "motor_front_left",
+      "attachment": {
+        "parent_anchor": "right",
+        "child_anchor": "left",
+        "joint": "shaft",
+        "contact": "fastened"
+      }
+    },
+    {
+      "id": "wheel_rear_left",
+      "name": "Rear-left wheel",
+      "role": "wheel",
+      "kind": "purchased",
+      "catalog_id": "wheel.adafruit_tt_wheel_3766",
+      "parent_id": "motor_rear_left",
+      "attachment": {
+        "parent_anchor": "right",
+        "child_anchor": "left",
+        "joint": "shaft",
+        "contact": "fastened"
+      }
+    },
+    {
+      "id": "controller",
+      "name": "ESP32 controller",
+      "role": "controller",
+      "kind": "purchased",
+      "catalog_id": "board.esp32_devkitc_v4_wroom32e",
+      "parent_id": "deck",
+      "internal": true,
+      "attachment": {
+        "parent_anchor": "top",
+        "child_anchor": "bottom",
+        "offset_mm": [
+          -22,
+          0,
+          20
+        ],
+        "contact": "fastened"
+      }
+    },
+    {
+      "id": "motor_driver",
+      "name": "TB6612 motor driver",
+      "role": "motor_driver",
+      "kind": "purchased",
+      "catalog_id": "driver.adafruit_tb6612_2448",
+      "parent_id": "deck",
+      "internal": true,
+      "attachment": {
+        "parent_anchor": "top",
+        "child_anchor": "bottom",
+        "offset_mm": [
+          22,
+          0,
+          30
+        ],
+        "contact": "fastened"
+      }
+    },
+    {
+      "id": "battery",
+      "name": "3xAA battery holder",
+      "role": "motor_power",
+      "kind": "purchased",
+      "catalog_id": "power.adafruit_3xaa_holder_2p1mm_3842",
+      "parent_id": "deck",
+      "internal": true,
+      "attachment": {
+        "parent_anchor": "top",
+        "child_anchor": "bottom",
+        "offset_mm": [
+          18,
+          0,
+          -45
+        ],
+        "contact": "fastened"
+      }
+    },
+    {
+      "id": "cover",
+      "name": "Boxy cover",
+      "role": "shell",
+      "tags": [
+        "shell",
+        "signature"
+      ],
+      "kind": "fabricated",
+      "manufacturing": "3d_print",
+      "parent_id": "deck",
+      "material": {
+        "name": "PETG",
+        "color": "#3a7bd5"
+      },
+      "shape": {
+        "type": "box",
+        "dimensions_mm": [
+          94,
+          30,
+          170
+        ]
+      },
+      "attachment": {
+        "parent_anchor": "top",
+        "child_anchor": "bottom",
+        "contact": "fastened"
+      },
+      "features": [
+        {
+          "id": "cover_corners",
+          "type": "fillet",
+          "radius_mm": 5,
+          "edges": "vertical"
+        },
+        {
+          "id": "cover_hollow",
+          "type": "shell",
+          "wall_mm": 2,
+          "open_face": "bottom",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "power_bank",
+      "name": "USB power bank",
+      "role": "controller_power",
+      "kind": "purchased",
+      "catalog_id": "power.adafruit_usb_power_bank_5000_4288",
+      "parent_id": "cover",
+      "attachment": {
+        "parent_anchor": "top",
+        "child_anchor": "bottom",
+        "contact": "fastened"
+      }
+    },
+    {
+      "id": "sensor_pod",
+      "name": "Front sensor pod",
+      "role": "sensor_housing",
+      "kind": "fabricated",
+      "manufacturing": "3d_print",
+      "parent_id": "deck",
+      "material": {
+        "name": "PETG",
+        "color": "#3a7bd5"
+      },
+      "shape": {
+        "type": "rounded_box",
+        "dimensions_mm": [
+          44,
+          26,
+          16
+        ],
+        "radius_mm": 4
+      },
+      "attachment": {
+        "parent_anchor": "front",
+        "child_anchor": "back",
+        "offset_mm": [
+          0,
+          10,
+          0
+        ],
+        "contact": "fastened"
+      }
+    },
+    {
+      "id": "range_sensor",
+      "name": "VL53L0X time-of-flight sensor",
+      "role": "distance_sensor",
+      "kind": "purchased",
+      "catalog_id": "sensor.adafruit_vl53l0x_3317",
+      "parent_id": "sensor_pod",
+      "attachment": {
+        "parent_anchor": "front",
+        "child_anchor": "bottom",
+        "contact": "fastened"
+      }
+    }
+  ]
+}

@@ -8,7 +8,11 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "jsonschema>=4.18,<5"]
+# Geometry kernel for the v2 design compiler (rivet_engine.design_compiler):
+# OpenCascade B-rep solids (STEP) through the OCP bindings, manifold3d for robust mesh
+# booleans, level-set (occupancy) meshing and narrowphase collision. Pinned and tested.
+geometry = ["numpy>=1.26,<3", "manifold3d==3.5.4", "cadquery-ocp-novtk==7.9.3.1.1"]
+dev = ["pytest>=8", "jsonschema>=4.18,<5", "numpy>=1.26,<3", "manifold3d==3.5.4", "cadquery-ocp-novtk==7.9.3.1.1"]
 
 [dependency-groups]
 dev = ["pytest>=8", "jsonschema>=4.18,<5"]
