@@ -158,6 +158,7 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
   // Epoch counters & AbortController to discard stale in-flight build/generation responses
   const sourceEpochRef = useRef(0);
   const buildRequestEpochRef = useRef(0);
+  const editEpochRef = useRef(0);
   const activeLoadAbortRef = useRef<AbortController | null>(null);
   const activeGenAbortRef = useRef<AbortController | null>(null);
 
@@ -172,12 +173,14 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
 
   const cancelInFlightRequests = useCallback(() => {
     buildRequestEpochRef.current += 1;
+    editEpochRef.current += 1;
     activeLoadAbortRef.current?.abort();
     activeLoadAbortRef.current = null;
     activeGenAbortRef.current?.abort();
     activeGenAbortRef.current = null;
     subscriptionRef.current?.close();
     subscriptionRef.current = null;
+    setEditPending(false);
   }, []);
 
   useEffect(() => {
@@ -615,7 +618,7 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
   const submitEdit = useCallback(
     async (instruction: string, operation?: EditOperation): Promise<EditResponse | null> => {
       const mySourceEpoch = sourceEpochRef.current;
-      const myBuildEpoch = buildRequestEpochRef.current;
+      const myEditEpoch = ++editEpochRef.current;
       const activeSource = dataSource;
 
       setEditPending(true);
@@ -629,19 +632,20 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
         });
         if (
           mySourceEpoch !== sourceEpochRef.current ||
-          myBuildEpoch !== buildRequestEpochRef.current
+          myEditEpoch !== editEpochRef.current
         ) {
           return null;
         }
         setLastEditResponse(res);
         if (res.accepted && typeof res.revision === 'number') {
+          // loadBuildFromSource increments buildRequestEpochRef, so only source/edit epochs are compared here
           await loadBuildFromSource(activeSource, res.build_id, res.revision);
         }
         return res;
       } catch (err) {
         if (
           mySourceEpoch !== sourceEpochRef.current ||
-          myBuildEpoch !== buildRequestEpochRef.current
+          myEditEpoch !== editEpochRef.current
         ) {
           return null;
         }
@@ -650,7 +654,7 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
       } finally {
         if (
           mySourceEpoch === sourceEpochRef.current &&
-          myBuildEpoch === buildRequestEpochRef.current
+          myEditEpoch === editEpochRef.current
         ) {
           setEditPending(false);
         }

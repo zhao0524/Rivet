@@ -291,4 +291,149 @@ describe('Canonical contract & cross-module integration checks (C7)', () => {
     expect(result.current.trust.label).toBe(SAVED_BUILD_LABEL);
     expect(result.current.dataSource.getExportUrl?.(SOURCED_ROVER_BUILD_ID, 'bom.csv', 1)).toBeNull();
   });
+
+  it("clears editPending after an accepted edit's revision reload and supports consecutive edits", async () => {
+    const rev1 = getSyntheticRoverPlan();
+    const rev2: BuildPlan = structuredClone(rev1);
+    rev2.revision = 2;
+    const rev3: BuildPlan = structuredClone(rev1);
+    rev3.revision = 3;
+
+    let currentRevision = 1;
+    const plansByRevision: Record<number, BuildPlan> = { 1: rev1, 2: rev2, 3: rev3 };
+
+    const fakeHttpSource: RivetDataSource = {
+      mode: 'http',
+      getCatalog: async () => getSyntheticCatalog(),
+      getBuild: async (_buildId: string, revision?: number) =>
+        revision !== undefined ? plansByRevision[revision] : plansByRevision[currentRevision],
+      generate: async () => ({ job_id: 'job-1', status: 'complete', build_id: rev1.build_id }),
+      edit: async (buildId: string, request: { base_revision: number }) => {
+        currentRevision = request.base_revision + 1;
+        return {
+          accepted: true,
+          build_id: buildId,
+          revision: currentRevision,
+        };
+      },
+      getJob: async () => ({
+        job_id: 'job-1',
+        status: 'complete',
+        stage: 'complete',
+        progress: null,
+        build_id: rev1.build_id,
+        revision: currentRevision,
+      }),
+      listRevisions: async () =>
+        Array.from({ length: currentRevision }, (_, i) => {
+          const rev = plansByRevision[i + 1];
+          return {
+            revision: rev.revision,
+            created_at: rev.created_at,
+            status: rev.status,
+            title: rev.title,
+          };
+        }),
+      subscribeToJob: () => ({ transport: 'sse', close: () => {} }),
+    };
+
+    const { result } = renderHook(() =>
+      useStudioPlanStore({ initialDataSource: fakeHttpSource }),
+    );
+
+    await act(async () => {
+      await result.current.loadBuild(rev1.build_id, 1);
+    });
+    expect(result.current.plan.revision).toBe(1);
+
+    // First accepted edit: editPending must be cleared after revision reload completes
+    await act(async () => {
+      await result.current.submitEdit('Change chassis color to blue', {
+        op: 'change_appearance_color',
+        instance_id: 'chassis-1',
+        color: '#2563EB',
+      });
+    });
+    expect(result.current.editPending).toBe(false);
+    expect(result.current.editError).toBeNull();
+    expect(result.current.lastEditResponse?.accepted).toBe(true);
+    expect(result.current.plan.revision).toBe(2);
+
+    // A second consecutive accepted edit must also complete and clear editPending
+    await act(async () => {
+      await result.current.submitEdit('Increase obstacle stop distance to 0.40 m', {
+        op: 'set_behavior_parameter',
+        name: 'obstacle_stop_distance_m',
+        value: 0.4,
+      });
+    });
+    expect(result.current.editPending).toBe(false);
+    expect(result.current.editError).toBeNull();
+    expect(result.current.lastEditResponse?.accepted).toBe(true);
+    expect(result.current.plan.revision).toBe(3);
+  });
+
+  it('clears editPending when setSourceMode cancels an in-flight edit', async () => {
+    let resolveDeferredEdit!: (value: { accepted: boolean; build_id: string; revision: number }) => void;
+    const deferredEditPromise = new Promise<{ accepted: boolean; build_id: string; revision: number }>(
+      (resolve) => {
+        resolveDeferredEdit = resolve;
+      },
+    );
+
+    const rev1 = getSyntheticRoverPlan();
+    const rev2: BuildPlan = structuredClone(rev1);
+    rev2.revision = 2;
+
+    const fakeHttpSource: RivetDataSource = {
+      mode: 'http',
+      getCatalog: async () => getSyntheticCatalog(),
+      getBuild: async (buildId: string, revision?: number) => (revision === 2 ? rev2 : rev1),
+      generate: async () => ({ job_id: 'job-1', status: 'complete', build_id: rev1.build_id }),
+      edit: () => deferredEditPromise,
+      getJob: async () => ({
+        job_id: 'job-1',
+        status: 'complete',
+        stage: 'complete',
+        progress: null,
+        build_id: rev1.build_id,
+        revision: 1,
+      }),
+      subscribeToJob: () => ({ transport: 'sse', close: () => {} }),
+    };
+
+    const { result } = renderHook(() =>
+      useStudioPlanStore({ initialDataSource: fakeHttpSource }),
+    );
+
+    await act(async () => {
+      await result.current.loadBuild(rev1.build_id, 1);
+    });
+
+    // Start an edit, but never resolve it immediately
+    let pendingEdit!: ReturnType<typeof result.current.submitEdit>;
+    act(() => {
+      pendingEdit = result.current.submitEdit('Change chassis color', {
+        op: 'change_appearance_color',
+        instance_id: 'chassis-1',
+        color: '#DC2626',
+      });
+    });
+    expect(result.current.editPending).toBe(true);
+
+    // Switching source mode cancels the in-flight edit and clears editPending
+    await act(async () => {
+      await result.current.setSourceMode('fixture');
+    });
+    expect(result.current.editPending).toBe(false);
+
+    // Resolve the abandoned HTTP edit promise; it must be silently discarded
+    await act(async () => {
+      resolveDeferredEdit({ accepted: true, build_id: rev1.build_id, revision: 2 });
+      await pendingEdit;
+    });
+    expect(result.current.editPending).toBe(false);
+    expect(result.current.plan.revision).toBe(1);
+    expect(result.current.sourceMode).toBe('fixture');
+  });
 });
