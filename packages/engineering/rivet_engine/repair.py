@@ -118,7 +118,7 @@ def repair_candidate(
     start_fails = len(_blocking_fails(best_report))
     seen = {_fingerprint(best)}
     attempts: list[RepairAttempt] = []
-    for round_no in range(1, max_rounds + 1):
+    for round_no in range(1, min(max_rounds, 3) + 1):
         improved = False
         for action in candidate_actions(best, catalog, best_report, layout_options):
             try:
