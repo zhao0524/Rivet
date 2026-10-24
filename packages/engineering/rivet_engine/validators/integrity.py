@@ -53,6 +53,8 @@ def check(view: PlanView) -> list[Finding]:
                 mounts.fail(f"{c.instance_id}: attached_to_mount_id without a resolvable parent", [c.instance_id])
             elif parent.mount(c.attached_to_mount_id) is None:
                 mounts.fail(f"{c.instance_id}: mount {c.attached_to_mount_id!r} not on parent {parent.catalog_id}", [c.instance_id])
+        if c.parent_instance_id is not None and c.role != "accessory" and not c.attached_to_mount_id:
+            mounts.fail(f"{c.instance_id} has a parent but no mount reference; only loose kit items may be unmounted", [c.instance_id])
         if bool(c.own_mount_id) != bool(c.attached_to_mount_id):
             mounts.fail(f"{c.instance_id}: own_mount_id and attached_to_mount_id must both be set or both null", [c.instance_id])
     occupied = Counter((c.parent_instance_id, c.attached_to_mount_id) for c in plan.components if c.attached_to_mount_id)
@@ -88,6 +90,22 @@ def check(view: PlanView) -> list[Finding]:
     for c in plan.components:
         if counted[c.instance_id] != 1:
             bom.fail(f"{c.instance_id} is counted {counted[c.instance_id]} times in the BOM", [c.instance_id])
+    for item in plan.bom.items:
+        comp = catalog.get(item.catalog_id)
+        if comp is None:
+            bom.fail(f"BOM row {item.catalog_id} is not in the catalog")
+            continue
+        s = comp.sourcing
+        expected_price = s.price_amount if s.price_amount is not None and s.price_currency == plan.bom.currency else None
+        if (item.unit_price_amount is None) != (expected_price is None) or (
+            expected_price is not None and Decimal(item.unit_price_amount) != Decimal(expected_price)
+        ):
+            bom.fail(f"BOM {item.catalog_id}: unit price {item.unit_price_amount} does not match the catalog ({expected_price} {plan.bom.currency})", item.instance_ids)
+        verified_link = s.purchase_url if s.purchase_url and s.purchase_url_verified_at else None
+        if item.purchase_url is not None and item.purchase_url != verified_link:
+            bom.fail(f"BOM {item.catalog_id}: purchase_url is not the catalog's verified link", item.instance_ids)
+        if item.link_status == "verified_product" and verified_link is None:
+            bom.fail(f"BOM {item.catalog_id}: claims a verified product link the catalog does not have", item.instance_ids)
     priced = [Decimal(i.unit_price_amount) * i.quantity for i in plan.bom.items if i.unit_price_amount is not None]
     expected = str(sum(priced, Decimal("0")).quantize(Decimal("0.01"))) if priced else None
     if plan.bom.known_subtotal_amount is not None and (
@@ -98,6 +116,15 @@ def check(view: PlanView) -> list[Finding]:
 
     steps = Rule("integrity.assembly_steps", pass_message="Assembly steps are numbered 1..n and reference placed components")
     numbers = [s.step for s in plan.assembly_steps]
+    if not plan.assembly_steps:
+        steps.fail("Plan has no assembly steps")
+    covered = {i for s in plan.assembly_steps for i in s.instance_ids}
+    missing = sorted(c.instance_id for c in plan.components if c.instance_id not in covered)
+    if plan.assembly_steps and missing:
+        steps.fail("Components never appear in an assembly step: " + ", ".join(missing), missing)
+    for s in plan.assembly_steps:
+        if not s.instance_ids:
+            steps.fail(f"Step {s.step} references no components")
     if numbers != list(range(1, len(numbers) + 1)):
         steps.fail(f"Assembly steps must be numbered 1..{len(numbers)} in order, got {numbers}")
     for s in plan.assembly_steps:

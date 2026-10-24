@@ -138,11 +138,45 @@ def repair_candidate(plan: BuildPlan, catalog: Catalog, *, rebuild: RebuildFn, v
 - Never edits catalog records, never promotes an unverified substitute, never drops
   findings. Returns the best truthful plan with its report and the attempt log.
 
+### Verification context additions
+
+`VerificationContext.fit_evidence` enables the `mechanical.fit_evidence` rule: documented pairs
+PASS with their source, assumed pairs are UNKNOWN at the recorded severity, unlisted pairs are
+advisory UNKNOWN. Public `verify()` always supplies it via `catalog.fit_evidence_for(catalog)`:
+evidence transfers only to records identical to the packaged ones; a differing record makes
+that pair a blocking UNKNOWN. `None` (internal builders on synthetic data) skips the rule.
+`load_fit_evidence()` validates every field the rule reads (`status`, `note`, `source`, `severity`).
+
+`VerificationContext.expected_position` (`mounts.expected_position`) enables
+`mechanical.pose_consistency`: a mounted part more than 30 mm from where its parent mount puts it
+FAILs. Without it the rule reports advisory UNKNOWN (not checked).
+
+Other rules added in the defect fixes: BOM prices and purchase links must match the catalog
+(`integrity.bom`), and budgets are computed from catalog prices only; supply over the rated
+maximum is a blocking FAIL, under the minimum an advisory brown-out WARN; supply capacity must
+cover documented loads (motor stall currents, documented input draws); each motor needs its own
+pair of driver outputs (`electrical.motor_channels`); driver direction/standby inputs are required;
+controller I2C pins get logic checks; mounted parts need mount references; size limits are
+UNKNOWN when any part lacks bounds; behavior parameters are checked against
+`validators.firmware.BEHAVIOR_BOUNDS` and the sensor range (`firmware.behavior_parameters`);
+assembly steps must exist and cover every part.
+
+Models reject NaN/inf numbers, non-positive dimensions, negative ratings and `created_at` values
+that are not real ISO-8601 UTC timestamps. `load_catalog()` returns new objects on every call.
+
+`budget.price_currency` reports every BOM row whose catalog price is in another currency
+(excluded from the subtotal, never converted).
+
+Placement marks loose kit items (`role == "accessory"`) with `render_overrides["visible"] = False`.
+
 ### P7 — `rivet_engine/__init__.py` (public)
 
 ```python
 def solve(intent: dict) -> dict                                 # BuildPlan wire dict
 def apply_edit(plan: dict, operation: dict) -> dict             # {"accepted", "plan"} | {"accepted": False, "finding"}
+# apply_edit accepts only if the rebuilt, repaired plan adds no blocking FAIL (keyed by rule_id and
+# affected instances) and still contains the part the edit asked for. A malformed engine_state note
+# raises InvalidInputError. Budgets must be in the catalog price currency (USD).
 def verify(plan: dict, catalog: dict | list | None = None) -> dict   # {"overall", "findings"}
 def get_catalog() -> list[dict]
 ```
@@ -150,6 +184,11 @@ def get_catalog() -> list[dict]
 `verify`'s `catalog` is optional because `services/api` calls `verify(plan)`; `None`
 uses the packaged catalog. `apply_edit` accepts the operations in
 `services/api/rivet_api/agents/editor.py`.
+
+Implemented in `configurator.py` (P7). `verify` also accepts a list of catalog dicts
+or `{"catalog_version", "components"}`, and adds the wiring stage's findings. Edit state
+that the BuildPlan contract has no field for (requested budget, template offsets) is
+carried in a single `provenance.notes` entry starting `engine_state: ` followed by JSON.
 
 ## Test inputs (`tests/support`)
 

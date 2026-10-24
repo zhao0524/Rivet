@@ -9,6 +9,31 @@ from rivet_engine.validators.common import PlanView, Rule
 
 
 def check(view: PlanView) -> list[Finding]:
+    return _price_currency(view) + _budget(view)
+
+
+def _price_currency(view: PlanView) -> list[Finding]:
+    """Prices in another currency are left out of the subtotal; say so explicitly."""
+    rule = Rule("budget.price_currency", "advisory", "Every catalog price is in the BOM currency")
+    bom = view.plan.bom
+    for item in bom.items:
+        comp = view.catalog.get(item.catalog_id)
+        if comp is None or comp.sourcing.price_amount is None:
+            continue
+        if comp.sourcing.price_currency != bom.currency:
+            rule.unknown(
+                f"{item.catalog_id} is priced in {comp.sourcing.price_currency}, not {bom.currency}; "
+                "it is excluded from the subtotal (no conversion)",
+                item.instance_ids,
+                severity="advisory",
+            )
+        else:
+            rule.ok(item.instance_ids)
+    rule.applicable = bool(bom.items)
+    return rule.result()
+
+
+def _budget(view: PlanView) -> list[Finding]:
     req = view.context.requirements
     if req is None or req.max_budget is None:
         return []
@@ -19,15 +44,17 @@ def check(view: PlanView) -> list[Finding]:
         rule.unknown(f"Budget is in {req.currency} but the BOM is in {bom.currency}; no conversion is done")
         return rule.result()
 
+    # Prices come from the catalog, never from the plan: a plan's own BOM prices may be stale
+    # or forged (integrity.bom reports any mismatch). Quantities are the placed instances.
     known = Decimal("0")
     unpriced = []
     for item in bom.items:
         comp = view.catalog.get(item.catalog_id)
-        currency = comp.sourcing.price_currency if comp else None
-        if item.unit_price_amount is None or (currency is not None and currency != bom.currency):
+        price = comp.sourcing.price_amount if comp else None
+        if price is None or comp.sourcing.price_currency != bom.currency:
             unpriced.append(item)
         else:
-            known += Decimal(item.unit_price_amount) * item.quantity
+            known += Decimal(price) * len([i for i in item.instance_ids if i in view.by_id])
     ids = [i for item in unpriced for i in item.instance_ids]
     if known > budget:
         rule.fail(f"Known subtotal {known:.2f} {bom.currency} already exceeds the {budget:.2f} budget", ids)

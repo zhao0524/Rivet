@@ -3,6 +3,9 @@
 Ratings come only from catalog ports. A missing rating gives UNKNOWN; a PASS that relies
 on approximated catalog evidence is downgraded to an advisory WARN.
 
+Supply voltage rule: a supply whose maximum exceeds the input's rated maximum is a blocking
+FAIL (over-voltage); one that only dips below the rated minimum is an advisory WARN (brown-out).
+
 Motor current rule: motor stall current (motor port current_limit_a) against the driver
 output's continuous rating (driver port current_limit_a):
   stall <= continuous                -> PASS
@@ -46,6 +49,7 @@ def check(view: PlanView) -> list[Finding]:
     out += _logic_levels(view, conns)
     out += _motor_voltage(view, conns)
     out += _motor_current(view, conns)
+    out += _motor_channels(view, conns)
     out += _ground(view, conns)
     out += _required_ports(view, conns)
     out += _i2c(view, conns)
@@ -96,6 +100,23 @@ def _gpio(view, conns):
     return rule.result()
 
 
+def _judge_range(rule, label, src_range, dst_range, ids, urls, verified: bool) -> None:
+    (smin, smax), (amin, amax) = src_range, dst_range
+    verdict = compare_range(src_range, dst_range)
+    if verdict == "unknown":
+        rule.unknown(f"{label}: voltage rating not documented on one side", ids, urls)
+    elif verdict == "outside":
+        rule.fail(f"{label}: {smin}-{smax} V is outside the accepted {amin}-{amax} V", ids, urls)
+    elif smax > amax:
+        rule.fail(f"{label}: up to {smax} V exceeds the rated maximum {amax} V", ids, urls)
+    elif smin < amin:
+        rule.warn(f"{label}: may drop to {smin} V, below the rated minimum {amin} V (brown-out)", ids, urls)
+    elif not verified:
+        rule.warn(f"{label}: within range, but based on approximated ratings", ids, urls)
+    else:
+        rule.ok(ids, urls)
+
+
 def _supply_ranges(view, conns):
     rule = Rule("electrical.supply_voltage", pass_message="Every supply output is within the input's accepted range")
     for conn in conns:
@@ -106,18 +127,8 @@ def _supply_ranges(view, conns):
         src, src_end, dst, dst_end = (a, conn.from_, b, conn.to) if a.signal == "power_output" else (b, conn.to, a, conn.from_)
         ids = [src_end.instance_id, dst_end.instance_id]
         label = f"{src_end.instance_id}.{src.port_id} -> {dst_end.instance_id}.{dst.port_id}"
-        verdict = compare_range((src.voltage_min_v, src.voltage_max_v), (dst.voltage_min_v, dst.voltage_max_v))
-        urls = view.urls(ids)
-        if verdict == "unknown":
-            rule.unknown(f"{label}: voltage rating not documented on one side", ids, urls)
-        elif verdict == "outside":
-            rule.fail(f"{label}: {src.voltage_min_v}-{src.voltage_max_v} V is outside the accepted {dst.voltage_min_v}-{dst.voltage_max_v} V", ids, urls)
-        elif verdict == "partial":
-            rule.warn(f"{label}: {src.voltage_min_v}-{src.voltage_max_v} V only partly within {dst.voltage_min_v}-{dst.voltage_max_v} V", ids, urls)
-        elif not view.ratings_verified(ids):
-            rule.warn(f"{label}: within range, but based on approximated ratings", ids, urls)
-        else:
-            rule.ok(ids, urls)
+        _judge_range(rule, label, (src.voltage_min_v, src.voltage_max_v), (dst.voltage_min_v, dst.voltage_max_v),
+                     ids, view.urls(ids), view.ratings_verified(ids))
     return rule.result()
 
 
@@ -142,7 +153,7 @@ def _logic_levels(view, conns):
         a, b = _ports(view, conn)
         ends = [(conn.from_, a, conn.to, b), (conn.to, b, conn.from_, a)]
         for src_end, src, dst_end, dst in ends:
-            if src_end.instance_id not in controllers or src.signal not in DRIVING or dst.signal not in RECEIVING:
+            if src_end.instance_id not in controllers or src.signal not in DRIVING | I2C or dst.signal not in RECEIVING:
                 continue
             ids = [src_end.instance_id, dst_end.instance_id]
             level = src.logic_level_v
@@ -205,18 +216,31 @@ def _motor_voltage(view, conns):
             continue
         supply_id, src = supply
         ids.append(supply_id)
-        verdict = compare_range((src.voltage_min_v, src.voltage_max_v), (motor_port.voltage_min_v, motor_port.voltage_max_v))
-        label = f"{supply_id} {src.voltage_min_v}-{src.voltage_max_v} V on {motor_id} rated {motor_port.voltage_min_v}-{motor_port.voltage_max_v} V"
-        if verdict == "unknown":
-            rule.unknown(f"Cannot compare motor voltage: {label}", ids, view.urls(ids))
-        elif verdict == "outside":
-            rule.fail(f"Motor supply outside rating: {label}", ids, view.urls(ids))
-        elif verdict == "partial":
-            rule.warn(f"Motor supply only partly within rating: {label}", ids, view.urls(ids))
-        elif not view.ratings_verified(ids):
-            rule.warn(f"Within rating but based on approximated ratings: {label}", ids, view.urls(ids))
+        _judge_range(rule, f"{supply_id} supply on {motor_id}", (src.voltage_min_v, src.voltage_max_v),
+                     (motor_port.voltage_min_v, motor_port.voltage_max_v), ids, view.urls(ids), view.ratings_verified(ids))
+    return rule.result()
+
+
+def _motor_channels(view, conns):
+    """Each motor needs two distinct driver outputs, and no output may feed two motors."""
+    rule = Rule("electrical.motor_channels", pass_message="Each motor has its own pair of driver outputs")
+    links = _motor_links(view, conns)
+    feeds: dict[tuple[str, str], set[str]] = defaultdict(set)
+    for motor_id, motor_links in sorted(links.items()):
+        outputs = {(d, port.port_id) for d, port, _ in motor_links}
+        terminals = {m.port_id for _, _, m in motor_links}
+        for out in outputs:
+            feeds[out].add(motor_id)
+        if len(outputs) < 2 or len(terminals) < 2:
+            rule.fail(f"{motor_id} is not driven by two distinct driver outputs on two terminals", [motor_id])
         else:
-            rule.ok(ids, view.urls(ids))
+            rule.ok([motor_id])
+    for (driver_id, port_id), motors in sorted(feeds.items()):
+        if len(motors) > 1:
+            rule.fail(f"{driver_id}.{port_id} drives more than one motor: {', '.join(sorted(motors))}", sorted(motors) + [driver_id])
+    for m in view.role("motor"):
+        if m.instance_id not in links:
+            rule.fail(f"{m.instance_id} is not connected to any driver output", [m.instance_id])
     return rule.result()
 
 
@@ -286,7 +310,7 @@ def _required_ports(view, conns):
             continue
         required = [p for p in comp.ports if p.signal in ("power_in", "motor_power")]
         if c.role == "motor_driver":
-            required += [p for p in comp.ports if p.signal == "pwm_input"]
+            required += [p for p in comp.ports if p.signal in ("pwm_input", "digital_input")]
         if c.role == "distance_sensor":
             required += [p for p in comp.ports if p.signal in ("i2c_sda", "i2c_scl")]
         if c.role == "controller":
@@ -325,14 +349,50 @@ def _i2c(view, conns):
 
 
 def _capacity(view, conns):
-    rule = Rule("electrical.supply_capacity", "advisory", "Supplies have documented current capacity")
+    """A supply passes only if its rating covers a documented load: for each part it powers,
+    a driver counts as the summed stall current of its motors, any other part as the
+    documented maximum draw (current_limit_a) of its power input."""
+    rule = Rule("electrical.supply_capacity", pass_message="Supplies cover their documented load")
+    links = _motor_links(view, conns)
     for c in view.plan.components:
         comp = view.component(c.instance_id)
         if comp is None or comp.identity.category != "power_supply":
             continue
         outs = [p for p in comp.ports if p.signal == "power_output"]
-        if any(p.current_limit_a is None for p in outs):
-            rule.unknown(f"{c.instance_id} ({comp.identity.model}) has no documented current capacity", [c.instance_id], severity="advisory")
+        loads: dict[str, float | None] = {}
+        for load_id, load_port in _powered_by(view, conns, c.instance_id):
+            load_comp = view.component(load_id)
+            if load_comp.identity.category == "motor_driver":
+                for m, ls in links.items():
+                    if any(d == load_id for d, _, _ in ls):
+                        stall = [p.current_limit_a for _, _, p in ls]
+                        loads[m] = None if None in stall else max(stall)
+            else:
+                loads[load_id] = load_port.current_limit_a
+        ids = [c.instance_id] + sorted(loads)
+        if not outs or any(p.current_limit_a is None for p in outs):
+            rule.unknown(f"{c.instance_id} ({comp.identity.model}) has no documented current capacity", ids, severity="advisory")
+        elif not loads:
+            rule.unknown(f"{c.instance_id} powers nothing that is wired", ids, severity="advisory")
+        elif None in loads.values():
+            missing = sorted(k for k, v in loads.items() if v is None)
+            rule.unknown(f"{c.instance_id}: current draw of {', '.join(missing)} is not documented", ids, severity="advisory")
         else:
-            rule.ok([c.instance_id], view.urls([c.instance_id]))
+            capacity, load = min(p.current_limit_a for p in outs), sum(loads.values())
+            if capacity < load:
+                rule.fail(f"{c.instance_id} supplies {capacity} A but its loads can draw {round(load, 3)} A combined", ids, view.urls([c.instance_id]))
+            else:
+                rule.ok(ids, view.urls([c.instance_id]))
     return rule.result()
+
+
+def _powered_by(view, conns, supply_id: str):
+    """(instance_id, power_in port) pairs wired to this supply's output."""
+    out = []
+    for conn in conns:
+        for end, other in ((conn.from_, conn.to), (conn.to, conn.from_)):
+            if end.instance_id == supply_id and view.port(end.instance_id, end.port_id).signal == "power_output":
+                port = view.port(other.instance_id, other.port_id)
+                if port.signal == "power_in":
+                    out.append((other.instance_id, port))
+    return sorted(out, key=lambda x: (x[0], x[1].port_id))

@@ -8,6 +8,8 @@ data is represented as None, never as a guessed value.
 
 from __future__ import annotations
 
+import re
+from datetime import datetime
 from decimal import Decimal, InvalidOperation
 from typing import Annotated, Any, Literal
 
@@ -97,7 +99,20 @@ def _number_to_decimal_string(value: Any) -> Any:
 
 DecimalString = Annotated[str, AfterValidator(_decimal_string)]
 BudgetAmount = Annotated[str, BeforeValidator(_number_to_decimal_string), AfterValidator(_decimal_string)]
-Number = StrictInt | StrictFloat
+# Finite numbers only: NaN/inf would poison geometry and ratings silently.
+Number = StrictInt | Annotated[StrictFloat, Field(allow_inf_nan=False)]
+Positive = Annotated[Number, Field(gt=0)]
+NonNegative = Annotated[Number, Field(ge=0)]
+
+
+def _utc_timestamp(value: str) -> str:
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,6})?Z", value):
+        raise ValueError(f"not an ISO-8601 UTC timestamp ending in Z: {value!r}")
+    datetime.fromisoformat(value[:-1])  # rejects impossible dates such as 2026-13-45
+    return value
+
+
+UtcTimestamp = Annotated[str, AfterValidator(_utc_timestamp)]
 Vec3 = Annotated[list[Number], Field(min_length=3, max_length=3)]
 
 
@@ -155,14 +170,14 @@ class Identity(WireModel):
 
 
 class Dimensions(WireModel):
-    x: Number
-    y: Number
-    z: Number
+    x: Positive
+    y: Positive
+    z: Positive
 
 
 class Physical(WireModel):
     dimensions_mm: Dimensions
-    mass_g: Number | None
+    mass_g: NonNegative | None
     bounds_verified: StrictBool
     geometry_kind: GeometryKind
     asset_path: str | None
@@ -180,10 +195,10 @@ class Mount(WireModel):
 class Port(WireModel):
     port_id: str
     signal: PortSignal
-    voltage_min_v: Number | None
-    voltage_max_v: Number | None
-    current_limit_a: Number | None
-    logic_level_v: Number | None
+    voltage_min_v: NonNegative | None
+    voltage_max_v: NonNegative | None
+    current_limit_a: NonNegative | None
+    logic_level_v: NonNegative | None
     notes: str
 
 
@@ -338,7 +353,7 @@ class BuildPlan(WireModel):
     project_family: ProjectFamily
     title: str
     source_intent_id: str
-    created_at: str
+    created_at: UtcTimestamp
     status: PlanStatus
     components: list[ComponentInstance]
     connections: list[Connection]

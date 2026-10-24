@@ -6,13 +6,13 @@ Shared status file for everyone working in this repo, human or agent.
 | | |
 |---|---|
 | **Last updated** | 2026-10-24 · [B] |
-| **Branch / commit** | `feat/b-p6-repair` + merge review |
-| **Current phase** | Engineering modules under sequential merge review; public composition pending |
+| **Branch / commit** | `developer-2-defect-fix` (PR #22) + this update |
+| **Current phase** | Engineering engine complete pending merge; default rover is honestly unbuildable (motor current, battery over-voltage, undocumented motor fit) |
 | **Next gate** | Hour 8: every lane demos itself from fixtures (`docs/implementation.md` §7) |
-| **In progress** | [B] Sequential branch review: `feat/b-p6-repair` |
-| **Blocked** | none (1 open issue in §6) |
+| **In progress** | [B] PR #22 (engine + defect fixes) awaiting review; supersedes PR #21 |
+| **Blocked** | [B] B0/B4 checks wait on INT-1/INT-2; default rover needs a motor/driver decision (see §6) |
 
-**Next up:** INT-0 → INT-1 → INT-2 (skeleton, contracts, fixtures). After that, all lanes can branch off and work in parallel.
+**Next up:** Review and merge PR #22; close PR #21 unmerged; decide the motor/driver/battery combination; [A] commit the ignored `services/api/rivet_api/exports/` package; INT-0..INT-2 still outstanding.
 
 **Contents:** [1. Rules](#1-rules) · [2. Repo state](#2-repo-state) · [3. Task board](#3-task-board) · [4. Log](#4-log) · [5. Decisions](#5-decisions) · [6. Issues and blockers](#6-issues-and-blockers) · [7. How to update this file](#7-how-to-update-this-file)
 
@@ -51,7 +51,7 @@ Source of truth: [`docs/implementation.md`](docs/implementation.md) for contract
 | `contracts/` | INT | Not created |
 | `fixtures/` | INT | Not created |
 | `services/api/` | A | Started: FastAPI app, settings, error envelope, `/api/health`; Pydantic models for IntentSpec, BuildPlan, JobEvent and a plan integrity guard (`contract.py`); engineering port with fixture and real (`rivet_engine`) adapters; file-backed revision store (`orchestration/versions.py`); job manager with SSE (`orchestration/jobs.py`); generation pipeline and routes: `POST /api/projects/generate`, `GET /api/projects/{id}` (+`?revision=`), `/revisions`, `POST /edits`, `/examples`, `GET /api/catalog`. safe image upload (`POST /api/assets/images`, `GET /api/assets/{id}/preview`). live vision provider (OpenAI Chat Completions backend, strict parse, one retry) and intent sanitizer. BOM CSV and `build.json` exports (`GET /api/projects/{id}/exports/bom.csv`, `build.json`). firmware ZIP export (`GET /api/projects/{id}/exports/firmware.zip`, optional `?compile=true`). Estelle grounding client (`GET /api/estelle/status`, `POST /api/estelle/ground`). Smoke script and README not built yet |
-| `packages/engineering/` | B | Started: `rivet_engine` package (Python 3.11+, Pydantic v2, `uv.lock`); canonical wire models (`models.py`), internal types (`ports.py`), `INTERNAL_API.md`; sourced 15-part catalog (`data/components.json`, ledger `data/catalog_sources.md`, loader `catalog.py`); public `solve`/`apply_edit`/`verify`/`get_catalog` raise `ENGINE_NOT_IMPLEMENTED` until P7; private Appendix A copies and SYNTHETIC test data in `tests/support/` |
+| `packages/engineering/` | B | Working engine on PR #22 (`developer-2-defect-fix`, not yet in `main`): `solve`/`apply_edit`/`verify`/`get_catalog`; 16-part sourced catalog `catalog-v1.1-2026-10-24` with ledger and physical-fit evidence; rover_2wd placement; profile-driven netlist and pin map; validators; bounded repair; BOM/assembly/serialization; `python -m rivet_engine.demo`; 342 offline tests. Sourced default rover: 17 parts, 20 wires, 11 steps, 105.45 USD, `unbuildable` (motor stall 1.5 A vs driver 1.2 A continuous; fresh 6.4 V alkaline pack over the motors' 6 V maximum; TT motor fit in Shadow Chassis undocumented). See `packages/engineering/README.md` |
 | `apps/web/` | C | Not created |
 | `design/` | DESIGN | Not created |
 
@@ -98,12 +98,12 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 |---|---|---|---|---|
 | B0 | Domain model and public entry points (`solve`, etc.) | IN PROGRESS | [B] | Models match `contracts/` |
 | B1 | Catalog of real components | DONE | [B] | Only real parts; unknown values stay `null` |
-| B2 | Parametric mechanical assembly and mounts | IN PROGRESS | [B] | Rover template produces consistent instances |
-| B3 | Electrical graph; driver and controller assignment | IN PROGRESS | [B] | Netlist references only valid pins |
+| B2 | Parametric mechanical assembly and mounts | DONE | [B] | Rover template produces consistent instances |
+| B3 | Electrical graph; driver and controller assignment | DONE | [B] | Netlist references only valid pins |
 | B4 | Deterministic validators: mechanical, electrical, budget, completeness | IN PROGRESS | [B] | Failing-driver fixture produces the expected finding |
-| B5 | Repair engine | IN PROGRESS | [B] | At least one failure repaired or honestly rejected |
-| B6 | BOM, assembly steps, serialization | IN PROGRESS | [B] | BOM rows match instance IDs |
-| B7 | Tests and standalone demo | TODO | — | `pytest` passes standalone |
+| B5 | Repair engine | DONE | [B] | At least one failure repaired or honestly rejected |
+| B6 | BOM, assembly steps, serialization | DONE | [B] | BOM rows match instance IDs |
+| B7 | Tests and standalone demo | DONE | [B] | `pytest` passes standalone |
 | B-PLAN | Parallel work orders and per-task branch/PR handoffs | DONE | [B] | B0–B7 covered; exclusive implementation/test paths and dependency gates reviewed |
 | B-P0 | Foundation: models, internal API, test inputs (`feat/b-p0-foundation`) | DONE | [B] | Clean install; offline model tests pass; `INTERNAL_API.md` freezes P1–P6 signatures |
 | B-P1 | Sourced catalog (`feat/b-p1-catalog`) | DONE | [B] | See `packages/engineering/WORK_ORDERS.md` P1 |
@@ -112,7 +112,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | B-P4 | Validators (`feat/b-p4-validation`) | DONE | [B] | See WORK_ORDERS P4 |
 | B-P5 | BOM, assembly, serialization (`feat/b-p5-exports`) | DONE | [B] | See WORK_ORDERS P5 |
 | B-P6 | Repair (`feat/b-p6-repair`) | DONE | [B] | See WORK_ORDERS P6 |
-| B-P7 | Composition, edits, demo (`feat/b-p7-integration`) | TODO | — | See WORK_ORDERS P7 |
+| B-P7 | Composition, edits, demo (`feat/b-p7-integration`) | DONE | [B] | See WORK_ORDERS P7 |
 
 ### Developer C `[C]` · `apps/web/**`
 
@@ -152,6 +152,12 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
+
+- 2026-10-24 [B] defect-fix 2: Fixed the second review of `c5b54e4`. (1) Budget is computed from catalog prices only and `integrity.bom` fails BOM rows whose price or purchase link differs from the catalog, so a forged 0.00 BOM can no longer pass a budget. (2) Public `verify()` always runs the fit rule: evidence applies to records identical to the packaged ones; a changed record makes the pair a blocking UNKNOWN (no silent skip). (3) Stop distance must be below the selected sensor range, enforced in `set_behavior_parameter`, in sensor swaps, and by the new `firmware.behavior_parameters` rule (bounds now live in the validator). (4) Non-string parameter names are rejected. (5) `load_fit_evidence` validates every field the rule reads; the rule no longer indexes missing keys. Remaining audit defects fixed: supply capacity must cover documented loads (a 1 mA pack now FAILs); `electrical.motor_channels` fails two motors on one channel; supply over the rated maximum is a blocking FAIL (under the minimum stays an advisory brown-out WARN, intentionally); driver direction/standby inputs are required; controller I2C pins get logic checks; mounted parts need mount references and `mechanical.pose_consistency` fails parts >30 mm from their mount; size limits are UNKNOWN when any part lacks bounds; NaN/inf, non-positive dimensions, negative ratings and invalid `created_at` are rejected; empty or incomplete assembly steps fail; `load_catalog()` returns fresh objects. Checked: `uv run pytest -q` 342 passed, 6 skipped (3 identical runs); each of the reviewer's five reproductions re-run and now fixed; three new rules mutation-checked (disabling each makes its test fail); clean install 341 passed, 7 skipped; engine output and all five edit operations via services/api `parse_edit` pass `assert_build_plan_contract`. Notes: default rover now also FAILs motor voltage because fresh alkaline cells reach 6.4 V; this joins the open motor/driver decision.
+- 2026-10-24 [B] defect-fix: Fixed PR #21 review findings and the B1-B6 audit on branch `developer-2-defect-fix`. Review: edits are accepted only if they add no blocking FAIL and keep the requested part (sensor swaps that repair would undo are rejected); non-string instance ids are rejected instead of crashing; the `engine_state` note is schema-validated (bad values, wrong offset shape, extra keys, duplicates -> `INVALID_INPUT`); BOM stays in USD and non-USD budget edits are rejected (solve reports budget UNKNOWN); preferred controller is checked against the builder's own wiring profiles; behavior bounds documented and tested as inside the firmware generator's; this file no longer contradicts itself. Audit: new `data/fit_evidence.json` + `mechanical.fit_evidence` rule (TT motor in Shadow mounts is a blocking UNKNOWN citing SparkFun's assembly guide; wheel, caster and holder fits PASS with sources); ESP32 pin restrictions now cite the ESP-IDF GPIO page that was actually read and GPIO16/17 are allocated last (pin map now uses 18/19); AA alkaline cells (Adafruit 3349) added to catalog and default kit, holder voltage set to 3.2-6.4 V from those cells (WARN vs motor and VM ratings); `budget.price_currency` reports other-currency prices explicitly; loose kit items get `render_overrides.visible = false`; kit order parsed numerically. Untracked the stray `rivet-person-2-tasks/` files (left on disk). Checked: `uv run pytest -q` 296 passed, 6 skipped (3 repeat runs identical); clean install in a fresh copy 295 passed, 7 skipped (firmware-bounds test skips without services/api); demo exit codes 0/0/2; engine output and all five edit operations (sent through services/api `parse_edit`) pass `assert_build_plan_contract`; firmware generator accepts the new pin map but refuses the default plan because it is unbuildable. Notes: services/api's own test suite cannot import on a fresh checkout because `rivet_api/exports/` is ignored by the root `.gitignore` pattern `exports/` (see §6).
+- 2026-10-24 [B] B-P7: Reviewed and reconciled with main for sequential merge. Checked: engineering pytest 255 (6 skipped) passed; diff check passed. Notes: Real API adapter solve/catalog/verify/edit and boundary-contract smoke passed; both demo CLI commands passed. Default sourced rover is unbuildable due to motor stall current above driver continuous rating, with findings preserved. Size requirements now persist through edits; malformed offsets reject cleanly and clearing budget preserves null. Full API test collection is blocked by the pre-existing missing rivet_api.exports package on main. Six skips cover implemented-entry-point placeholders and absent shared fixtures. Includes the nine previously requested task text files.
+
+- 2026-10-24 [B] B-P7: Added `configurator.py`, `demo.py`, public entry points in `__init__.py`, package `README.md`, `tests/test_integration.py`, `tests/test_edits.py`. `solve` composes selection -> placement -> wiring -> BOM/steps -> validators -> bounded repair, with runtime UTC `created_at`, deterministic `build_id`, derived simulation (wheel radius 0.0315 m, base 0.137 m, labeled nominal speed and sensor model) and firmware `compile_status` `not_checked` (never `passed`). Unsupported family/behavior/capabilities raise `UNSUPPORTED_REQUEST`; malformed input `INVALID_INPUT`. `apply_edit` supports all five services/api operations, keeps `build_id`, increments revision, never mutates input, rebuilds and re-verifies; out-of-range sensor height and non-sensor swaps are rejected with a finding. Checked: `uv run pytest -q` 245 passed, 6 skipped (4 retired P0 stub checks, 2 shared-fixture tests); clean install in a fresh copy passes; demo `--sample` gives `verified_with_warnings` (32 PASS, 6 WARN, 2 UNKNOWN advisory) and `--max-budget 60` gives `unbuildable`; engine output passes services/api `assert_build_plan_contract` and `render_project` writes the real pin map into `rivet_config.h` (run ad hoc with fastapi installed temporarily, not in B's tests). Engine repair shown on SYNTHETIC parts: over-current motor fixed by swapping to the higher-rated driver; a controller with too few pins is honestly rejected as unbuildable. Notes: B0 and B4 stay IN PROGRESS only because their checks name `contracts/` and the shared failing-driver fixture, which do not exist yet. Edit state rides in one `engine_state:` provenance note (no contract field exists).
 
 - 2026-10-24 [B] B-P6: Reviewed and reconciled with main for sequential merge. Checked: engineering pytest 202 (1 skipped) passed; diff check passed. Notes: Enforced a hard three-round cap even when callers request more, with a regression covering three accepted improvements. Shared fixture remains absent; runtime composition is next.
 
@@ -210,6 +216,15 @@ Format: `YYYY-MM-DD: decision. Agreed by: [A] [B] [C]. Reason: why.`
 
 Open items only; delete an item once it's resolved and log the fix in §4.
 Format: `[LANE] TASK-ID: problem. Needs: who or what unblocks it.`
+
+- [A] services/api: the root `.gitignore` line `exports/` (under Generated artifacts) also ignores `services/api/rivet_api/exports/`, so that package was never committed and `rivet_api.routes.exports` fails to import on a fresh checkout. Needs: [A]/[INT] anchor the pattern (e.g. `/exports/`) and commit the package.
+- [C] viewer: loose kit components (`role: accessory`) now carry `render_overrides.visible = false`; they share the chassis pose and have no modeled position. Needs: [C] skip rendering components with `visible: false`.
+- [B] decision: default rover is `unbuildable` (TT motor 1.5 A stall > TB6612 1.2 A continuous; fresh 4xAA alkaline 6.4 V > TT motor 6 V maximum; TT motor fit in Shadow Chassis undocumented). Options: switch to the documented SparkFun Hobby Gearmotor (stall current unpublished -> UNKNOWN) or source a higher-current driver with the same control interface. Needs: team decision.
+- [A] A6: Full API test collection on main fails because rivet_api.exports is imported but absent from tracked files. Needs: API owner to add the missing exports package; direct real-engine adapter and contract smoke checks pass.
+
+- [A] A2 / [B] B7: services/api `RealEngineeringAdapter` turns any engine exception into a generic 500. Engine errors carry `code`, `http_status` and `to_envelope()` (`INVALID_INPUT` 400, `UNSUPPORTED_REQUEST` 422). Needs: [A] map `rivet_engine.EngineError` to its envelope in the adapter.
+
+- [B] B0/B4: B0's check needs `contracts/` schemas (INT-1) and B4's check needs `fixtures/plans/rover_failing_driver_v1.json` (INT-2). Engine tests already compare against them when present. Needs: [INT] INT-1/INT-2.
 
 - [A] A5: Estelle was never run for real: the `estelle` CLI is not installed here and there is no account. Needs: a human to run `npm i -g @fatelabs/estelle`, `estelle login`, `estelle setup` in the repo, set `RIVET_ENABLE_ESTELLE=true`, then call `GET /api/estelle/status` and `POST /api/estelle/ground` once and check that `estelle ask` output really carries `file:line` citations (the output format is not documented, so the parser may need adjusting). Also not done: the grounded firmware-edit flow (a patch to the template that is grounded, then compiled), because Estelle's docs give no parameters for the MCP tools or `gate`/`verify`.
 - [A] A4 / [B] B3: `firmware.pin_map` format. [B] confirms A's proposal: keys `motor_left_pwm, motor_left_in1, motor_left_in2, motor_right_pwm, motor_right_in1, motor_right_in2, motor_standby, i2c_sda, i2c_scl`, values integer controller GPIO numbers (enforced in `rivet_engine/models.py`, documented in `packages/engineering/INTERNAL_API.md`). Still open until B's sourced plan carries a real pin map (B-P3/B-P7). Needs: [B] P3 wiring.
