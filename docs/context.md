@@ -5,14 +5,14 @@ Shared status file for everyone working in this repo, human or agent.
 
 | | |
 |---|---|
-| **Last updated** | 2026-10-24 · [C] |
-| **Branch / commit** | `feat/c-3d-sim` @ `71dd73c` + this update |
-| **Current phase** | `services/api`, `packages/engineering` and `apps/web` implemented; default sourced rover is honestly unbuildable |
-| **Next gate** | Hour 16: working vertical path: A+B, B+C, A+C (`docs/implementation.md` §7) |
-| **In progress** | A5, B0/B4 (waiting on INT-1/INT-2) |
-| **Blocked** | [B] B0/B4 checks wait on INT-1/INT-2; default rover needs a motor/driver decision (see §6) |
+| **Last updated** | 2026-10-24 · [B] |
+| **Branch / commit** | `main` @ `60672ff` + this update |
+| **Current phase** | `services/api`, `packages/engineering` and `apps/web` all in `main`; the API does not start on `main` (missing `rivet_api.exports`); default sourced rover is honestly unbuildable |
+| **Next gate** | Hour 8 not passed yet: A cannot demo from `main`. Then Hour 16: A+B, B+C, A+C (`docs/implementation.md` §7) |
+| **In progress** | A5, A6 (PR #13 open), B0/B4 (waiting on INT-1/INT-2), C7 (Playwright) |
+| **Blocked** | [A] API startup blocked on the missing exports package; [B] B0/B4 checks wait on INT-1/INT-2; default rover needs a motor/driver decision (see §6) |
 
-**Next up:** Review and merge the B7 demo PR; decide the motor/driver/battery combination; [A] commit the ignored `services/api/rivet_api/exports/` package; INT-0..INT-2 still outstanding.
+**Next up:** [A] restore and commit `services/api/rivet_api/exports/` and anchor the `.gitignore` pattern; merge PR #13 (smoke script, API README, adapter error mapping); [INT] INT-0..INT-3 (root workspace, `contracts/`, `fixtures/`, CI); decide the motor/driver/battery combination; [C] add Playwright; [DESIGN] D0–D3 not started.
 
 **Contents:** [1. Rules](#1-rules) · [2. Repo state](#2-repo-state) · [3. Task board](#3-task-board) · [4. Log](#4-log) · [5. Decisions](#5-decisions) · [6. Issues and blockers](#6-issues-and-blockers) · [7. How to update this file](#7-how-to-update-this-file)
 
@@ -43,16 +43,17 @@ Source of truth: [`docs/implementation.md`](docs/implementation.md) for contract
 
 | Path | Lane | State |
 |---|---|---|
-| `README.md` | INT | Exists: setup, stack, lanes (spec links still point to the old root paths) |
+| `README.md` | INT | Exists: setup, stack, lanes; spec links and quick start match the current repo |
 | `docs/project.md`, `docs/implementation.md` | INT | Exists: specs v1 (fixtures are in `docs/implementation.md` Appendix A) |
 | `docs/agent-collaboration.md` | INT | Exists: PR-based protocol, integrator merges on a ~30 min loop |
-| `context.md`, `AGENTS.md`, `CLAUDE.md` | INT | Exists: this file plus pointer files that agents load automatically |
-| Root config (`package.json`, `pnpm-workspace.yaml`, `.env.example`, `.gitignore`, CI) | INT | Not created |
+| `docs/context.md`, `docs/AGENTS.md`, `docs/CLAUDE.md` | INT | Exists: this file plus pointer files that agents load automatically |
+| `.env`, `.env.example`, `.gitattributes`, `.gitignore`, `scripts/setup-env.sh` | INT | Exists: `.env` is committed encrypted with git-crypt; `scripts/setup-env.sh <key>` unlocks it or falls back to `.env.example` |
+| Root `package.json`, `pnpm-workspace.yaml`, `pnpm-lock.yaml`, `.github/workflows/ci.yml` | INT | Not created. `apps/web` has no lockfile, so `pnpm --filter web dev` from the root does not work; install from `apps/web` |
 | `contracts/` | INT | Not created |
 | `fixtures/` | INT | Not created |
-| `services/api/` | A | Started: FastAPI app, settings, error envelope, `/api/health`; Pydantic models for IntentSpec, BuildPlan, JobEvent and a plan integrity guard (`contract.py`); engineering port with fixture and real (`rivet_engine`) adapters; file-backed revision store (`orchestration/versions.py`); job manager with SSE (`orchestration/jobs.py`); generation pipeline and routes: `POST /api/projects/generate`, `GET /api/projects/{id}` (+`?revision=`), `/revisions`, `POST /edits`, `/examples`, `GET /api/catalog`. safe image upload (`POST /api/assets/images`, `GET /api/assets/{id}/preview`). live vision provider (OpenAI Chat Completions backend, strict parse, one retry) and intent sanitizer. BOM CSV and `build.json` exports (`GET /api/projects/{id}/exports/bom.csv`, `build.json`). firmware ZIP export (`GET /api/projects/{id}/exports/firmware.zip`, optional `?compile=true`). Estelle grounding client (`GET /api/estelle/status`, `POST /api/estelle/ground`). Smoke script and README not built yet |
-| `packages/engineering/` | B | Working engine in `main`: `solve`/`apply_edit`/`verify`/`get_catalog`; 16-part sourced catalog `catalog-v1.1-2026-10-24` with ledger and physical-fit evidence; rover_2wd placement; profile-driven netlist and pin map; validators; bounded repair; BOM/assembly/serialization; `python -m rivet_engine.demo`; 342 offline tests. Sourced default rover: 17 parts, 20 wires, 11 steps, 105.45 USD, `unbuildable` (motor stall 1.5 A vs driver 1.2 A continuous; fresh 6.4 V alkaline pack over the motors' 6 V maximum; TT motor fit in Shadow Chassis undocumented). See `packages/engineering/README.md` |
-| `apps/web/` | C | Implemented: Next.js App Router app (`/` and `/studio`); canonical v1 contract types, runtime validators, referential integrity checks, `FixtureSource` and `HttpSource` adapters (`src/lib/rivet/**`, `src/lib/{contracts,api,fixtures,geometry,plan-store}.ts`); R3F 3D stage with fitted camera, studio lighting, millimeter grid and WebGL fallback (`src/components/three/stage/**`); procedural hardware recipes and `PartAssembly` (`src/components/three/parts/**`); part selection, hover, isolation and click-guard (`src/components/three/interactions/**`); exploded view and step assembly timeline (`src/components/three/assembly/**`); electrical wiring overlay with schematic fallback (`src/components/three/wiring/**`); unified `RoverScene` (`src/components/three/RoverScene.tsx`); deterministic 2D differential-drive rover simulator engine and 3D visual viewer bridged in `SimView` (`src/components/sim/**`); image/prompt intake, job progress and saved example launcher (`src/components/studio/intake/**`); part inspector, BOM, verification and revision panels (`src/components/studio/panels/**`); `<StudioShell>`, `Toolbar`, `StepTimeline`, `PartsPanel`, `Inspector` and `Studio` (`src/components/studio/**`, `src/components/ui/**`) |
+| `services/api/` | A | Started: FastAPI app, settings, error envelope, `/api/health`; Pydantic models for IntentSpec, BuildPlan, JobEvent and a plan integrity guard (`contract.py`); engineering port with fixture and real (`rivet_engine`) adapters; file-backed revision store (`orchestration/versions.py`); job manager with SSE (`orchestration/jobs.py`); generation pipeline and routes: `POST /api/projects/generate`, `GET /api/projects/{id}` (+`?revision=`), `/revisions`, `POST /edits`, `/examples`, `GET /api/catalog`. safe image upload (`POST /api/assets/images`, `GET /api/assets/{id}/preview`). live vision provider (OpenAI Chat Completions backend, strict parse, one retry) and intent sanitizer. BOM CSV and `build.json` exports (`GET /api/projects/{id}/exports/bom.csv`, `build.json`). firmware ZIP export (`GET /api/projects/{id}/exports/firmware.zip`, optional `?compile=true`). Estelle grounding client (`GET /api/estelle/status`, `POST /api/estelle/ground`). Backboard vision provider (`adapters/backboard_provider.py`). **Does not start on `main`:** `routes/exports.py` imports `rivet_api.exports.bom`, which was never committed. Smoke script, API README and adapter `EngineError` mapping are on PR #13 (`feat/a-smoke-readme`), not merged |
+| `packages/engineering/` | B | Working engine in `main`: `solve`/`apply_edit`/`verify`/`get_catalog`; 16-part sourced catalog `catalog-v1.1-2026-10-24` with ledger and physical-fit evidence; rover_2wd placement; profile-driven netlist and pin map; validators; bounded repair; BOM/assembly/serialization; `python -m rivet_engine.demo`; 357 offline tests pass, 7 skipped until `contracts/` and `fixtures/` exist. The plan carries a real `firmware.pin_map`. Sourced default rover: 17 parts, 20 wires, 11 steps, 105.45 USD, `unbuildable` (motor stall 1.5 A vs driver 1.2 A continuous; fresh 6.4 V alkaline pack over the motors' 6 V maximum; TT motor fit in Shadow Chassis undocumented). See `packages/engineering/README.md` |
+| `apps/web/` | C | Implemented: Next.js App Router app (`/` and `/studio`); canonical v1 contract types, runtime validators, referential integrity checks, `FixtureSource` and `HttpSource` adapters (`src/lib/rivet/**`, `src/lib/{contracts,api,fixtures,geometry,plan-store}.ts`); R3F 3D stage with fitted camera, studio lighting, millimeter grid and WebGL fallback (`src/components/three/stage/**`); procedural hardware recipes and `PartAssembly` (`src/components/three/parts/**`); part selection, hover, isolation and click-guard (`src/components/three/interactions/**`); exploded view and step assembly timeline (`src/components/three/assembly/**`); electrical wiring overlay with schematic fallback (`src/components/three/wiring/**`); unified `RoverScene` (`src/components/three/RoverScene.tsx`); deterministic 2D differential-drive rover simulator engine and 3D visual viewer bridged in `SimView` (`src/components/sim/**`); image/prompt intake, job progress and saved example launcher (`src/components/studio/intake/**`); part inspector, BOM, verification and revision panels (`src/components/studio/panels/**`); `<StudioShell>`, `Toolbar`, `StepTimeline`, `PartsPanel`, `Inspector` and `Studio` (`src/components/studio/**`, `src/components/ui/**`). 362 Vitest tests pass; no Playwright yet |
 | `design/` | DESIGN | Not created |
 
 ### Lane ownership
@@ -90,7 +91,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | A3 | Project storage, edits, revisions | DONE | [A] | An edit creates a new revision with the same `build_id` |
 | A4 | Firmware generator (ESP32 rover template) | DONE | [A] | Generated project is tied to `build_id` and `revision` |
 | A5 | Estelle integration (real calls, honest fallback) | IN PROGRESS | [A] | Real evidence captured, or its absence shown |
-| A6 | Tests and standalone demo | TODO | — | `pytest` passes in fixture mode |
+| A6 | Tests and standalone demo | IN PROGRESS | [A] | `pytest` passes in fixture mode (PR #13 open; collection fails on `main` until `rivet_api.exports` is committed) |
 
 ### Developer B `[B]` · `packages/engineering/**`
 
@@ -126,7 +127,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | C4 | Bounded rover simulation | DONE | [C] | Obstacle scenario runs and is labeled as an approximation |
 | C5 | Image/prompt upload and streaming job UX | DONE | [C] | Job events shown live, or replayed from a fixture |
 | C6 | Designer interface and handoff | DONE | [C] | Designer can swap UI components without touching engine code |
-| C7 | Tests and standalone demo | DONE | [C] | Vitest and Playwright pass |
+| C7 | Tests and standalone demo | IN PROGRESS | [C] | Vitest and Playwright pass (Vitest 362/362 passes; Playwright not configured) |
 
 ### Designer `[DESIGN]` · `design/**`
 
@@ -154,6 +155,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
 
+- 2026-10-24 [B] AUDIT: Checked the board against `main` @ `60672ff`. API: `pytest` cannot collect and the app cannot import because `rivet_api.exports` is missing from git history; set A6 `IN PROGRESS` (PR #13). Engine: 357 passed, 7 skipped; the sourced plan now carries a real `firmware.pin_map`, so that §6 item is closed. Web: Vitest 39 files / 362 tests passed and typecheck clean, but Playwright is not configured, so C7 goes back to `IN PROGRESS`. INT-0..INT-3 and D0–D3 not started. Fixed README spec links and quick start. Checked: ran engine, web and API test suites locally.
 - 2026-10-24 [C] C3/C7: Fixed the PR #23 accepted-edit regression in `submitEdit`: tracked `editEpochRef` independently from build loads so the edit's own `loadBuildFromSource` reload no longer prevents `editPending` from being cleared, and `cancelInFlightRequests` now clears `editPending` when `setSourceMode`/`loadSavedExample` aborts an in-flight edit. Checked: `pnpm --dir apps/web lint` clean, `pnpm --dir apps/web test` 39 test files / 362 tests passed, `pnpm --dir apps/web build` succeeded.
 - 2026-10-24 [C] C0/C3/C5/C7: Fixed the three PR #23 review items in `useStudioPlanStore`: (1) browser `HttpSource` now defaults to same-origin `baseUrl: ''` so `/api/*` requests use Next.js rewrites (`next.config.mjs`) without cross-origin preflight failures or contacting the viewer's own localhost; (2) `setSourceMode`, `loadSavedExample`, `loadBuild` and `startGeneration` abort and epoch-guard in-flight `getCatalog`/`getBuild`/`listRevisions`/`generate`/`subscribeToJob` calls so late HTTP responses cannot overwrite the active source's plan or revisions; (3) saved snapshots (`SOURCED_ROVER_BUILD_ID` and `SYNTHETIC_ROVER_BUILD_ID`) are paired with a `FixtureSource` that owns both plans (`createCombinedFixtureSource`), stamped `provenance.generation_mode = "fixture"` so the trust banner shows `Saved demo build`, use local exports (`getExportUrl` null), and return the fixture edit finding instead of `BUILD_NOT_FOUND`. Checked: `pnpm --dir apps/web lint` clean, `pnpm --dir apps/web test` 39 test files / 360 tests passed, `pnpm --dir apps/web build` succeeded.
 - 2026-10-24 [C] C1/C2/C3/C7: Reconciled `apps/web` with `main` (`71dd73c`, B's `rivet_engine`). Resolved the §6 viewer item for loose kit accessories: components with `render_overrides.visible = false` are now hidden in `HardwarePart`/`RoverScene`/`computeAssemblyView`, excluded from 3D camera auto-fit bounds (`computePlanBoundsMm`), and labeled `unmodeled kit item` in `PartsPanel`. Added `motor_power` and `controller_power` to `UP_ROLES` for vertical explode, deduplicated React keys for repeated `rule_id` findings in `VerificationPanel`/`PartInspector`, allowed ISO-8601 date strings on catalog price/URL timestamps, and verified B's real 16-part sourced catalog and 17-component/20-wire/11-step/55-finding `BuildPlan` across contract, assembly, wiring and studio tests. Checked: `pnpm --dir apps/web typecheck` clean, `pnpm --dir apps/web test` 39 test files / 357 tests passed, `pnpm --dir apps/web build` succeeded.
@@ -223,17 +225,16 @@ Format: `YYYY-MM-DD: decision. Agreed by: [A] [B] [C]. Reason: why.`
 Open items only; delete an item once it's resolved and log the fix in §4.
 Format: `[LANE] TASK-ID: problem. Needs: who or what unblocks it.`
 
-- [A] services/api: the root `.gitignore` line `exports/` (under Generated artifacts) also ignores `services/api/rivet_api/exports/`, so that package was never committed and `rivet_api.routes.exports` fails to import on a fresh checkout. Needs: [A]/[INT] anchor the pattern (e.g. `/exports/`) and commit the package.
+- [A] services/api (P0): the API does not start on `main`. The root `.gitignore` line `exports/` also ignores `services/api/rivet_api/exports/`, so `rivet_api/exports/bom.py` (`bom_to_csv`) was never committed and is not in any branch. `rivet_api.main` → `routes/exports.py` fails to import, which also breaks every API test (conftest imports the app). PR #13 does not add it. Needs: [A] restore the package from their machine and commit it; [INT] anchor the pattern (e.g. `/exports/`).
 - [B] decision: default rover is `unbuildable` (TT motor 1.5 A stall > TB6612 1.2 A continuous; fresh 4xAA alkaline 6.4 V > TT motor 6 V maximum; TT motor fit in Shadow Chassis undocumented). Options: switch to the documented SparkFun Hobby Gearmotor (stall current unpublished -> UNKNOWN) or source a higher-current driver with the same control interface. Needs: team decision.
-- [A] A6: Full API test collection on main fails because rivet_api.exports is imported but absent from tracked files. Needs: API owner to add the missing exports package; direct real-engine adapter and contract smoke checks pass.
-
-- [A] A2 / [B] B7: services/api `RealEngineeringAdapter` turns any engine exception into a generic 500. Engine errors carry `code`, `http_status` and `to_envelope()` (`INVALID_INPUT` 400, `UNSUPPORTED_REQUEST` 422). Needs: [A] map `rivet_engine.EngineError` to its envelope in the adapter.
+- [A] A2 / [B] B7: on `main`, `RealEngineeringAdapter` still turns any engine exception into a generic 500. Engine errors carry `code`, `http_status` and `to_envelope()` (`INVALID_INPUT` 400, `UNSUPPORTED_REQUEST` 422). The mapping is written on PR #13 (`feat/a-smoke-readme`). Needs: review and merge PR #13.
+- [INT] INT-0..INT-3: no root `package.json`, `pnpm-workspace.yaml`, lockfile, `contracts/`, `fixtures/` or CI. `apps/web` installs without a lockfile, so dependency versions are not pinned across machines, and nothing tests `main` automatically. Needs: an integrator.
+- [C] C7: Playwright is not configured; only Vitest runs. Needs: [C] add a Playwright smoke test of `/studio` from fixtures.
+- [DESIGN] D0–D3: `design/` does not exist and nobody has claimed the lane. Needs: a designer, or a team decision to cut it (§5).
 
 - [B] B0/B4: B0's check needs `contracts/` schemas (INT-1) and B4's check needs `fixtures/plans/rover_failing_driver_v1.json` (INT-2). Engine tests already compare against them when present. Needs: [INT] INT-1/INT-2.
 
 - [A] A5: Estelle was never run for real: the `estelle` CLI is not installed here and there is no account. Needs: a human to run `npm i -g @fatelabs/estelle`, `estelle login`, `estelle setup` in the repo, set `RIVET_ENABLE_ESTELLE=true`, then call `GET /api/estelle/status` and `POST /api/estelle/ground` once and check that `estelle ask` output really carries `file:line` citations (the output format is not documented, so the parser may need adjusting). Also not done: the grounded firmware-edit flow (a patch to the template that is grounded, then compiled), because Estelle's docs give no parameters for the MCP tools or `gate`/`verify`.
-- [A] A4 / [B] B3: `firmware.pin_map` format. [B] confirms A's proposal: keys `motor_left_pwm, motor_left_in1, motor_left_in2, motor_right_pwm, motor_right_in1, motor_right_in2, motor_standby, i2c_sda, i2c_scl`, values integer controller GPIO numbers (enforced in `rivet_engine/models.py`, documented in `packages/engineering/INTERNAL_API.md`). Still open until B's sourced plan carries a real pin map (B-P3/B-P7). Needs: [B] P3 wiring.
-- [INT] README: spec links point to root `project.md`/`implementation.md`, which moved to `docs/`. Needs: README link fix.
 
 ---
 

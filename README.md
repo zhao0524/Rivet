@@ -8,8 +8,8 @@ AI-assisted hardware-building platform for the **SOON Hackathon**. Upload an ins
 
 | Document | Role |
 |---|---|
-| [`project.md`](project.md) | Product requirements, UX, scope, and language |
-| [`implementation.md`](implementation.md) | Tech stack, contracts, ownership lanes, schedule, and tests |
+| [`docs/project.md`](docs/project.md) | Product requirements, UX, scope, and language |
+| [`docs/implementation.md`](docs/implementation.md) | Tech stack, contracts, ownership lanes, schedule, and tests |
 
 If the two conflict on schema or safety/verification rules, follow `implementation.md`, then reconcile both in a reviewed change.
 
@@ -32,28 +32,28 @@ If the two conflict on schema or safety/verification rules, follow `implementati
 - Optional: PlatformIO for firmware compile checks
 - Optional: OpenAI (or other) API key for live vision — fixture mode works without it
 
-## Quick start (after bootstrap)
+## Quick start
 
-This repo currently holds the product and implementation specs. Once the monorepo skeleton lands (`apps/web`, `services/api`, `packages/engineering`), use:
+`apps/web`, `services/api` and `packages/engineering` exist. There is no root `package.json` or `pnpm-workspace.yaml` yet (INT-0), so install the web app from its own folder.
 
 ```bash
-# Env
-cp .env.example .env
-
-# JS workspace
-pnpm install
+# Env: .env is committed encrypted with git-crypt. Unlock it with the team key,
+# or fall back to .env.example when you have no key.
+scripts/setup-env.sh /path/to/soon-git-crypt.key
 
 # Python API + engineering (example with uv)
 cd services/api && uv sync
-cd ../packages/engineering && uv sync
+cd ../../packages/engineering && uv sync
 
 # Dev processes (typical)
 # Terminal 1 — API
 cd services/api && uv run uvicorn rivet_api.main:app --reload --port 8000
 
 # Terminal 2 — Web
-pnpm --filter web dev
+cd apps/web && pnpm install && pnpm dev
 ```
+
+The API does not start on `main` right now: `rivet_api.exports` is missing (see `docs/context.md` §6). The web app runs on its own from fixtures.
 
 Default API: `http://localhost:8000`  
 Default web: `http://localhost:3000`
