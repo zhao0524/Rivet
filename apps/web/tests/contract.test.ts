@@ -1,12 +1,16 @@
-import { describe, expect, it } from 'vitest';
+import { act, renderHook } from '@testing-library/react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   FixtureSource,
   HttpSource,
+  SAVED_BUILD_LABEL,
   SYNTHETIC_ROVER_BUILD_ID,
   assertPlanIntegrity,
   checkPlanIntegrity,
   describeBuildTrust,
   summarizeBom,
+  type BuildPlan,
+  type RivetDataSource,
 } from '../src/lib/contracts';
 import {
   DEFAULT_SAVED_EXAMPLES,
@@ -18,10 +22,14 @@ import {
   getSyntheticRoverPlan,
 } from '../src/lib/fixtures';
 import { buildDimensionsByCatalogId, computePlanBoundsMm } from '../src/lib/geometry';
-import { buildBomCsvClientSide } from '../src/lib/plan-store';
+import { buildBomCsvClientSide, useStudioPlanStore } from '../src/lib/plan-store';
 import { computeAssemblyView } from '../src/components/three/assembly';
 import { normalizeVisibility } from '../src/components/three/parts';
 import { buildWiringLayout, type WiringCatalogComponent } from '../src/components/three/wiring';
+
+afterEach(() => {
+  vi.unstubAllEnvs();
+});
 
 describe('Canonical contract & cross-module integration checks (C7)', () => {
   it('validates synthetic rover plan, catalog, and intent and maps every instance to a BOM row', () => {
@@ -88,7 +96,9 @@ describe('Canonical contract & cross-module integration checks (C7)', () => {
     const examples = await fixture.listExamples();
     expect(examples).toHaveLength(1);
     expect(examples[0].example_id).toBe(SYNTHETIC_ROVER_BUILD_ID);
+    expect(DEFAULT_SAVED_EXAMPLES).toHaveLength(2);
     expect(DEFAULT_SAVED_EXAMPLES[0].example_id).toBe(SYNTHETIC_ROVER_BUILD_ID);
+    expect(DEFAULT_SAVED_EXAMPLES[1].example_id).toBe(SOURCED_ROVER_BUILD_ID);
 
     const revisions = await fixture.listRevisions(SYNTHETIC_ROVER_BUILD_ID);
     expect(revisions).toHaveLength(1);
@@ -173,5 +183,112 @@ describe('Canonical contract & cross-module integration checks (C7)', () => {
     expect(wiringLayout.counts.electrical_connections).toBe(20);
     expect(wiringLayout.counts.drawn).toBe(20);
     expect(wiringLayout.counts.rejected).toBe(0);
+  });
+
+  it('routes browser HttpSource calls through the same-origin /api proxy (baseUrl: "") when NEXT_PUBLIC_RIVET_USE_FIXTURES=false', () => {
+    vi.stubEnv('NEXT_PUBLIC_RIVET_USE_FIXTURES', 'false');
+    vi.stubEnv('NEXT_PUBLIC_RIVET_API_URL', '');
+    const { result } = renderHook(() => useStudioPlanStore());
+    expect(result.current.sourceMode).toBe('http');
+    expect(result.current.dataSource).toBeInstanceOf(HttpSource);
+    expect((result.current.dataSource as HttpSource).baseUrl).toBe('');
+    expect(result.current.dataSource.getExportUrl?.('rivet-1', 'bom.csv', 1)).toBe(
+      '/api/projects/rivet-1/exports/bom.csv?revision=1',
+    );
+  });
+
+  it('discards deferred in-flight loadBuild and startGeneration responses after switching sourceMode', async () => {
+    let resolveDeferredBuild!: (value: BuildPlan) => void;
+    const deferredBuildPromise = new Promise<BuildPlan>((resolve) => {
+      resolveDeferredBuild = resolve;
+    });
+
+    const staleHttpPlan = getSyntheticRoverPlan();
+    staleHttpPlan.build_id = 'rivet-stale-http-build';
+    staleHttpPlan.revision = 9;
+
+    const fakeHttpSource: RivetDataSource = {
+      mode: 'http',
+      getCatalog: async () => getSyntheticCatalog(),
+      getBuild: () => deferredBuildPromise,
+      generate: async () => ({ job_id: 'job-http-1', status: 'running', build_id: null }),
+      edit: async () => ({ accepted: false, build_id: 'rivet-stale-http-build' }),
+      getJob: async () => ({
+        job_id: 'job-http-1',
+        status: 'running',
+        stage: 'assembly',
+        progress: null,
+      }),
+      subscribeToJob: () => ({ transport: 'sse', close: () => {} }),
+    };
+
+    const { result } = renderHook(() =>
+      useStudioPlanStore({ initialDataSource: fakeHttpSource }),
+    );
+
+    // Start an in-flight HTTP loadBuild that hasn't resolved yet
+    let pendingLoad!: Promise<void>;
+    act(() => {
+      pendingLoad = result.current.loadBuild('rivet-stale-http-build', 9);
+    });
+
+    // Switch to Fixture Mode while the HTTP request is still in flight
+    await act(async () => {
+      await result.current.setSourceMode('fixture');
+    });
+    expect(result.current.sourceMode).toBe('fixture');
+    expect(result.current.plan.build_id).toBe(SYNTHETIC_ROVER_BUILD_ID);
+
+    // Now resolve the old HTTP getBuild — it must be discarded and never overwrite the fixture plan
+    await act(async () => {
+      resolveDeferredBuild(staleHttpPlan);
+      await pendingLoad;
+    });
+    expect(result.current.sourceMode).toBe('fixture');
+    expect(result.current.plan.build_id).toBe(SYNTHETIC_ROVER_BUILD_ID);
+    expect(result.current.plan.revision).toBe(1);
+  });
+
+  it('pairs loaded saved snapshots with an owning FixtureSource, labels trust as Saved demo build, and handles edits without BUILD_NOT_FOUND', async () => {
+    const { result } = renderHook(() => useStudioPlanStore());
+
+    // Load the sourced engine saved snapshot in default Fixture Mode
+    await act(async () => {
+      await result.current.loadSavedExample(SOURCED_ROVER_BUILD_ID);
+    });
+    expect(result.current.plan.build_id).toBe(SOURCED_ROVER_BUILD_ID);
+    expect(result.current.sourceMode).toBe('fixture');
+    expect(result.current.trust.label).toBe(SAVED_BUILD_LABEL);
+    expect(result.current.trust.isSaved).toBe(true);
+    expect(result.current.trust.canDisplayAsVerified).toBe(false);
+    expect(result.current.dataSource.getExportUrl?.(SOURCED_ROVER_BUILD_ID, 'bom.csv', 1)).toBeNull();
+
+    // Submitting an edit against the loaded sourced snapshot uses the owning FixtureSource (no BUILD_NOT_FOUND)
+    let editRes: Awaited<ReturnType<typeof result.current.submitEdit>> = null;
+    await act(async () => {
+      editRes = await result.current.submitEdit('Increase obstacle stop distance to 0.40 m', {
+        op: 'set_behavior_parameter',
+        name: 'obstacle_stop_distance_m',
+        value: 0.4,
+      });
+    });
+    expect(result.current.editError).toBeNull();
+    expect(editRes).not.toBeNull();
+    expect(editRes!.accepted).toBe(false);
+    expect(editRes!.finding?.rule_id).toBe('fixture.edits_require_live_engine');
+
+    // Also verify when starting from Live API Mode: loading a saved example switches to the owning FixtureSource
+    await act(async () => {
+      await result.current.setSourceMode('http');
+    });
+    expect(result.current.sourceMode).toBe('http');
+
+    await act(async () => {
+      await result.current.loadSavedExample(SOURCED_ROVER_BUILD_ID);
+    });
+    expect(result.current.sourceMode).toBe('fixture');
+    expect(result.current.dataSource.mode).toBe('fixture');
+    expect(result.current.trust.label).toBe(SAVED_BUILD_LABEL);
+    expect(result.current.dataSource.getExportUrl?.(SOURCED_ROVER_BUILD_ID, 'bom.csv', 1)).toBeNull();
   });
 });

@@ -1664,8 +1664,9 @@
   "provenance": {
     "input_mode": "image_and_text",
     "catalog_version": "catalog-v1.1-2026-10-24",
-    "generation_mode": "live",
+    "generation_mode": "fixture",
     "notes": [
+      "Checked-in saved fixture snapshot of rivet_engine output; not a freshly generated live build",
       "Placed from template rover_2wd.v1; poses are computed, not model-generated",
       "Verification covers the engine's implemented rules only; it is not a physical safety certification",
       "Requested controller board.esp32_devkit_v1 has no catalog entry with a wiring profile; used board.esp32_devkitc_v4_wroom32e",

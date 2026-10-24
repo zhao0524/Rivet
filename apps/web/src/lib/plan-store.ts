@@ -29,9 +29,8 @@ import {
 import {
   DEFAULT_SAVED_EXAMPLES,
   SOURCED_ROVER_BUILD_ID,
-  getSourcedCatalog,
-  getSourcedRoverPlan,
-  getSyntheticCatalog,
+  createCombinedFixtureSource,
+  getCombinedFixtureCatalog,
   getSyntheticRoverPlan,
 } from './fixtures';
 import type { GenerateRequest as IntakeGenerateRequest } from '../components/studio/intake/types';
@@ -89,29 +88,51 @@ export function buildBomCsvClientSide(plan: BuildPlan): string {
   return `${[header, ...rows].join('\n')}\n`;
 }
 
+/**
+ * Resolves the `HttpSource` baseUrl:
+ * - In the browser (`typeof window !== 'undefined'`), defaults to `''` (same-origin) so `/api/*`
+ *   requests flow through Next.js rewrites (`next.config.mjs`) without cross-origin CORS failures
+ *   or contacting the viewer's own `localhost:8000`.
+ * - On the server (SSR / Node tests without `window`), falls back to `NEXT_PUBLIC_RIVET_API_URL`
+ *   or `http://localhost:8000`.
+ */
+export function resolveBrowserHttpBaseUrl(): string {
+  if (typeof window !== 'undefined') {
+    return '';
+  }
+  const configured = process.env.NEXT_PUBLIC_RIVET_API_URL;
+  if (configured && configured.trim() !== '') {
+    return configured.replace(/\/+$/, '');
+  }
+  const fallback = createRivetDataSource({ useFixtures: false });
+  return fallback instanceof HttpSource ? fallback.baseUrl : 'http://localhost:8000';
+}
+
 export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
   const [sourceMode, setSourceModeState] = useState<DataSourceMode>(() => {
     if (options.initialDataSource) return options.initialDataSource.mode;
     return process.env.NEXT_PUBLIC_RIVET_USE_FIXTURES === 'false' ? 'http' : 'fixture';
   });
 
+  // Override fixture source when a saved example not present in `initialDataSource` is opened,
+  // or when switching from HTTP mode to a local saved example.
+  const [fixtureOverride, setFixtureOverride] = useState<FixtureSource | null>(null);
+
   const dataSource = useMemo<RivetDataSource>(() => {
-    if (options.initialDataSource && options.initialDataSource.mode === sourceMode) {
+    if (sourceMode === 'fixture') {
+      if (fixtureOverride) return fixtureOverride;
+      if (options.initialDataSource && options.initialDataSource.mode === 'fixture') {
+        return options.initialDataSource;
+      }
+      return createCombinedFixtureSource(SYNTHETIC_ROVER_BUILD_ID);
+    }
+    if (options.initialDataSource && options.initialDataSource.mode === 'http') {
       return options.initialDataSource;
     }
-    if (sourceMode === 'fixture') {
-      return new FixtureSource();
-    }
-    const baseUrl =
-      typeof window !== 'undefined'
-        ? process.env.NEXT_PUBLIC_RIVET_API_URL || ''
-        : createRivetDataSource({ useFixtures: false }) instanceof HttpSource
-          ? (createRivetDataSource({ useFixtures: false }) as HttpSource).baseUrl
-          : 'http://localhost:8000';
-    return new HttpSource({ baseUrl: baseUrl || 'http://localhost:8000' });
-  }, [options.initialDataSource, sourceMode]);
+    return new HttpSource({ baseUrl: resolveBrowserHttpBaseUrl() });
+  }, [options.initialDataSource, sourceMode, fixtureOverride]);
 
-  const [catalog, setCatalog] = useState<CatalogComponent[]>(() => getSyntheticCatalog());
+  const [catalog, setCatalog] = useState<CatalogComponent[]>(() => getCombinedFixtureCatalog());
   const [plan, setPlan] = useState<BuildPlan>(() => getSyntheticRoverPlan());
   const [revisions, setRevisions] = useState<RevisionSummary[]>(() => [
     {
@@ -134,20 +155,36 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
   const [jobEvents, setJobEvents] = useState<StageEvent[]>([]);
   const subscriptionRef = useRef<JobSubscription | null>(null);
 
+  // Epoch counters & AbortController to discard stale in-flight build/generation responses
+  const sourceEpochRef = useRef(0);
+  const buildRequestEpochRef = useRef(0);
+  const activeLoadAbortRef = useRef<AbortController | null>(null);
+  const activeGenAbortRef = useRef<AbortController | null>(null);
+
   const [editPending, setEditPending] = useState(false);
   const [lastEditResponse, setLastEditResponse] = useState<EditResponse | null>(null);
   const [editError, setEditError] = useState<string | null>(null);
 
   const [estelleStatus, setEstelleStatus] = useState<EstelleStatusResponse | null>(null);
   const [estelleGroundResult, setEstelleGroundResult] = useState<EstelleGroundResponse | null>(null);
-  const [estelleLoading, setEstelleLoading] = useState(false);
+  const [estelleLoading, setEstelleSingleLoading] = useState(false);
   const [estelleError, setEstelleError] = useState<string | null>(null);
+
+  const cancelInFlightRequests = useCallback(() => {
+    buildRequestEpochRef.current += 1;
+    activeLoadAbortRef.current?.abort();
+    activeLoadAbortRef.current = null;
+    activeGenAbortRef.current?.abort();
+    activeGenAbortRef.current = null;
+    subscriptionRef.current?.close();
+    subscriptionRef.current = null;
+  }, []);
 
   useEffect(() => {
     return () => {
-      subscriptionRef.current?.close();
+      cancelInFlightRequests();
     };
-  }, []);
+  }, [cancelInFlightRequests]);
 
   const applyValidatedBuild = useCallback((nextPlan: BuildPlan, nextCatalog: CatalogComponent[]) => {
     assertPlanIntegrity(nextPlan, nextCatalog);
@@ -156,18 +193,45 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
     setContractError(null);
   }, []);
 
-  const refreshRevisions = useCallback(
-    async (buildId: string, targetPlan: BuildPlan) => {
-      if (dataSource.listRevisions) {
+  const refreshRevisionsForSource = useCallback(
+    async (
+      source: RivetDataSource,
+      buildId: string,
+      targetPlan: BuildPlan,
+      signal: AbortSignal | undefined,
+      expectedBuildEpoch: number,
+      expectedSourceEpoch: number,
+    ) => {
+      if (source.listRevisions) {
         try {
-          const list = await dataSource.listRevisions(buildId);
+          const list = await source.listRevisions(buildId, { signal });
+          if (
+            signal?.aborted ||
+            expectedBuildEpoch !== buildRequestEpochRef.current ||
+            expectedSourceEpoch !== sourceEpochRef.current
+          ) {
+            return;
+          }
           if (list.length > 0) {
             setRevisions(list);
             return;
           }
         } catch {
-          // Fall back to the active revision entry below if the endpoint isn't reachable.
+          if (
+            signal?.aborted ||
+            expectedBuildEpoch !== buildRequestEpochRef.current ||
+            expectedSourceEpoch !== sourceEpochRef.current
+          ) {
+            return;
+          }
         }
+      }
+      if (
+        signal?.aborted ||
+        expectedBuildEpoch !== buildRequestEpochRef.current ||
+        expectedSourceEpoch !== sourceEpochRef.current
+      ) {
+        return;
       }
       setRevisions([
         {
@@ -178,21 +242,49 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
         },
       ]);
     },
-    [dataSource],
+    [],
   );
 
-  const loadBuild = useCallback(
-    async (buildId: string, revision?: number) => {
+  const loadBuildFromSource = useCallback(
+    async (source: RivetDataSource, buildId: string, revision?: number) => {
+      activeLoadAbortRef.current?.abort();
+      const controller = new AbortController();
+      activeLoadAbortRef.current = controller;
+      const myBuildEpoch = ++buildRequestEpochRef.current;
+      const mySourceEpoch = sourceEpochRef.current;
+
       setLoading(true);
       setRevisionError(null);
       try {
         const [nextCatalog, nextPlan] = await Promise.all([
-          dataSource.getCatalog(),
-          dataSource.getBuild(buildId, revision),
+          source.getCatalog({ signal: controller.signal }),
+          source.getBuild(buildId, revision, { signal: controller.signal }),
         ]);
+        if (
+          controller.signal.aborted ||
+          myBuildEpoch !== buildRequestEpochRef.current ||
+          mySourceEpoch !== sourceEpochRef.current
+        ) {
+          return;
+        }
         applyValidatedBuild(nextPlan, nextCatalog);
-        await refreshRevisions(nextPlan.build_id, nextPlan);
+        await refreshRevisionsForSource(
+          source,
+          nextPlan.build_id,
+          nextPlan,
+          controller.signal,
+          myBuildEpoch,
+          mySourceEpoch,
+        );
       } catch (err) {
+        if (
+          controller.signal.aborted ||
+          myBuildEpoch !== buildRequestEpochRef.current ||
+          mySourceEpoch !== sourceEpochRef.current ||
+          (err instanceof RivetError && err.kind === 'aborted')
+        ) {
+          return;
+        }
         const msg = formatError(err, `Failed to load build ${buildId}`);
         if (err instanceof RivetError && err.kind === 'contract') {
           setContractError(msg);
@@ -200,93 +292,125 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
           setRevisionError(msg);
         }
       } finally {
-        setLoading(false);
+        if (
+          !controller.signal.aborted &&
+          myBuildEpoch === buildRequestEpochRef.current &&
+          mySourceEpoch === sourceEpochRef.current
+        ) {
+          setLoading(false);
+        }
       }
     },
-    [dataSource, applyValidatedBuild, refreshRevisions],
+    [applyValidatedBuild, refreshRevisionsForSource],
+  );
+
+  const loadBuild = useCallback(
+    async (buildId: string, revision?: number) => {
+      return loadBuildFromSource(dataSource, buildId, revision);
+    },
+    [dataSource, loadBuildFromSource],
   );
 
   const loadSavedExample = useCallback(
     async (exampleId: string) => {
-      setLoading(true);
+      const targetId = exampleId === 'rover_obstacle_v1' ? SYNTHETIC_ROVER_BUILD_ID : exampleId;
+
+      // Cancel any in-flight HTTP or fixture requests before loading the saved example
+      sourceEpochRef.current += 1;
+      cancelInFlightRequests();
       setContractError(null);
       setRevisionError(null);
       setEditError(null);
       setLastEditResponse(null);
+      setJob(null);
+      setJobEvents([]);
+
+      // Ensure the saved example is paired with a FixtureSource that actually owns `targetId`
+      let owningFixture: RivetDataSource;
+      const candidateFixture =
+        options.initialDataSource && options.initialDataSource.mode === 'fixture'
+          ? options.initialDataSource
+          : createCombinedFixtureSource(targetId);
+
+      let candidateOwnsTarget = false;
       try {
-        if (exampleId === SOURCED_ROVER_BUILD_ID) {
-          const nextCatalog = getSourcedCatalog();
-          const nextPlan = getSourcedRoverPlan();
-          applyValidatedBuild(nextPlan, nextCatalog);
-          setLoadedExampleId(exampleId);
-          setRevisions([
-            {
-              revision: nextPlan.revision,
-              created_at: nextPlan.created_at,
-              status: nextPlan.status,
-              title: nextPlan.title,
-              label: 'Sourced engine snapshot',
-            },
-          ]);
-          return;
-        }
-        const fixture = new FixtureSource();
-        const targetId = exampleId === 'rover_obstacle_v1' ? SYNTHETIC_ROVER_BUILD_ID : exampleId;
-        const [nextCatalog, nextPlan] = await Promise.all([
-          fixture.getCatalog(),
-          fixture.getBuild(targetId),
-        ]);
-        applyValidatedBuild(nextPlan, nextCatalog);
-        setLoadedExampleId(exampleId);
-        setRevisions([
-          {
-            revision: nextPlan.revision,
-            created_at: nextPlan.created_at,
-            status: nextPlan.status,
-            title: nextPlan.title,
-            label: 'Saved synthetic example',
-          },
-        ]);
-      } catch (err) {
-        setContractError(formatError(err, `Could not open saved example ${exampleId}`));
-      } finally {
-        setLoading(false);
+        await candidateFixture.getBuild(targetId);
+        candidateOwnsTarget = true;
+      } catch {
+        candidateOwnsTarget = false;
       }
+
+      if (candidateOwnsTarget) {
+        owningFixture = candidateFixture;
+        if (owningFixture !== options.initialDataSource && owningFixture instanceof FixtureSource) {
+          setFixtureOverride(owningFixture);
+        } else {
+          setFixtureOverride(null);
+        }
+      } else {
+        const combined = createCombinedFixtureSource(targetId);
+        owningFixture = combined;
+        setFixtureOverride(combined);
+      }
+
+      if (sourceMode !== 'fixture') {
+        setSourceModeState('fixture');
+      }
+
+      setLoadedExampleId(exampleId);
+      await loadBuildFromSource(owningFixture, targetId);
     },
-    [applyValidatedBuild],
+    [cancelInFlightRequests, loadBuildFromSource, options.initialDataSource, sourceMode],
   );
 
   const setSourceMode = useCallback(
     async (nextMode: DataSourceMode) => {
-      subscriptionRef.current?.close();
-      subscriptionRef.current = null;
-      setSourceModeState(nextMode);
+      sourceEpochRef.current += 1;
+      cancelInFlightRequests();
       setEditError(null);
       setLastEditResponse(null);
       setRevisionError(null);
+      setJob(null);
+      setJobEvents([]);
+      setFixtureOverride(null);
+      setSourceModeState(nextMode);
       if (nextMode === 'fixture') {
-        await loadSavedExample(SYNTHETIC_ROVER_BUILD_ID);
+        const fixtureSource =
+          options.initialDataSource && options.initialDataSource.mode === 'fixture'
+            ? options.initialDataSource
+            : createCombinedFixtureSource(SYNTHETIC_ROVER_BUILD_ID);
+        setLoadedExampleId(SYNTHETIC_ROVER_BUILD_ID);
+        await loadBuildFromSource(fixtureSource, SYNTHETIC_ROVER_BUILD_ID);
       }
     },
-    [loadSavedExample],
+    [cancelInFlightRequests, loadBuildFromSource, options.initialDataSource],
   );
 
   useEffect(() => {
     let cancelled = false;
+    const effectSourceEpoch = sourceEpochRef.current;
+    const effectBuildEpoch = buildRequestEpochRef.current;
+
     async function syncSourceMetadata() {
       let defaultExampleId = SYNTHETIC_ROVER_BUILD_ID;
       if (dataSource.listExamples) {
         try {
           const ex = await dataSource.listExamples();
-          if (!cancelled && ex.length > 0) {
+          if (!cancelled && effectSourceEpoch === sourceEpochRef.current && ex.length > 0) {
             setSavedExamples(ex);
             defaultExampleId = ex[0].example_id;
           }
         } catch {
-          if (!cancelled) setSavedExamples([...DEFAULT_SAVED_EXAMPLES]);
+          if (!cancelled && effectSourceEpoch === sourceEpochRef.current) {
+            setSavedExamples([...DEFAULT_SAVED_EXAMPLES]);
+          }
         }
       }
-      if (dataSource.mode === 'fixture') {
+      if (
+        dataSource.mode === 'fixture' &&
+        effectBuildEpoch === 0 &&
+        buildRequestEpochRef.current === 0
+      ) {
         try {
           const targetId =
             defaultExampleId === 'rover_obstacle_v1' ? SYNTHETIC_ROVER_BUILD_ID : defaultExampleId;
@@ -294,9 +418,20 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
             dataSource.getCatalog(),
             dataSource.getBuild(targetId),
           ]);
-          if (!cancelled) {
+          if (
+            !cancelled &&
+            effectSourceEpoch === sourceEpochRef.current &&
+            buildRequestEpochRef.current === 0
+          ) {
             applyValidatedBuild(nextPlan, nextCatalog);
-            await refreshRevisions(nextPlan.build_id, nextPlan);
+            await refreshRevisionsForSource(
+              dataSource,
+              nextPlan.build_id,
+              nextPlan,
+              undefined,
+              0,
+              effectSourceEpoch,
+            );
           }
         } catch {
           // Keep initial synthetic fallback if custom fixture has no default build
@@ -305,9 +440,9 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
       if (dataSource.getEstelleStatus) {
         try {
           const st = await dataSource.getEstelleStatus();
-          if (!cancelled) setEstelleStatus(st);
+          if (!cancelled && effectSourceEpoch === sourceEpochRef.current) setEstelleStatus(st);
         } catch {
-          if (!cancelled) {
+          if (!cancelled && effectSourceEpoch === sourceEpochRef.current) {
             setEstelleStatus({
               status: 'unavailable',
               enabled: false,
@@ -324,14 +459,14 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
     return () => {
       cancelled = true;
     };
-  }, [dataSource, applyValidatedBuild, refreshRevisions]);
+  }, [dataSource, applyValidatedBuild, refreshRevisionsForSource]);
 
   const uploadImage = useCallback(
     async (file: File, opts?: { signal?: AbortSignal }): Promise<UploadedImageAsset> => {
       if (dataSource.uploadImage) {
         return dataSource.uploadImage(file, opts);
       }
-      const fallback = new FixtureSource();
+      const fallback = createCombinedFixtureSource();
       return fallback.uploadImage(file, opts);
     },
     [dataSource],
@@ -339,8 +474,16 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
 
   const startGeneration = useCallback(
     async (request: IntakeGenerateRequest) => {
+      activeGenAbortRef.current?.abort();
       subscriptionRef.current?.close();
       subscriptionRef.current = null;
+
+      const genController = new AbortController();
+      activeGenAbortRef.current = genController;
+      const mySourceEpoch = sourceEpochRef.current;
+      const myBuildEpoch = ++buildRequestEpochRef.current;
+      const activeSource = dataSource;
+
       setJobEvents([]);
       setContractError(null);
       setRevisionError(null);
@@ -364,7 +507,15 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
         },
       };
 
-      const res = await dataSource.generate(wireRequest);
+      const res = await activeSource.generate(wireRequest, { signal: genController.signal });
+      if (
+        genController.signal.aborted ||
+        mySourceEpoch !== sourceEpochRef.current ||
+        myBuildEpoch !== buildRequestEpochRef.current
+      ) {
+        return res;
+      }
+
       const initialJob: JobResponse = {
         job_id: res.job_id,
         status: res.status,
@@ -375,9 +526,16 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
       };
       setJob(initialJob);
 
-      const sub = dataSource.subscribeToJob(
+      const sub = activeSource.subscribeToJob(
         res.job_id,
         (event) => {
+          if (
+            genController.signal.aborted ||
+            mySourceEpoch !== sourceEpochRef.current ||
+            myBuildEpoch !== buildRequestEpochRef.current
+          ) {
+            return;
+          }
           setJobEvents((prev) => [...prev, event]);
           setJob((prev) =>
             prev
@@ -395,16 +553,35 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
           );
         },
         {
+          signal: genController.signal,
           onJob: (finalJob) => {
+            if (
+              genController.signal.aborted ||
+              mySourceEpoch !== sourceEpochRef.current ||
+              myBuildEpoch !== buildRequestEpochRef.current
+            ) {
+              return;
+            }
             setJob(finalJob);
             if (finalJob.status === 'complete' && finalJob.build_id) {
               setLoadedExampleId(
-                dataSource.mode === 'fixture' ? finalJob.build_id : null,
+                activeSource.mode === 'fixture' ? finalJob.build_id : null,
               );
-              void loadBuild(finalJob.build_id, finalJob.revision ?? undefined);
+              void loadBuildFromSource(
+                activeSource,
+                finalJob.build_id,
+                finalJob.revision ?? undefined,
+              );
             }
           },
           onError: (err) => {
+            if (
+              genController.signal.aborted ||
+              mySourceEpoch !== sourceEpochRef.current ||
+              myBuildEpoch !== buildRequestEpochRef.current
+            ) {
+              return;
+            }
             setJob((prev) =>
               prev
                 ? {
@@ -425,43 +602,66 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
       subscriptionRef.current = sub;
       return res;
     },
-    [dataSource, loadBuild],
+    [dataSource, loadBuildFromSource],
   );
 
   const cancelJob = useCallback((_jobId: string) => {
+    activeGenAbortRef.current?.abort();
+    activeGenAbortRef.current = null;
     subscriptionRef.current?.close();
     subscriptionRef.current = null;
   }, []);
 
   const submitEdit = useCallback(
     async (instruction: string, operation?: EditOperation): Promise<EditResponse | null> => {
+      const mySourceEpoch = sourceEpochRef.current;
+      const myBuildEpoch = buildRequestEpochRef.current;
+      const activeSource = dataSource;
+
       setEditPending(true);
       setEditError(null);
       setLastEditResponse(null);
       try {
-        const res = await dataSource.edit(plan.build_id, {
+        const res = await activeSource.edit(plan.build_id, {
           base_revision: plan.revision,
           instruction,
           operation,
         });
+        if (
+          mySourceEpoch !== sourceEpochRef.current ||
+          myBuildEpoch !== buildRequestEpochRef.current
+        ) {
+          return null;
+        }
         setLastEditResponse(res);
         if (res.accepted && typeof res.revision === 'number') {
-          await loadBuild(res.build_id, res.revision);
+          await loadBuildFromSource(activeSource, res.build_id, res.revision);
         }
         return res;
       } catch (err) {
+        if (
+          mySourceEpoch !== sourceEpochRef.current ||
+          myBuildEpoch !== buildRequestEpochRef.current
+        ) {
+          return null;
+        }
         setEditError(formatError(err, 'Failed to submit edit'));
         return null;
       } finally {
-        setEditPending(false);
+        if (
+          mySourceEpoch === sourceEpochRef.current &&
+          myBuildEpoch === buildRequestEpochRef.current
+        ) {
+          setEditPending(false);
+        }
       }
     },
-    [dataSource, plan.build_id, plan.revision, loadBuild],
+    [dataSource, plan.build_id, plan.revision, loadBuildFromSource],
   );
 
   const runEstelleGround = useCallback(
     async (req: EstelleGroundRequest) => {
-      setEstelleLoading(true);
+      setEstelleSingleLoading(true);
       setEstelleError(null);
       try {
         if (dataSource.groundSymbol) {
@@ -469,7 +669,7 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
           setEstelleGroundResult(result);
           return result;
         }
-        const fallback = new FixtureSource();
+        const fallback = createCombinedFixtureSource();
         const result = await fallback.groundSymbol(req);
         setEstelleGroundResult(result);
         return result;
@@ -477,7 +677,7 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
         setEstelleError(formatError(err, 'Estelle grounding call failed'));
         return null;
       } finally {
-        setEstelleLoading(false);
+        setEstelleSingleLoading(false);
       }
     },
     [dataSource],

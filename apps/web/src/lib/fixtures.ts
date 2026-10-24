@@ -4,6 +4,7 @@ import rawIntent from './rivet/fixtures/synthetic-intent-rover-obstacle-v1.json'
 import rawPlan from './rivet/fixtures/synthetic-rover-obstacle-v1.json';
 import rawCatalog from './rivet/fixtures/synthetic-seed-components.json';
 import {
+  FixtureSource,
   SYNTHETIC_ROVER_BUILD_ID,
   assertPlanIntegrity,
   parseBuildPlan,
@@ -40,6 +41,21 @@ export function getSourcedRoverPlan(): BuildPlan {
   return plan;
 }
 
+export function getCombinedFixtureCatalog(): CatalogComponent[] {
+  const byId = new Map<string, CatalogComponent>();
+  for (const item of getSyntheticCatalog()) byId.set(item.catalog_id, item);
+  for (const item of getSourcedCatalog()) byId.set(item.catalog_id, item);
+  return [...byId.values()];
+}
+
+export function createCombinedFixtureSource(defaultBuildId: string = SYNTHETIC_ROVER_BUILD_ID): FixtureSource {
+  return new FixtureSource({
+    catalog: getCombinedFixtureCatalog(),
+    plans: [getSyntheticRoverPlan(), getSourcedRoverPlan()],
+    defaultBuildId,
+  });
+}
+
 export function getSyntheticRoverIntent(): IntentSpec {
   return parseIntentSpec(structuredClone(rawIntent));
 }
@@ -57,6 +73,6 @@ export const DEFAULT_SAVED_EXAMPLES: readonly SavedExampleSummary[] = Object.fre
     title: 'Indoor obstacle rover (Engine-Sourced Stack)',
     project_family: 'rover',
     status: 'unbuildable',
-    generation_mode: 'live',
+    generation_mode: 'fixture',
   },
 ]);
