@@ -79,7 +79,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | INT-0 | Repo skeleton: folders, root `package.json`, `pnpm-workspace.yaml`, `.env.example`, `.gitignore` | DONE | [INT] | Folders match `docs/implementation.md` §2 |
 | INT-1 | `contracts/` schemas: intent, component, build-plan, errors, `api.md` | DONE | [INT] | Schemas validate the Appendix A fixtures |
 | INT-2 | `fixtures/` from Appendix A: seed catalog, rover plan, failing-driver plan, intent, sim scenario | DONE | [INT] | Every fixture is valid against its schema |
-| INT-3 | CI: fixture validation, engine pytest, API pytest, web checks, optional PlatformIO | IN PROGRESS | [INT] | CI green on `main` |
+| INT-3 | CI: fixture validation, engine pytest, API pytest, web checks, optional PlatformIO | DONE | [INT] | CI green on `main` |
 
 ### Developer A `[A]` · `services/api/**`
 
@@ -156,6 +156,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
 
+- 2026-10-24 [INT] INT-3: Marked DONE now that CI is green on `main`. All three `main` runs so far (#76 onward) concluded `success`; the four lane jobs passed each time and the optional firmware job failed each time without stopping the other lanes or failing the run (no job has `needs:`; firmware is job-level `continue-on-error: true`). Checked: `gh run list --workflow CI --branch main`, `gh run view <id> --json jobs` and the job logs. Run 40112241364 (`b038103`): Fixture validation (all contract checks passed), Engine (360 passed, 4 skipped), API (391 passed, 1 skipped), Web (lint, typecheck, 42 files / 382 tests, build) success; Firmware compile (optional) failure. Runs 40111722459 (`9dffa09`) and 40111560430 (`af268f5`): the same five job conclusions. Notes: the firmware job stops at `pio run`'s library install (`UnknownPackageError` for `adafruit/Adafruit VL53L0X @ 1.2.4`, §6 item 1), so the `DISABLED` clash (item 2) is never reached in CI. Playwright e2e is not in CI yet (#71). `main` has no branch protection, so no check is required to merge.
 - 2026-10-24 [A] PLAN: Added `docs/plan-verified-parts.md`, the plan for image to verified SKU to traced parts list, with an evidence contract, source tiers, four user-facing outcomes (exact, partial, no match with alternatives, unsupported) and strictness gates. Re-captured the upload flow with Playwright on `main` @ `d961d9d`: an image still opens the fixed synthetic starter rover and nothing is identified or verified. Checked: docs only. Notes: implementation issues #81 to #87 are filed under epic #72, one set per lane.
 - 2026-10-24 [C] UI #56 #57 merge: Merged the updated PR #77 branch (now on `main`) into PR #78; only `context.md` conflicted, kept both sides. `e2e/assembly.spec.ts` asserted the old hard-coded row colour; it now checks `data-selected="true"`. Checked: `pnpm --filter web typecheck`, `test` 44 files / 410 passed, `build` ok, `playwright test` 9/9 passed.
 
