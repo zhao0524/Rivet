@@ -116,18 +116,21 @@
   50% { translate: 0 -14px; rotate: calc(var(--mk-rot, 0deg) + 4deg); }
 }
 .mk-hero > .mk-decor { overflow: hidden; }
-.mk-decor--hero-gear { width: 210px; left: max(-40px, calc(50% - 720px)); top: 40px; --mk-rot: -12deg; }
-.mk-decor--hero-wrench { width: 92px; right: max(24px, calc(50% - 620px)); top: 36px; --mk-rot: 28deg; }
-.mk-decor--hero-nut { width: 130px; left: max(24px, calc(50% - 560px)); bottom: 60px; --mk-rot: 8deg; }
-.mk-decor--hero-spring { width: 190px; right: max(-30px, calc(50% - 720px)); bottom: 120px; --mk-rot: -6deg; }
-.mk-decor--hero-bolt { width: 120px; right: max(40px, calc(50% - 470px)); bottom: 24px; --mk-rot: -18deg; opacity: 0.9; }
+/* Hero: large renders fill the space either side of the 640px copy column and never sit under text. */
+.mk-hero { min-height: min(920px, calc(100vh - 64px)); }
+.mk-decor--hero-gear { width: clamp(220px, 25vw, 380px); left: max(-70px, calc(50% - 790px)); top: 8px; --mk-rot: -12deg; }
+.mk-decor--hero-hexnut { width: clamp(150px, 15vw, 230px); left: max(8px, calc(50% - 600px)); top: 390px; --mk-rot: 10deg; }
+.mk-decor--hero-nut { width: clamp(170px, 17vw, 260px); left: max(-20px, calc(50% - 720px)); bottom: 0; --mk-rot: 8deg; }
+.mk-decor--hero-wrench { width: clamp(120px, 12vw, 190px); right: max(40px, calc(50% - 590px)); top: 18px; --mk-rot: 28deg; }
+.mk-decor--hero-crystal { width: clamp(190px, 19vw, 290px); right: max(-50px, calc(50% - 780px)); top: 240px; --mk-rot: 6deg; }
+.mk-decor--hero-spring { width: clamp(220px, 24vw, 360px); right: max(-70px, calc(50% - 760px)); bottom: -30px; --mk-rot: -6deg; }
 .mk-proof__statwrap { position: relative; }
 .mk-proof__statwrap > * { position: relative; z-index: 1; }
 .mk-proof__statwrap > .mk-decor { position: absolute; z-index: 0; }
-.mk-decor--proof-crystal { width: 170px; left: 150px; top: -40px; --mk-rot: 10deg; }
+.mk-decor--proof-bolt { width: 170px; left: 150px; top: -50px; --mk-rot: 10deg; }
 .mk-footer__cta { position: relative; }
 .mk-footer__cta > :not(.mk-decor) { position: relative; z-index: 1; }
-.mk-decor--cta-bolt { width: 120px; right: 31%; top: -90px; --mk-rot: 14deg; }
+.mk-decor--cta-bolt { width: 140px; right: 30%; top: -84px; --mk-rot: 14deg; }
 .mk-decor--cta-nut { width: 92px; right: 4px; top: -84px; --mk-rot: -10deg; }
 .mk-decor--cta-wrench { width: 50px; left: -84px; top: -40px; --mk-rot: -32deg; }
 .mk-hero__copy, .mk-hero > :not(.mk-decor) { position: relative; z-index: 1; }
@@ -355,10 +358,18 @@
 
 /* ── Responsive ───────────────────────────────────────── */
 @media (max-width: 1240px) {
-  .mk-decor--hero-gear { width: 140px; left: -36px; top: 8px; }
-  .mk-decor--hero-spring { width: 120px; right: -36px; bottom: auto; top: 12px; }
-  .mk-decor--hero-wrench, .mk-decor--hero-bolt { display: none; }
-  .mk-decor--hero-nut { width: 90px; left: auto; right: 12px; bottom: 16px; }
+  .mk-decor--hero-hexnut { display: none; }
+  .mk-decor--hero-gear { left: -90px; }
+  .mk-decor--hero-crystal { right: -80px; top: 300px; }
+  .mk-decor--hero-wrench { right: 20px; }
+}
+@media (max-width: 760px) {
+  .mk-hero { min-height: 0; padding-top: 176px; padding-bottom: 220px; }
+  .mk-decor--hero-gear { width: 190px; left: -56px; top: -6px; }
+  .mk-decor--hero-wrench { width: 84px; right: 96px; top: -4px; }
+  .mk-decor--hero-crystal { width: 150px; right: -44px; top: 4px; }
+  .mk-decor--hero-nut { width: 150px; left: -20px; bottom: 30px; }
+  .mk-decor--hero-spring { width: 190px; right: -40px; bottom: 0; }
 }
 
 @media (max-width: 1000px) {
@@ -367,7 +378,7 @@
   .mk-paths__head, .mk-proof__head, .mk-showcase__foot, .mk-footer__cta { grid-template-columns: 1fr; gap: 24px; }
   .mk-decor--cta-wrench, .mk-decor--cta-bolt { display: none; }
   .mk-decor--cta-nut { width: 72px; top: -64px; }
-  .mk-decor--proof-crystal { width: 120px; left: 120px; top: -20px; }
+  .mk-decor--proof-bolt { width: 120px; left: 120px; top: -20px; }
   .mk-footer__go { justify-self: start; text-align: left; }
   .mk-path, .mk-path--flip { grid-template-columns: 1fr; }
   .mk-path--flip .mk-path__visual { order: 2; }
@@ -383,7 +394,7 @@
   .mk-section { padding: 64px 16px; }
   .mk-nav { padding: 10px 12px; gap: 8px; }
   .mk-nav__projects { display: none; }
-  .mk-hero { padding: 56px 16px 72px; }
+  .mk-hero { padding-left: 16px; padding-right: 16px; }
   .mk-hero__title { font-size: clamp(40px, 11.5vw, 56px); }
   .mk-path__copy { padding: 28px 24px; }
   .mk-path__visual { padding: 24px; min-height: 260px; }
