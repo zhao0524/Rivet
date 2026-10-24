@@ -5,10 +5,12 @@ from rivet_api.agents.vision import build_vision_port
 from rivet_api.assets.store import AssetStore
 from rivet_api.config import Settings, get_settings
 from rivet_api.errors import register_error_handlers
+from rivet_api.firmware.estelle import RepoGrounder
 from rivet_api.orchestration.jobs import JobManager
 from rivet_api.orchestration.pipeline import Deps
 from rivet_api.orchestration.versions import ProjectStore
 from rivet_api.routes import assets as assets_routes
+from rivet_api.routes import estelle as estelle_routes
 from rivet_api.routes import exports, health, jobs, projects
 
 
@@ -39,6 +41,7 @@ def create_app(
     assets=None,
     store: ProjectStore | None = None,
     job_manager: JobManager | None = None,
+    grounder=None,
 ) -> FastAPI:
     settings = settings or get_settings()
     app = FastAPI(title="Rivet API", version="0.1.0")
@@ -49,6 +52,7 @@ def create_app(
         store=store or ProjectStore(settings.data_root / "projects"),
         jobs=job_manager or JobManager(settings.data_root / "jobs"),
         assets=assets or AssetStore(settings.data_root / "assets"),
+        grounder=grounder or RepoGrounder.from_settings(settings),
     )
     app.state.settings = settings
     app.state.deps = deps
@@ -59,6 +63,7 @@ def create_app(
     app.include_router(jobs.router)
     app.include_router(projects.router)
     app.include_router(exports.router)
+    app.include_router(estelle_routes.router)
     app.include_router(assets_routes.router)
     return app
 

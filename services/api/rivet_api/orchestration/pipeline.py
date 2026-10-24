@@ -33,6 +33,7 @@ class Deps:
     jobs: JobManager
     assets: Any  # exists(asset_id) -> bool; read_bytes(asset_id) -> (bytes, mime)
     edit_selector: EditSelector | None = None
+    grounder: Any = None  # RepoGrounder; optional so tests can omit it
 
 
 _VALIDATE_STATUS = {
