@@ -98,6 +98,8 @@ class EngineState:
     max_budget: str | None = None
     currency: str = "USD"
     requested_behavior: str | None = None
+    max_length_mm: float | None = None
+    max_width_mm: float | None = None
     mount_offsets: Mapping[str, tuple[float, float, float]] = field(default_factory=dict)
 
     def note(self) -> str:
@@ -105,6 +107,8 @@ class EngineState:
             "max_budget": self.max_budget,
             "currency": self.currency,
             "requested_behavior": self.requested_behavior,
+            "max_length_mm": self.max_length_mm,
+            "max_width_mm": self.max_width_mm,
             "mount_offsets": {k: list(v) for k, v in sorted(self.mount_offsets.items())},
         }
         return STATE_PREFIX + json.dumps(data, sort_keys=True)
@@ -119,6 +123,8 @@ class EngineState:
                         max_budget=data.get("max_budget"),
                         currency=data.get("currency") or "USD",
                         requested_behavior=data.get("requested_behavior"),
+                        max_length_mm=data.get("max_length_mm"),
+                        max_width_mm=data.get("max_width_mm"),
                         mount_offsets={k: tuple(v) for k, v in (data.get("mount_offsets") or {}).items()},
                     )
                 except (ValueError, TypeError, AttributeError):
@@ -126,13 +132,13 @@ class EngineState:
         return cls()
 
     def requirements(self) -> IntentRequirements | None:
-        if self.max_budget is None:
+        if self.max_budget is None and self.max_length_mm is None and self.max_width_mm is None:
             return None
         return IntentRequirements(
             max_budget=self.max_budget,
             currency=self.currency,
-            max_length_mm=None,
-            max_width_mm=None,
+            max_length_mm=self.max_length_mm,
+            max_width_mm=self.max_width_mm,
             preferred_controller_catalog_id=None,
             required_capabilities=["differential_drive", "distance_sensing"],
             preferred_color=None,
@@ -385,6 +391,8 @@ def solve_intent(intent: IntentSpec, builder: Builder, created_at: str | None = 
     state = EngineState(
         max_budget=intent.requirements.max_budget,
         currency=intent.requirements.currency,
+        max_length_mm=intent.requirements.max_length_mm,
+        max_width_mm=intent.requirements.max_width_mm,
         requested_behavior=intent.requested_behavior if intent.requested_behavior == "obstacle_avoidance" else None,
     )
     plan = builder.assemble(
@@ -421,11 +429,11 @@ def edit_plan(plan: BuildPlan, operation: Mapping[str, Any], builder: Builder, c
     if op == "set_budget":
         amount, currency = operation.get("amount"), operation.get("currency", "USD")
         try:
-            IntentRequirements(max_budget=amount, currency=currency, max_length_mm=None, max_width_mm=None,
+            validated = IntentRequirements(max_budget=amount, currency=currency, max_length_mm=None, max_width_mm=None,
                                preferred_controller_catalog_id=None, required_capabilities=[], preferred_color=None)
         except ValidationError:
             return _reject("edit.set_budget", f"Budget {amount!r} is not a non-negative decimal amount")
-        state = replace(state, max_budget=str(amount), currency=currency)
+        state = replace(state, max_budget=validated.max_budget, currency=validated.currency)
     elif op == "set_behavior_parameter":
         name, value = operation.get("name"), operation.get("value")
         if name not in PARAMETER_BOUNDS:
@@ -442,8 +450,11 @@ def edit_plan(plan: BuildPlan, operation: Mapping[str, Any], builder: Builder, c
         selection = replace(selection, distance_sensor=catalog_id)
     elif op == "set_mount_offset_within_template":
         instance_id, offset = operation.get("instance_id"), operation.get("offset_mm")
-        if not isinstance(offset, (list, tuple)) or len(offset) != 3:
-            return _reject("edit.mount_offset", "offset_mm must be three numbers")
+        if not isinstance(instance_id, str):
+            return _reject("edit.mount_offset", "instance_id must be a string")
+        if (not isinstance(offset, (list, tuple)) or len(offset) != 3
+                or any(isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v) for v in offset)):
+            return _reject("edit.mount_offset", "offset_mm must be three finite numbers")
         state = replace(state, mount_offsets={**state.mount_offsets, instance_id: tuple(float(v) for v in offset)})
     elif op == "change_appearance_color":
         instance_id, color = operation.get("instance_id"), operation.get("color")

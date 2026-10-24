@@ -196,3 +196,21 @@ def test_input_and_catalog_not_mutated():
 def test_result_has_no_extra_plan_fields():
     result = repair_candidate(high_stall_plan(), support.synthetic_catalog(), rebuild=swap_rebuild(), verify=current_rule)
     assert set(result.plan.to_wire()) == set(support.synthetic_plan_dict())
+
+
+def test_caller_cannot_exceed_three_accepted_repair_rounds():
+    plan = support.synthetic_plan()
+    initial_height = next(c for c in plan.components if c.instance_id == "sensor-1").pose.position_mm[1]
+
+    def verify(candidate, catalog):
+        height = next(c for c in candidate.components if c.instance_id == "sensor-1").pose.position_mm[1]
+        remaining = max(0, 5 - int(height - initial_height))
+        return report(*[finding(f"mechanical.clearance_{n}", "FAIL", "blocking", "clearance", ["sensor-1"]) for n in range(remaining)])
+
+    result = repair_candidate(plan, support.synthetic_catalog(), rebuild=swap_rebuild(), verify=verify,
+                              layout_options=lambda f, p: [OffsetCorrection("sensor-1", (0, 1, 0), "nudge")],
+                              max_rounds=100)
+    assert len([attempt for attempt in result.attempts if attempt.accepted]) == 3
+    assert max(attempt.round for attempt in result.attempts) == 3
+    assert result.outcome == "improved"
+    assert result.report.overall == "unbuildable"

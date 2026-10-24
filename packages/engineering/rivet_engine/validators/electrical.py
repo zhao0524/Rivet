@@ -6,9 +6,9 @@ on approximated catalog evidence is downgraded to an advisory WARN.
 Motor current rule: motor stall current (motor port current_limit_a) against the driver
 output's continuous rating (driver port current_limit_a):
   stall <= continuous                -> PASS
-  continuous < stall <= 1.5x         -> WARN (advisory): brief stalls rely on the driver's peak rating
-  stall > 1.5x continuous            -> FAIL (blocking)
-The 1.5x margin is an engineering heuristic, not a vendor rating.
+  stall > continuous                 -> FAIL (blocking)
+Unverified current evidence remains UNKNOWN; peak ratings alone do not establish
+a supported stall duration or protection mechanism.
 """
 
 from __future__ import annotations
@@ -18,8 +18,6 @@ from collections import defaultdict
 
 from rivet_engine.models import Connection, Finding, Port
 from rivet_engine.validators.common import PlanView, Rule, compare_range
-
-STALL_FAIL_RATIO = 1.5
 
 DRIVING = {"digital_output", "digital_io", "pwm_output"}
 I2C = {"i2c", "i2c_sda", "i2c_scl"}
@@ -236,17 +234,17 @@ def _motor_current(view, conns):
             rule.unknown(f"Cannot confirm stall-current margin because the {driver_id} outputs for {motor_id} have no current rating", ids, view.urls(ids))
             continue
         stall, cont = max(stalls), min(conts)
-        if stall <= cont:
+        if not view.ratings_verified(ids):
+            rule.unknown(f"Cannot confirm stall-current margin from unverified ratings for {motor_id} and {driver_id}", ids, view.urls(ids))
+        elif stall <= cont:
             rule.ok(ids, view.urls(ids))
-        elif stall <= cont * STALL_FAIL_RATIO:
-            rule.warn(
+        else:
+            rule.fail(
                 f"{motor_id} stall current {stall} A exceeds the {driver_id} continuous rating {cont} A; "
-                "short stalls rely on the driver's peak rating, avoid holding the motor stalled",
+                "no validated stall-duration limit or current protection is modeled",
                 ids,
                 view.urls(ids),
             )
-        else:
-            rule.fail(f"{motor_id} stall current {stall} A is far above the {driver_id} continuous rating {cont} A", ids, view.urls(ids))
     return rule.result()
 
 

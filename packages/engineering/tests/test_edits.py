@@ -129,3 +129,29 @@ def test_edits_are_deterministic_ignoring_timestamp(plan):
     a, b = rivet_engine.apply_edit(plan, op)["plan"], rivet_engine.apply_edit(plan, op)["plan"]
     a.pop("created_at"), b.pop("created_at")
     assert a == b
+
+
+@pytest.mark.parametrize("offset", [[0, "bad", 0], [0, None, 0], [0, True, 0], [0, float("nan"), 0], [0, float("inf"), 0]])
+def test_malformed_sensor_offsets_are_structured_rejections(plan, offset):
+    _reject(plan, {"op": "set_mount_offset_within_template", "instance_id": "sensor-1", "offset_mm": offset})
+
+
+def test_unhashable_offset_instance_id_is_rejected(plan):
+    _reject(plan, {"op": "set_mount_offset_within_template", "instance_id": [], "offset_mm": [0, 1, 0]})
+
+
+def test_clearing_budget_preserves_null_without_traceback(plan):
+    tight = _accept(plan, {"op": "set_budget", "amount": "60", "currency": "USD"})
+    cleared = _accept(tight, {"op": "set_budget", "amount": None, "currency": "USD"})
+    assert not any(f["rule_id"] == "budget.max_budget" for f in cleared["verification"]["findings"])
+
+
+def test_size_requirements_survive_generation_and_edits():
+    intent = support.appendix_intent_dict()
+    intent["requirements"]["max_length_mm"] = 10
+    intent["requirements"]["max_width_mm"] = 10
+    constrained = rivet_engine.solve(intent)
+    changed = _accept(constrained, {"op": "change_appearance_color", "instance_id": "chassis-1", "color": "#123456"})
+    for candidate in (constrained, changed):
+        size = [f for f in candidate["verification"]["findings"] if f["rule_id"] == "requirements.dimensions"]
+        assert size and all(f["result"] == "FAIL" for f in size)

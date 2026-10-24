@@ -47,11 +47,11 @@ def test_solve_returns_a_sourced_complete_rover(plan):
 
 
 def test_status_is_honest_for_the_sourced_rover(plan):
-    assert plan["status"] == plan["verification"]["overall"] == "verified_with_warnings"
+    assert plan["status"] == plan["verification"]["overall"] == "unbuildable"
     results = {(f["rule_id"], f["result"]) for f in plan["verification"]["findings"]}
-    assert ("electrical.motor_driver_current", "WARN") in results  # 1.5 A stall vs 1.2 A continuous
+    assert ("electrical.motor_driver_current", "FAIL") in results  # 1.5 A stall vs 1.2 A continuous
     assert ("completeness.availability", "WARN") in results  # ESP32 board out of stock when checked
-    assert not any(f["result"] == "FAIL" and f["severity"] == "blocking" for f in plan["verification"]["findings"])
+    assert any(f["rule_id"] == "electrical.motor_driver_current" and f["result"] == "FAIL" and f["severity"] == "blocking" for f in plan["verification"]["findings"])
 
 
 def test_every_reference_resolves(plan):
@@ -212,7 +212,13 @@ def test_sufficient_budget_passes():
 
 
 def _synthetic_builder():
-    return Builder(support.synthetic_catalog(), profiles=[SYNTHETIC_PROFILE], generation_mode="manual_template")
+    # Exercise known current comparisons using controlled test-only evidence.
+    # Synthetic identities remain synthetic, so completeness still blocks verification.
+    records = support.synthetic_catalog_records()
+    for record in records:
+        if record["identity"]["category"] in ("motor", "motor_driver"):
+            record["evidence"]["electrical"] = "verified"
+    return Builder(catalog_from_records(records, "synthetic-current-test"), profiles=[SYNTHETIC_PROFILE], generation_mode="manual_template")
 
 
 def test_engine_repairs_an_over_current_motor_choice():
@@ -279,7 +285,7 @@ def test_engine_rejects_honestly_when_no_repair_exists():
 def test_demo_valid_and_failing_runs(tmp_path, capsys):
     out = tmp_path / "plan.json"
     assert demo.main(["--sample", "--output", str(out)]) == 0
-    assert json.loads(out.read_text())["status"] == "verified_with_warnings"
+    assert json.loads(out.read_text())["status"] == "unbuildable"
     fail = tmp_path / "fail.json"
     assert demo.main(["--sample", "--max-budget", "60", "--output", str(fail)]) == 0
     assert json.loads(fail.read_text())["status"] == "unbuildable"

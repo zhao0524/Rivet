@@ -53,7 +53,7 @@ Adafruit TT motors and wheels, SparkFun Shadow Chassis (nub caster and 4xAA hold
 included), Adafruit VL53L0X ToF sensor, Adafruit USB power bank, breadboard, wires,
 cables and a DC jack adapter. Priced BOM: **102.50 USD** (list prices on 2026-10-24).
 
-Result today: **`verified_with_warnings`**, against the implemented rules only:
+Result today: **`unbuildable`**: the selected motors exceed the driver continuous-current rating. The engine returns a complete inspectable design with blocking findings, not a build-ready rover:
 
 - TT motor stall current (1.5 A at 6 V) exceeds the TB6612's 1.2 A continuous rating (3 A peak for ~20 ms).
 - The ESP32 board was out of stock at Adafruit when checked.
@@ -82,7 +82,7 @@ copies and clearly labeled SYNTHETIC test data).
 
 - One template (`rover_2wd.v1`) and one firmware profile (`rover.obstacle_avoidance.v1`).
 - Geometry checks use boxes; overlaps are advisory heuristics.
-- The 1.5× stall-current FAIL threshold is an engineering heuristic, not a vendor rating.
+- Stall current above the documented continuous driver rating blocks the build; peak ratings alone do not establish a supported stall duration.
 - Simulation speed (0.25 m/s) and sensor model are labeled nominal values.
 - `firmware.compile_status` is never `passed` here; compiling is services/api's job.
 - Edit state (budget, sensor offset) rides in one `engine_state:` line in `provenance.notes`,
