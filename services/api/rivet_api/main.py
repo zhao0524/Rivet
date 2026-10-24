@@ -2,12 +2,13 @@ from fastapi import FastAPI
 
 from rivet_api.adapters.engineering import build_engineering_port
 from rivet_api.agents.vision import build_vision_port
-from rivet_api.assets.null import NullAssetStore
+from rivet_api.assets.store import AssetStore
 from rivet_api.config import Settings, get_settings
 from rivet_api.errors import register_error_handlers
 from rivet_api.orchestration.jobs import JobManager
 from rivet_api.orchestration.pipeline import Deps
 from rivet_api.orchestration.versions import ProjectStore
+from rivet_api.routes import assets as assets_routes
 from rivet_api.routes import health, jobs, projects
 
 
@@ -47,7 +48,7 @@ def create_app(
         engine=engine or build_engineering_port(settings),
         store=store or ProjectStore(settings.data_root / "projects"),
         jobs=job_manager or JobManager(settings.data_root / "jobs"),
-        assets=assets or NullAssetStore(),
+        assets=assets or AssetStore(settings.data_root / "assets"),
     )
     app.state.settings = settings
     app.state.deps = deps
@@ -57,6 +58,7 @@ def create_app(
     app.include_router(health.router)
     app.include_router(jobs.router)
     app.include_router(projects.router)
+    app.include_router(assets_routes.router)
     return app
 
 
