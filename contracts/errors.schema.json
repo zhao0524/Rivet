@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rivet.local/contracts/errors.schema.json",
+  "title": "ApiErrorEnvelope",
+  "description": "Body of every non-2xx JSON response. docs/implementation.md section 3.5 'API errors'; status code semantics in contracts/api.md. FROZEN v1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["error"],
+  "properties": {
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message", "details", "retryable"],
+      "properties": {
+        "code": {
+          "description": "Stable machine-readable UPPER_SNAKE_CASE code. Known codes are listed in contracts/api.md; clients must handle unknown codes generically.",
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "message": { "type": "string", "minLength": 1 },
+        "details": { "type": "object" },
+        "retryable": { "type": "boolean" }
+      }
+    }
+  }
+}

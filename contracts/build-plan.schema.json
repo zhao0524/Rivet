@@ -1,0 +1,280 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rivet.local/contracts/build-plan.schema.json",
+  "title": "BuildPlan",
+  "description": "One immutable revision of a build. B generates; A stores/exposes; C renders. docs/implementation.md sections 3.3-3.4 and 3.6. Cross-object referential rules (section 3.4) cannot be expressed in JSON Schema; scripts/validate_contracts.py enforces them. FROZEN v1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "build_id",
+    "revision",
+    "project_family",
+    "title",
+    "source_intent_id",
+    "created_at",
+    "status",
+    "components",
+    "connections",
+    "verification",
+    "assembly_steps",
+    "bom",
+    "behavior",
+    "simulation",
+    "firmware",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "build_id": { "$ref": "#/$defs/id" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "project_family": { "enum": ["rover", "rc_car", "drone", "robot_arm", "iot", "unknown"] },
+    "title": { "type": "string", "minLength": 1 },
+    "source_intent_id": { "$ref": "#/$defs/id" },
+    "created_at": {
+      "description": "ISO-8601 UTC timestamp ending in Z. Fixtures use a fixed value.",
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,6})?Z$"
+    },
+    "status": { "$ref": "#/$defs/plan_status" },
+    "components": { "type": "array", "items": { "$ref": "#/$defs/component_instance" } },
+    "connections": { "type": "array", "items": { "$ref": "#/$defs/connection" } },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["overall", "findings"],
+      "properties": {
+        "overall": { "$ref": "#/$defs/plan_status" },
+        "findings": { "type": "array", "items": { "$ref": "#/$defs/finding" } }
+      }
+    },
+    "assembly_steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["step", "title", "instance_ids", "instructions", "safety_notes"],
+        "properties": {
+          "step": { "type": "integer", "minimum": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "instance_ids": { "$ref": "#/$defs/id_list" },
+          "instructions": { "type": "string" },
+          "safety_notes": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "bom": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["currency", "known_subtotal_amount", "total_status", "items"],
+      "properties": {
+        "currency": { "$ref": "#/$defs/currency" },
+        "known_subtotal_amount": { "$ref": "#/$defs/decimal_string_or_null" },
+        "total_status": { "enum": ["complete", "incomplete", "not_available"] },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["catalog_id", "quantity", "instance_ids", "unit_price_amount", "purchase_url", "link_status"],
+            "properties": {
+              "catalog_id": { "$ref": "#/$defs/id" },
+              "quantity": { "type": "integer", "minimum": 1 },
+              "instance_ids": { "$ref": "#/$defs/id_list" },
+              "unit_price_amount": { "$ref": "#/$defs/decimal_string_or_null" },
+              "purchase_url": { "type": ["string", "null"], "pattern": "^https?://" },
+              "link_status": { "enum": ["verified_product", "manufacturer_reference_only", "not_available"] }
+            },
+            "if": { "properties": { "link_status": { "const": "verified_product" } } },
+            "then": { "properties": { "purchase_url": { "type": "string" } } }
+          }
+        }
+      },
+      "if": { "properties": { "total_status": { "const": "complete" } } },
+      "then": { "properties": { "known_subtotal_amount": { "type": "string" } } }
+    },
+    "behavior": {
+      "description": "BehaviorSpec, section 3.6.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profile_id", "controller_catalog_id", "parameters"],
+      "properties": {
+        "profile_id": { "$ref": "#/$defs/id" },
+        "controller_catalog_id": { "$ref": "#/$defs/id" },
+        "parameters": { "type": "object", "additionalProperties": { "type": "number" } }
+      }
+    },
+    "simulation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "enabled"],
+      "properties": {
+        "kind": { "enum": ["differential_drive_2d", "none"] },
+        "enabled": { "type": "boolean" },
+        "wheel_radius_m": { "$ref": "#/$defs/positive_or_null" },
+        "wheel_base_m": { "$ref": "#/$defs/positive_or_null" },
+        "max_wheel_speed_mps": { "$ref": "#/$defs/positive_or_null" },
+        "sensor_range_m": { "$ref": "#/$defs/positive_or_null" },
+        "sensor_fov_deg": { "$ref": "#/$defs/positive_or_null" },
+        "limitations": { "type": "array", "items": { "type": "string" } }
+      },
+      "if": { "properties": { "kind": { "const": "none" } } },
+      "then": { "properties": { "enabled": { "const": false } } }
+    },
+    "firmware": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target", "profile_id", "pin_map", "compile_status"],
+      "properties": {
+        "target": { "type": "string", "minLength": 1 },
+        "profile_id": { "$ref": "#/$defs/id" },
+        "pin_map": {
+          "description": "Firmware signal name -> allocated controller GPIO number.",
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        },
+        "compile_status": { "enum": ["passed", "failed", "not_checked", "not_supported"] }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input_mode", "catalog_version", "generation_mode", "notes"],
+      "properties": {
+        "input_mode": { "enum": ["image", "text", "image_and_text"] },
+        "catalog_version": { "type": "string", "minLength": 1 },
+        "generation_mode": { "enum": ["live", "fixture", "fallback", "manual_template"] },
+        "notes": { "type": "array", "items": { "type": "string" } },
+        "sourcing": {
+          "description": "Response-only summary the API computes on read from the catalog (GET /api/projects/{build_id}). Never stored or emitted by the engine.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["synthetic", "synthetic_catalog_ids", "unverified_link_count", "sku_missing_count"],
+          "properties": {
+            "synthetic": { "type": "boolean" },
+            "synthetic_catalog_ids": { "$ref": "#/$defs/id_list" },
+            "unverified_link_count": { "type": "integer", "minimum": 0 },
+            "sku_missing_count": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "description": "status=verified is impossible while any blocking finding is FAIL or UNKNOWN (section 3.4).",
+      "if": { "properties": { "status": { "const": "verified" } } },
+      "then": {
+        "properties": {
+          "verification": {
+            "properties": {
+              "findings": {
+                "items": {
+                  "not": {
+                    "properties": { "severity": { "const": "blocking" }, "result": { "enum": ["FAIL", "UNKNOWN"] } },
+                    "required": ["severity", "result"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "id": { "type": "string", "minLength": 1 },
+    "id_list": { "type": "array", "items": { "$ref": "#/$defs/id" } },
+    "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+    "vec3": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 },
+    "positive_or_null": { "type": ["number", "null"], "exclusiveMinimum": 0 },
+    "decimal_string_or_null": {
+      "description": "Non-negative decimal amount serialized as a string, e.g. \"12.50\"; null when unknown.",
+      "type": ["string", "null"],
+      "pattern": "^[0-9]+(\\.[0-9]+)?$"
+    },
+    "plan_status": { "enum": ["verified", "verified_with_warnings", "needs_review", "unbuildable"] },
+    "component_instance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "instance_id",
+        "catalog_id",
+        "role",
+        "parent_instance_id",
+        "attached_to_mount_id",
+        "own_mount_id",
+        "pose",
+        "render_overrides"
+      ],
+      "properties": {
+        "instance_id": { "$ref": "#/$defs/id" },
+        "catalog_id": { "$ref": "#/$defs/id" },
+        "role": { "type": "string", "minLength": 1 },
+        "parent_instance_id": { "type": ["string", "null"], "minLength": 1 },
+        "attached_to_mount_id": { "type": ["string", "null"], "minLength": 1 },
+        "own_mount_id": { "type": ["string", "null"], "minLength": 1 },
+        "pose": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["position_mm", "rotation_deg"],
+          "properties": {
+            "position_mm": { "$ref": "#/$defs/vec3" },
+            "rotation_deg": { "$ref": "#/$defs/vec3" }
+          }
+        },
+        "render_overrides": {
+          "description": "Presentation hints only (e.g. color, visible); never engineering data.",
+          "type": "object",
+          "properties": {
+            "color": { "type": "string" },
+            "visible": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["instance_id"],
+      "properties": {
+        "instance_id": { "$ref": "#/$defs/id" },
+        "port_id": { "type": ["string", "null"], "minLength": 1 }
+      }
+    },
+    "connection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["connection_id", "kind", "from", "to"],
+      "properties": {
+        "connection_id": { "$ref": "#/$defs/id" },
+        "kind": { "enum": ["electrical", "mechanical"] },
+        "from": { "$ref": "#/$defs/endpoint" },
+        "to": { "$ref": "#/$defs/endpoint" },
+        "net_name": { "type": ["string", "null"] },
+        "notes": { "type": ["string", "null"] }
+      },
+      "if": { "properties": { "kind": { "const": "electrical" } } },
+      "then": {
+        "description": "Electrical connections join two concrete ports.",
+        "properties": {
+          "from": { "required": ["port_id"], "properties": { "port_id": { "type": "string" } } },
+          "to": { "required": ["port_id"], "properties": { "port_id": { "type": "string" } } }
+        }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rule_id", "result", "severity", "affected_instance_ids", "message", "evidence_urls"],
+      "properties": {
+        "rule_id": { "$ref": "#/$defs/id" },
+        "result": { "enum": ["PASS", "WARN", "FAIL", "UNKNOWN"] },
+        "severity": { "enum": ["blocking", "advisory"] },
+        "affected_instance_ids": { "$ref": "#/$defs/id_list" },
+        "message": { "type": "string", "minLength": 1 },
+        "evidence_urls": { "type": "array", "items": { "type": "string", "pattern": "^https?://" } }
+      }
+    }
+  }
+}

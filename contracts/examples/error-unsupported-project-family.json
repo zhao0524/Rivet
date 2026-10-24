@@ -1,0 +1,12 @@
+{
+  "error": {
+    "code": "UNSUPPORTED_PROJECT_FAMILY",
+    "message": "Flight-ready drone generation is not supported in this version",
+    "details": {
+      "supported_families": [
+        "rover"
+      ]
+    },
+    "retryable": false
+  }
+}

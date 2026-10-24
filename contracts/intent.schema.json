@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rivet.local/contracts/intent.schema.json",
+  "title": "IntentSpec",
+  "description": "Output of A, input to B. docs/implementation.md section 3.1. FROZEN v1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "intent_id",
+    "input",
+    "project_family",
+    "requested_behavior",
+    "visual_features",
+    "requirements",
+    "assumptions",
+    "unknowns",
+    "confidence",
+    "support_status"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "intent_id": { "$ref": "#/$defs/id" },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "image_asset_id", "user_text", "image_interpretation_is_approximate"],
+      "properties": {
+        "kind": { "enum": ["image", "text", "image_and_text"] },
+        "image_asset_id": { "type": ["string", "null"], "minLength": 1 },
+        "user_text": { "type": ["string", "null"] },
+        "image_interpretation_is_approximate": { "type": "boolean" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "enum": ["image", "image_and_text"] } } },
+          "then": { "properties": { "image_asset_id": { "type": "string" } } }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "text" } } },
+          "then": { "properties": { "user_text": { "type": "string", "minLength": 1 } } }
+        }
+      ]
+    },
+    "project_family": { "enum": ["rover", "rc_car", "drone", "robot_arm", "iot", "unknown"] },
+    "requested_behavior": { "enum": ["manual_drive", "obstacle_avoidance", "line_following", "none", "unknown"] },
+    "visual_features": { "$ref": "#/$defs/string_list" },
+    "requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_budget",
+        "currency",
+        "max_length_mm",
+        "max_width_mm",
+        "preferred_controller_catalog_id",
+        "required_capabilities",
+        "preferred_color"
+      ],
+      "properties": {
+        "max_budget": {
+          "description": "null means no hard budget, not zero. Canonical form is a decimal string; a JSON number is accepted and normalized by the engine.",
+          "oneOf": [
+            { "type": "null" },
+            { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$" },
+            { "type": "number", "minimum": 0 }
+          ]
+        },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "max_length_mm": { "type": ["number", "null"], "exclusiveMinimum": 0 },
+        "max_width_mm": { "type": ["number", "null"], "exclusiveMinimum": 0 },
+        "preferred_controller_catalog_id": { "type": ["string", "null"], "minLength": 1 },
+        "required_capabilities": { "$ref": "#/$defs/string_list" },
+        "preferred_color": { "type": ["string", "null"] }
+      }
+    },
+    "assumptions": { "$ref": "#/$defs/string_list" },
+    "unknowns": { "$ref": "#/$defs/string_list" },
+    "confidence": { "enum": ["low", "medium", "high"] },
+    "support_status": { "enum": ["supported", "limited", "planned", "unsupported"] }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1 },
+    "string_list": { "type": "array", "items": { "type": "string" } }
+  }
+}

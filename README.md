@@ -10,6 +10,7 @@ AI-assisted hardware-building platform for the **SOON Hackathon**. Upload an ins
 |---|---|
 | [`docs/project.md`](docs/project.md) | Product requirements, UX, scope, and language |
 | [`docs/implementation.md`](docs/implementation.md) | Tech stack, contracts, ownership lanes, schedule, and tests |
+| [`contracts/api.md`](contracts/api.md) | Frozen v1 REST API, error and job-event contract; JSON schemas sit next to it. Validate with `uv run scripts/validate_contracts.py` |
 
 If the two conflict on schema or safety/verification rules, follow `implementation.md`, then reconcile both in a reviewed change.
 

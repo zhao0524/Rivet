@@ -1,0 +1,136 @@
+{
+  "schema_version": "1.0",
+  "build_id": "rivet-demo-rover-001",
+  "revision": 1,
+  "project_family": "rover",
+  "title": "Indoor obstacle rover",
+  "source_intent_id": "intent-rover-001",
+  "created_at": "2026-10-24T00:00:00Z",
+  "status": "needs_review",
+  "components": [
+    {
+      "instance_id": "chassis-1",
+      "catalog_id": "chassis.rover_2wd_v1",
+      "role": "chassis",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0,
+          0,
+          0
+        ],
+        "rotation_deg": [
+          0,
+          0,
+          0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2D3542"
+      }
+    },
+    {
+      "instance_id": "controller-1",
+      "catalog_id": "board.esp32_devkit_v1",
+      "role": "controller",
+      "parent_instance_id": "chassis-1",
+      "attached_to_mount_id": "electronics_deck",
+      "own_mount_id": "bottom_plate",
+      "pose": {
+        "position_mm": [
+          0,
+          24,
+          0
+        ],
+        "rotation_deg": [
+          0,
+          0,
+          0
+        ]
+      },
+      "render_overrides": {}
+    }
+  ],
+  "connections": [],
+  "verification": {
+    "overall": "needs_review",
+    "findings": [
+      {
+        "rule_id": "completeness.required_motor_driver",
+        "result": "UNKNOWN",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "controller-1"
+        ],
+        "message": "This abbreviated documentation example is not a complete rover",
+        "evidence_urls": []
+      }
+    ]
+  },
+  "assembly_steps": [
+    {
+      "step": 1,
+      "title": "Prepare chassis",
+      "instance_ids": [
+        "chassis-1"
+      ],
+      "instructions": "Prepare the base and confirm its documented mounting points",
+      "safety_notes": []
+    }
+  ],
+  "bom": {
+    "currency": "USD",
+    "known_subtotal_amount": null,
+    "total_status": "incomplete",
+    "items": [
+      {
+        "catalog_id": "chassis.rover_2wd_v1",
+        "quantity": 1,
+        "instance_ids": [
+          "chassis-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      }
+    ]
+  },
+  "behavior": {
+    "profile_id": "rover.obstacle_avoidance.v1",
+    "controller_catalog_id": "board.esp32_devkit_v1",
+    "parameters": {
+      "obstacle_stop_distance_m": 0.25,
+      "turn_duration_ms": 600,
+      "forward_speed_fraction": 0.45
+    }
+  },
+  "simulation": {
+    "kind": "differential_drive_2d",
+    "enabled": true,
+    "wheel_radius_m": 0.032,
+    "wheel_base_m": 0.12,
+    "max_wheel_speed_mps": 0.25,
+    "sensor_range_m": 1.2,
+    "sensor_fov_deg": 20,
+    "limitations": [
+      "Kinematic approximation",
+      "No motor torque, slip or real sensor noise"
+    ]
+  },
+  "firmware": {
+    "target": "esp32_arduino_platformio",
+    "profile_id": "rover.obstacle_avoidance.v1",
+    "pin_map": {},
+    "compile_status": "not_checked"
+  },
+  "provenance": {
+    "input_mode": "image_and_text",
+    "catalog_version": "catalog-v1",
+    "generation_mode": "fixture",
+    "notes": [
+      "Documentation contract fixture; not a manufacturable design"
+    ]
+  }
+}
