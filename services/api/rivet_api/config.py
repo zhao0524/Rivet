@@ -20,6 +20,7 @@ class Settings(BaseModel):
     vision_model: str = ""
     demo_fixture: str = "rover_obstacle_v1"
     resolver_provider: str = "stub"
+    offers_provider: str = "stub"
     enable_estelle: bool = False
     estelle_mode: Literal["cli", "mcp"] = "cli"
     estelle_repo_root: Path | None = None
@@ -33,6 +34,9 @@ class Settings(BaseModel):
         estelle_mode = os.environ.get("RIVET_ESTELLE_MODE", "cli")
         if estelle_mode not in ("cli", "mcp"):
             raise ValueError(f"RIVET_ESTELLE_MODE must be 'cli' or 'mcp', got {estelle_mode!r}")
+        offers_provider = os.environ.get("RIVET_OFFERS_PROVIDER", "stub")
+        if offers_provider not in ("stub", "recorded", "live"):
+            raise ValueError(f"RIVET_OFFERS_PROVIDER must be 'stub', 'recorded' or 'live', got {offers_provider!r}")
         return cls(
             mode=mode,
             env=os.environ.get("RIVET_ENV", "development"),
@@ -41,6 +45,7 @@ class Settings(BaseModel):
             vision_model=os.environ.get("RIVET_VISION_MODEL", ""),
             demo_fixture=os.environ.get("RIVET_DEMO_FIXTURE", "rover_obstacle_v1"),
             resolver_provider=os.environ.get("RIVET_RESOLVER", "stub"),
+            offers_provider=offers_provider,
             enable_estelle=_flag("RIVET_ENABLE_ESTELLE"),
             estelle_mode=estelle_mode,
             estelle_repo_root=Path(os.environ["RIVET_ESTELLE_REPO"]) if os.environ.get("RIVET_ESTELLE_REPO") else None,

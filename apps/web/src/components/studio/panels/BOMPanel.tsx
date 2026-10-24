@@ -1,14 +1,18 @@
 import type { BuildPlan, BomItem, CatalogComponent } from "./types";
 import { catalogIndex, componentIds, formatAmount, LINK_STATUS_LABEL, usableUrl } from "./helpers";
+import type { OffersState } from "./OffersPanel";
+import { WhereToBuy } from "./WhereToBuy";
 
 export interface BOMPanelProps {
   plan: BuildPlan;
   catalog: CatalogComponent[];
   selectedInstanceId?: string | null;
   onSelectInstance: (instanceId: string) => void;
+  /** Offers per catalog_id for the compact "Where to buy" cell; rows without an entry show only the catalog link. */
+  offers?: Record<string, OffersState>;
 }
 
-function PurchaseLink({ item }: { item: BomItem }) {
+export function PurchaseLink({ item }: { item: BomItem }) {
   const href = usableUrl(item.purchase_url);
   const testId = `bom-link-${item.catalog_id}`;
   if (!href) {
@@ -31,7 +35,7 @@ function PurchaseLink({ item }: { item: BomItem }) {
   );
 }
 
-export function BOMPanel({ plan, catalog, selectedInstanceId, onSelectInstance }: BOMPanelProps) {
+export function BOMPanel({ plan, catalog, selectedInstanceId, onSelectInstance, offers }: BOMPanelProps) {
   const { bom } = plan;
   const byId = catalogIndex(catalog);
   const known = componentIds(plan);
@@ -87,6 +91,7 @@ export function BOMPanel({ plan, catalog, selectedInstanceId, onSelectInstance }
                 <td>
                   <PurchaseLink item={displayItem} />
                   {check && check.status !== "pass" && <p role="note">Latest supplier check: {check.status}. {check.detail}</p>}
+                  {offers?.[item.catalog_id] && <WhereToBuy catalogId={item.catalog_id} state={offers[item.catalog_id]} />}
                 </td>
                 <td data-testid={`bom-link-status-${item.catalog_id}`}>{LINK_STATUS_LABEL[displayItem.link_status]}</td>
                 <td>

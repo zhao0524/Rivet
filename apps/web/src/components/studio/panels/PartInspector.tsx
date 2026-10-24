@@ -8,12 +8,15 @@ import {
   LINK_STATUS_LABEL,
   usableUrl,
 } from "./helpers";
+import { OffersPanel, type OffersPanelProps } from "./OffersPanel";
 
 export interface PartInspectorProps {
   plan: BuildPlan;
   catalog: CatalogComponent[];
   selectedInstanceId: string | null;
   onSelectInstance?: (instanceId: string) => void;
+  /** Offers for the selected part; when omitted the inspector shows no offers section. */
+  offers?: Omit<OffersPanelProps, "initialParams">;
 }
 
 function Value({ value, testId }: { value: string | number | null | undefined; testId?: string }) {
@@ -43,7 +46,7 @@ function SourceLink({ label, url, testId }: { label: string; url: string | null;
   );
 }
 
-export function PartInspector({ plan, catalog, selectedInstanceId, onSelectInstance }: PartInspectorProps) {
+export function PartInspector({ plan, catalog, selectedInstanceId, onSelectInstance, offers }: PartInspectorProps) {
   if (!selectedInstanceId) {
     return (
       <section aria-label="Part inspector" data-testid="part-inspector" className="rivet-panel">
@@ -172,6 +175,8 @@ export function PartInspector({ plan, catalog, selectedInstanceId, onSelectInsta
               </p>
             )}
           </section>
+
+          {offers && <OffersPanel {...offers} />}
 
           <section aria-label="Data provenance">
             <h3>Evidence and provenance</h3>

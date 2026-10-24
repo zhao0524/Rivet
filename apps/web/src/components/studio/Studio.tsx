@@ -28,6 +28,8 @@ import { BuildIntake } from './intake';
 import { buildDimensionsByCatalogId } from '../../lib/geometry';
 import type { ResolveOutcome } from '../../lib/resolve/types';
 import { ResolveDialogBody } from './resolve/ResolveDialogBody';
+import type { OfferFixtureName } from '../../lib/offers/fixtures';
+import { OffersDialogBody } from './offers/OffersDialogBody';
 
 export interface StudioProps {
   initialDataSource?: RivetDataSource;
@@ -39,6 +41,8 @@ export interface StudioProps {
   devMode?: boolean;
   /** Open the product-match dialog; in fixture mode it shows the saved example for this outcome. */
   initialResolveOutcome?: ResolveOutcome | null;
+  /** Open the saved offers example with this fixture (fixture mode only). */
+  initialOffersFixture?: OfferFixtureName | null;
 }
 
 const SAVED_INTENT: IntentSpec = getSyntheticRoverIntent();
@@ -75,6 +79,7 @@ export function Studio({
   initialIntakeFocus = 'image',
   devMode = false,
   initialResolveOutcome = null,
+  initialOffersFixture = null,
 }: StudioProps) {
   const store = useStudioPlanStore({ initialDataSource, initialMode });
   const { plan, catalog, trust, activeMode, setActiveMode } = store;
@@ -82,9 +87,11 @@ export function Studio({
   const [intakeOpen, setIntakeOpen] = useState(initialIntakeOpen);
   const [exportOpen, setExportOpen] = useState(false);
   const [resolveOpen, setResolveOpen] = useState(false);
+  const [offersOpen, setOffersOpen] = useState(false);
   // Opened after mount: the dialog portal must not render during hydration.
   useEffect(() => {
     if (initialResolveOutcome !== null) setResolveOpen(true);
+    if (initialOffersFixture !== null) setOffersOpen(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [trustDetailsOpen, setTrustDetailsOpen] = useState(false);
@@ -302,6 +309,17 @@ export function Studio({
       >
         Product match
       </button>
+      {store.sourceMode === 'fixture' ? (
+        <button
+          type="button"
+          className="rv-btn rv-hide-phone"
+          data-testid="header-open-offers"
+          aria-haspopup="dialog"
+          onClick={() => setOffersOpen(true)}
+        >
+          Offers example
+        </button>
+      ) : null}
       <button
         type="button"
         className="rv-btn"
@@ -596,6 +614,7 @@ export function Studio({
         setAssemblyMode('step');
         setScrubPosition(step);
       }}
+      offersSource={store.dataSource}
     />
   );
 
@@ -638,6 +657,15 @@ export function Studio({
         dataSource={store.dataSource}
         uploadImage={store.uploadImage}
       />
+    </Dialog>
+    <Dialog
+      open={offersOpen && store.sourceMode === 'fixture'}
+      onClose={() => setOffersOpen(false)}
+      title="Offers example"
+      wide
+      testId="offers-dialog"
+    >
+      <OffersDialogBody initialFixture={initialOffersFixture ?? 'synthetic-multivendor'} />
     </Dialog>
     <Dialog
       open={exportOpen}

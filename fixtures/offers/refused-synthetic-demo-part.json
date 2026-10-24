@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "query": {
+    "sku": null,
+    "mpn": null,
+    "gtin": null,
+    "manufacturer": null,
+    "catalog_id": "demo.tt_motor",
+    "normalized_key": "|||"
+  },
+  "outcome": "refused",
+  "provider_mode": "stub",
+  "synthetic": false,
+  "generated_at": "2026-10-24T12:00:00Z",
+  "offers": [],
+  "possible_matches": [],
+  "alternatives": [],
+  "ledger": [
+    {
+      "source": "catalog",
+      "url": null,
+      "status": "skipped",
+      "reason": "demo.tt_motor is a synthetic placeholder with no SKU; nothing to search",
+      "checked_at": null
+    }
+  ],
+  "notices": [
+    "This part is a synthetic placeholder. There is nothing to buy."
+  ]
+}

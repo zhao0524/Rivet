@@ -6,6 +6,8 @@ from rivet_api.assets.store import AssetStore
 from rivet_api.config import Settings, get_settings
 from rivet_api.errors import register_error_handlers
 from rivet_api.firmware.estelle import RepoGrounder
+from rivet_api.offers.factory import build_offers_provider
+from rivet_api.offers.store import OfferSetStore
 from rivet_api.orchestration.jobs import JobManager
 from rivet_api.orchestration.pipeline import Deps
 from rivet_api.orchestration.versions import ProjectStore
@@ -15,6 +17,7 @@ from rivet_api.resolution.factory import build_resolver
 from rivet_api.resolution.store import ResolutionStore
 from rivet_api.routes import exports, health, jobs, projects
 from rivet_api.routes import intents as intents_routes
+from rivet_api.routes import offers as offers_routes
 
 from rivet_api.routes import resolve as resolve_routes
 
@@ -49,6 +52,8 @@ def create_app(
     grounder=None,
     resolver=None,
     resolutions: ResolutionStore | None = None,
+    offers_provider=None,
+    offer_sets: OfferSetStore | None = None,
 ) -> FastAPI:
     settings = settings or get_settings()
     app = FastAPI(title="Rivet API", version="0.1.0")
@@ -62,6 +67,8 @@ def create_app(
         grounder=grounder or RepoGrounder.from_settings(settings),
         resolver=resolver or build_resolver(settings),
         resolutions=resolutions or ResolutionStore(settings.data_root / "resolutions"),
+        offers_provider=offers_provider or build_offers_provider(settings),
+        offer_sets=offer_sets or OfferSetStore(),
     )
     app.state.settings = settings
     app.state.deps = deps
@@ -76,6 +83,7 @@ def create_app(
     app.include_router(estelle_routes.router)
     app.include_router(assets_routes.router)
     app.include_router(resolve_routes.router)
+    app.include_router(offers_routes.router)
     return app
 
 

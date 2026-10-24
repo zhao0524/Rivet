@@ -136,3 +136,28 @@ Implements `docs/plan-verified-parts.md` sections 5.1 to 5.3 (issues #81 #82 #83
 - `decompose.py`: product page to parts with evidence (linked parts verified from their own pages; parts named without a page are `not_found`, never guessed), the four outcomes, and `typical_parts()` from `data/sourcing/reference_architectures.json` (rover, drone, robot arm), each suggestion labelled "typical for category" with the usage count behind it.
 
 Record or refresh fixture pages: `python -m rivet_engine.sourcing.record tests/support/recorded <url> ...` (trims scripts and chrome, keeps text, links and JSON-LD).
+
+## Offers (e-commerce): where a verified part can be bought (`rivet_engine.ecommerce`)
+
+Implements `docs/e-commerce-layer/plan.md` 3.1 and 3.2 against the frozen `contracts/offer.schema.json`. Rivet does not sell parts, carry a cart or use affiliate links; every offer field is read from a fetched page and carries that page's `fetched_at` and `source_sha256`. Unknown is `null`, never `0`.
+
+Entry points (all offline except `mode="live"`):
+
+```python
+from rivet_engine.ecommerce import find_offers, normalize_query, rank, filter_offers, OfferSet, OffersProviderError
+
+query = normalize_query(sku="3801", manufacturer="Adafruit", catalog_id="motor.adafruit_tt_bimetal_1to90_3801")
+offer_set = find_offers(query, mode="recorded")          # OfferSet; offer_set.to_wire() validates against the contract
+offers = filter_offers(offer_set.offers, in_stock=True, max_price="10", currency="USD")
+offers = rank(offers, "price_asc")                        # unknown prices last; ties on offer_id
+```
+
+- `normalize_query(sku, mpn, gtin, manufacturer, catalog_id)`: NFKC, trimmed, whitespace-collapsed, case-insensitive `normalized_key`; GTIN check digit enforced (`InvalidIdentifier`, code `INVALID_IDENTIFIER`).
+- `find_offers(query, *, mode, fetcher=None, now=None, link_checks=None, search_provider=None, structured_providers=None, candidate_urls=())`: steps 1 to 6 of the plan. `demo.*` / `synthetic.*` catalog ids are `refused` before any lookup. Outcome `found`, `partial` (a source was blocked or errored), `not_found` or `refused`; every source consulted is in `ledger`.
+- Modes: `stub` answers only from `fixtures/offers/*.json` keyed by `normalized_key`; `recorded` replays `tests/support/recorded` (real vendor pages) and `tests/support/recorded_offers` (SYNTHETIC TEST-ONLY `*.example` pages whose index entries list the `queries` a web search would have returned them for); `live` uses `PoliteFetcher` plus Brave web search.
+- Env keys (server-only, never required for tests): `BRAVE_SEARCH_API_KEY` (without it the ledger says `brave-search skipped`), `MOUSER_API_KEY`, `DIGIKEY_CLIENT_ID` + `DIGIKEY_CLIENT_SECRET`, `NEXAR_CLIENT_ID`, `ELEMENT14_API_KEY` (the last two have no client yet and report `needs_api_key` / `skipped`). `RIVET_RECORDED_DIR` overrides the recorded directory.
+- Live failures raise `OffersProviderError` subclasses `ProviderQuota`, `ProviderAuth`, `ProviderUnavailable` (`.code` is `PROVIDER_QUOTA` / `PROVIDER_AUTH` / `PROVIDER_UNAVAILABLE`) only when nothing else answered; otherwise the set is `partial` with the failure in the ledger and a notice.
+- Verification: a page counts only if its JSON-LD or whole-token visible text states the SKU, MPN or GTIN; when the page's structured data names a different product, prose that mentions the identifier is at most a `fuzzy` possible match (prompt-injection text changes nothing). Soft-404 pages (`product unavailable`, `page not found`) are dropped and never `in_stock`.
+- Scoring: `ecommerce/weights.json` (sums to 1) weights `vendor_tier`, `match_exactness`, `freshness`, `link_status`, `rating` (shrunk by review count) and `price_outlier` (per-unit price vs the same-currency median; more than 50% below demotes). `stale` after 30 days; `demoted` for broken links and outliers; both stay listed and labelled.
+
+Record real pages for offline tests: `python -m rivet_engine.sourcing.record tests/support/recorded <url> ...`. Synthetic multi-vendor pages live in `tests/support/recorded_offers/` (hosts under `*.example`, titled "SYNTHETIC TEST-ONLY"); add `"queries": ["<lowercase sku>", ...]` to an index entry so `RecordedSearchProvider` returns it.

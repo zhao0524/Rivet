@@ -32,6 +32,7 @@ def test_header_and_row_layout(plan_dict):
     out = rows(bom_to_csv(plan_dict))
     assert out[0] == [
         "catalog_id", "quantity", "instance_ids", "unit_price_amount", "currency", "purchase_url", "link_status",
+        "sku", "vendor", "offer_url",
     ]
     items = plan_dict["bom"]["items"]
     assert len(out) == 1 + len(items) + 1  # header + items + TOTAL

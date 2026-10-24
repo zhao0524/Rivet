@@ -5,7 +5,9 @@ import type { StudioActionMode } from '../../lib/plan-store';
 import { type BuildPlan, type CatalogComponent } from '../../lib/rivet';
 import { BOMPanel, VerificationPanel } from './panels';
 import { BuildOverview } from './panels/BuildOverview';
+import { OffersPanel } from './panels/OffersPanel';
 import { ProductCard } from './panels/ProductCard';
+import { usePartOffers, type OffersSource } from './offers/usePartOffers';
 import { KitItemBadge } from './panels/KitItemBadge';
 import { computeStepCoverage, isUnmodeledKitItem } from '../three/assembly/coverage';
 import type { BuildPlan as PanelBuildPlan, CatalogComponent as PanelCatalogComponent } from './panels/types';
@@ -34,6 +36,8 @@ export interface InspectorProps {
   /** Assemble mode: current step (0 = preparation) and a way to jump to another step. */
   activeStep?: number;
   onSelectStep?: (step: number) => void;
+  /** Data source for `GET /api/parts/{catalog_id}/offers`; omitted means no offers section. */
+  offersSource?: OffersSource | null;
 }
 
 const card = {
@@ -68,6 +72,7 @@ export function Inspector({
   onSelectConnectionId,
   activeStep = 0,
   onSelectStep,
+  offersSource = null,
 }: InspectorProps) {
   const wiringPlan = useMemo<WiringPlanInput>(
     () => ({
@@ -107,6 +112,16 @@ export function Inspector({
 
   const selected = plan.components.find((c) => c.instance_id === selectedInstanceId);
   const coverage = computeStepCoverage(plan);
+
+  // Offers are fetched for every BOM row in inspect mode and for the selected part elsewhere.
+  const offerCatalogIds = useMemo(() => {
+    if (!offersSource) return [];
+    if (mode === 'inspect') return plan.bom.items.map((i) => i.catalog_id);
+    return selected ? [selected.catalog_id] : [];
+  }, [offersSource, mode, plan.bom.items, selected]);
+  const { states: offerStates, retry: retryOffers } = usePartOffers(offersSource, offerCatalogIds);
+  const savedExample = offersSource?.mode === 'fixture';
+  const selectedOffers = selected ? offerStates[selected.catalog_id] : undefined;
   const buildSummary = (
     <section data-testid="inspector-empty-state">
       <p className="rv-hint">Click any part in the 3D view to see its SKU, price, and fit checks.</p>
@@ -117,6 +132,11 @@ export function Inspector({
     <section data-testid="part-inspector" data-instance-id={selected.instance_id}>
       <details><summary>Selected instance</summary><code data-testid="inspector-instance-id">{selected.instance_id}</code></details>
       <ProductCard plan={panelPlan} catalog={panelCatalog} catalogId={selected.catalog_id} />
+      {offersSource && (
+        <div style={{ ...card, marginTop: 12 }} data-testid="inspector-offers-section" data-catalog-id={selected.catalog_id}>
+          <OffersPanel state={selectedOffers ?? { status: 'loading' }} savedExample={savedExample} onRetry={retryOffers} />
+        </div>
+      )}
     </section>
   ) : null;
   const imageNotes = plan.provenance.notes.filter((note) => /^Image (applied:|ignored:|did not change the build:)/.test(note));
@@ -152,6 +172,7 @@ export function Inspector({
               catalog={panelCatalog}
               selectedInstanceId={selectedInstanceId}
               onSelectInstance={onSelectInstance}
+              offers={offersSource ? offerStates : undefined}
             />
           </section>
           {selectedInstanceId ? partDetails : null}

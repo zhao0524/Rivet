@@ -47,6 +47,9 @@ import {
   uploadedImageAssetCheck,
   type Check,
 } from "./validate";
+import { offerParamsToQuery } from "../offers/sort";
+import type { OfferListParams, OfferSearchRequest, OfferSet } from "../offers/types";
+import { offerSearchResponseCheck, offerSetCheck } from "../offers/validate";
 import type { Resolution, ResolveJob, ResolveRequest, ResolveStartResponse } from "../resolve/types";
 import { resolutionCheck, resolveJobCheck, resolveStartResponseCheck } from "../resolve/validate";
 
@@ -77,6 +80,9 @@ export interface HttpSourceOptions {
 
 const TERMINAL_JOB_STATUSES = new Set(["complete", "failed"]);
 const TERMINAL_STAGES = new Set(["complete", "failed"]);
+
+/** Plain key/value query, or a prebuilt `URLSearchParams` for repeatable keys such as `vendor_tier`. */
+type Query = Record<string, string | number | undefined> | URLSearchParams;
 
 function defaultEventSource(): EventSourceFactory | null {
   const ES = (globalThis as { EventSource?: new (url: string) => EventSourceLike }).EventSource;
@@ -111,9 +117,11 @@ export class HttpSource implements RivetDataSource {
     this.pollTimeoutMs = options.pollTimeoutMs ?? 10 * 60_000;
   }
 
-  private url(path: string, query?: Record<string, string | number | undefined>) {
-    const params = new URLSearchParams();
-    for (const [k, v] of Object.entries(query ?? {})) if (v !== undefined) params.set(k, String(v));
+  private url(path: string, query?: Query) {
+    const params = query instanceof URLSearchParams ? query : new URLSearchParams();
+    if (!(query instanceof URLSearchParams)) {
+      for (const [k, v] of Object.entries(query ?? {})) if (v !== undefined) params.set(k, String(v));
+    }
     const qs = params.toString();
     return `${this.baseUrl}${path}${qs ? `?${qs}` : ""}`;
   }
@@ -123,7 +131,7 @@ export class HttpSource implements RivetDataSource {
     path: string,
     check: Check<T>,
     what: string,
-    init: { body?: unknown; query?: Record<string, string | number | undefined>; options?: RequestOptions } = {},
+    init: { body?: unknown; query?: Query; options?: RequestOptions } = {},
   ): Promise<T> {
     const controller = new AbortController();
     const userSignal = init.options?.signal;
@@ -483,5 +491,88 @@ export class HttpSource implements RivetDataSource {
 
   getExportUrl(buildId: string, kind: ExportArtifactKind, revision?: number): string {
     return this.url(`/api/projects/${encodeURIComponent(buildId)}/exports/${kind}`, { revision });
+  }
+
+  /** `GET /api/parts/{catalog_id}/offers?sort=&vendor_tier=...`; 422 `EXPORT_REFUSED_SYNTHETIC` surfaces as a RivetError. */
+  getPartOffers(catalogId: string, params?: OfferListParams, options?: RequestOptions): Promise<OfferSet> {
+    return this.request("GET", `/api/parts/${encodeURIComponent(catalogId)}/offers`, offerSetCheck, "OfferSet", {
+      query: offerParamsToQuery(params),
+      options,
+    });
+  }
+
+  getOfferSet(offerSetId: string, options?: RequestOptions): Promise<OfferSet> {
+    return this.request("GET", `/api/offers/${encodeURIComponent(offerSetId)}`, offerSetCheck, "OfferSet", { options });
+  }
+
+  /**
+   * `POST /api/offers/search`. A 200 is the OfferSet. A 202 names a discovery job: the
+   * job is followed with the same SSE-then-polling subscription as generation, and the
+   * finished job's `offer_set_id` is fetched from `GET /api/offers/{id}`.
+   */
+  async searchOffers(request: OfferSearchRequest, options?: RequestOptions): Promise<OfferSet> {
+    if (!request.sku && !request.mpn && !request.gtin) {
+      throw new RivetError({
+        kind: "bad_request",
+        code: "INVALID_IDENTIFIER",
+        message: "At least one of sku, mpn or gtin is required",
+        hint: "Fix the listed request fields; nothing was sent.",
+      });
+    }
+    const res = await this.request("POST", "/api/offers/search", offerSearchResponseCheck, "offers search response", {
+      body: request,
+      options,
+    });
+    if (!("job_id" in res)) return res;
+    const job = await this.awaitJob(res.job_id, options);
+    if (job.status === "failed") {
+      const err = job.error;
+      const body = typeof err === "string" ? { code: "JOB_FAILED", message: err } : err ?? null;
+      throw new RivetError({
+        kind: "upstream_unavailable",
+        code: body?.code ?? "JOB_FAILED",
+        message: body?.message ?? `Offer discovery job ${job.job_id} failed`,
+        details: body?.details ?? null,
+        retryable: body?.retryable,
+      });
+    }
+    const offerSetId = (job as JobResponse & { offer_set_id?: unknown }).offer_set_id ?? res.offer_set_id;
+    if (typeof offerSetId !== "string" || offerSetId === "") {
+      throw new RivetContractError("offers job", [
+        { path: "$.offer_set_id", message: `job ${job.job_id} completed without an offer_set_id` },
+      ]);
+    }
+    return this.getOfferSet(offerSetId, options);
+  }
+
+  /** Resolves with the terminal job snapshot, reusing `subscribeToJob` (SSE with polling fallback). */
+  private awaitJob(jobId: string, options?: RequestOptions): Promise<JobResponse> {
+    return new Promise((resolve, reject) => {
+      let settled = false;
+      const settle = (fn: () => void) => {
+        if (settled) return;
+        settled = true;
+        fn();
+      };
+      this.subscribeToJob(jobId, () => {}, {
+        signal: options?.signal,
+        onJob: (job) => {
+          if (TERMINAL_JOB_STATUSES.has(job.status)) settle(() => resolve(job));
+        },
+        onError: (err) => settle(() => reject(err)),
+        onTransportChange: (transport) => {
+          if (transport === "closed")
+            settle(() =>
+              reject(
+                new RivetError({
+                  kind: options?.signal?.aborted ? "aborted" : "unknown",
+                  code: options?.signal?.aborted ? "ABORTED" : "JOB_CLOSED",
+                  message: `Offer discovery job ${jobId} ended before a terminal status was reported`,
+                }),
+              ),
+            );
+        },
+      });
+    });
   }
 }

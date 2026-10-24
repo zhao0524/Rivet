@@ -1,0 +1,168 @@
+{
+  "https://affiliate-spam.example/best-price-test-mv-3801": {
+    "content_sha256": "7ec29f351d5b248a512e8efffc0dfd4e78d99202ce399f30b38ad7c3568ad44d",
+    "fetched_at": "2026-10-24T12:00:00Z",
+    "file": "dist_one_example_item_test_mv_3801.html",
+    "note": "SYNTHETIC TEST-ONLY denylisted host; must be dropped before any fetch",
+    "queries": [
+      "test-mv-3801"
+    ],
+    "status": 200
+  },
+  "https://bargain-bay.example/listing/77001": {
+    "content_sha256": "6f7188b4f9ab70720a81d77a608b8f6b7601f82e163a6f93d403405f9498bdfb",
+    "fetched_at": "2026-10-24T12:00:00Z",
+    "file": "bargain_bay_example_listing_77001.html",
+    "note": "SYNTHETIC TEST-ONLY page (never fetched)",
+    "queries": [
+      "test-mv-3801"
+    ],
+    "status": 200
+  },
+  "https://bargain-bay.example/listing/88123": {
+    "content_sha256": "44c1298771d9514c7167b3063773ed896051652d6846ec9ee67ea2919b795dae",
+    "fetched_at": "2026-10-24T12:00:00Z",
+    "file": "bargain_bay_example_listing_88123.html",
+    "note": "SYNTHETIC TEST-ONLY page (never fetched)",
+    "queries": [
+      "test-mv-3801"
+    ],
+    "status": 200
+  },
+  "https://blocked-vendor.example/test-mv-3801": {
+    "content_sha256": "0f0b3673940dbb046f0705a4e87bed2c9adf2f514e2f0dd2212ee4284537f4b9",
+    "fetched_at": "2026-10-24T12:00:00Z",
+    "file": "blocked_vendor_example_test_mv_3801.html",
+    "note": "SYNTHETIC TEST-ONLY page (never fetched)",
+    "queries": [
+      "test-mv-3801"
+    ],
+    "status": 403
+  },
+  "https://dist-one.example/item/test-mv-3801": {
+    "content_sha256": "7ec29f351d5b248a512e8efffc0dfd4e78d99202ce399f30b38ad7c3568ad44d",
+    "fetched_at": "2026-10-24T12:00:00Z",
+    "file": "dist_one_example_item_test_mv_3801.html",
+    "note": "SYNTHETIC TEST-ONLY page (never fetched)",
+    "queries": [
+      "test-mv-3801",
+      "mv3801",
+      "4006381333931"
+    ],
+    "status": 200
+  },
+  "https://dist-one.example/item/test-mv-3801-3pk": {
+    "content_sha256": "f8ba714a63446c9753989dd24302553d0cefc503aa861483aa46b770d1049a4a",
+    "fetched_at": "2026-10-24T12:00:00Z",
+    "file": "dist_one_example_item_test_mv_3801_3pk.html",
+    "note": "SYNTHETIC TEST-ONLY page (never fetched)",
+    "queries": [
+      "test-mv-3801",
+      "mv3801"
+    ],
+    "status": 200
+  },
+  "https://dist-one.example/item/test-mv-3801?utm_source=x&utm_campaign=test": {
+    "content_sha256": "7ec29f351d5b248a512e8efffc0dfd4e78d99202ce399f30b38ad7c3568ad44d",
+    "fetched_at": "2026-10-24T12:00:00Z",
+    "file": "dist_one_example_item_test_mv_3801.html",
+    "note": "SYNTHETIC TEST-ONLY duplicate of the Dist One page with tracking params",
+    "queries": [
+      "test-mv-3801"
+    ],
+    "status": 200
+  },
+  "https://dist-two.example/sku/other-part": {
+    "content_sha256": "b8ca6fac35ceb91bd2f6e676547049435279a0b390fd3ad2330d6ea56b41b7a6",
+    "fetched_at": "2026-10-24T12:00:00Z",
+    "file": "dist_two_example_sku_other_part.html",
+    "note": "SYNTHETIC TEST-ONLY page (never fetched)",
+    "queries": [
+      "test-mv-3801"
+    ],
+    "status": 200
+  },
+  "https://dist-two.example/sku/test-mv-3801": {
+    "content_sha256": "2022c69b1872f45e5c360eb4e2a760553fd1e7f648e043c934645067955ea474",
+    "fetched_at": "2026-10-24T12:00:00Z",
+    "file": "dist_two_example_sku_test_mv_3801.html",
+    "note": "SYNTHETIC TEST-ONLY page (never fetched)",
+    "queries": [
+      "test-mv-3801",
+      "mv3801"
+    ],
+    "status": 200
+  },
+  "https://dist-two.example/sku/test-mv-3801-old": {
+    "content_sha256": "9f1f3e9377bf991828c961c809bb1e0368c76ab6be9a1a03662a85bdb7aa8452",
+    "fetched_at": "2026-08-20T12:00:00Z",
+    "file": "dist_two_example_sku_test_mv_3801_old.html",
+    "note": "SYNTHETIC TEST-ONLY page (never fetched)",
+    "queries": [
+      "test-mv-3801"
+    ],
+    "status": 200
+  },
+  "https://eu-reseller.example/products/test-mv-3801": {
+    "content_sha256": "71ad46721029aab456227ee95796e246c354fc1055d5a39ddf9c89d8a731e630",
+    "fetched_at": "2026-10-24T12:00:00Z",
+    "file": "eu_reseller_example_products_test_mv_3801.html",
+    "note": "SYNTHETIC TEST-ONLY page (never fetched)",
+    "queries": [
+      "test-mv-3801"
+    ],
+    "status": 200
+  },
+  "https://flaky-vendor.example/test-mv-3801": {
+    "content_sha256": "a299a75b313c0f9710d45655f22a8f5927b0570c16723edbd42062731c89364d",
+    "fetched_at": "2026-10-24T12:00:00Z",
+    "file": "flaky_vendor_example_test_mv_3801.html",
+    "note": "SYNTHETIC TEST-ONLY page (never fetched)",
+    "queries": [
+      "test-mv-3801"
+    ],
+    "status": 503
+  },
+  "https://maker-shop.example/p/test-mv-3800": {
+    "content_sha256": "b8cb06c114dd9e62e46246fdba6b90c32b4db85580da2ec6a242f9743f79ee59",
+    "fetched_at": "2026-10-24T12:00:00Z",
+    "file": "maker_shop_example_p_test_mv_3800.html",
+    "note": "SYNTHETIC TEST-ONLY page (never fetched)",
+    "queries": [
+      "test-mv-3800",
+      "mv3800"
+    ],
+    "status": 200
+  },
+  "https://maker-shop.example/p/test-mv-3801": {
+    "content_sha256": "48cff45475061c3d3d3fa951ad550b5d0f123f4e2f9ac3b8e07975384e39edbc",
+    "fetched_at": "2026-10-24T12:00:00Z",
+    "file": "maker_shop_example_p_test_mv_3801.html",
+    "note": "SYNTHETIC TEST-ONLY page (never fetched)",
+    "queries": [
+      "test-mv-3801",
+      "mv3801"
+    ],
+    "status": 200
+  },
+  "https://maker-shop.example/p/test-mv-3801-text-only": {
+    "content_sha256": "be2a3f0d7a67b31b5f4a557485832a15ad00a9f781381b8a4ecddd8403174ce2",
+    "fetched_at": "2026-10-24T12:00:00Z",
+    "file": "maker_shop_example_p_test_mv_3801_text_only.html",
+    "note": "SYNTHETIC TEST-ONLY page (never fetched)",
+    "queries": [
+      "test-mv-3801"
+    ],
+    "status": 200
+  },
+  "https://soft404-vendor.example/test-mv-3801": {
+    "content_sha256": "58cca411c64536e40ea83d4f5041b1d839052bf37bcdc0a6f04f269488995dc4",
+    "fetched_at": "2026-10-24T12:00:00Z",
+    "file": "soft404_vendor_example_test_mv_3801.html",
+    "note": "SYNTHETIC TEST-ONLY page (never fetched)",
+    "queries": [
+      "test-mv-3801"
+    ],
+    "status": 200
+  }
+}

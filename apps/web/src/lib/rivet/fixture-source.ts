@@ -32,6 +32,16 @@ import type {
   UploadedImageAsset,
 } from "./types";
 import { assertValidRequest, editRequestCheck, generateRequestCheck, parseBuildPlan, parseCatalogComponents } from "./validate";
+import { buildOfferQuery, isSyntheticCatalogId } from "../offers/identifiers";
+import {
+  isOfferFixtureName,
+  offerFixture,
+  offerFixtureForCatalogId,
+  offerFixtureForNormalizedKey,
+  OFFER_FIXTURE_NAMES,
+} from "../offers/fixtures";
+import { applyOfferParams } from "../offers/sort";
+import type { OfferListParams, OfferQuery, OfferSearchRequest, OfferSet } from "../offers/types";
 import syntheticCatalog from "./fixtures/synthetic-seed-components.json";
 import syntheticIntent from "./fixtures/synthetic-intent-rover-obstacle-v1.json";
 import syntheticRoverPlan from "./fixtures/synthetic-rover-obstacle-v1.json";
@@ -336,5 +346,91 @@ export class FixtureSource implements RivetDataSource {
 
   getExportUrl(_buildId: string, _kind: ExportArtifactKind, _revision?: number): string | null {
     return null;
+  }
+
+  /** The not-found fixture shape with the caller's query substituted; the ledger says nothing was searched. */
+  private notFoundOffers(query: OfferQuery): OfferSet {
+    const base = offerFixture("not-found-9999999");
+    return {
+      ...base,
+      query,
+      provider_mode: "stub",
+      ledger: [
+        {
+          source: "fixture",
+          url: null,
+          status: "skipped",
+          reason: "offline fixture mode: no saved offers for this query and no network lookup ran",
+          checked_at: null,
+        },
+      ],
+    };
+  }
+
+  /**
+   * Mirrors `GET /api/parts/{catalog_id}/offers` from the checked-in `fixtures/offers/*`.
+   * A `demo.*` part is refused exactly like the API's 422 `EXPORT_REFUSED_SYNTHETIC`
+   * (the refused OfferSet travels in `details.offer_set`); an unknown part gets the
+   * not-found shape. No network call is ever made.
+   */
+  async getPartOffers(catalogId: string, params?: OfferListParams, options?: RequestOptions): Promise<OfferSet> {
+    throwIfAborted(options);
+    if (isSyntheticCatalogId(catalogId)) {
+      const refused = offerFixture("refused-synthetic-demo-part");
+      refused.query = { ...refused.query, catalog_id: catalogId };
+      refused.ledger = refused.ledger.map((entry) => ({
+        ...entry,
+        reason: `${catalogId} is a synthetic placeholder with no SKU; nothing to search`,
+      }));
+      throw new RivetError({
+        kind: "unsupported",
+        status: 422,
+        code: "EXPORT_REFUSED_SYNTHETIC",
+        message: `${catalogId} is a synthetic placeholder; offers are not searched for demo parts`,
+        hint: "Synthetic demo parts have no SKU and nothing to buy. Load a build of sourced parts to see offers.",
+        details: { catalog_id: catalogId, offer_set: refused },
+      });
+    }
+    const saved = offerFixtureForCatalogId(catalogId);
+    if (saved) return applyOfferParams(saved, params);
+    const entry = this.load().catalog.find((c) => c.catalog_id === catalogId);
+    const query = buildOfferQuery({
+      sku: entry?.identity.sku ?? null,
+      manufacturer: entry?.identity.manufacturer ?? null,
+      catalog_id: catalogId,
+    });
+    return applyOfferParams(this.notFoundOffers(query), params);
+  }
+
+  async searchOffers(request: OfferSearchRequest, options?: RequestOptions): Promise<OfferSet> {
+    throwIfAborted(options);
+    if (!request.sku && !request.mpn && !request.gtin) {
+      throw new RivetError({
+        kind: "bad_request",
+        status: 400,
+        code: "INVALID_IDENTIFIER",
+        message: "At least one of sku, mpn or gtin is required",
+        hint: "Fix the listed request fields; nothing was sent.",
+      });
+    }
+    const { sku, mpn, gtin, manufacturer, ...params } = request;
+    const query = buildOfferQuery({ sku, mpn, gtin, manufacturer });
+    const saved = offerFixtureForNormalizedKey(query.normalized_key);
+    return applyOfferParams(saved ?? this.notFoundOffers(query), params);
+  }
+
+  /** Fixture offer sets are addressed by fixture name. */
+  async getOfferSet(offerSetId: string, options?: RequestOptions): Promise<OfferSet> {
+    throwIfAborted(options);
+    if (!isOfferFixtureName(offerSetId)) {
+      throw new RivetError({
+        kind: "not_found",
+        status: 404,
+        code: "OFFER_SET_NOT_FOUND",
+        message: `No saved offer set "${offerSetId}" in fixture mode`,
+        details: { available_offer_set_ids: [...OFFER_FIXTURE_NAMES] },
+      });
+    }
+    return offerFixture(offerSetId);
   }
 }

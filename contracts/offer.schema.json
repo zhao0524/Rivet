@@ -1,0 +1,303 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rivet.local/contracts/offer.schema.json",
+  "title": "OfferSet",
+  "description": "Where a verified part can be bought (docs/e-commerce-layer/plan.md section 3.1). Every offer field is backed by a fetched page and a timestamp; unknown is null, never 0. Rivet does not sell parts, carry a cart or use affiliate links. Proposed 2026-10-24; frozen once all three lanes build against it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "query",
+    "outcome",
+    "provider_mode",
+    "synthetic",
+    "generated_at",
+    "offers",
+    "possible_matches",
+    "alternatives",
+    "ledger",
+    "notices"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "query": { "$ref": "#/$defs/OfferQuery" },
+    "outcome": {
+      "description": "found: at least one verified offer. partial: some sources failed but offers exist. not_found: no verified offer anywhere (possible_matches may still be present). refused: the query was not searched (synthetic demo.* part, invalid identifier).",
+      "enum": ["found", "partial", "not_found", "refused"]
+    },
+    "provider_mode": {
+      "description": "Which offers provider answered. stub returns canned fixtures and is never a live lookup; recorded replays saved pages; live fetched the web.",
+      "enum": ["stub", "recorded", "live"]
+    },
+    "synthetic": {
+      "description": "true when any offer in this set is test-only data (vendors on *.example hosts). Clients must label synthetic sets and must not present them as real prices.",
+      "type": "boolean"
+    },
+    "generated_at": { "$ref": "#/$defs/Timestamp" },
+    "offers": {
+      "description": "Ranked list. Only exact_sku / exact_mpn / gtin matches; sorted by the server (default reliability desc, stable tie-break on offer_id).",
+      "type": "array",
+      "items": { "$ref": "#/$defs/Offer" }
+    },
+    "possible_matches": {
+      "description": "Fuzzy matches. Shown under a separate heading, never ranked with offers.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/Offer" }
+    },
+    "alternatives": {
+      "description": "Offers for a different, substitute part (e.g. when the requested one is discontinued). Each carries the substitute's own identifiers.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/Offer" }
+    },
+    "ledger": {
+      "description": "Every source consulted, including the ones that produced nothing, so a user can see why a vendor is missing.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/LedgerEntry" }
+    },
+    "notices": {
+      "description": "Human-readable caveats for the UI (partial provider outage, stale data, currency mix). Empty when there is nothing to say.",
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 300 }
+    }
+  },
+  "$defs": {
+    "Timestamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$"
+    },
+    "HttpsUrl": {
+      "type": "string",
+      "pattern": "^https://[^\\s/?#]+[^\\s]*$",
+      "maxLength": 2048
+    },
+    "Money": {
+      "description": "Positive decimal string with up to 4 fractional digits, e.g. \"4.50\". Unknown is null; zero is rejected so a missing price can never be shown as free.",
+      "type": ["string", "null"],
+      "pattern": "^([1-9][0-9]*(\\.[0-9]{1,4})?|0\\.[0-9]{0,3}[1-9][0-9]{0,3})$",
+      "maxLength": 24
+    },
+    "Currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+    "VendorTier": {
+      "enum": ["manufacturer", "authorized_distributor", "marketplace", "reseller", "unknown"]
+    },
+    "Availability": {
+      "enum": ["in_stock", "out_of_stock", "backorder", "discontinued", "unknown"]
+    },
+    "MatchKind": { "enum": ["exact_sku", "exact_mpn", "gtin", "fuzzy"] },
+    "EvidenceLevel": {
+      "description": "Reuses the sourcing claim statuses in packages/engineering/rivet_engine/sourcing/evidence.py.",
+      "enum": ["verified", "inferred", "stale", "conflict", "not_found"]
+    },
+    "LinkStatus": {
+      "description": "Last link check for this URL (contracts/api.md 'Supplier-check metadata'). unchecked means no check has run.",
+      "enum": ["pass", "broken", "blocked", "error", "unchecked"]
+    },
+    "OfferQuery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sku", "mpn", "gtin", "manufacturer", "catalog_id", "normalized_key"],
+      "properties": {
+        "sku": { "type": ["string", "null"], "minLength": 1, "maxLength": 64 },
+        "mpn": { "type": ["string", "null"], "minLength": 1, "maxLength": 64 },
+        "gtin": { "type": ["string", "null"], "pattern": "^[0-9]{8}$|^[0-9]{12,14}$" },
+        "manufacturer": { "type": ["string", "null"], "minLength": 1, "maxLength": 120 },
+        "catalog_id": { "type": ["string", "null"], "minLength": 1 },
+        "normalized_key": {
+          "description": "Cache key: lowercase, whitespace-collapsed `sku|mpn|gtin|manufacturer` tuple with empty fields kept as empty strings.",
+          "type": "string",
+          "pattern": "^[^|]*\\|[^|]*\\|[^|]*\\|[^|]*$"
+        }
+      }
+    },
+    "Vendor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "tier", "domain"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_.-]{0,62}$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "tier": { "$ref": "#/$defs/VendorTier" },
+        "domain": { "type": "string", "pattern": "^[a-z0-9.-]+\\.[a-z]{2,}$" }
+      }
+    },
+    "Rating": {
+      "description": "Only from the vendor page itself (JSON-LD aggregateRating). Absent or count 0 means the whole object is null.",
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["value", "count", "scale", "source"],
+      "properties": {
+        "value": { "type": "number", "minimum": 0 },
+        "count": { "type": "integer", "minimum": 1 },
+        "scale": { "type": "number", "exclusiveMinimum": 0, "default": 5 },
+        "source": { "enum": ["jsonld_aggregate_rating", "vendor_api"] }
+      }
+    },
+    "Match": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "confidence", "evidence_quote"],
+      "properties": {
+        "kind": { "$ref": "#/$defs/MatchKind" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "evidence_quote": {
+          "description": "Text quoted from the fetched page that contains the matched identifier. Required (non-null) for every non-fuzzy match.",
+          "type": ["string", "null"],
+          "minLength": 1,
+          "maxLength": 400
+        }
+      }
+    },
+    "ReliabilityFactor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "weight", "value", "note"],
+      "properties": {
+        "key": {
+          "enum": [
+            "vendor_tier",
+            "match_exactness",
+            "freshness",
+            "link_status",
+            "rating",
+            "price_outlier"
+          ]
+        },
+        "weight": { "type": "number", "minimum": 0, "maximum": 1 },
+        "value": { "description": "Normalised 0..1 contribution before weighting.", "type": "number", "minimum": 0, "maximum": 1 },
+        "note": { "type": "string", "maxLength": 200 }
+      }
+    },
+    "Reliability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "factors"],
+      "properties": {
+        "score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "factors": { "type": "array", "items": { "$ref": "#/$defs/ReliabilityFactor" } }
+      }
+    },
+    "Shipping": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["amount", "currency", "note"],
+      "properties": {
+        "amount": { "$ref": "#/$defs/Money" },
+        "currency": { "$ref": "#/$defs/Currency" },
+        "note": { "type": ["string", "null"], "maxLength": 200 }
+      }
+    },
+    "Pack": {
+      "description": "How many units one purchase line contains; unit_price_basis says whether price_amount is per pack or per unit.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["quantity", "unit_price_basis"],
+      "properties": {
+        "quantity": { "type": "integer", "minimum": 1 },
+        "unit_price_basis": { "enum": ["per_pack", "per_unit"] }
+      }
+    },
+    "Offer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "offer_id",
+        "sku",
+        "mpn",
+        "gtin",
+        "vendor",
+        "url",
+        "price_amount",
+        "currency",
+        "availability",
+        "min_order_qty",
+        "pack",
+        "shipping",
+        "rating",
+        "match",
+        "fetched_at",
+        "evidence_level",
+        "link_status",
+        "reliability",
+        "status",
+        "source_sha256"
+      ],
+      "properties": {
+        "offer_id": {
+          "description": "Stable per (vendor.id, canonical url): `<vendor.id>:<sha256(canonical_url)[:16]>`.",
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,62}:[0-9a-f]{16}$"
+        },
+        "sku": { "description": "Vendor's SKU as quoted on the page.", "type": ["string", "null"], "minLength": 1, "maxLength": 64 },
+        "mpn": { "type": ["string", "null"], "minLength": 1, "maxLength": 64 },
+        "gtin": { "type": ["string", "null"], "pattern": "^[0-9]{8}$|^[0-9]{12,14}$" },
+        "vendor": { "$ref": "#/$defs/Vendor" },
+        "url": { "$ref": "#/$defs/HttpsUrl" },
+        "price_amount": { "$ref": "#/$defs/Money" },
+        "currency": { "type": ["string", "null"], "pattern": "^[A-Z]{3}$" },
+        "availability": { "$ref": "#/$defs/Availability" },
+        "min_order_qty": { "type": ["integer", "null"], "minimum": 1 },
+        "pack": { "$ref": "#/$defs/Pack" },
+        "shipping": { "$ref": "#/$defs/Shipping" },
+        "rating": { "$ref": "#/$defs/Rating" },
+        "match": { "$ref": "#/$defs/Match" },
+        "fetched_at": { "$ref": "#/$defs/Timestamp" },
+        "evidence_level": { "$ref": "#/$defs/EvidenceLevel" },
+        "link_status": { "$ref": "#/$defs/LinkStatus" },
+        "reliability": { "$ref": "#/$defs/Reliability" },
+        "status": {
+          "description": "ok: fresh and verified. stale: fetched_at older than 30 days. demoted: link check failed or price outlier; still listed, labelled.",
+          "enum": ["ok", "stale", "demoted"]
+        },
+        "source_sha256": {
+          "description": "SHA-256 of the fetched page body the fields were read from.",
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "allOf": [
+        {
+          "description": "A price needs a currency; a currency without a price is allowed (page showed currency but no number).",
+          "if": { "properties": { "price_amount": { "type": "string" } } },
+          "then": { "properties": { "currency": { "type": "string" } } }
+        },
+        {
+          "description": "Only fuzzy matches may lack an evidence quote.",
+          "if": { "properties": { "match": { "properties": { "kind": { "not": { "const": "fuzzy" } } } } } },
+          "then": { "properties": { "match": { "properties": { "evidence_quote": { "type": "string" } } } } }
+        },
+        {
+          "description": "A verified offer is never a fuzzy match.",
+          "if": { "properties": { "evidence_level": { "const": "verified" } } },
+          "then": { "properties": { "match": { "properties": { "kind": { "enum": ["exact_sku", "exact_mpn", "gtin"] } } } } }
+        }
+      ]
+    },
+    "LedgerEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "url", "status", "reason", "checked_at"],
+      "properties": {
+        "source": { "description": "Adapter or provider name, e.g. adafruit, mouser-api, brave-search.", "type": "string", "minLength": 1, "maxLength": 64 },
+        "url": { "anyOf": [{ "$ref": "#/$defs/HttpsUrl" }, { "type": "null" }] },
+        "status": {
+          "enum": [
+            "offer",
+            "possible_match",
+            "dropped_no_identifier",
+            "dropped_soft_404",
+            "dropped_unavailable",
+            "dropped_denylisted",
+            "duplicate",
+            "not_found",
+            "blocked",
+            "error",
+            "needs_api_key",
+            "skipped"
+          ]
+        },
+        "reason": { "type": "string", "maxLength": 300 },
+        "checked_at": { "anyOf": [{ "$ref": "#/$defs/Timestamp" }, { "type": "null" }] }
+      }
+    }
+  }
+}
