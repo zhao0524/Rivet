@@ -166,7 +166,7 @@ def test_shared_intent_fixture_when_present(tmp_path):
 
 
 def test_plan_matches_shared_schema_when_present(sample_plan):
-    schema_path = support.REPO_ROOT / "contracts" / "build_plan.schema.json"
+    schema_path = support.REPO_ROOT / "contracts" / "build-plan.schema.json"
     if not schema_path.exists():
         pytest.skip("shared contracts/ schemas not landed; plan is validated by the Pydantic models")
     jsonschema = pytest.importorskip("jsonschema")
