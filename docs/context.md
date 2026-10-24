@@ -6,10 +6,10 @@ Shared status file for everyone working in this repo, human or agent.
 | | |
 |---|---|
 | **Last updated** | 2026-10-24 · [B] |
-| **Branch / commit** | `feat/b-p5-exports` (stacked on `feat/b-p4-validation`) + this update |
+| **Branch / commit** | `feat/b-p6-repair` (stacked on `feat/b-p5-exports`) + this update |
 | **Current phase** | Pre-bootstrap: only the specs exist |
 | **Next gate** | Hour 8: every lane demos itself from fixtures (`docs/implementation.md` §7) |
-| **In progress** | [B] P6 repair (next on `feat/b-p6-repair`) |
+| **In progress** | [B] P7 composition, edits and demo (next on `feat/b-p7-integration`) |
 | **Blocked** | none (1 open issue in §6) |
 
 **Next up:** INT-0 → INT-1 → INT-2 (skeleton, contracts, fixtures). After that, all lanes can branch off and work in parallel.
@@ -101,7 +101,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | B2 | Parametric mechanical assembly and mounts | IN PROGRESS | [B] | Rover template produces consistent instances |
 | B3 | Electrical graph; driver and controller assignment | IN PROGRESS | [B] | Netlist references only valid pins |
 | B4 | Deterministic validators: mechanical, electrical, budget, completeness | IN PROGRESS | [B] | Failing-driver fixture produces the expected finding |
-| B5 | Repair engine | TODO | — | At least one failure repaired or honestly rejected |
+| B5 | Repair engine | IN PROGRESS | [B] | At least one failure repaired or honestly rejected |
 | B6 | BOM, assembly steps, serialization | IN PROGRESS | [B] | BOM rows match instance IDs |
 | B7 | Tests and standalone demo | TODO | — | `pytest` passes standalone |
 | B-P0 | Foundation: models, internal API, test inputs (`feat/b-p0-foundation`) | DONE | [B] | Clean install; offline model tests pass; `INTERNAL_API.md` freezes P1–P6 signatures |
@@ -110,7 +110,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 | B-P3 | Wiring and pin allocation (`feat/b-p3-wiring`) | DONE | [B] | See WORK_ORDERS P3 |
 | B-P4 | Validators (`feat/b-p4-validation`) | DONE | [B] | See WORK_ORDERS P4 |
 | B-P5 | BOM, assembly, serialization (`feat/b-p5-exports`) | DONE | [B] | See WORK_ORDERS P5 |
-| B-P6 | Repair (`feat/b-p6-repair`) | TODO | — | See WORK_ORDERS P6 |
+| B-P6 | Repair (`feat/b-p6-repair`) | DONE | [B] | See WORK_ORDERS P6 |
 | B-P7 | Composition, edits, demo (`feat/b-p7-integration`) | TODO | — | See WORK_ORDERS P7 |
 
 ### Developer C `[C]` · `apps/web/**`
@@ -152,6 +152,7 @@ Task IDs match `docs/implementation.md` §6. **Check** is what must be true befo
 Newest first. Append only; never edit old entries.
 Format: `YYYY-MM-DD [LANE] TASK-ID: what changed. Checked: how. Notes: half-done work or gotchas (optional).`
 
+- 2026-10-24 [B] B-P6: Added `repair.py`: `repair_candidate` verifies, then for each blocking FAIL tries same-category catalog substitutions (all instances of that part at once) and optional injected layout corrections in a stable order, rebuilds and re-verifies through injected callbacks, and keeps the first change that removes a blocking failure without adding one; at most 3 rounds, repeated candidates and rebuild errors are logged and skipped. Substitutes must keep the real/synthetic kind and have evidence no weaker than the part they replace. UNKNOWNs are never repaired away, catalog and input are not mutated, the result carries only canonical plan fields plus a separate attempt log. Outcomes: unchanged / repaired / improved / rejected. Checked: `uv run pytest -q` 200 passed, 1 skipped. Notes: B5 is DONE only after P7 shows a real repair or honest rejection on engine-built plans.
 - 2026-10-24 [B] B-P5: Added `bom.py`, `assembly.py`, `serialize.py`. BOM rows grouped by catalog ID with quantity = instance count; prices only from the catalog, Decimal subtotal to the cent; a price in another currency is left out, not converted; `complete`/`incomplete`/`not_available` set truthfully; purchase links shown only when verified, otherwise `manufacturer_reference_only` or `not_available`. Assembly steps follow the parent graph (cycles raise), then signal, motor and ground wiring listing every connection, then a wiring check, and the step that connects batteries/USB supply comes last. JSON output is sorted, newline-terminated and round-trips; extra fields are rejected with `INVALID_INPUT`. Checked: `uv run pytest -q` 187 passed, 1 skipped. Notes: one BOM unit = one item as sold (jumper wire pack counts as 1). Simulation fields are derived in P7.
 - 2026-10-24 [B] B-P4: Added `rivet_engine/validators/` (`verify_candidate`, `aggregate`): referential integrity (duplicate IDs, parents/cycles, mounts, connection ports, BOM quantity/phantoms/subtotal, step references), family/behavior/capabilities, required roles, real parts, availability, mount mates, rotated-box overlap and ground contact via an injected bounds helper, size limits, signal types, GPIO usage (input-only, reserved, strapping, shared pins), supply and motor voltage ranges, logic levels, motor stall vs driver continuous current (WARN up to 1.5x, FAIL above; heuristic documented), common ground, required connections, I2C address collisions, supply capacity, Decimal budget with currency checks, pin-map backing and firmware profile support. Missing ratings give UNKNOWN; a PASS that relies on approximated catalog evidence becomes an advisory WARN. Findings are sorted and de-duplicated; aggregation follows spec B4. Also made the synthetic test plan physically consistent and spread the Shadow Chassis deck mounts so the power bank no longer overlaps the ESP32 board. Checked: `uv run pytest -q` 164 passed, 1 skipped (shared failing-driver fixture not landed). Notes: trial run of the sourced rover gives only advisory findings (out-of-stock ESP32, 1.5 A stall vs 1.2 A continuous, approximated battery voltage and geometry, battery capacity unknown). B4 stays IN PROGRESS until P7 runs it end to end.
 - 2026-10-24 [B] B-P3: Added `wiring.py` and profile `data/wiring_profiles/esp32_devkitc_tb6612.json` (exact ESP32-DevKitC V4 + Adafruit TB6612 IDs; reserved GPIOs with reasons: flash 6-11, strapping 0/2/5/12/15, UART0 1/3, input-only 34-39). `wire_rover` builds a structured netlist: 7 driver control lines, I2C SDA/SCL on 21/22, 3.3 V logic to driver and sensor, both motor channels, motor and controller supplies, common ground. Sourced pin map: motor_left_pwm 25, in1 26, in2 27, motor_right_pwm 32, in1 33, in2 16, standby 17, i2c_sda 21, i2c_scl 22 (format A's firmware expects). No profile -> no pins plus a blocking UNKNOWN; exhausted pins, missing ports, non-I2C sensors and a logic supply outside a part's range become findings. Checked: `uv run pytest -q` 120 passed. Notes: the USB power bank has no ground port (ground runs in the USB cable). Current and power ratings are left to P4; nothing here marks firmware compiled.
