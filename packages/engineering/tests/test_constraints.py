@@ -98,13 +98,14 @@ def test_synthetic_parts_never_verify():
     assert f.severity == "blocking" and f.result == "UNKNOWN"
 
 
-def test_approximated_ratings_downgrade_pass_to_warning():
+def test_approximated_current_evidence_requires_review():
     records = real_records()
     for r in records:
         r["evidence"]["electrical"] = "approximated"
     report = run(records=records)
-    assert report.overall == "verified_with_warnings"
+    assert report.overall == "needs_review"
     assert non_pass(report, "electrical.supply_voltage")
+    assert all(f.result == "UNKNOWN" for f in non_pass(report, "electrical.motor_driver_current"))
 
 
 # --- required failure cases (B5 list) ---------------------------------------------------------
