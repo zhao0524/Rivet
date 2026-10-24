@@ -9,8 +9,10 @@ Both return a `FetchResult`; failures and blocks are reported in the result, nev
 from __future__ import annotations
 
 import hashlib
+import ipaddress
 import json
 import re
+import socket
 import time
 import urllib.error
 import urllib.request
@@ -57,8 +59,36 @@ class Fetcher(Protocol):
     def fetch(self, url: str) -> FetchResult: ...
 
 
+def resolves_to_public_address(host: str | None) -> bool:
+    """True only if every address `host` resolves to is globally routable (no private,
+    loopback, link-local or metadata addresses), so a fetched URL cannot reach internal services."""
+    if not host:
+        return False
+    try:
+        infos = socket.getaddrinfo(host, 443, proto=socket.IPPROTO_TCP)
+    except (OSError, UnicodeError):
+        return False
+    try:
+        return bool(infos) and all(ipaddress.ip_address(info[4][0].split("%")[0]).is_global for info in infos)
+    except ValueError:
+        return False
+
+
+class _SafeRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """Follow a redirect only to another https URL on a public address."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):  # noqa: ANN001
+        target = urlparse(newurl)
+        if target.scheme != "https" or not resolves_to_public_address(target.hostname):
+            raise urllib.error.URLError(f"refused redirect to a non-https or non-public address: {newurl}")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
 class PoliteFetcher:
-    """Network fetcher with robots.txt, per-host rate limit, identifying UA and an on-disk cache."""
+    """Network fetcher with robots.txt, per-host rate limit, identifying UA and an on-disk cache.
+
+    It only connects to hosts that resolve to public addresses and only follows redirects to
+    https URLs on public addresses (search results are untrusted input)."""
 
     def __init__(
         self,
@@ -78,6 +108,8 @@ class PoliteFetcher:
         self.max_bytes = max_bytes
         self._last_hit: dict[str, float] = {}
         self._robots: dict[str, robotparser.RobotFileParser | None] = {}
+        self._non_public: set[str] = set()
+        self._opener = urllib.request.build_opener(_SafeRedirectHandler())
 
     def _cache_path(self, url: str) -> Path:
         return self.cache_dir / (hashlib.sha256(url.encode()).hexdigest() + ".json")
@@ -107,9 +139,14 @@ class PoliteFetcher:
         base = f"{parsed.scheme}://{parsed.netloc}"
         if base not in self._robots:
             rp = robotparser.RobotFileParser()
+            if not resolves_to_public_address(parsed.hostname):
+                self._non_public.add(base)
+                rp.parse(["User-agent: *", "Disallow: /"])
+                self._robots[base] = rp
+                return False
             try:
                 req = urllib.request.Request(base + "/robots.txt", headers={"User-Agent": self.user_agent})
-                with urllib.request.urlopen(req, timeout=self.timeout_s) as resp:
+                with self._opener.open(req, timeout=self.timeout_s) as resp:
                     rp.parse(resp.read().decode("utf-8", "replace").splitlines())
             except urllib.error.HTTPError as exc:
                 # No robots file means everything is allowed; other HTTP errors mean "do not assume".
@@ -134,12 +171,18 @@ class PoliteFetcher:
         cached = self._read_cache(url)
         if cached is not None:
             return cached
+        parsed = urlparse(url)
         if not self._allowed_by_robots(url):
+            if f"{parsed.scheme}://{parsed.netloc}" in self._non_public:
+                return FetchResult.failure(url, "host does not resolve to a public address", blocked=True)
             return FetchResult.failure(url, "disallowed by robots.txt", blocked=True)
-        self._throttle(urlparse(url).netloc)
+        # Checked again here: DNS may have changed since robots.txt was read.
+        if not resolves_to_public_address(parsed.hostname):
+            return FetchResult.failure(url, "host does not resolve to a public address", blocked=True)
+        self._throttle(parsed.netloc)
         req = urllib.request.Request(url, headers={"User-Agent": self.user_agent, "Accept": "text/html,application/json"})
         try:
-            with urllib.request.urlopen(req, timeout=self.timeout_s) as resp:
+            with self._opener.open(req, timeout=self.timeout_s) as resp:
                 raw = resp.read(self.max_bytes + 1)
                 if len(raw) > self.max_bytes:
                     return FetchResult.failure(url, f"response larger than {self.max_bytes} bytes", status=resp.status)

@@ -12,6 +12,9 @@ products, and must never be presented as buildable, purchasable or wired hardwar
 | `plans/rover_failing_driver_v1.json` | Baseline plus one SYNTHETIC TEST-ONLY driver-to-motor wire with no sourced current ratings; verification must report `electrical.motor_driver_current` as blocking `UNKNOWN`/`FAIL` |
 | `sim/obstacle-scenario.json` | One start pose, one box ahead, and the exact state transitions the web simulation engine produces for the baseline plan |
 | `images/rover-reference.png` | Original illustration of the synthetic rover (see below) |
+| `offers/adafruit-3801.json`, `offers/sparkfun-rob-13301.json`, `offers/not-found-9999999.json` | `OfferSet` (`contracts/offer.schema.json`) derived from the recorded vendor pages in `packages/engineering/tests/support/recorded/` (price, availability, `fetched_at` and `source_sha256` come from those pages; `not-found` from the recorded 404s) |
+| `offers/synthetic-multivendor.json` | SYNTHETIC TEST-ONLY `OfferSet` (`synthetic: true`, vendors on `*.example`, never fetched) covering the plan's test cases: missing price, EUR vs USD, 3-pack, price outlier, stale, broken link, single-review rating, fuzzy possible match, alternative part, blocked/error/soft-404 ledger entries |
+| `offers/refused-synthetic-demo-part.json` | `outcome: refused` for a `demo.*` placeholder part |
 
 Rules:
 

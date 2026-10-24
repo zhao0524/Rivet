@@ -9,6 +9,7 @@ A implements this in `services/api`; B and C code against it. Domain bodies are 
 | [`component.schema.json`](component.schema.json) | `CatalogComponent` (§3.2) |
 | [`build-plan.schema.json`](build-plan.schema.json) | `BuildPlan` (§3.3, §3.4, §3.6) |
 | [`errors.schema.json`](errors.schema.json) | error envelope (§3.5) |
+| [`offer.schema.json`](offer.schema.json) | `OfferSet` / `Offer` (e-commerce layer, [Offers](#offers)) |
 
 Validate fixtures or any JSON file with `uv run scripts/validate_contracts.py` (see [Validation](#validation)).
 
@@ -51,6 +52,42 @@ Request details:
 - Every export response carries `X-Rivet-Generation-Mode` and `X-Rivet-Synthetic: true|false`. A `verified_product` BOM row needs a catalog SKU and a verified https purchase link equal to the row's URL; a `live` plan with synthetic parts is refused with `502 SYNTHETIC_PARTS_IN_LIVE_PLAN`.
 - Every plan the API returns has passed schema and referential checks. Source mode is reported honestly in `provenance.generation_mode` (`live | fixture | fallback | manual_template`); a fallback is never presented as live output.
 - `generate` also takes optional `intent_id` (from `POST /api/intents/interpret`) and `interpretation_choice: "as_interpreted" | "closest_supported_rover"` (default `as_interpreted`); see [Interpretations](#interpretations).
+
+## Product resolution
+
+Additive (#84, #91). `POST /api/resolve` turns an uploaded image (or a typed product name) into a product identity and a parts list where every SKU is backed by a fetched page; it never invents SKUs, prices or links.
+
+| Method | Path | Request | Success response |
+|---|---|---|---|
+| POST | `/api/resolve` | `{ "input": { "kind", "image_asset_id", "user_text" } }` (same input rules as generate, no requirements) | `202 { "job_id", "status", "resolution_id": null }`; the job's terminal event carries `resolution_id` |
+| GET | `/api/resolutions/{resolution_id}` | none | `200` resolution: `outcome` (`exact_match \| partial_match \| no_match_with_alternatives \| unsupported`), `product`, `parts[]` (each with claim statuses `verified \| inferred \| conflict \| not_found \| stale \| unavailable`), `alternatives[]`, `ledger[]` |
+| GET | `/api/resolutions/{resolution_id}/evidence` | none | `200 { "resolution_id", "ledger": [...] }` |
+
+The resolver is chosen by `RIVET_RESOLVER` (`stub` default, `engine`, `engine-recorded`). A resolver that returns sample data in live mode fails closed. Outcome gates are in `services/api/rivet_api/resolution/gates.py`.
+
+## Offers
+
+Additive (docs/e-commerce-layer/plan.md). Given a SKU/MPN, find legitimate offers on the web, verify each against its fetched page, rank and filter them, and hand the user a link. No checkout, cart or affiliate links. Bodies are `OfferSet` from [`offer.schema.json`](offer.schema.json); reference fixtures are in `fixtures/offers/`.
+
+| Method | Path | Request | Success response |
+|---|---|---|---|
+| GET | `/api/parts/{catalog_id}/offers` | optional `?sort=&vendor_tier=&in_stock=&min_rating=&max_price=&currency=` | `200 OfferSet` for the catalog part's SKU/MPN (stub, recorded or cache hit); `202 { "job_id", "status", "offer_set_id": null }` when live discovery is needed. `422 EXPORT_REFUSED_SYNTHETIC` for a `demo.*` part (no live search). `404 PART_NOT_FOUND` |
+| POST | `/api/offers/search` | `{ "sku"?, "mpn"?, "gtin"?, "manufacturer"? }` (at least one of `sku`/`mpn`/`gtin`) plus the same sort/filter fields | `200 OfferSet` when the provider answers synchronously (stub, recorded, cache hit); `202 { "job_id", "status", "offer_set_id": null }` when live discovery is needed |
+| GET | `/api/offers/{offer_set_id}` | none | `200 OfferSet` |
+
+Semantics:
+
+- `sort` is one of `reliability` (default), `price_asc`, `price_desc`, `rating`, `availability`, `newest`. Sorting is server-side and deterministic: unknowns (`price_amount: null`, `rating: null`) sort last in every direction and ties break on `offer_id`. Clients may re-sort the returned set locally.
+- Filters: `vendor_tier` (repeatable), `in_stock=true` (availability `in_stock` only), `min_rating` (0..5; offers with `rating: null` are excluded), `max_price` (decimal string, compared only within `currency`), `currency` (ISO 4217). Filters apply to `offers` only; `possible_matches` and `alternatives` are returned unfiltered. An empty result after filtering is `200` with `offers: []` and the original `outcome`; the UI shows an empty state, not `not_found`.
+- No cross-currency conversion. Price sorting compares only offers in the requested (or the set's majority) currency; others follow in `offer_id` order.
+- Pack-size variants (`pack.quantity > 1`) are compared on `price_amount / pack.quantity` only when `unit_price_basis` is `per_pack`, and the UI flags the basis.
+- `fuzzy` matches are never in `offers`; they are in `possible_matches`. `alternatives` are offers for a different, substitute part.
+- `status: stale` (fetched more than 30 days ago) and `status: demoted` (broken link, price outlier) offers stay in the list with a label; they are never removed silently.
+- The provider is chosen by `RIVET_OFFERS_PROVIDER` (`stub` default, `recorded`, `live`), validated in `Settings.from_env`. Live provider failures map to `PROVIDER_QUOTA` / `PROVIDER_AUTH` / `PROVIDER_UNAVAILABLE`; when some sources fail and others answer, the response is `200` with `outcome: partial` and a notice, and the failed sources appear in `ledger`.
+- `provider_mode: stub` and `synthetic: true` sets are never live lookups; clients must say so.
+- BOM CSV (`/exports/bom.csv`) gains optional trailing columns `sku`, `vendor`, `offer_url` (non-breaking: appended after the existing columns, empty when unknown).
+
+Additional codes: `PART_NOT_FOUND` (404, no), `OFFER_SET_NOT_FOUND` (404, no), `INVALID_IDENTIFIER` (400, no; bad GTIN check digit, empty identifiers), `SYNTHETIC_OFFERS_IN_LIVE_SET` (502, no; a live provider returned `*.example` vendors, refused like `SYNTHETIC_PARTS_IN_LIVE_PLAN`). A provider response that fails schema validation (non-https URL, zero price) is `502 PROVIDER_ERROR` and is never returned to the client.
 
 ## Interpretations
 

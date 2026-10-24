@@ -556,7 +556,7 @@ def test_shared_catalog_fixtures_conform(path):
 def _contract_for(doc: Any) -> str:
     if isinstance(doc, dict):
         for key, name in (("build_id", "build-plan"), ("intent_id", "intent"), ("catalog_id", "component"),
-                          ("error", "errors")):
+                          ("provider_mode", "offer"), ("error", "errors")):
             if key in doc:
                 return name
     raise AssertionError(f"cannot tell which contract applies to {str(doc)[:80]}")

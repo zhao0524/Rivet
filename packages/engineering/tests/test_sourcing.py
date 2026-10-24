@@ -345,3 +345,67 @@ class TestReferenceArchitectures:
     def test_drone_gaps_are_explicit(self, recorded):
         parts = {t.role: t for t in typical_parts("drone", recorded, now=NOW)}
         assert parts["flight_controller"].entry is None and parts["gps"].sku.status == "verified"
+
+
+class TestFetcherAddressGuard:
+    """Live offers fetch untrusted search-result URLs; the fetcher must never reach internal hosts."""
+
+    @staticmethod
+    def _resolve_to(monkeypatch, address):
+        import socket
+
+        monkeypatch.setattr(socket, "getaddrinfo", lambda *a, **k: [(socket.AF_INET, socket.SOCK_STREAM, 6, "", (address, 443))])
+
+    @pytest.mark.parametrize("address", ["127.0.0.1", "10.0.0.5", "192.168.1.1", "169.254.169.254", "::1", "fd00::1"])
+    def test_private_loopback_and_metadata_addresses_are_not_public(self, monkeypatch, address):
+        from rivet_engine.sourcing.fetch import resolves_to_public_address
+
+        self._resolve_to(monkeypatch, address)
+        assert resolves_to_public_address("vendor.example") is False
+
+    def test_public_address_is_allowed_and_unresolvable_is_not(self, monkeypatch):
+        import socket
+
+        from rivet_engine.sourcing.fetch import resolves_to_public_address
+
+        self._resolve_to(monkeypatch, "93.184.216.34")
+        assert resolves_to_public_address("www.adafruit.com") is True
+
+        def fail(*a, **k):
+            raise socket.gaierror("no such host")
+
+        monkeypatch.setattr(socket, "getaddrinfo", fail)
+        assert resolves_to_public_address("nowhere.invalid") is False
+        assert resolves_to_public_address(None) is False
+
+    def test_fetch_refuses_a_host_on_an_internal_address_without_connecting(self, tmp_path, monkeypatch):
+        self._resolve_to(monkeypatch, "169.254.169.254")
+        fetcher = PoliteFetcher(tmp_path)
+        monkeypatch.setattr(fetcher._opener, "open", lambda *a, **k: pytest.fail("must not connect"))
+        result = fetcher.fetch("https://shop.example/product/1")
+        assert result.blocked and "public address" in result.error
+
+    @pytest.mark.parametrize(
+        ("target", "address"),
+        [("http://shop.example/p", "93.184.216.34"), ("https://internal.example/p", "10.1.2.3")],
+    )
+    def test_redirects_off_https_or_to_internal_addresses_are_refused(self, monkeypatch, target, address):
+        import urllib.error
+        import urllib.request
+
+        from rivet_engine.sourcing.fetch import _SafeRedirectHandler
+
+        self._resolve_to(monkeypatch, address)
+        req = urllib.request.Request("https://shop.example/start")
+        with pytest.raises(urllib.error.URLError, match="refused redirect"):
+            _SafeRedirectHandler().redirect_request(req, None, 302, "Found", {}, target)
+
+    def test_redirect_to_a_public_https_url_is_followed(self, monkeypatch):
+        import urllib.request
+
+        from rivet_engine.sourcing.fetch import _SafeRedirectHandler
+
+        self._resolve_to(monkeypatch, "93.184.216.34")
+        req = urllib.request.Request("https://shop.example/start")
+        new = _SafeRedirectHandler().redirect_request(req, None, 302, "Found", {}, "https://shop.example/final")
+        assert new is not None and new.full_url == "https://shop.example/final"
