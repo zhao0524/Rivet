@@ -1,0 +1,1519 @@
+{
+  "schema_version": "1.0",
+  "catalog_version": "catalog-v1-2026-10-24",
+  "components": [
+    {
+      "schema_version": "1.0",
+      "catalog_id": "accessory.adafruit_dc_jack_terminal_368",
+      "identity": {
+        "manufacturer": "Adafruit",
+        "model": "Female DC Power adapter - 2.1mm jack to screw terminal block",
+        "sku": "368",
+        "category": "accessory"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 14.0,
+          "y": 11.0,
+          "z": 30.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "polymer"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.adafruit.com/product/368",
+        "datasheet_url": null,
+        "purchase_url": "https://www.adafruit.com/product/368",
+        "purchase_url_verified_at": "2026-10-24",
+        "price_amount": "2.00",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "verified",
+        "notes": [
+          "2.1 mm jack to screw terminals (Adafruit 368 product page, checked 2026-10-24); no voltage/current rating listed.",
+          "Assumes the Shadow Chassis battery holder plug is 2.1 mm center-positive; not confirmed by SparkFun."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "accessory.adafruit_half_breadboard_64",
+      "identity": {
+        "manufacturer": "Adafruit",
+        "model": "Half Sized Premium Breadboard - 400 Tie Points",
+        "sku": "64",
+        "category": "accessory"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 55.0,
+          "y": 9.3,
+          "z": 82.6
+        },
+        "mass_g": null,
+        "bounds_verified": true,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "polymer"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.adafruit.com/product/64",
+        "datasheet_url": null,
+        "purchase_url": "https://www.adafruit.com/product/64",
+        "purchase_url_verified_at": "2026-10-24",
+        "price_amount": "4.95",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "verified",
+        "electrical": "unknown",
+        "price": "verified",
+        "notes": [
+          "82.6 x 55 x 9.3 mm with adhesive foam backing (Adafruit 64 product page, checked 2026-10-24). Holds the TB6612 breakout."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "board.esp32_devkitc_v4_wroom32e",
+      "identity": {
+        "manufacturer": "Espressif",
+        "model": "ESP32-DevKitC V4 (ESP32-WROOM-32E) - Adafruit 3269",
+        "sku": "3269",
+        "category": "controller"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 28.0,
+          "y": 12.9,
+          "z": 55.3
+        },
+        "mass_g": null,
+        "bounds_verified": true,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "pcb"
+      },
+      "mounts": [
+        {
+          "mount_id": "base",
+          "kind": "adhesive_pad",
+          "position_mm": [
+            0,
+            -6.45,
+            0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "deck_pad"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "port_id": "gnd",
+          "signal": "ground",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": ""
+        },
+        {
+          "port_id": "gpio0",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "ESP32 strapping pin: level at reset selects boot mode; avoid for outputs driven at boot"
+        },
+        {
+          "port_id": "gpio1",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "U0TXD: USB-serial console and flashing; do not use"
+        },
+        {
+          "port_id": "gpio12",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "ESP32 strapping pin: level at reset selects boot mode; avoid for outputs driven at boot"
+        },
+        {
+          "port_id": "gpio13",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "General-purpose I/O (DevKitC V4 header)"
+        },
+        {
+          "port_id": "gpio14",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "General-purpose I/O (DevKitC V4 header)"
+        },
+        {
+          "port_id": "gpio15",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "ESP32 strapping pin: level at reset selects boot mode; avoid for outputs driven at boot"
+        },
+        {
+          "port_id": "gpio16",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "General-purpose I/O (DevKitC V4 header)"
+        },
+        {
+          "port_id": "gpio17",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "General-purpose I/O (DevKitC V4 header)"
+        },
+        {
+          "port_id": "gpio18",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "General-purpose I/O (DevKitC V4 header)"
+        },
+        {
+          "port_id": "gpio19",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "General-purpose I/O (DevKitC V4 header)"
+        },
+        {
+          "port_id": "gpio2",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "ESP32 strapping pin: level at reset selects boot mode; avoid for outputs driven at boot"
+        },
+        {
+          "port_id": "gpio21",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "General-purpose I/O (DevKitC V4 header)"
+        },
+        {
+          "port_id": "gpio22",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "General-purpose I/O (DevKitC V4 header)"
+        },
+        {
+          "port_id": "gpio23",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "General-purpose I/O (DevKitC V4 header)"
+        },
+        {
+          "port_id": "gpio25",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "General-purpose I/O (DevKitC V4 header)"
+        },
+        {
+          "port_id": "gpio26",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "General-purpose I/O (DevKitC V4 header)"
+        },
+        {
+          "port_id": "gpio27",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "General-purpose I/O (DevKitC V4 header)"
+        },
+        {
+          "port_id": "gpio3",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "U0RXD: USB-serial console and flashing; do not use"
+        },
+        {
+          "port_id": "gpio32",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "General-purpose I/O (DevKitC V4 header)"
+        },
+        {
+          "port_id": "gpio33",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "General-purpose I/O (DevKitC V4 header)"
+        },
+        {
+          "port_id": "gpio34",
+          "signal": "digital_input",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "Input only (marked type I in the DevKitC pin table); no output driver"
+        },
+        {
+          "port_id": "gpio35",
+          "signal": "digital_input",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "Input only (marked type I in the DevKitC pin table); no output driver"
+        },
+        {
+          "port_id": "gpio36",
+          "signal": "digital_input",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "Input only (marked type I in the DevKitC pin table); no output driver"
+        },
+        {
+          "port_id": "gpio39",
+          "signal": "digital_input",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "Input only (marked type I in the DevKitC pin table); no output driver"
+        },
+        {
+          "port_id": "gpio4",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "General-purpose I/O (DevKitC V4 header)"
+        },
+        {
+          "port_id": "gpio5",
+          "signal": "digital_io",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 3.3,
+          "notes": "ESP32 strapping pin: level at reset selects boot mode; avoid for outputs driven at boot"
+        },
+        {
+          "port_id": "usb_5v_in",
+          "signal": "power_in",
+          "voltage_min_v": 4.75,
+          "voltage_max_v": 5.25,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "Micro-USB power input (default supply). Range is the USB 2.0 nominal 5 V tolerance, not a board rating; use one supply option only"
+        },
+        {
+          "port_id": "v3v3",
+          "signal": "power_output",
+          "voltage_min_v": 3.3,
+          "voltage_max_v": 3.3,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "3V3 header pin from the on-board regulator; current rating not published on the product page"
+        }
+      ],
+      "sourcing": {
+        "manufacturer_reference_url": "https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html",
+        "datasheet_url": "https://cdn-shop.adafruit.com/product-files/3269/esp32_datasheet_en_0.pdf",
+        "purchase_url": "https://www.adafruit.com/product/3269",
+        "purchase_url_verified_at": "2026-10-24",
+        "price_amount": "15.00",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "out_of_stock"
+      },
+      "evidence": {
+        "dimensions": "verified",
+        "electrical": "verified",
+        "price": "verified",
+        "notes": [
+          "Dimensions 55.3 x 28.0 x 12.9 mm from Adafruit 3269 product page (checked 2026-10-24).",
+          "Pin table, power options and SPI-flash pins GPIO6-11 (omitted here, must not be used) from the Espressif DevKitC user guide.",
+          "Strapping pins GPIO0/2/5/12/15 per the ESP32 datasheet.",
+          "Adafruit listed this board out of stock on 2026-10-24.",
+          "Board has no mounting holes; it is fixed to the deck with foam tape (approximated mount)."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "caster.sparkfun_shadow_nub",
+      "identity": {
+        "manufacturer": "SparkFun",
+        "model": "Shadow Chassis nub caster (included with ROB-13301)",
+        "sku": null,
+        "category": "caster"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 20.0,
+          "y": 42.5,
+          "z": 20.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "polymer"
+      },
+      "mounts": [
+        {
+          "mount_id": "base",
+          "kind": "nub_caster_base",
+          "position_mm": [
+            0,
+            21.25,
+            0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "nub_caster_mount"
+          ]
+        }
+      ],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.sparkfun.com/products/13301",
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": "0.00",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "approximated",
+        "electrical": "unknown",
+        "price": "verified",
+        "notes": [
+          "Included in the Shadow Chassis kit contents ('One nub caster'); price 0.00 because it is not bought separately.",
+          "Height chosen so the caster reaches the same ground plane as the 63 mm wheels; approximated."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "chassis.sparkfun_shadow_rob13301",
+      "identity": {
+        "manufacturer": "SparkFun",
+        "model": "Shadow Chassis",
+        "sku": "ROB-13301",
+        "category": "chassis"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 126.0,
+          "y": 44.0,
+          "z": 196.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "polymer"
+      },
+      "mounts": [
+        {
+          "mount_id": "motor_left",
+          "kind": "tt_motor_mount",
+          "position_mm": [
+            -45.0,
+            -10.0,
+            50.0
+          ],
+          "rotation_deg": [
+            0,
+            180,
+            0
+          ],
+          "allowed_mates": [
+            "tt_motor_base"
+          ]
+        },
+        {
+          "mount_id": "motor_right",
+          "kind": "tt_motor_mount",
+          "position_mm": [
+            45.0,
+            -10.0,
+            50.0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "tt_motor_base"
+          ]
+        },
+        {
+          "mount_id": "caster_rear",
+          "kind": "nub_caster_mount",
+          "position_mm": [
+            0,
+            -10.0,
+            -80.0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "nub_caster_base"
+          ]
+        },
+        {
+          "mount_id": "controller_deck",
+          "kind": "deck_pad",
+          "position_mm": [
+            -25.0,
+            44.0,
+            -10.0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "adhesive_pad"
+          ]
+        },
+        {
+          "mount_id": "driver_deck",
+          "kind": "deck_pad",
+          "position_mm": [
+            30.0,
+            44.0,
+            20.0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "adhesive_pad"
+          ]
+        },
+        {
+          "mount_id": "front_sensor",
+          "kind": "sensor_bracket",
+          "position_mm": [
+            0,
+            30.0,
+            98.0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "breakout_holes"
+          ]
+        },
+        {
+          "mount_id": "power_deck",
+          "kind": "battery_clip",
+          "position_mm": [
+            0,
+            2.0,
+            -40.0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "aa_holder_base"
+          ]
+        },
+        {
+          "mount_id": "power_usb",
+          "kind": "deck_pad",
+          "position_mm": [
+            0,
+            44.0,
+            -60.0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "adhesive_pad"
+          ]
+        }
+      ],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.sparkfun.com/products/13301",
+        "datasheet_url": null,
+        "purchase_url": "https://www.sparkfun.com/products/13301",
+        "purchase_url_verified_at": "2026-10-24",
+        "price_amount": "14.95",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "approximated",
+        "electrical": "unknown",
+        "price": "verified",
+        "notes": [
+          "196 x 126 x 44 mm (53.25 mm tall with nub caster) from SparkFun ROB-13301 product page (checked 2026-10-24).",
+          "Kit includes top/bottom plates, motor mounts, struts, micro-controller mounts, one nub caster and one 4xAA battery holder with barrel jack.",
+          "Mount positions are approximated for rendering and placement; not measured from SparkFun drawings.",
+          "Bounding box treats the two plates as one block (x = width, z = length)."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "driver.adafruit_tb6612_2448",
+      "identity": {
+        "manufacturer": "Adafruit",
+        "model": "TB6612 1.2A DC/Stepper Motor Driver Breakout Board",
+        "sku": "2448",
+        "category": "motor_driver"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 27.0,
+          "y": 3.0,
+          "z": 19.0
+        },
+        "mass_g": 1.8,
+        "bounds_verified": true,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "pcb"
+      },
+      "mounts": [
+        {
+          "mount_id": "base",
+          "kind": "adhesive_pad",
+          "position_mm": [
+            0,
+            -1.5,
+            0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "deck_pad"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "port_id": "ain1",
+          "signal": "digital_input",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "Motor A direction input, Vcc logic level"
+        },
+        {
+          "port_id": "ain2",
+          "signal": "digital_input",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "Motor A direction input, Vcc logic level"
+        },
+        {
+          "port_id": "ao1",
+          "signal": "motor_output",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": 1.2,
+          "logic_level_v": null,
+          "notes": "Motor A output; 1.2 A continuous per channel, 3 A peak for about 20 ms (product page)"
+        },
+        {
+          "port_id": "ao2",
+          "signal": "motor_output",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": 1.2,
+          "logic_level_v": null,
+          "notes": "Motor A output; 1.2 A continuous per channel, 3 A peak for about 20 ms (product page)"
+        },
+        {
+          "port_id": "bin1",
+          "signal": "digital_input",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "Motor B direction input, Vcc logic level"
+        },
+        {
+          "port_id": "bin2",
+          "signal": "digital_input",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "Motor B direction input, Vcc logic level"
+        },
+        {
+          "port_id": "bo1",
+          "signal": "motor_output",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": 1.2,
+          "logic_level_v": null,
+          "notes": "Motor B output; 1.2 A continuous per channel, 3 A peak for about 20 ms (product page)"
+        },
+        {
+          "port_id": "bo2",
+          "signal": "motor_output",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": 1.2,
+          "logic_level_v": null,
+          "notes": "Motor B output; 1.2 A continuous per channel, 3 A peak for about 20 ms (product page)"
+        },
+        {
+          "port_id": "gnd",
+          "signal": "ground",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "Shared logic and motor ground"
+        },
+        {
+          "port_id": "pwma",
+          "signal": "pwm_input",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "Motor A PWM speed input, Vcc logic level"
+        },
+        {
+          "port_id": "pwmb",
+          "signal": "pwm_input",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "Motor B PWM speed input, Vcc logic level"
+        },
+        {
+          "port_id": "stby",
+          "signal": "digital_input",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "Standby; pulled up to Vcc with 10K, low disables both motors. Vcc logic level"
+        },
+        {
+          "port_id": "vcc",
+          "signal": "power_in",
+          "voltage_min_v": 2.7,
+          "voltage_max_v": 5.5,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "Logic supply; match the controller logic level (Learn guide pinouts)"
+        },
+        {
+          "port_id": "vm",
+          "signal": "power_in",
+          "voltage_min_v": 4.5,
+          "voltage_max_v": 13.5,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "Motor supply, separate from logic; polarity protection FET on VM"
+        }
+      ],
+      "sourcing": {
+        "manufacturer_reference_url": "https://learn.adafruit.com/adafruit-tb6612-h-bridge-dc-stepper-motor-driver-breakout/pinouts",
+        "datasheet_url": null,
+        "purchase_url": "https://www.adafruit.com/product/2448",
+        "purchase_url_verified_at": "2026-10-24",
+        "price_amount": "6.95",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "verified",
+        "electrical": "verified",
+        "price": "verified",
+        "notes": [
+          "27 x 19 x 3 mm, 1.8 g, VM 4.5-13.5 V, 1.2 A continuous / 3 A peak (~20 ms) from Adafruit 2448 product page (checked 2026-10-24).",
+          "Vcc 2.7-5.5 V, pin names and STBY pull-up from the Adafruit Learn guide pinouts page.",
+          "Port IDs follow TB6612FNG datasheet names (AIN1/AIN2/PWMA, AO1/AO2, ...).",
+          "Adafruit notes it does not work well with 3 V motors (VM minimum 4.5 V)."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "motor.adafruit_tt_gearbox_200rpm_3777",
+      "identity": {
+        "manufacturer": "Adafruit",
+        "model": "DC Gearbox Motor - TT Motor - 200RPM - 3 to 6VDC",
+        "sku": "3777",
+        "category": "motor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 18.0,
+          "y": 22.0,
+          "z": 70.0
+        },
+        "mass_g": 30.6,
+        "bounds_verified": true,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "polymer"
+      },
+      "mounts": [
+        {
+          "mount_id": "base",
+          "kind": "tt_motor_base",
+          "position_mm": [
+            0,
+            11.0,
+            0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "tt_motor_mount"
+          ]
+        },
+        {
+          "mount_id": "shaft",
+          "kind": "tt_shaft",
+          "position_mm": [
+            9.0,
+            0,
+            20.0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "tt_wheel_hub"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "port_id": "terminal_1",
+          "signal": "motor_power",
+          "voltage_min_v": 3.0,
+          "voltage_max_v": 6.0,
+          "current_limit_a": 1.5,
+          "logic_level_v": null,
+          "notes": "Rated 3-6 VDC; current_limit_a is measured stall current: 1.1 A @3 V, 1.2 A @4.5 V, 1.5 A @6 V (product page)"
+        },
+        {
+          "port_id": "terminal_2",
+          "signal": "motor_power",
+          "voltage_min_v": 3.0,
+          "voltage_max_v": 6.0,
+          "current_limit_a": 1.5,
+          "logic_level_v": null,
+          "notes": "Rated 3-6 VDC; current_limit_a is measured stall current: 1.1 A @3 V, 1.2 A @4.5 V, 1.5 A @6 V (product page)"
+        }
+      ],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.adafruit.com/product/3777",
+        "datasheet_url": "https://cdn-shop.adafruit.com/product-files/3777/3777_diagram.jpg",
+        "purchase_url": "https://www.adafruit.com/product/3777",
+        "purchase_url_verified_at": "2026-10-24",
+        "price_amount": "2.95",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "verified",
+        "electrical": "verified",
+        "price": "verified",
+        "notes": [
+          "70 x 22 x 18 mm, 30.6 g, 1:48, no-load 150-160 mA, stall 1.1-1.5 A from Adafruit 3777 product page (checked 2026-10-24).",
+          "Shaft position within the body is approximated from the product diagram.",
+          "Fit in the SparkFun Shadow Chassis TT-style motor mounts is assumed from the shared TT form factor, not confirmed by SparkFun."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "power.adafruit_usb_power_bank_5000_4288",
+      "identity": {
+        "manufacturer": "Adafruit",
+        "model": "USB Li-Ion Power Bank with 2 x 5V Outputs @ 2.1A - 5000mAh",
+        "sku": "4288",
+        "category": "power_supply"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 63.0,
+          "y": 12.5,
+          "z": 90.0
+        },
+        "mass_g": 101.0,
+        "bounds_verified": true,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "polymer"
+      },
+      "mounts": [
+        {
+          "mount_id": "base",
+          "kind": "adhesive_pad",
+          "position_mm": [
+            0,
+            -6.25,
+            0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "deck_pad"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "port_id": "usb_a_out",
+          "signal": "power_output",
+          "voltage_min_v": 5.0,
+          "voltage_max_v": 5.0,
+          "current_limit_a": 2.1,
+          "logic_level_v": null,
+          "notes": "5 VDC up to 2.1 A (page does not give a per-port rating)"
+        }
+      ],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.adafruit.com/product/4288",
+        "datasheet_url": null,
+        "purchase_url": "https://www.adafruit.com/product/4288",
+        "purchase_url_verified_at": "2026-10-24",
+        "price_amount": "26.95",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "verified",
+        "electrical": "verified",
+        "price": "verified",
+        "notes": [
+          "90.0 x 63.0 x 12.5 mm, 101 g, 5000 mAh, 2 x USB-A 5 V up to 2.1 A from Adafruit 4288 product page (checked 2026-10-24)."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "power.sparkfun_shadow_4xaa_holder",
+      "identity": {
+        "manufacturer": "SparkFun",
+        "model": "4xAA battery holder with barrel jack (included with ROB-13301)",
+        "sku": null,
+        "category": "power_supply"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 62.0,
+          "y": 16.0,
+          "z": 58.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "polymer"
+      },
+      "mounts": [
+        {
+          "mount_id": "base",
+          "kind": "aa_holder_base",
+          "position_mm": [
+            0,
+            -8.0,
+            0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "battery_clip"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "port_id": "gnd",
+          "signal": "ground",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "Battery negative via barrel jack sleeve"
+        },
+        {
+          "port_id": "v_out",
+          "signal": "power_output",
+          "voltage_min_v": 4.8,
+          "voltage_max_v": 6.0,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "4 AA cells in series: 4.8 V with NiMH (1.2 V/cell) to 6.0 V nominal alkaline (1.5 V/cell); fresh alkaline cells read higher. Cell chemistry and current rating not specified by the kit"
+        }
+      ],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.sparkfun.com/products/13301",
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": "0.00",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "unverified",
+        "electrical": "approximated",
+        "price": "verified",
+        "notes": [
+          "Included in the Shadow Chassis kit ('One 4xAA battery holder' with barrel jack termination); price 0.00 because it is not bought separately.",
+          "AA cells are not included and not listed in the BOM.",
+          "Output voltage derived from cell count and chemistry, not from a holder rating."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "sensor.adafruit_vl53l0x_3317",
+      "identity": {
+        "manufacturer": "Adafruit",
+        "model": "VL53L0X Time of Flight Distance Sensor - ~30 to 1000mm",
+        "sku": "3317",
+        "category": "distance_sensor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 21.0,
+          "y": 2.8,
+          "z": 18.0
+        },
+        "mass_g": 1.3,
+        "bounds_verified": true,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "pcb"
+      },
+      "mounts": [
+        {
+          "mount_id": "base",
+          "kind": "breakout_holes",
+          "position_mm": [
+            0,
+            0,
+            -1.4
+          ],
+          "rotation_deg": [
+            -90,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "sensor_bracket"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "port_id": "gnd",
+          "signal": "ground",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": ""
+        },
+        {
+          "port_id": "gpio",
+          "signal": "digital_output",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 2.8,
+          "notes": "Data-ready output at 2.8 V, not level shifted; not used by the library"
+        },
+        {
+          "port_id": "scl",
+          "signal": "i2c_scl",
+          "voltage_min_v": 3.0,
+          "voltage_max_v": 5.0,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "I2C clock, level shifted for 3-5 V logic; default address 0x29"
+        },
+        {
+          "port_id": "sda",
+          "signal": "i2c_sda",
+          "voltage_min_v": 3.0,
+          "voltage_max_v": 5.0,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "I2C data, level shifted for 3-5 V logic; default address 0x29"
+        },
+        {
+          "port_id": "shdn",
+          "signal": "digital_input",
+          "voltage_min_v": 3.0,
+          "voltage_max_v": 5.0,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "Shutdown, pulled high; accepts 3-5 V logic through a level-shifting diode"
+        },
+        {
+          "port_id": "vin",
+          "signal": "power_in",
+          "voltage_min_v": 3.0,
+          "voltage_max_v": 5.0,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "3-5 VDC; on-board regulator to 2.8 V (Learn guide pinouts)"
+        }
+      ],
+      "sourcing": {
+        "manufacturer_reference_url": "https://learn.adafruit.com/adafruit-vl53l0x-micro-lidar-distance-sensor-breakout/pinouts",
+        "datasheet_url": null,
+        "purchase_url": "https://www.adafruit.com/product/3317",
+        "purchase_url_verified_at": "2026-10-24",
+        "price_amount": "14.95",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "verified",
+        "electrical": "verified",
+        "price": "verified",
+        "notes": [
+          "21.0 x 18.0 x 2.8 mm, 1.3 g; about 30-1200 mm default range, ~35 degree cone (Adafruit 3317 product page, checked 2026-10-24).",
+          "Default I2C address 0x29, changeable only in software (Learn guide).",
+          "Range depends on target reflectance; not a guaranteed detection distance."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "sensor.adafruit_vl53l1x_3967",
+      "identity": {
+        "manufacturer": "Adafruit",
+        "model": "VL53L1X Time of Flight Distance Sensor - ~30 to 4000mm - STEMMA QT / Qwiic",
+        "sku": "3967",
+        "category": "distance_sensor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 25.5,
+          "y": 4.6,
+          "z": 17.5
+        },
+        "mass_g": 1.8,
+        "bounds_verified": true,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "pcb"
+      },
+      "mounts": [
+        {
+          "mount_id": "base",
+          "kind": "breakout_holes",
+          "position_mm": [
+            0,
+            0,
+            -2.3
+          ],
+          "rotation_deg": [
+            -90,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "sensor_bracket"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "port_id": "gnd",
+          "signal": "ground",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": ""
+        },
+        {
+          "port_id": "gpio",
+          "signal": "digital_output",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": 2.8,
+          "notes": "Interrupt output; level not stated on the product page"
+        },
+        {
+          "port_id": "scl",
+          "signal": "i2c_scl",
+          "voltage_min_v": 3.0,
+          "voltage_max_v": 5.0,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "I2C clock, level shifted; default address 0x29"
+        },
+        {
+          "port_id": "sda",
+          "signal": "i2c_sda",
+          "voltage_min_v": 3.0,
+          "voltage_max_v": 5.0,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "I2C data, level shifted; default address 0x29"
+        },
+        {
+          "port_id": "vin",
+          "signal": "power_in",
+          "voltage_min_v": 3.0,
+          "voltage_max_v": 5.0,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "Works with 3-5 V power or logic (product page)"
+        },
+        {
+          "port_id": "xshut",
+          "signal": "digital_input",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "Shutdown input (Learn guide); level not stated on the product page"
+        }
+      ],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.adafruit.com/product/3967",
+        "datasheet_url": null,
+        "purchase_url": "https://www.adafruit.com/product/3967",
+        "purchase_url_verified_at": "2026-10-24",
+        "price_amount": "14.95",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "verified",
+        "electrical": "approximated",
+        "price": "verified",
+        "notes": [
+          "25.5 x 17.5 x 4.6 mm, 1.8 g, up to 400 cm, typical 27 degree FoV, address 0x29 (Adafruit 3967 product page, checked 2026-10-24).",
+          "Vin range is the page's '3-5V' statement, not a formal rating."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "wheel.adafruit_tt_wheel_3766",
+      "identity": {
+        "manufacturer": "Adafruit",
+        "model": "Orange and Clear TT Motor Wheel for TT DC Gearbox Motor",
+        "sku": "3766",
+        "category": "wheel"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 29.0,
+          "y": 63.0,
+          "z": 63.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "rubber"
+      },
+      "mounts": [
+        {
+          "mount_id": "hub",
+          "kind": "tt_wheel_hub",
+          "position_mm": [
+            -14.5,
+            0,
+            0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "tt_shaft"
+          ]
+        }
+      ],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.adafruit.com/product/3766",
+        "datasheet_url": null,
+        "purchase_url": "https://www.adafruit.com/product/3766",
+        "purchase_url_verified_at": "2026-10-24",
+        "price_amount": "1.50",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "approximated",
+        "electrical": "unknown",
+        "price": "verified",
+        "notes": [
+          "One wheel per order; only for TT gearbox motors (Adafruit 3766 product page, checked 2026-10-24).",
+          "Page lists 63 x 29 mm without saying which is the diameter; modeled as 63 mm diameter, 29 mm wide."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "wiring.adafruit_jumper_mm_40x150_758",
+      "identity": {
+        "manufacturer": "Adafruit",
+        "model": "Premium Male/Male Jumper Wires - 40 x 6in (150mm)",
+        "sku": "758",
+        "category": "wiring"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 20.0,
+          "y": 5.0,
+          "z": 150.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "polymer"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.adafruit.com/product/758",
+        "datasheet_url": null,
+        "purchase_url": "https://www.adafruit.com/product/758",
+        "purchase_url_verified_at": "2026-10-24",
+        "price_amount": "3.95",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "approximated",
+        "electrical": "unknown",
+        "price": "verified",
+        "notes": [
+          "One pack of 40 wires, 150 mm, 28 AWG (Adafruit 758 product page, checked 2026-10-24). One BOM unit = one pack."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "wiring.adafruit_stemma_qt_to_male_4209",
+      "identity": {
+        "manufacturer": "Adafruit",
+        "model": "STEMMA QT / Qwiic JST SH 4-pin to Premium Male Headers Cable - 150mm",
+        "sku": "4209",
+        "category": "wiring"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 10.0,
+          "y": 3.0,
+          "z": 150.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "polymer"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.adafruit.com/product/4209",
+        "datasheet_url": null,
+        "purchase_url": "https://www.adafruit.com/product/4209",
+        "purchase_url_verified_at": "2026-10-24",
+        "price_amount": "0.95",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "approximated",
+        "electrical": "unknown",
+        "price": "verified",
+        "notes": [
+          "150 mm; red 3.3 V, black GND, blue SDA, yellow SCL (Adafruit 4209 product page, checked 2026-10-24)."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "wiring.adafruit_usb_a_microb_3ft_592",
+      "identity": {
+        "manufacturer": "Adafruit",
+        "model": "USB cable - USB A to Micro-B - 3 foot long",
+        "sku": "592",
+        "category": "wiring"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 15.0,
+          "y": 8.0,
+          "z": 914.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "polymer"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.adafruit.com/product/592",
+        "datasheet_url": null,
+        "purchase_url": "https://www.adafruit.com/product/592",
+        "purchase_url_verified_at": "2026-10-24",
+        "price_amount": "2.95",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "approximated",
+        "electrical": "unknown",
+        "price": "verified",
+        "notes": [
+          "About 1 m, USB A to Micro-B (Adafruit 592 product page, checked 2026-10-24). Connects the power bank to the ESP32 board."
+        ]
+      }
+    }
+  ]
+}
