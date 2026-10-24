@@ -1,6 +1,8 @@
 'use client';
 
-/** Placeholder until the screen lands. */
+import { ProjectsScreen } from '../../../components/start/ProjectsScreen';
+
+/** A0 Projects. */
 export default function Page() {
-  return <p className="ui-muted">projects: coming soon.</p>;
+  return <ProjectsScreen />;
 }

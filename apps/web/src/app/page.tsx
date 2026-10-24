@@ -1,6 +1,9 @@
 import Link from 'next/link';
+import { Logo } from '../components/flow/AppHeader';
 import { AssemblyScroll } from '../components/home/AssemblyScroll';
-import { HeroPrompt } from '../components/home/HeroPrompt';
+import { ExampleButton, HeroFlow } from '../components/home/HeroFlow';
+import { Icon } from '../components/system/Icon';
+import { ThemeToggle } from '../components/system/ThemeToggle';
 import '../components/home/marketing.css';
 
 const REPO_URL = 'https://github.com/RohanGottipati/Rivet';
@@ -12,8 +15,8 @@ const PROJECT_FAMILIES = [
     label: 'Supported',
     tone: 'ok',
     note: 'Two-wheel ESP32 rover with a motor driver and range sensor: 3D assembly, parts list, wiring, simulation and starter firmware.',
-    href: '/studio',
-    cta: 'Open the example',
+    href: '/new',
+    cta: 'Start a rover build',
   },
   {
     family: 'Mini RC car',
@@ -37,8 +40,8 @@ const HERO_PARTS = [
   { side: 'left', name: 'TB6612 motor driver', kind: 'Driver', tone: 'pink' },
   { side: 'left', name: 'SparkFun Shadow Chassis', kind: 'Chassis', tone: 'ink' },
   { side: 'right', name: 'TT gearbox motor 1:90', kind: 'Motor', tone: 'orange', cursor: 'Verify' },
-  { side: 'right', name: 'VL53L0X ToF sensor', kind: 'Sensor', tone: 'cyan' },
-  { side: 'right', name: '3 x AA holder, 2.1 mm', kind: 'Power', tone: 'lime' },
+  { side: 'right', name: 'VL53L0X ToF sensor', kind: 'Sensor', tone: 'blue' },
+  { side: 'right', name: '3 x AA holder, 2.1 mm', kind: 'Power', tone: 'green' },
 ] as const;
 
 const OUTPUTS = [
@@ -51,20 +54,19 @@ const OUTPUTS = [
 ] as const;
 
 const FOOTER = [
-  { title: 'Product', links: [['Studio', '/studio'], ['New build', '/studio?start=describe'], ['Upload an image', '/studio?start=upload'], ['Product match', '/studio?resolve=exact_match']] },
-  { title: 'Builds', links: [['Indoor rover', '/studio'], ['Mini RC car (planned)', null], ['Drones and arms (later)', null]] },
+  { title: 'Product', links: [['Start building', '/new'], ['Your projects', '/projects'], ['See an example', 'example']] },
+  { title: 'Builds', links: [['Indoor rover', '/new'], ['Mini RC car (planned)', null], ['Drones and arms (later)', null]] },
   { title: 'Docs', links: [['README', `${REPO_URL}#readme`], ['API contract', `${REPO_URL}/blob/main/contracts/api.md`], ['Project spec', `${REPO_URL}/blob/main/docs/project.md`]] },
   { title: 'Project', links: [['GitHub', REPO_URL], ['SOON Hackathon', null]] },
 ] as const;
+
+const BADGE_CLASS = { ok: 'ui-badge ui-badge--ok', warn: 'ui-badge ui-badge--warn', neutral: 'ui-badge' } as const;
 
 export default function HomePage() {
   return (
     <div data-testid="home-page" className="mk">
       <header className="mk-nav">
-        <Link href="/" className="mk-logo" aria-label="Rivet home">
-          <span className="mk-logo__mark" aria-hidden="true" />
-          Rivet
-        </Link>
+        <Logo />
         <nav className="mk-nav__links" aria-label="Main">
           <a href="#how">How it works</a>
           <a href="#outputs">What you get</a>
@@ -72,11 +74,12 @@ export default function HomePage() {
           <a href={REPO_URL}>Docs</a>
         </nav>
         <div className="mk-nav__actions">
-          <Link href="/studio?start=describe" className="mk-btn mk-btn--dark">
-            Start building
+          <Link href="/projects" className="ui-btn ui-btn--ghost ui-btn--sm mk-nav__projects" data-testid="home-nav-projects">
+            Projects
           </Link>
-          <Link href="/studio" data-testid="open-studio-link" className="mk-btn mk-btn--accent">
-            Open studio <span aria-hidden="true">→</span>
+          <ThemeToggle />
+          <Link href="/new" data-testid="open-studio-link" className="ui-btn ui-btn--primary">
+            Start building <Icon name="arrowRight" />
           </Link>
         </div>
       </header>
@@ -102,18 +105,18 @@ export default function HomePage() {
                 <i />
                 <i />
               </span>
-              Built for Rivet
+              From a prompt to real parts
             </p>
             <h1 id="home-title" className="mk-hero__title">
               Hardware designed &amp; built faster with AI
             </h1>
             <p className="mk-hero__lede">
-              Use AI as your build partner, not a guess. Describe a robot or upload a picture and Rivet
-              turns it into real catalog parts, a 3D assembly, wiring and starter firmware.
+              Use AI as your build partner, not a guess. Describe a robot and Rivet turns it into real catalog
+              parts, a 3D assembly, wiring and starter firmware you can review step by step.
             </p>
           </div>
 
-          <HeroPrompt />
+          <HeroFlow />
         </section>
 
         <div id="how">
@@ -125,30 +128,28 @@ export default function HomePage() {
             <div>
               <span className="mk-eyebrow">Choose your path</span>
               <h2 id="mk-paths-title" className="mk-h2">
-                Inspect it in the studio, or take it to your bench.
+                Review it in the app, or take it to your bench.
               </h2>
             </div>
             <p className="mk-muted">
-              Everything starts from the same build plan. Explore the rover in 3D, or export the parts
-              list, build file and firmware and start ordering.
+              Everything starts from the same build plan. Walk the review in 3D, or export the parts list, build
+              file and firmware and start ordering.
             </p>
           </div>
 
           <article className="mk-path">
             <div className="mk-path__copy">
-              <span className="mk-eyebrow mk-eyebrow--plain">Studio</span>
+              <span className="mk-eyebrow">Review</span>
               <h3 className="mk-h3">See every part, wire and step before you buy.</h3>
               <p className="mk-muted">
-                Click any part for its SKU, price and fit checks. Explode the assembly, trace the
-                wiring and run the simulator, all in the browser.
+                Click any part for its catalog data and fit checks. Explode the assembly, trace the wiring and run
+                the simulator, all in the browser.
               </p>
               <div className="mk-row">
-                <Link href="/studio" className="mk-btn mk-btn--accent">
-                  Open the studio
+                <Link href="/new" className="ui-btn ui-btn--primary">
+                  Start building
                 </Link>
-                <Link href="/studio?start=describe" className="mk-btn mk-btn--ghost">
-                  New build
-                </Link>
+                <ExampleButton className="ui-btn ui-btn--secondary">Open the example</ExampleButton>
               </div>
               <ul className="mk-path__list">
                 <li><strong>Interactive 3D</strong><span>Explode, isolate and outline any part</span></li>
@@ -159,7 +160,7 @@ export default function HomePage() {
             <div className="mk-path__visual mk-path__visual--pink" aria-hidden="true">
               <div className="mk-mock">
                 <div className="mk-mock__bar">
-                  {['Design', 'Inspect', 'Wiring', 'Assemble', 'Simulate'].map((t, i) => (
+                  {['Review', 'Parts', 'Wiring', 'Buy', 'Build'].map((t, i) => (
                     <span key={t} className={i === 0 ? 'is-on' : undefined}>{t}</span>
                   ))}
                 </div>
@@ -182,7 +183,7 @@ export default function HomePage() {
           </article>
 
           <article className="mk-path mk-path--flip">
-            <div className="mk-path__visual mk-path__visual--cyan" aria-hidden="true">
+            <div className="mk-path__visual mk-path__visual--violet" aria-hidden="true">
               <div className="mk-files">
                 {[
                   ['bom.csv', 'Parts, vendors, prices'],
@@ -198,17 +199,15 @@ export default function HomePage() {
               </div>
             </div>
             <div className="mk-path__copy">
-              <span className="mk-eyebrow mk-eyebrow--plain">Export</span>
+              <span className="mk-eyebrow">Export</span>
               <h3 className="mk-h3">Take the build to your bench.</h3>
               <p className="mk-muted">
-                Download a parts list you can order from, the build file for your own tools, and ESP32
-                starter firmware with the pin map already filled in.
+                Download a parts list you can order from, the build file for your own tools, and ESP32 starter
+                firmware with the pin map already filled in.
               </p>
               <div className="mk-row">
-                <Link href="/studio" className="mk-btn mk-btn--accent">
-                  Try an export
-                </Link>
-                <a href={`${REPO_URL}/blob/main/contracts/api.md`} className="mk-btn mk-btn--ghost">
+                <ExampleButton className="ui-btn ui-btn--primary">Try an export</ExampleButton>
+                <a href={`${REPO_URL}/blob/main/contracts/api.md`} className="ui-btn ui-btn--secondary">
                   Read the API
                 </a>
               </div>
@@ -222,17 +221,17 @@ export default function HomePage() {
         </section>
 
         <section id="families" className="mk-section">
-          <div className="mk-showcase" aria-labelledby="home-families">
+          <div className="mk-showcase mk-dark" aria-labelledby="home-families">
             <ul className="mk-showcase__grid">
               {PROJECT_FAMILIES.map((f) => (
                 <li key={f.family} className="mk-family" data-testid={`family-card-${f.status}`}>
-                  <span className={`mk-badge mk-badge--${f.tone}`} data-testid={`family-badge-${f.status}`}>
+                  <span className={BADGE_CLASS[f.tone]} data-testid={`family-badge-${f.status}`}>
                     {f.label}
                   </span>
                   <h3 className="mk-family__title">{f.family}</h3>
                   <p>{f.note}</p>
                   {'href' in f ? (
-                    <Link href={f.href} className="mk-btn mk-btn--light">
+                    <Link href={f.href} className="ui-btn ui-btn--secondary">
                       {f.cta}
                     </Link>
                   ) : null}
@@ -246,14 +245,12 @@ export default function HomePage() {
               </h2>
               <div>
                 <p>
-                  The indoor rover works end to end. Other families stay labeled planned until they are
-                  implemented and verified.
+                  The indoor rover works end to end. Other families stay labeled planned until they are implemented
+                  and verified.
                 </p>
                 <div className="mk-row">
-                  <Link href="/studio" className="mk-btn mk-btn--light">
-                    Open the example
-                  </Link>
-                  <a href={REPO_URL} className="mk-btn mk-btn--outline-light">
+                  <ExampleButton className="ui-btn ui-btn--primary">Open the example</ExampleButton>
+                  <a href={REPO_URL} className="ui-btn ui-btn--ghost">
                     View on GitHub
                   </a>
                 </div>
@@ -274,10 +271,10 @@ export default function HomePage() {
                 Every build comes with the files and checks you need to actually make it.
               </h2>
               <div className="mk-row">
-                <Link href="/studio" className="mk-btn mk-btn--dark">
-                  Open the studio
+                <Link href="/new" className="ui-btn ui-btn--dark">
+                  Start building
                 </Link>
-                <a href={`${REPO_URL}#readme`} className="mk-btn mk-btn--ghost">
+                <a href={`${REPO_URL}#readme`} className="ui-btn ui-btn--secondary">
                   Read the docs
                 </a>
               </div>
@@ -289,7 +286,7 @@ export default function HomePage() {
                 <h3>{o.title}</h3>
                 <p>{o.body}</p>
                 <footer>
-                  <span className={`mk-note__dot mk-note__dot--${o.tag.toLowerCase()}`} aria-hidden="true" />
+                  <span className={`mk-note__dot mk-note__dot--${o.tag.toLowerCase().replace(/\s+/g, '-')}`} aria-hidden="true" />
                   {o.tag}
                 </footer>
               </article>
@@ -301,11 +298,11 @@ export default function HomePage() {
       <footer className="mk-footer">
         <div className="mk-footer__cta">
           <h2 className="mk-footer__title">
-            Experience the power of our <span className="mk-grad">AI hardware studio</span> today
+            Describe it, review it, <span className="mk-grad">build it for real</span>
           </h2>
           <div className="mk-footer__go">
-            <Link href="/studio?start=describe" className="mk-btn mk-btn--accent mk-btn--lg">
-              <span aria-hidden="true">✦</span> Try the studio
+            <Link href="/new" className="ui-btn ui-btn--primary ui-btn--lg">
+              <Icon name="sparkle" /> Start building
             </Link>
             <p>Saved examples open instantly. No key needed.</p>
           </div>
@@ -319,6 +316,8 @@ export default function HomePage() {
                   <li key={label}>
                     {href === null ? (
                       <span>{label}</span>
+                    ) : href === 'example' ? (
+                      <ExampleButton>{label}</ExampleButton>
                     ) : href.startsWith('/') ? (
                       <Link href={href}>{label}</Link>
                     ) : (
@@ -331,10 +330,7 @@ export default function HomePage() {
           ))}
         </div>
         <div className="mk-footer__base">
-          <span className="mk-logo">
-            <span className="mk-logo__mark" aria-hidden="true" />
-            Rivet
-          </span>
+          <Logo />
           <span>© 2026 Rivet. Built for the SOON Hackathon.</span>
         </div>
       </footer>

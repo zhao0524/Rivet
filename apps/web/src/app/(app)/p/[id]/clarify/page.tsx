@@ -1,6 +1,8 @@
 'use client';
 
-/** Placeholder until the screen lands. */
+import { ClarifyScreen } from '../../../../../components/start/ClarifyScreen';
+
+/** A2 Clarify (header comes from ProjectShell). */
 export default function Page() {
-  return <p className="ui-muted">clarify: coming soon.</p>;
+  return <ClarifyScreen />;
 }

@@ -1,6 +1,8 @@
 'use client';
 
-/** Placeholder until the screen lands. */
+import { GenerateScreen } from '../../../../../components/start/GenerateScreen';
+
+/** A3 Generate (header comes from ProjectShell). */
 export default function Page() {
-  return <p className="ui-muted">generate: coming soon.</p>;
+  return <GenerateScreen />;
 }

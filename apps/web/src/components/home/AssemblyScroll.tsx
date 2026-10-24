@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { getSyntheticCatalog, getSyntheticRoverPlan } from '../../lib/fixtures';
 import { scrubToStep } from '../three/assembly';
+import { useThemeMode } from '../system/ThemeToggle';
 import { RoverScene } from '../three/RoverScene';
 
 /** Timeline positions per rendered frame: keeps scroll-driven renders to ~100 per pass. */
@@ -23,6 +24,7 @@ export function AssemblyScroll() {
     [plan],
   );
   const stepCount = steps.length;
+  const themeMode = useThemeMode();
 
   const sectionRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
@@ -97,13 +99,13 @@ export function AssemblyScroll() {
       data-testid="home-assembly-scroll"
     >
       <div ref={pinRef} className="mk-build__pin">
-        <div className="mk-build__panel">
+        <div className="mk-build__panel mk-dark">
           <div className="mk-build__copy">
-            <span className="mk-eyebrow mk-eyebrow--dark">Scroll to assemble</span>
+            <span className="mk-eyebrow">Scroll to assemble</span>
             <h2 id="mk-build-title" className="mk-build__title">
-              From prompt to parts, <span className="mk-build__muted">one step at a time.</span>
+              From prompt to parts, <span className="mk-dim">one step at a time.</span>
             </h2>
-            <p className="mk-build__lede">
+            <p className="mk-build__lede mk-dim">
               Every Rivet build ships with an assembly order. This is the saved starter rover putting
               itself together, step by step.
             </p>
@@ -130,6 +132,7 @@ export function AssemblyScroll() {
                 assemblyStep={step}
                 assemblyProgress={progress}
                 previousStepsDisplay="solid"
+                themeMode={themeMode}
                 showGrid
               />
             ) : null}

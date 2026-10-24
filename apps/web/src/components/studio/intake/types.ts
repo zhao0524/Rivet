@@ -74,6 +74,8 @@ export interface GenerateRequirements {
   /** `null` means no hard budget, not zero. */
   max_budget: number | null;
   currency: string;
+  /** Longest side in mm the user stated; omitted or null means no limit. */
+  max_length_mm?: number | null;
 }
 
 /** `POST /api/projects/generate` request body. */

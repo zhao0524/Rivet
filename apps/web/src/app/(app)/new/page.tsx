@@ -1,6 +1,13 @@
 'use client';
 
-/** Placeholder until the screen lands. */
+import { Suspense } from 'react';
+import { NewProjectScreen } from '../../../components/start/NewProjectScreen';
+
+/** A1 Prompt. Suspense is required around `useSearchParams` in the App Router. */
 export default function Page() {
-  return <p className="ui-muted">new: coming soon.</p>;
+  return (
+    <Suspense fallback={null}>
+      <NewProjectScreen />
+    </Suspense>
+  );
 }

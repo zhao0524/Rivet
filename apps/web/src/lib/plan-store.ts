@@ -495,6 +495,7 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
         requirements: {
           max_budget: normalizedBudget,
           currency: request.requirements.currency,
+          ...(request.requirements.max_length_mm ? { max_length_mm: request.requirements.max_length_mm } : {}),
         },
       };
 

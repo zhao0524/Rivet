@@ -152,7 +152,7 @@ export function createProjectRecord(input: Partial<ProjectRecord> & { prompt: st
     exampleId: input.exampleId ?? null,
     buildId: input.buildId ?? null,
     revision: input.revision ?? null,
-    furthestStep: 'review',
+    furthestStep: input.furthestStep ?? 'review',
     reviewDone: false,
     ownedCatalogIds: [],
     buildStep: 0,

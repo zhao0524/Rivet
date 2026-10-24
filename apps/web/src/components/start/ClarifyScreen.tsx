@@ -1,0 +1,419 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import type { ClarifyAnswers } from '../../lib/flow/projects';
+import { projectPath } from '../../lib/flow/steps';
+import type { InterpretResponse } from '../../lib/rivet/types';
+import { useProjectContext } from '../flow/ProjectShell';
+import { Icon } from '../system/Icon';
+import { requestInput, summarizeIntent } from './shared';
+import '../../styles/start.css';
+
+const CARD_COUNT = 3;
+
+type InterpretState =
+  | { status: 'loading' }
+  | { status: 'error'; message: string }
+  | { status: 'ok'; data: InterpretResponse };
+
+type BudgetChoice = 'none' | '50' | '100' | 'custom';
+type SizeChoice = 'none' | 'max';
+
+function budgetChoiceFrom(answers: ClarifyAnswers): { choice: BudgetChoice; custom: string } {
+  const b = answers.max_budget;
+  if (b === null || b === undefined) return { choice: 'none', custom: '' };
+  if (b === 50) return { choice: '50', custom: '' };
+  if (b === 100) return { choice: '100', custom: '' };
+  return { choice: 'custom', custom: String(b) };
+}
+
+/**
+ * A2 Clarify: up to three questions, one card at a time, each pre-filled with a default so most
+ * cards are a confirmation. Card 1 shows what Rivet read from the prompt; "Skip the rest" goes
+ * straight to Generate with the defaults.
+ */
+export function ClarifyScreen() {
+  const router = useRouter();
+  const { project, update, build } = useProjectContext();
+  const store = build.store;
+  const [card, setCard] = useState(0);
+  const [interp, setInterp] = useState<InterpretState>({ status: 'loading' });
+  const [budget, setBudget] = useState(() => budgetChoiceFrom(project.clarify));
+  const [size, setSize] = useState<{ choice: SizeChoice; mm: string }>(() => ({
+    choice: project.clarify.max_length_mm ? 'max' : 'none',
+    mm: project.clarify.max_length_mm ? String(project.clarify.max_length_mm) : '',
+  }));
+  const requested = useRef<string | null>(null);
+
+  const interpret = useCallback(async () => {
+    setInterp({ status: 'loading' });
+    const source = store.dataSource;
+    if (!source.interpret) {
+      setInterp({ status: 'error', message: 'This data source cannot interpret prompts.' });
+      return;
+    }
+    try {
+      const data = await source.interpret({ input: requestInput(project), requirements: { currency: 'USD' } });
+      setInterp({ status: 'ok', data });
+      update({ intentId: data.intent_id, assumptions: data.intent.assumptions });
+    } catch (err) {
+      setInterp({ status: 'error', message: err instanceof Error && err.message ? err.message : "Rivet couldn't read the prompt." });
+    }
+  }, [store.dataSource, project, update]);
+
+  // Once per project (guards React strict mode's double effect).
+  useEffect(() => {
+    if (requested.current === project.id) return;
+    requested.current = project.id;
+    void interpret();
+  }, [project.id, interpret]);
+
+  const interpretationChoice: ClarifyAnswers['interpretation_choice'] =
+    interp.status === 'ok' && !interp.data.supported ? 'closest_supported_rover' : 'as_interpreted';
+
+  const budgetValue = (): number | null => {
+    if (budget.choice === '50') return 50;
+    if (budget.choice === '100') return 100;
+    if (budget.choice === 'custom') {
+      const n = Number(budget.custom);
+      return Number.isFinite(n) && n > 0 ? n : null;
+    }
+    return null;
+  };
+  const sizeValue = (): number | null => {
+    if (size.choice !== 'max') return null;
+    const n = Number(size.mm);
+    return Number.isFinite(n) && n > 0 ? Math.round(n) : null;
+  };
+
+  /** Everything answered so far, with defaults for the rest. */
+  function answers(): ClarifyAnswers {
+    return {
+      max_budget: budgetValue(),
+      max_length_mm: sizeValue(),
+      interpretation_choice: interpretationChoice,
+    };
+  }
+
+  function generate(clarify: ClarifyAnswers) {
+    update({ clarify, phase: 'generating' });
+    router.push(projectPath(project.id, 'generate'));
+  }
+
+  function next() {
+    const clarify = answers();
+    if (card === CARD_COUNT - 1) {
+      generate(clarify);
+      return;
+    }
+    update({ clarify });
+    setCard((c) => c + 1);
+  }
+
+  function skip() {
+    generate(answers());
+  }
+
+  const busy = interp.status === 'loading';
+  const isLast = card === CARD_COUNT - 1;
+  // Card 1 waits for the reading; a custom amount must be a number before moving on.
+  const nextDisabled =
+    (card === 0 && interp.status !== 'ok') ||
+    (card === 1 && budget.choice === 'custom' && budgetValue() === null) ||
+    (card === 2 && size.choice === 'max' && sizeValue() === null);
+
+  return (
+    <div className="q" data-testid="clarify-screen">
+      <div className="q__progress">
+        <span aria-live="polite" data-testid="clarify-progress">
+          Question {card + 1} of {CARD_COUNT}
+        </span>
+        <span className="dots" aria-hidden="true">
+          {Array.from({ length: CARD_COUNT }, (_, i) => (
+            <span key={i} className="dots__dot" data-state={i < card ? 'done' : i === card ? 'current' : undefined} />
+          ))}
+        </span>
+      </div>
+
+      <section className="ui-card q__card" aria-labelledby="clarify-title">
+        {card === 0 ? (
+          <UnderstoodCard state={interp} onRetry={() => void interpret()} />
+        ) : card === 1 ? (
+          <BudgetCard value={budget} onChange={setBudget} />
+        ) : (
+          <SizeCard value={size} onChange={setSize} />
+        )}
+
+        <footer className="q__foot">
+          <button type="button" className="ui-btn ui-btn--link" onClick={skip} disabled={busy} data-testid="clarify-skip">
+            Skip the rest
+          </button>
+          <button
+            type="button"
+            className="ui-btn ui-btn--primary ui-btn--lg"
+            onClick={next}
+            disabled={nextDisabled}
+            data-testid="clarify-next"
+          >
+            {isLast ? 'Generate' : 'Next'}
+            {isLast ? <Icon name="sparkle" /> : <Icon name="arrowRight" />}
+          </button>
+        </footer>
+      </section>
+    </div>
+  );
+}
+
+/* ── Card 1: what Rivet understood ─────────────────────── */
+
+function UnderstoodCard({ state, onRetry }: { state: InterpretState; onRetry: () => void }) {
+  if (state.status === 'loading') {
+    return (
+      <div className="q__body" aria-busy="true" data-testid="clarify-skeleton">
+        <h1 id="clarify-title" className="ui-h2">
+          Reading your prompt…
+        </h1>
+        <div className="q__skel">
+          <span className="ui-skeleton" style={{ height: 18, width: '85%' }} />
+          <span className="ui-skeleton" style={{ height: 14, width: '60%' }} />
+          <span className="ui-skeleton" style={{ height: 14, width: '70%' }} />
+        </div>
+      </div>
+    );
+  }
+  if (state.status === 'error') {
+    return (
+      <div className="q__body">
+        <h1 id="clarify-title" className="ui-h2">
+          Rivet couldn&apos;t read the prompt
+        </h1>
+        <p className="ui-notice ui-notice--danger" role="alert" style={{ margin: 0 }} data-testid="clarify-error">
+          {state.message}
+        </p>
+        <div>
+          <button type="button" className="ui-btn ui-btn--secondary" onClick={onRetry} data-testid="clarify-retry">
+            Try again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const { data } = state;
+  const summary = summarizeIntent(data.intent);
+  const offline = data.vision_mode === 'fixture' || data.vision_mode === 'fallback';
+
+  return (
+    <div className="q__body" data-testid="clarify-understood">
+      <div>
+        <p className="ui-eyebrow" style={{ marginBottom: 8 }}>
+          Here&apos;s what Rivet understood
+        </p>
+        <h1 id="clarify-title" className="ui-h2">
+          {summary.headline}
+        </h1>
+      </div>
+
+      {offline ? (
+        <p className="ui-notice ui-notice--warn" style={{ margin: 0 }} data-testid="clarify-offline">
+          <Icon name="info" style={{ flex: 'none', marginTop: 3 }} />
+          <span>
+            Offline mode: your description and picture weren&apos;t actually read. A saved example rover will be used instead.
+          </span>
+        </p>
+      ) : null}
+
+      {summary.facts.length > 0 ? (
+        <ul className="q__facts">
+          {summary.facts.map((f) => (
+            <li key={f}>{f}</li>
+          ))}
+        </ul>
+      ) : null}
+
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+        <span className="ui-badge">{summary.confidence}</span>
+        {summary.unknowns ? <span className="ui-small ui-subtle">{summary.unknowns}</span> : null}
+      </div>
+
+      {!data.supported ? (
+        <>
+          <p className="ui-notice ui-notice--danger" style={{ margin: 0 }} data-testid="clarify-limitation">
+            <Icon name="alert" style={{ flex: 'none', marginTop: 3 }} />
+            <span>{data.limitation?.message ?? 'This kind of robot is not supported yet.'}</span>
+          </p>
+          <ChoiceList
+            label="How should Rivet continue?"
+            options={[{ id: 'closest', label: 'Use the closest supported rover', hint: 'An indoor rover with the parts that fit your request best.' }]}
+            value="closest"
+            onChange={() => undefined}
+          />
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+/* ── Card 2: budget ────────────────────────────────────── */
+
+function BudgetCard({
+  value,
+  onChange,
+}: {
+  value: { choice: BudgetChoice; custom: string };
+  onChange: (next: { choice: BudgetChoice; custom: string }) => void;
+}) {
+  return (
+    <div className="q__body">
+      <h1 id="clarify-title" className="ui-h2">
+        Do you have a budget?
+      </h1>
+      <p className="ui-muted" style={{ margin: 0 }}>
+        Rivet picks the cheapest verified parts either way; a limit just rules some out.
+      </p>
+      <ChoiceList
+        label="Budget"
+        options={[
+          { id: 'none', label: 'No limit', hint: 'Default' },
+          { id: '50', label: 'Under $50' },
+          { id: '100', label: 'Under $100' },
+          { id: 'custom', label: 'Custom amount' },
+        ]}
+        value={value.choice}
+        onChange={(id) => onChange({ ...value, choice: id as BudgetChoice })}
+        testId="clarify-budget"
+        after={
+          value.choice === 'custom' ? (
+            <div className="choice__sub">
+              <label htmlFor="clarify-budget-custom" className="ui-label">
+                Up to
+              </label>
+              <span className="choice__unit" aria-hidden="true">
+                $
+              </span>
+              <input
+                id="clarify-budget-custom"
+                className="ui-input"
+                type="number"
+                inputMode="decimal"
+                min={1}
+                step={1}
+                placeholder="75"
+                value={value.custom}
+                onChange={(e) => onChange({ ...value, custom: e.target.value })}
+                data-testid="clarify-budget-amount"
+                autoFocus
+              />
+              <span className="choice__unit">USD</span>
+            </div>
+          ) : null
+        }
+      />
+    </div>
+  );
+}
+
+/* ── Card 3: size ──────────────────────────────────────── */
+
+function SizeCard({
+  value,
+  onChange,
+}: {
+  value: { choice: SizeChoice; mm: string };
+  onChange: (next: { choice: SizeChoice; mm: string }) => void;
+}) {
+  return (
+    <div className="q__body">
+      <h1 id="clarify-title" className="ui-h2">
+        Does it need to fit somewhere?
+      </h1>
+      <p className="ui-muted" style={{ margin: 0 }}>
+        A shelf, a box, a doorway. Give the longest side it can have.
+      </p>
+      <ChoiceList
+        label="Size"
+        options={[
+          { id: 'none', label: 'No limit', hint: 'Default' },
+          { id: 'max', label: 'Keep it under a maximum length' },
+        ]}
+        value={value.choice}
+        onChange={(id) => onChange({ ...value, choice: id as SizeChoice })}
+        testId="clarify-size"
+        after={
+          value.choice === 'max' ? (
+            <div className="choice__sub">
+              <label htmlFor="clarify-size-mm" className="ui-label">
+                Max length
+              </label>
+              <input
+                id="clarify-size-mm"
+                className="ui-input"
+                type="number"
+                inputMode="numeric"
+                min={50}
+                step={10}
+                placeholder="200"
+                value={value.mm}
+                onChange={(e) => onChange({ ...value, mm: e.target.value })}
+                data-testid="clarify-size-mm"
+                autoFocus
+              />
+              <span className="choice__unit">mm</span>
+            </div>
+          ) : null
+        }
+      />
+    </div>
+  );
+}
+
+/* ── Radio-style choice list ───────────────────────────── */
+
+interface ChoiceOption {
+  id: string;
+  label: string;
+  hint?: string;
+}
+
+function ChoiceList({
+  label,
+  options,
+  value,
+  onChange,
+  after,
+  testId,
+}: {
+  label: string;
+  options: readonly ChoiceOption[];
+  value: string;
+  onChange: (id: string) => void;
+  /** Rendered after the selected option (e.g. a number field). */
+  after?: ReactNode;
+  testId?: string;
+}) {
+  return (
+    <div role="radiogroup" aria-label={label} className="choice" data-testid={testId}>
+      {options.map((opt) => {
+        const checked = opt.id === value;
+        return (
+          <div key={opt.id} style={{ display: 'grid', gap: 8 }}>
+            <button
+              type="button"
+              role="radio"
+              aria-checked={checked}
+              className="choice__item"
+              onClick={() => onChange(opt.id)}
+              data-testid={testId ? `${testId}-${opt.id}` : undefined}
+            >
+              <span className="choice__radio" aria-hidden="true" />
+              <span className="choice__label">{opt.label}</span>
+              {opt.hint ? <span className="choice__hint">{opt.hint}</span> : null}
+            </button>
+            {checked ? after : null}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
