@@ -26,6 +26,8 @@ import { StudioShell } from './StudioShell';
 import { Toolbar } from './Toolbar';
 import { BuildIntake } from './intake';
 import { buildDimensionsByCatalogId } from '../../lib/geometry';
+import type { ResolveOutcome } from '../../lib/resolve/types';
+import { ResolveDialogBody } from './resolve/ResolveDialogBody';
 
 export interface StudioProps {
   initialDataSource?: RivetDataSource;
@@ -35,6 +37,8 @@ export interface StudioProps {
   initialIntakeFocus?: 'image' | 'prompt';
   /** Show developer controls: data source switch, render stats, raw build id and revision (#54). */
   devMode?: boolean;
+  /** Open the saved product-match example for this outcome (fixture mode only). */
+  initialResolveOutcome?: ResolveOutcome | null;
 }
 
 const SAVED_INTENT: IntentSpec = getSyntheticRoverIntent();
@@ -70,12 +74,19 @@ export function Studio({
   initialIntakeOpen = false,
   initialIntakeFocus = 'image',
   devMode = false,
+  initialResolveOutcome = null,
 }: StudioProps) {
   const store = useStudioPlanStore({ initialDataSource, initialMode });
   const { plan, catalog, trust, activeMode, setActiveMode } = store;
 
   const [intakeOpen, setIntakeOpen] = useState(initialIntakeOpen);
   const [exportOpen, setExportOpen] = useState(false);
+  const [resolveOpen, setResolveOpen] = useState(false);
+  // Opened after mount: the dialog portal must not render during hydration.
+  useEffect(() => {
+    if (initialResolveOutcome !== null) setResolveOpen(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [trustDetailsOpen, setTrustDetailsOpen] = useState(false);
 
   // What was asked for in this session, so the left panel can show the prompt and image (#56).
@@ -289,6 +300,17 @@ export function Studio({
             },
           ]}
         />
+      ) : null}
+      {store.sourceMode === 'fixture' ? (
+        <button
+          type="button"
+          className="rv-btn rv-hide-phone"
+          data-testid="header-open-resolve"
+          aria-haspopup="dialog"
+          onClick={() => setResolveOpen(true)}
+        >
+          Product match
+        </button>
       ) : null}
       <button
         type="button"
@@ -606,6 +628,15 @@ export function Studio({
       testId="intake-dialog"
     >
       {intakeNode}
+    </Dialog>
+    <Dialog
+      open={resolveOpen && store.sourceMode === 'fixture'}
+      onClose={() => setResolveOpen(false)}
+      title="Product match"
+      wide
+      testId="resolve-dialog"
+    >
+      <ResolveDialogBody initialOutcome={initialResolveOutcome ?? 'exact_match'} />
     </Dialog>
     <Dialog
       open={exportOpen}
