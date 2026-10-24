@@ -61,13 +61,14 @@ def test_sample_plan_references_agree(sample_plan):
     assert sorted(i for item in sample_plan["bom"]["items"] for i in item["instance_ids"]) == sorted(by_id)
 
 
-def test_failing_driver_plan_is_reported_not_raised(sample_plan, capsys):
-    # The sourced TT motors stall above the TB6612's continuous rating: the CLI writes the
-    # plan and prints the blocking finding instead of hiding it or raising.
-    assert sample_plan["status"] == sample_plan["verification"]["overall"] == "unbuildable"
-    failing = [f for f in sample_plan["verification"]["findings"] if f["rule_id"] == "electrical.motor_driver_current"]
-    assert failing and all(f["result"] == "FAIL" and f["severity"] == "blocking" for f in failing)
-    assert all("driver-1" in f["affected_instance_ids"] and f["evidence_urls"] for f in failing)
+def test_default_plan_reports_its_blocking_unknowns(sample_plan):
+    # The default rover has no FAIL left; the undocumented motor fit keeps it in needs_review.
+    assert sample_plan["status"] == sample_plan["verification"]["overall"] == "needs_review"
+    findings = sample_plan["verification"]["findings"]
+    current = [f for f in findings if f["rule_id"] == "electrical.motor_driver_current"]
+    assert current and all(f["result"] == "PASS" and "driver-1" in f["affected_instance_ids"] and f["evidence_urls"] for f in current)
+    blocking = [f for f in findings if f["severity"] == "blocking" and f["result"] != "PASS"]
+    assert blocking and all(f["rule_id"] == "mechanical.fit_evidence" and f["result"] == "UNKNOWN" for f in blocking)
 
 
 def test_simulation_is_metric_and_labeled_and_compile_unclaimed(sample_plan):

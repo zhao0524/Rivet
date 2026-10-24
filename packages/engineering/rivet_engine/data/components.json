@@ -1,7 +1,50 @@
 {
   "schema_version": "1.0",
-  "catalog_version": "catalog-v1.1-2026-10-24",
+  "catalog_version": "catalog-v1.2-2026-10-24",
   "components": [
+    {
+      "schema_version": "1.0",
+      "catalog_id": "accessory.adafruit_aa_alkaline_3pack_3521",
+      "identity": {
+        "manufacturer": "Adafruit",
+        "model": "Alkaline AA batteries (LR6) - 3 pack",
+        "sku": "3521",
+        "category": "accessory"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 43.5,
+          "y": 14.5,
+          "z": 50.5
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "metal"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.adafruit.com/product/3521",
+        "datasheet_url": null,
+        "purchase_url": "https://www.adafruit.com/product/3521",
+        "purchase_url_verified_at": "2026-10-24",
+        "price_amount": "2.25",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "approximated",
+        "electrical": "verified",
+        "price": "verified",
+        "notes": [
+          "3 alkaline AA cells, 1.6 V fresh to 0.8 V dead, typically 3000 mAh (Adafruit 3521 product page, checked 2026-10-24; 6 in stock that day). One BOM unit = one 3-pack.",
+          "Required to power the 3xAA holder; dimensions are the standard AA size, not from the page."
+        ]
+      }
+    },
     {
       "schema_version": "1.0",
       "catalog_id": "accessory.adafruit_aa_alkaline_4pack_3349",
@@ -84,7 +127,7 @@
         "price": "verified",
         "notes": [
           "2.1 mm jack to screw terminals (Adafruit 368 product page, checked 2026-10-24); no voltage/current rating listed.",
-          "Assumes the Shadow Chassis battery holder plug is 2.1 mm center-positive; not confirmed by SparkFun."
+          "Adafruit 3842 (3xAA holder) documents a 2.1 mm ID center-positive plug, which matches this jack. The Shadow Chassis 4xAA holder plug size and polarity are not confirmed by SparkFun."
         ]
       }
     },
@@ -891,6 +934,105 @@
     },
     {
       "schema_version": "1.0",
+      "catalog_id": "motor.adafruit_tt_bimetal_1to90_3801",
+      "identity": {
+        "manufacturer": "Adafruit",
+        "model": "TT Motor Bi-Metal Gearbox - 1:90 Gear Ratio",
+        "sku": "3801",
+        "category": "motor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 22.0,
+          "y": 22.0,
+          "z": 70.0
+        },
+        "mass_g": 34.6,
+        "bounds_verified": true,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "polymer"
+      },
+      "mounts": [
+        {
+          "mount_id": "base",
+          "kind": "tt_motor_base",
+          "position_mm": [
+            0,
+            11.0,
+            0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "tt_motor_mount"
+          ]
+        },
+        {
+          "mount_id": "shaft",
+          "kind": "tt_shaft",
+          "position_mm": [
+            11.0,
+            0,
+            0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "tt_wheel_hub"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "port_id": "terminal_1",
+          "signal": "motor_power",
+          "voltage_min_v": 3.0,
+          "voltage_max_v": 6.0,
+          "current_limit_a": 1.0,
+          "logic_level_v": null,
+          "notes": "Rated 3-6 VDC; current_limit_a is measured stall current: 0.5 A @3 V, 0.8 A @4.5 V, 1.0 A @6 V (product page; one motor measured on a bench supply)"
+        },
+        {
+          "port_id": "terminal_2",
+          "signal": "motor_power",
+          "voltage_min_v": 3.0,
+          "voltage_max_v": 6.0,
+          "current_limit_a": 1.0,
+          "logic_level_v": null,
+          "notes": "Rated 3-6 VDC; current_limit_a is measured stall current: 0.5 A @3 V, 0.8 A @4.5 V, 1.0 A @6 V (product page; one motor measured on a bench supply)"
+        }
+      ],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.adafruit.com/product/3801",
+        "datasheet_url": "https://cdn-shop.adafruit.com/product-files/3801/P3801+C11453-001+datasheet.pdf",
+        "purchase_url": "https://www.adafruit.com/product/3801",
+        "purchase_url_verified_at": "2026-10-24",
+        "price_amount": "4.50",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "verified",
+        "electrical": "verified",
+        "price": "verified",
+        "notes": [
+          "70 x 22 x 22 mm excluding shaft, 34.6 g, 1:90 (steel output-half gears), 3-6 VDC; no-load 80-100 mA, stall 0.5-1.0 A from Adafruit 3801 product page (checked 2026-10-24). Linked datasheet PDF not read.",
+          "Wires are not attached: two leads must be soldered to the motor tabs before wiring.",
+          "Shaft modeled on the body centreline (z = 0) so mirrored motors keep both wheels on one axle; the real offset along the body is not modeled.",
+          "Fit in the SparkFun Shadow Chassis TT-style motor mounts is not documented by SparkFun or Adafruit."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
       "catalog_id": "motor.adafruit_tt_gearbox_200rpm_3777",
       "identity": {
         "manufacturer": "Adafruit",
@@ -984,6 +1126,86 @@
           "70 x 22 x 18 mm, 30.6 g, 1:48, no-load 150-160 mA, stall 1.1-1.5 A from Adafruit 3777 product page (checked 2026-10-24).",
           "Shaft modeled on the body centreline (z = 0) so mirrored motors keep both wheels on one axle; the real offset along the body is not modeled.",
           "Fit in the SparkFun Shadow Chassis TT-style motor mounts is assumed from the shared TT form factor, not confirmed by SparkFun."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "power.adafruit_3xaa_holder_2p1mm_3842",
+      "identity": {
+        "manufacturer": "Adafruit",
+        "model": "3 x AA Battery Holder with 2.1mm Plug",
+        "sku": "3842",
+        "category": "power_supply"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 48.0,
+          "y": 14.5,
+          "z": 58.0
+        },
+        "mass_g": null,
+        "bounds_verified": true,
+        "geometry_kind": "procedural",
+        "asset_path": null,
+        "material_preset": "polymer"
+      },
+      "mounts": [
+        {
+          "mount_id": "base",
+          "kind": "aa_holder_base",
+          "position_mm": [
+            0,
+            -7.25,
+            0
+          ],
+          "rotation_deg": [
+            0,
+            0,
+            0
+          ],
+          "allowed_mates": [
+            "battery_clip"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "port_id": "gnd",
+          "signal": "ground",
+          "voltage_min_v": null,
+          "voltage_max_v": null,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "Battery negative via the 2.1 mm plug sleeve (center-positive plug)"
+        },
+        {
+          "port_id": "v_out",
+          "signal": "power_output",
+          "voltage_min_v": 2.4,
+          "voltage_max_v": 4.8,
+          "current_limit_a": null,
+          "logic_level_v": null,
+          "notes": "With the listed alkaline cells (Adafruit 3521: 1.6 V fresh to 0.8 V dead per cell), 3 in series give 4.8 V fresh to 2.4 V dead. Holder current rating not listed"
+        }
+      ],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.adafruit.com/product/3842",
+        "datasheet_url": null,
+        "purchase_url": "https://www.adafruit.com/product/3842",
+        "purchase_url_verified_at": "2026-10-24",
+        "price_amount": "2.95",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24",
+        "availability_status": "in_stock"
+      },
+      "evidence": {
+        "dimensions": "verified",
+        "electrical": "approximated",
+        "price": "verified",
+        "notes": [
+          "Holder 58 x 48 x 14.5 mm excluding cable; 200 mm cable ending in a 2.1 mm ID center-positive DC plug (Adafruit 3842 product page, checked 2026-10-24). No switch; batteries not included.",
+          "Output voltage derived from 3 x the listed cell voltage range, not from a holder rating; the page itself says three AAs give 'about 3.6-4.5V'."
         ]
       }
     },

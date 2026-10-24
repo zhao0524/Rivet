@@ -19,7 +19,7 @@ from rivet_engine.models import CatalogComponent
 from rivet_engine.ports import Catalog, CatalogError
 
 DATA_PATH = Path(__file__).resolve().parent / "data" / "components.json"
-CATALOG_VERSION = "catalog-v1.1-2026-10-24"
+CATALOG_VERSION = "catalog-v1.2-2026-10-24"
 
 
 def catalog_from_records(records: Iterable[dict[str, Any]], version: str) -> Catalog:

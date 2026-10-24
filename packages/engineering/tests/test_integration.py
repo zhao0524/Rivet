@@ -46,11 +46,15 @@ def test_solve_returns_a_sourced_complete_rover(plan):
 
 
 def test_status_is_honest_for_the_sourced_rover(plan):
-    assert plan["status"] == plan["verification"]["overall"] == "unbuildable"
+    assert plan["status"] == plan["verification"]["overall"] == "needs_review"
     results = {(f["rule_id"], f["result"]) for f in plan["verification"]["findings"]}
-    assert ("electrical.motor_driver_current", "FAIL") in results  # 1.5 A stall vs 1.2 A continuous
+    assert ("electrical.motor_driver_current", "PASS") in results  # 1.0 A stall vs 1.2 A continuous
     assert ("completeness.availability", "WARN") in results  # ESP32 board out of stock when checked
-    assert any(f["rule_id"] == "electrical.motor_driver_current" and f["result"] == "FAIL" and f["severity"] == "blocking" for f in plan["verification"]["findings"])
+    assert not any(f["result"] == "FAIL" for f in plan["verification"]["findings"])
+    # Only the undocumented TT motor fit in the Shadow Chassis blocks a verified status.
+    blocking = [f for f in plan["verification"]["findings"] if f["severity"] == "blocking" and f["result"] != "PASS"]
+    assert sorted(i for f in blocking for i in f["affected_instance_ids"] if i != "chassis-1") == ["motor-left-1", "motor-right-1"]
+    assert all(f["rule_id"] == "mechanical.fit_evidence" and f["result"] == "UNKNOWN" for f in blocking)
 
 
 def test_every_reference_resolves(plan):
@@ -196,7 +200,7 @@ def test_budget_that_cannot_be_met_is_unbuildable_not_an_exception():
     plan = rivet_engine.solve(intent)
     assert plan["status"] == "unbuildable"
     [f] = [f for f in plan["verification"]["findings"] if f["rule_id"] == "budget.max_budget"]
-    assert f["result"] == "FAIL" and "105.45" in f["message"]
+    assert f["result"] == "FAIL" and "110.80" in f["message"]
 
 
 def test_sufficient_budget_passes():

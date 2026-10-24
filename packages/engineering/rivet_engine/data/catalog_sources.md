@@ -1,4 +1,4 @@
-# Catalog source ledger — `catalog-v1.1-2026-10-24`
+# Catalog source ledger — `catalog-v1.2-2026-10-24`
 
 Every value in `components.json` traces to a page below, or is marked `approximated` /
 `unverified` / `unknown` in the record's `evidence`. All pages were read on **2026-10-24**.
@@ -26,10 +26,13 @@ that day and will drift.
 | `board.esp32_devkitc_v4_wroom32e` | [Adafruit 3269](https://www.adafruit.com/product/3269), [Espressif DevKitC guide](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html), [ESP32 datasheet](https://cdn-shop.adafruit.com/product-files/3269/esp32_datasheet_en_0.pdf) | ESP32-WROOM-32E module; 55.3 × 28.0 × 12.9 mm; $15.00; out of stock. Header pin table; GPIO6–11 wired to SPI flash ("avoid using these pins"); IO34/35/36/39 type I; power from micro-USB, 5V pin or 3V3 pin, only one at a time | 3V3 regulator current; USB input tolerance (USB 2.0 nominal used); no mounting holes (foam-tape mount assumed) |
 | `driver.adafruit_tb6612_2448` | [Adafruit 2448](https://www.adafruit.com/product/2448), [Learn guide pinouts](https://learn.adafruit.com/adafruit-tb6612-h-bridge-dc-stepper-motor-driver-breakout/pinouts) | VM 4.5–13.5 V; Vcc 2.7–5.5 V; 1.2 A continuous per channel, 3 A peak ~20 ms; 27 × 19 × 3 mm; 1.8 g; STBY 10K pull-up; $6.95; in stock | Thermal limits for sustained stall |
 | `motor.adafruit_tt_gearbox_200rpm_3777` | [Adafruit 3777](https://www.adafruit.com/product/3777), [diagram](https://cdn-shop.adafruit.com/product-files/3777/3777_diagram.jpg) | 3–6 VDC; no-load 150–160 mA; measured stall 1.1 A @3 V, 1.2 A @4.5 V, 1.5 A @6 V; 1:48; 70 × 22 × 18 mm; 30.6 g; $2.95; in stock | Shaft offset inside the body (approximated); fit in Shadow Chassis motor mounts assumed from TT form factor |
+| `motor.adafruit_tt_bimetal_1to90_3801` | [Adafruit 3801](https://www.adafruit.com/product/3801) | 3–6 VDC; measured on one motor: no-load 80/90/100 mA, stall 0.5 A @3 V, 0.8 A @4.5 V, 1.0 A @6 V; 1:90; 70 × 22 × 22 mm; 34.6 g; wires not attached; lists TT wheel 3766 as compatible; $4.50; in stock | Fit in Shadow Chassis motor mounts (not documented); linked datasheet PDF not read; shaft offset approximated |
 | `wheel.adafruit_tt_wheel_3766` | [Adafruit 3766](https://www.adafruit.com/product/3766) | One wheel per order; TT gearbox motors only; 63 × 29 mm; $1.50; in stock | Which figure is diameter (63 mm diameter assumed) |
 | `chassis.sparkfun_shadow_rob13301` | [SparkFun ROB-13301](https://www.sparkfun.com/products/13301) | 196 × 126 × 44 mm (53.25 mm with nub caster); includes plates, motor mounts, struts, micro-controller mounts, battery pack clip, one nub caster, one 4xAA holder with barrel jack; $14.95; in stock | Mount coordinates (approximated); compatible motor SKUs not listed |
 | `caster.sparkfun_shadow_nub` | [SparkFun ROB-13301](https://www.sparkfun.com/products/13301) | Included in kit | Dimensions (approximated from the 53.25 mm overall height) |
 | `power.sparkfun_shadow_4xaa_holder` | [SparkFun ROB-13301](https://www.sparkfun.com/products/13301) | Included in kit; barrel jack termination | Output 3.2–6.4 V derived from 4 × the listed alkaline cell range; current rating; plug size and polarity; dimensions |
+| `power.adafruit_3xaa_holder_2p1mm_3842` | [Adafruit 3842](https://www.adafruit.com/product/3842) | 3 × AA; 58 × 48 × 14.5 mm; 200 mm cable to a 2.1 mm ID center-positive plug; no switch; page says "about 3.6-4.5V"; $2.95; in stock | Output 2.4–4.8 V derived from 3 × the listed alkaline cell range; current rating; mass |
+| `accessory.adafruit_aa_alkaline_3pack_3521` | [Adafruit 3521](https://www.adafruit.com/product/3521) | 3 alkaline AA cells; 1.6 V fresh to 0.8 V dead; typically 3000 mAh; $2.25; in stock (6 units) | Dimensions (standard AA size assumed) |
 | `accessory.adafruit_aa_alkaline_4pack_3349` | [Adafruit 3349](https://www.adafruit.com/product/3349) | 4 alkaline AA cells; 1.6 V fresh to 0.8 V dead; typically 3000 mAh; $2.95; in stock | Dimensions (standard AA size assumed) |
 | `power.adafruit_usb_power_bank_5000_4288` | [Adafruit 4288](https://www.adafruit.com/product/4288) | 5000 mAh; 2 × USB-A 5 V up to 2.1 A; 90 × 63 × 12.5 mm; 101 g; $26.95; in stock | Per-port current split |
 | `sensor.adafruit_vl53l0x_3317` | [Adafruit 3317](https://www.adafruit.com/product/3317), [Learn guide pinouts](https://learn.adafruit.com/adafruit-vl53l0x-micro-lidar-distance-sensor-breakout/pinouts) | Vin 3–5 V; level-shifted I2C; address 0x29; ~30–1200 mm; ~35° cone; 21 × 18 × 2.8 mm; 1.3 g; $14.95; in stock | Range on dark or angled targets |
@@ -37,7 +40,7 @@ that day and will drift.
 | `wiring.adafruit_stemma_qt_to_male_4209` | [Adafruit 4209](https://www.adafruit.com/product/4209) | 150 mm; red 3.3 V, black GND, blue SDA, yellow SCL; $0.95; in stock | — |
 | `wiring.adafruit_jumper_mm_40x150_758` | [Adafruit 758](https://www.adafruit.com/product/758) | 40 × 150 mm male/male, 28 AWG; $3.95; in stock | — |
 | `wiring.adafruit_usb_a_microb_3ft_592` | [Adafruit 592](https://www.adafruit.com/product/592) | USB A to Micro-B, ~1 m; $2.95; in stock | — |
-| `accessory.adafruit_dc_jack_terminal_368` | [Adafruit 368](https://www.adafruit.com/product/368) | 2.1 mm DC jack to screw terminals; $2.00; in stock | Voltage/current rating; dimensions; match to the holder's plug |
+| `accessory.adafruit_dc_jack_terminal_368` | [Adafruit 368](https://www.adafruit.com/product/368) | 2.1 mm DC jack to screw terminals; $2.00; in stock | Voltage/current rating; dimensions. Matches the 3842 plug (2.1 mm, documented); the Shadow 4xAA holder plug is unconfirmed |
 | `accessory.adafruit_half_breadboard_64` | [Adafruit 64](https://www.adafruit.com/product/64) | 400 tie points; 82.6 × 55 × 9.3 mm; adhesive foam back; $4.95; in stock | — |
 
 ## ESP32 pin restrictions
@@ -54,18 +57,40 @@ does not use them.
 Mount kinds in `components.json` are a geometry model, not proof that parts fit. `fit_evidence.json`
 records, per mounted pair, whether a source documents the fit:
 
-- **Documented:** TT wheel on TT motor (Adafruit 3766); nub caster and 4xAA holder on the Shadow
-  Chassis (both ship with it).
-- **Not documented, blocking:** Adafruit TT motor in the Shadow Chassis motor mounts. SparkFun's
+- **Documented:** TT wheel on the 1:48 TT motor (Adafruit 3766) and on the 1:90 TT motor (Adafruit 3801
+  lists 3766); nub caster and 4xAA holder on the Shadow Chassis (both ship with it).
+- **Not documented, blocking:** Adafruit TT motors (3777 and 3801) in the Shadow Chassis motor mounts. SparkFun's
   [assembly guide](https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis)
   uses the Hobby Gearmotor (ROB-13302) with ROB-13259 wheels.
 - **Not documented, advisory:** foam-tape/breadboard placement of the ESP32 board, driver, power
-  bank and range sensor.
+  bank and range sensor; the 3xAA holder strapped where the kit's 4xAA holder clips in.
+
+## Default motor, driver and battery (issue #32)
+
+The default rover uses the 1:90 TT motor (3801), the TB6612 (2448) and a 3xAA holder (3842)
+with alkaline cells (3521). Checked against the earlier default (3777 motor, kit 4xAA holder):
+
+- **Stall current:** 3801 stalls at 1.0 A at 6 V, within the TB6612's 1.2 A continuous rating
+  (3777: 1.5 A, FAIL). No TB6612-interface breakout with a higher continuous rating was found
+  (the Adafruit, SparkFun and DFRobot TB6612 boards list 1.2 A continuous), and the services/api firmware template
+  needs the TB6612 signals (PWM, IN1, IN2 per channel, STBY), so the driver stays.
+- **Motor voltage:** 3 fresh alkaline cells give 4.8 V, under the 6 V motor maximum (4 cells: 6.4 V,
+  FAIL). Trade-off: the TB6612 needs VM ≥ 4.5 V, so it browns out once the pack sags below that,
+  which happens early in the discharge and under load. This is reported as an advisory WARN.
+- **Motor fit:** still undocumented, so it stays a blocking UNKNOWN and the plan is `needs_review`.
+  Verified alternatives were not available: the Adafruit 3796 TT chassis (documents TT motor
+  notches) is no longer stocked, and the SparkFun Hobby Gearmotor that the Shadow guide does
+  document has no published stall current (DG01D drawing gives only 190 mA no-load, 250 mA max).
+- 3777 and the kit 4xAA holder stay in the catalog with their sourced ratings; they are not
+  selected by default.
 
 ## Considered and not used
 
 - **Adafruit 3216 Mini Round Robot Chassis Kit:** out of stock on 2026-10-24, and it bundles motors and wheels (the BOM would double-count them).
-- **SparkFun ROB-13302 Hobby Gearmotor (pair):** stall current not published (only a 250 mA max load), so a current check could never pass; also sold as a pair.
+- **SparkFun ROB-13302 Hobby Gearmotor (pair):** stall current not published (only a 250 mA max load; [DG01D drawing](https://cdn.sparkfun.com/datasheets/Robotics/DG01D.jpg) gives 4.5 V suggested, 190 mA no-load), so a current check could never pass; also sold as a pair.
+- **Adafruit 3802 TT motor all-metal 1:90:** same measured stall as 3801 (1.0 A at 6 V) at $5.95; 3801 is cheaper.
+- **Adafruit 3796 Purple Aluminum Chassis for TT Motors:** documents TT motor mounting but is no longer stocked on 2026-10-24.
+- **Drivers with a different control interface (e.g. DRV8833, which has no separate PWM pin per channel):** the services/api firmware template needs the TB6612 signals; not evaluated further.
 - **SparkFun ROB-13259 65 mm wheel (pair):** sold in pairs and fits DAGU motors, not confirmed for the TT motor.
 - **Adafruit 1959 USB battery pack:** no longer stocked.
 - **HC-SR04 ultrasonic sensors:** 5 V echo output needs a level shifter for ESP32 inputs (spec §6 B1).

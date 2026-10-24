@@ -61,7 +61,7 @@ def test_offset_on_fixed_part_rejected(plan):
 
 def test_budget_edit_that_cannot_be_met_is_rejected(plan):
     f = _reject(plan, {"op": "set_budget", "amount": "60", "currency": "USD"})
-    assert f["rule_id"] == "budget.max_budget" and "105.45" in f["message"] and f["message"].startswith("Edit rejected")
+    assert f["rule_id"] == "budget.max_budget" and "110.80" in f["message"] and f["message"].startswith("Edit rejected")
 
 
 def test_cheaper_budget_reverifies_and_is_honest(plan):

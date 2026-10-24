@@ -47,10 +47,13 @@ def test_edit_adding_a_blocking_failure_is_rejected_and_names_it(plan):
     assert "plan" not in result
 
 
-def test_edit_on_already_failing_plan_is_accepted_when_it_adds_nothing(plan):
-    assert plan["status"] == "unbuildable"  # motor current FAILs exist before the edit
-    result = rivet_engine.apply_edit(plan, {"op": "change_appearance_color", "instance_id": "chassis-1", "color": "#101010"})
-    assert result["accepted"] is True and result["plan"]["revision"] == plan["revision"] + 1
+def test_edit_on_already_failing_plan_is_accepted_when_it_adds_nothing():
+    intent = support.appendix_intent_dict()
+    intent["requirements"]["max_budget"] = "60"
+    failing = rivet_engine.solve(intent)
+    assert failing["status"] == "unbuildable"  # budget FAIL exists before the edit
+    result = rivet_engine.apply_edit(failing, {"op": "change_appearance_color", "instance_id": "chassis-1", "color": "#101010"})
+    assert result["accepted"] is True and result["plan"]["revision"] == failing["revision"] + 1
 
 
 # --- review 2: unhashable / non-string ids are rejected, not crashed -----------------
@@ -203,8 +206,11 @@ def test_undocumented_motor_fit_is_blocking_unknown_not_pass(plan):
     assert motor and motor[0]["result"] == "UNKNOWN" and motor[0]["severity"] == "blocking"
     assert "ROB-13302" in motor[0]["message"] and motor[0]["evidence_urls"]
     passed = {tuple(f["affected_instance_ids"]): f for f in fits if f["result"] == "PASS"}
-    assert passed[("motor-left-1", "wheel-left-1")]["evidence_urls"] == ["https://www.adafruit.com/product/3766"]
-    assert ("caster-1", "chassis-1") in passed and ("chassis-1", "power-motor-1") in passed
+    assert passed[("motor-left-1", "wheel-left-1")]["evidence_urls"] == ["https://www.adafruit.com/product/3801"]
+    assert ("caster-1", "chassis-1") in passed
+    # The 3xAA holder replaces the kit's own holder, so its fit is assumed, not documented.
+    [holder] = [f for f in fits if set(f["affected_instance_ids"]) == {"chassis-1", "power-motor-1"}]
+    assert holder["result"] == "UNKNOWN" and holder["severity"] == "advisory"
 
 
 def test_unlisted_pair_is_advisory_unknown():
@@ -313,18 +319,21 @@ def profile_order_last_is_psram():
 
 
 def test_aa_cells_are_listed_and_priced(plan):
-    cells = next(i for i in plan["bom"]["items"] if i["catalog_id"] == "accessory.adafruit_aa_alkaline_4pack_3349")
-    assert cells["quantity"] == 1 and cells["unit_price_amount"] == "2.95" and cells["link_status"] == "verified_product"
-    assert plan["bom"]["known_subtotal_amount"] == "105.45" and plan["bom"]["total_status"] == "complete"
+    cells = next(i for i in plan["bom"]["items"] if i["catalog_id"] == "accessory.adafruit_aa_alkaline_3pack_3521")
+    assert cells["quantity"] == 1 and cells["unit_price_amount"] == "2.25" and cells["link_status"] == "verified_product"
+    assert plan["bom"]["known_subtotal_amount"] == "110.80" and plan["bom"]["total_status"] == "complete"
 
 
 def test_holder_voltage_follows_the_listed_cells(plan):
-    holder = load_catalog().require("power.sparkfun_shadow_4xaa_holder")
-    v = holder.port("v_out")
-    assert (v.voltage_min_v, v.voltage_max_v) == (3.2, 6.4) and "3349" in v.notes
-    # 6.4 V fresh alkaline is above the motor's 6 V rated maximum: a blocking failure, not hidden.
+    catalog = load_catalog()
+    v = catalog.require("power.adafruit_3xaa_holder_2p1mm_3842").port("v_out")
+    assert (v.voltage_min_v, v.voltage_max_v) == (2.4, 4.8) and "3521" in v.notes
+    # The kit's 4xAA holder with fresh alkaline cells (6.4 V) would exceed the motors' 6 V maximum.
+    kit = catalog.require("power.sparkfun_shadow_4xaa_holder").port("v_out")
+    assert kit.voltage_max_v > catalog.require(configurator.DEFAULT_SELECTION.motor).port("terminal_1").voltage_max_v
+    # Three fresh cells stay within it; a depleted pack is an advisory brown-out, not a failure.
     found = _findings(plan, "electrical.motor_voltage")
-    assert len(found) == 2 and all(f["result"] == "FAIL" and "6.4" in f["message"] for f in found)
+    assert len(found) == 2 and all(f["result"] == "WARN" and f["severity"] == "advisory" and "brown-out" in f["message"] for f in found)
     # Dipping below the driver's 4.5 V VM minimum is a brown-out warning.
     [vm] = [f for f in _findings(plan, "electrical.supply_voltage") if "driver-1.vm" in f["message"]]
     assert vm["result"] == "WARN" and "brown-out" in vm["message"]

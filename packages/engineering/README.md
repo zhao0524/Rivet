@@ -27,7 +27,7 @@ uv run python -m rivet_engine.demo --sample --max-budget 60 --output /tmp/rivet-
 is an error (exit 2), never silently replaced; malformed intents, invalid `--max-budget`
 values and an unwritable `--output` also exit 2. Unsupported requests exit 3 with the
 error envelope on stderr. A written plan exits 0 whatever its status: the default sample
-is `unbuildable` and lists its blocking findings on stderr.
+is `needs_review` and lists its non-passing findings on stderr.
 
 ## Public API (what services/api calls)
 
@@ -49,22 +49,27 @@ error format (`INVALID_INPUT` 400, `UNSUPPORTED_REQUEST` 422, ...).
 
 ## What the default rover is
 
-16-part sourced catalog (`rivet_engine/data/components.json`, sources in
-`data/catalog_sources.md`): Espressif ESP32-DevKitC V4, Adafruit TB6612 driver, two
-Adafruit TT motors and wheels, SparkFun Shadow Chassis (nub caster and 4xAA holder
-included), Adafruit VL53L0X ToF sensor, Adafruit USB power bank, breadboard, wires,
-cables, a DC jack adapter and alkaline AA cells. Priced BOM: **105.45 USD** (list prices on 2026-10-24).
+19-part sourced catalog `catalog-v1.2-2026-10-24` (`rivet_engine/data/components.json`, sources in
+`data/catalog_sources.md`). Default rover: Espressif ESP32-DevKitC V4, Adafruit TB6612 driver, two
+Adafruit 1:90 TT motors (3801) and TT wheels, SparkFun Shadow Chassis (nub caster included),
+Adafruit 3xAA holder with 2.1 mm plug and alkaline AA cells, Adafruit VL53L0X ToF sensor, Adafruit
+USB power bank, breadboard, wires, cables and a DC jack adapter. Priced BOM: **110.80 USD** (list
+prices on 2026-10-24).
 
-Result today: **`unbuildable`**. The engine returns a complete, inspectable design with blocking findings, not a build-ready rover:
+Result today: **`needs_review`**, with no FAIL. What remains:
 
-- TT motor stall current (1.5 A at 6 V) exceeds the TB6612's 1.2 A continuous rating (3 A peak for ~20 ms).
-- The ESP32 board was out of stock at Adafruit when checked.
-- No source documents the TT motor fitting the Shadow Chassis motor mounts (SparkFun's guide uses the
-  Hobby Gearmotor ROB-13302): blocking UNKNOWN from `mechanical.fit_evidence`.
-- Battery voltage (3.2–6.4 V) comes from the listed alkaline cells (1.6 V fresh to 0.8 V dead). Fresh cells
-  exceed the motors' 6 V rated maximum (blocking FAIL); near empty they drop below the driver's 4.5 V VM
-  minimum (advisory brown-out WARN). Holder current capacity is unknown.
+- **Blocking UNKNOWN:** no source documents the TT motor fitting the Shadow Chassis motor mounts
+  (SparkFun's guide uses the Hobby Gearmotor ROB-13302). This is the only thing between the plan and
+  `verified_with_warnings`; it needs a documented fit (or a stocked chassis that documents TT motors).
+- Motor current passes: 1.0 A stall at 6 V against the TB6612's 1.2 A continuous rating.
+- Battery voltage (2.4–4.8 V) comes from 3 alkaline cells (1.6 V fresh to 0.8 V dead), so it stays under
+  the motors' 6 V maximum. The TB6612 needs VM ≥ 4.5 V, so the driver browns out once the pack sags
+  below that, early in the discharge and under load (advisory WARN). Holder current capacity is unknown.
+- The ESP32 board was out of stock at Adafruit when checked (advisory WARN).
+- The 3801 motors ship without leads; two wires must be soldered to each motor.
 - Mount coordinates and the chassis box are approximated, not measured CAD.
+
+Why these parts, and what was ruled out: `data/catalog_sources.md`, "Default motor, driver and battery".
 
 Physical fit is tracked separately from mount geometry in `data/fit_evidence.json`: matching mount
 kinds only model geometry, and a fit counts as documented only with a cited source.

@@ -62,13 +62,13 @@ CATALOG_CURRENCY = "USD"
 
 DEFAULT_SELECTION = RoverSelection(
     chassis="chassis.sparkfun_shadow_rob13301",
-    motor="motor.adafruit_tt_gearbox_200rpm_3777",
+    motor="motor.adafruit_tt_bimetal_1to90_3801",
     wheel="wheel.adafruit_tt_wheel_3766",
     caster="caster.sparkfun_shadow_nub",
     controller="board.esp32_devkitc_v4_wroom32e",
     motor_driver="driver.adafruit_tb6612_2448",
     distance_sensor="sensor.adafruit_vl53l0x_3317",
-    motor_power="power.sparkfun_shadow_4xaa_holder",
+    motor_power="power.adafruit_3xaa_holder_2p1mm_3842",
     controller_power="power.adafruit_usb_power_bank_5000_4288",
     accessories=(
         "accessory.adafruit_half_breadboard_64",
@@ -76,7 +76,7 @@ DEFAULT_SELECTION = RoverSelection(
         "wiring.adafruit_stemma_qt_to_male_4209",
         "wiring.adafruit_usb_a_microb_3ft_592",
         "accessory.adafruit_dc_jack_terminal_368",
-        "accessory.adafruit_aa_alkaline_4pack_3349",
+        "accessory.adafruit_aa_alkaline_3pack_3521",
     ),
 )
 
@@ -90,8 +90,8 @@ SENSOR_SIMULATION = {
     "sensor.adafruit_vl53l1x_3967": (4.0, 27, "Adafruit 3967: up to 400 cm, typical 27 degree FoV"),
 }
 HEURISTIC_SENSOR = (1.0, 25, "heuristic default; sensor range not modeled for this part")
-# Bounded nominal speed for the 2D simulation. TT motors at 6 V reach ~200-250 RPM no-load
-# (~0.65 m/s on 63 mm wheels); the simulation deliberately stays well below that.
+# Bounded nominal speed for the 2D simulation. The 1:90 TT motors reach ~90 RPM no-load at
+# 4.5 V (~0.30 m/s on 63 mm wheels); the simulation stays below that.
 NOMINAL_MAX_WHEEL_SPEED_MPS = 0.25
 
 

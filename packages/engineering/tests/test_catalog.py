@@ -83,6 +83,8 @@ def test_verified_electrical_parts_have_rated_ports(catalog):
     motor = catalog.require("motor.adafruit_tt_gearbox_200rpm_3777")
     assert motor.port("terminal_1").current_limit_a == 1.5
     assert motor.port("terminal_1").voltage_max_v == 6.0
+    slow = catalog.require("motor.adafruit_tt_bimetal_1to90_3801")
+    assert (slow.port("terminal_1").current_limit_a, slow.port("terminal_1").voltage_max_v) == (1.0, 6.0)
 
 
 def test_controller_excludes_flash_pins(catalog):
