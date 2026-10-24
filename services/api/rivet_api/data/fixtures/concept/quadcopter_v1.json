@@ -1,0 +1,817 @@
+{
+ "title": "Quadcopter drone concept",
+ "object_type": "quadcopter drone",
+ "summary": "A four-rotor camera drone with a central body, X-frame arms and landing legs.",
+ "parts": [
+  {
+   "name": "Centre body",
+   "category": "body",
+   "shape": "rounded_box",
+   "size_mm": [
+    70,
+    24,
+    90
+   ],
+   "position_mm": [
+    0,
+    40,
+    0
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#2b2f36",
+   "material": "plastic"
+  },
+  {
+   "name": "Top cover",
+   "category": "body",
+   "shape": "hemisphere",
+   "size_mm": [
+    60,
+    18,
+    76
+   ],
+   "position_mm": [
+    0,
+    52,
+    0
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#e8e9eb",
+   "material": "glossy_plastic"
+  },
+  {
+   "name": "Battery",
+   "category": "battery",
+   "shape": "box",
+   "size_mm": [
+    34,
+    22,
+    70
+   ],
+   "position_mm": [
+    0,
+    19,
+    -4
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#3a3d42",
+   "material": "plastic"
+  },
+  {
+   "name": "Camera gimbal",
+   "category": "camera",
+   "shape": "sphere",
+   "size_mm": [
+    26,
+    26,
+    26
+   ],
+   "position_mm": [
+    0,
+    26,
+    50
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#15171a",
+   "material": "plastic"
+  },
+  {
+   "name": "Camera lens",
+   "category": "camera",
+   "shape": "cylinder",
+   "size_mm": [
+    12,
+    6,
+    12
+   ],
+   "position_mm": [
+    0,
+    26,
+    63
+   ],
+   "rotation_deg": [
+    90,
+    0,
+    0
+   ],
+   "color": "#0b2a4a",
+   "material": "glass"
+  },
+  {
+   "name": "Front-left arm",
+   "category": "arm",
+   "shape": "box",
+   "size_mm": [
+    12,
+    10,
+    134
+   ],
+   "position_mm": [
+    -47.5,
+    40,
+    47.5
+   ],
+   "rotation_deg": [
+    0,
+    -45.0,
+    0
+   ],
+   "color": "#2b2f36",
+   "material": "plastic"
+  },
+  {
+   "name": "Front-left motor",
+   "category": "motor",
+   "shape": "cylinder",
+   "size_mm": [
+    24,
+    20,
+    24
+   ],
+   "position_mm": [
+    -95,
+    50,
+    95
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#9ea4ab",
+   "material": "aluminum"
+  },
+  {
+   "name": "Front-left propeller",
+   "category": "propeller",
+   "shape": "propeller",
+   "size_mm": [
+    128,
+    4,
+    128
+   ],
+   "position_mm": [
+    -95,
+    62,
+    95
+   ],
+   "rotation_deg": [
+    0,
+    -45,
+    0
+   ],
+   "color": "#d9dbde",
+   "material": "plastic"
+  },
+  {
+   "name": "Front-left landing leg",
+   "category": "leg",
+   "shape": "cylinder",
+   "size_mm": [
+    6,
+    32,
+    6
+   ],
+   "position_mm": [
+    -77.89999999999999,
+    20,
+    77.89999999999999
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#2b2f36",
+   "material": "plastic"
+  },
+  {
+   "name": "Front-right arm",
+   "category": "arm",
+   "shape": "box",
+   "size_mm": [
+    12,
+    10,
+    134
+   ],
+   "position_mm": [
+    47.5,
+    40,
+    47.5
+   ],
+   "rotation_deg": [
+    0,
+    45.0,
+    0
+   ],
+   "color": "#2b2f36",
+   "material": "plastic"
+  },
+  {
+   "name": "Front-right motor",
+   "category": "motor",
+   "shape": "cylinder",
+   "size_mm": [
+    24,
+    20,
+    24
+   ],
+   "position_mm": [
+    95,
+    50,
+    95
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#9ea4ab",
+   "material": "aluminum"
+  },
+  {
+   "name": "Front-right propeller",
+   "category": "propeller",
+   "shape": "propeller",
+   "size_mm": [
+    128,
+    4,
+    128
+   ],
+   "position_mm": [
+    95,
+    62,
+    95
+   ],
+   "rotation_deg": [
+    0,
+    45,
+    0
+   ],
+   "color": "#d9dbde",
+   "material": "plastic"
+  },
+  {
+   "name": "Front-right landing leg",
+   "category": "leg",
+   "shape": "cylinder",
+   "size_mm": [
+    6,
+    32,
+    6
+   ],
+   "position_mm": [
+    77.89999999999999,
+    20,
+    77.89999999999999
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#2b2f36",
+   "material": "plastic"
+  },
+  {
+   "name": "Rear-left arm",
+   "category": "arm",
+   "shape": "box",
+   "size_mm": [
+    12,
+    10,
+    134
+   ],
+   "position_mm": [
+    -47.5,
+    40,
+    -47.5
+   ],
+   "rotation_deg": [
+    0,
+    -135.0,
+    0
+   ],
+   "color": "#2b2f36",
+   "material": "plastic"
+  },
+  {
+   "name": "Rear-left motor",
+   "category": "motor",
+   "shape": "cylinder",
+   "size_mm": [
+    24,
+    20,
+    24
+   ],
+   "position_mm": [
+    -95,
+    50,
+    -95
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#9ea4ab",
+   "material": "aluminum"
+  },
+  {
+   "name": "Rear-left propeller",
+   "category": "propeller",
+   "shape": "propeller",
+   "size_mm": [
+    128,
+    4,
+    128
+   ],
+   "position_mm": [
+    -95,
+    62,
+    -95
+   ],
+   "rotation_deg": [
+    0,
+    45,
+    0
+   ],
+   "color": "#d9dbde",
+   "material": "plastic"
+  },
+  {
+   "name": "Rear-left landing leg",
+   "category": "leg",
+   "shape": "cylinder",
+   "size_mm": [
+    6,
+    32,
+    6
+   ],
+   "position_mm": [
+    -77.89999999999999,
+    20,
+    -77.89999999999999
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#2b2f36",
+   "material": "plastic"
+  },
+  {
+   "name": "Rear-right arm",
+   "category": "arm",
+   "shape": "box",
+   "size_mm": [
+    12,
+    10,
+    134
+   ],
+   "position_mm": [
+    47.5,
+    40,
+    -47.5
+   ],
+   "rotation_deg": [
+    0,
+    135.0,
+    0
+   ],
+   "color": "#2b2f36",
+   "material": "plastic"
+  },
+  {
+   "name": "Rear-right motor",
+   "category": "motor",
+   "shape": "cylinder",
+   "size_mm": [
+    24,
+    20,
+    24
+   ],
+   "position_mm": [
+    95,
+    50,
+    -95
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#9ea4ab",
+   "material": "aluminum"
+  },
+  {
+   "name": "Rear-right propeller",
+   "category": "propeller",
+   "shape": "propeller",
+   "size_mm": [
+    128,
+    4,
+    128
+   ],
+   "position_mm": [
+    95,
+    62,
+    -95
+   ],
+   "rotation_deg": [
+    0,
+    -45,
+    0
+   ],
+   "color": "#d9dbde",
+   "material": "plastic"
+  },
+  {
+   "name": "Rear-right landing leg",
+   "category": "leg",
+   "shape": "cylinder",
+   "size_mm": [
+    6,
+    32,
+    6
+   ],
+   "position_mm": [
+    77.89999999999999,
+    20,
+    -77.89999999999999
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#2b2f36",
+   "material": "plastic"
+  },
+  {
+   "name": "Power distribution board",
+   "category": "board",
+   "shape": "box",
+   "size_mm": [
+    40,
+    1.6,
+    40
+   ],
+   "position_mm": [
+    0,
+    30,
+    0
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#1d5c37",
+   "material": "pcb",
+   "internal": true
+  },
+  {
+   "name": "Front-left ESC",
+   "category": "board",
+   "shape": "box",
+   "size_mm": [
+    12,
+    4,
+    22
+   ],
+   "position_mm": [
+    -22,
+    33,
+    26
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#1d5c37",
+   "material": "pcb",
+   "internal": true
+  },
+  {
+   "name": "Front-right ESC",
+   "category": "board",
+   "shape": "box",
+   "size_mm": [
+    12,
+    4,
+    22
+   ],
+   "position_mm": [
+    22,
+    33,
+    26
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#1d5c37",
+   "material": "pcb",
+   "internal": true
+  },
+  {
+   "name": "Rear-left ESC",
+   "category": "board",
+   "shape": "box",
+   "size_mm": [
+    12,
+    4,
+    22
+   ],
+   "position_mm": [
+    -22,
+    33,
+    -26
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#1d5c37",
+   "material": "pcb",
+   "internal": true
+  },
+  {
+   "name": "Rear-right ESC",
+   "category": "board",
+   "shape": "box",
+   "size_mm": [
+    12,
+    4,
+    22
+   ],
+   "position_mm": [
+    22,
+    33,
+    -26
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#1d5c37",
+   "material": "pcb",
+   "internal": true
+  },
+  {
+   "name": "Flight controller",
+   "category": "board",
+   "shape": "box",
+   "size_mm": [
+    30,
+    2,
+    30
+   ],
+   "position_mm": [
+    0,
+    38,
+    0
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#141414",
+   "material": "pcb",
+   "internal": true
+  },
+  {
+   "name": "Radio receiver",
+   "category": "board",
+   "shape": "box",
+   "size_mm": [
+    20,
+    8,
+    14
+   ],
+   "position_mm": [
+    0,
+    44,
+    -28
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#141414",
+   "material": "pcb",
+   "internal": true
+  },
+  {
+   "name": "GPS module",
+   "category": "board",
+   "shape": "box",
+   "size_mm": [
+    25,
+    5,
+    25
+   ],
+   "position_mm": [
+    0,
+    48,
+    18
+   ],
+   "rotation_deg": [
+    0,
+    0,
+    0
+   ],
+   "color": "#1d5c37",
+   "material": "pcb",
+   "internal": true
+  }
+ ],
+ "assumptions": [
+  "Offline example: the mock provider does not read the image",
+  "About 250 mm motor-to-motor",
+  "Internal parts are typical for this kind of device, not seen in the photo"
+ ],
+ "confidence": "medium",
+ "wires": [
+  {
+   "name": "Battery to PDB",
+   "from_part": "Battery",
+   "to_part": "Power distribution board",
+   "kind": "power",
+   "color": "#d03030",
+   "thickness_mm": 3
+  },
+  {
+   "name": "PDB to Front-left ESC",
+   "from_part": "Power distribution board",
+   "to_part": "Front-left ESC",
+   "kind": "power",
+   "color": "#d03030",
+   "thickness_mm": 2
+  },
+  {
+   "name": "Front-left ESC to motor",
+   "from_part": "Front-left ESC",
+   "to_part": "Front-left motor",
+   "kind": "power",
+   "color": "#1f1f1f",
+   "thickness_mm": 1.5,
+   "via_mm": [
+    [
+     -50,
+     46,
+     50
+    ]
+   ]
+  },
+  {
+   "name": "Flight controller to Front-left ESC",
+   "from_part": "Flight controller",
+   "to_part": "Front-left ESC",
+   "kind": "signal",
+   "color": "#e8c547",
+   "thickness_mm": 1
+  },
+  {
+   "name": "PDB to Front-right ESC",
+   "from_part": "Power distribution board",
+   "to_part": "Front-right ESC",
+   "kind": "power",
+   "color": "#d03030",
+   "thickness_mm": 2
+  },
+  {
+   "name": "Front-right ESC to motor",
+   "from_part": "Front-right ESC",
+   "to_part": "Front-right motor",
+   "kind": "power",
+   "color": "#1f1f1f",
+   "thickness_mm": 1.5,
+   "via_mm": [
+    [
+     50,
+     46,
+     50
+    ]
+   ]
+  },
+  {
+   "name": "Flight controller to Front-right ESC",
+   "from_part": "Flight controller",
+   "to_part": "Front-right ESC",
+   "kind": "signal",
+   "color": "#e8c547",
+   "thickness_mm": 1
+  },
+  {
+   "name": "PDB to Rear-left ESC",
+   "from_part": "Power distribution board",
+   "to_part": "Rear-left ESC",
+   "kind": "power",
+   "color": "#d03030",
+   "thickness_mm": 2
+  },
+  {
+   "name": "Rear-left ESC to motor",
+   "from_part": "Rear-left ESC",
+   "to_part": "Rear-left motor",
+   "kind": "power",
+   "color": "#1f1f1f",
+   "thickness_mm": 1.5,
+   "via_mm": [
+    [
+     -50,
+     46,
+     -50
+    ]
+   ]
+  },
+  {
+   "name": "Flight controller to Rear-left ESC",
+   "from_part": "Flight controller",
+   "to_part": "Rear-left ESC",
+   "kind": "signal",
+   "color": "#e8c547",
+   "thickness_mm": 1
+  },
+  {
+   "name": "PDB to Rear-right ESC",
+   "from_part": "Power distribution board",
+   "to_part": "Rear-right ESC",
+   "kind": "power",
+   "color": "#d03030",
+   "thickness_mm": 2
+  },
+  {
+   "name": "Rear-right ESC to motor",
+   "from_part": "Rear-right ESC",
+   "to_part": "Rear-right motor",
+   "kind": "power",
+   "color": "#1f1f1f",
+   "thickness_mm": 1.5,
+   "via_mm": [
+    [
+     50,
+     46,
+     -50
+    ]
+   ]
+  },
+  {
+   "name": "Flight controller to Rear-right ESC",
+   "from_part": "Flight controller",
+   "to_part": "Rear-right ESC",
+   "kind": "signal",
+   "color": "#e8c547",
+   "thickness_mm": 1
+  },
+  {
+   "name": "Flight controller to receiver",
+   "from_part": "Flight controller",
+   "to_part": "Radio receiver",
+   "kind": "signal",
+   "color": "#f2f2f2",
+   "thickness_mm": 1
+  },
+  {
+   "name": "Flight controller to GPS",
+   "from_part": "Flight controller",
+   "to_part": "GPS module",
+   "kind": "data",
+   "color": "#3b82f6",
+   "thickness_mm": 1
+  },
+  {
+   "name": "Flight controller to camera",
+   "from_part": "Flight controller",
+   "to_part": "Camera gimbal",
+   "kind": "data",
+   "color": "#3b82f6",
+   "thickness_mm": 1
+  }
+ ]
+}

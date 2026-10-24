@@ -147,3 +147,17 @@ describe("FixtureSource honesty", () => {
     expect((await source.getBuild(SYNTHETIC_ROVER_BUILD_ID)).revision).toBe(1);
   });
 });
+
+describe("FixtureSource concept requests", () => {
+  it("serves the saved concept model for concept_model and the rover otherwise", async () => {
+    const { createCombinedFixtureSource } = await import("../../fixtures");
+    const source = createCombinedFixtureSource();
+    const input = { input: { kind: "text" as const, image_asset_id: null, user_text: "a drone" } };
+    const concept = await source.generate({ ...input, interpretation_choice: "concept_model" });
+    const plan = await source.getBuild(concept.build_id!);
+    expect(plan.provenance.catalog_version).toMatch(/^CONCEPT/);
+    expect((await source.getJob(concept.job_id)).build_id).toBe(plan.build_id);
+    const rover = await source.generate(input);
+    expect(rover.build_id).toBe(SYNTHETIC_ROVER_BUILD_ID);
+  });
+});

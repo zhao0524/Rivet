@@ -131,7 +131,7 @@ class BuildPlan(_Open):
     verification: Verification
     assembly_steps: list[AssemblyStep]
     bom: Bom
-    behavior: Behavior
+    behavior: Behavior | None
     simulation: Simulation
     firmware: Firmware
     provenance: Provenance

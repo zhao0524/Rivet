@@ -10,6 +10,8 @@ export interface BuildTrust {
   /** Short label suitable for a banner. */
   label: string;
   isSynthetic: boolean;
+  /** Appearance-only concept model rebuilt from an image (no engine run, no real parts). */
+  isConcept: boolean;
   isSaved: boolean;
   /**
    * When a saved build of sourced parts was captured: its `created_at`, which the engine
@@ -37,6 +39,12 @@ export function isSyntheticPlan(plan: BuildPlan, catalog: readonly CatalogCompon
   return catalog.some((c) => used.has(c.catalog_id) && SYNTHETIC_MARKERS.test(c.identity.manufacturer));
 }
 
+export const CONCEPT_MODEL_LABEL = "Concept model · appearance only";
+
+export function isConceptPlan(plan: BuildPlan): boolean {
+  return plan.provenance.catalog_version.startsWith("CONCEPT");
+}
+
 export function describeBuildTrust(
   plan: BuildPlan,
   sourceMode: DataSourceMode,
@@ -44,6 +52,8 @@ export function describeBuildTrust(
 ): BuildTrust {
   const reasons: string[] = [];
   const isSynthetic = isSyntheticPlan(plan, catalog);
+  const isConcept = isConceptPlan(plan);
+  if (isConcept) reasons.push("Shapes rebuilt from the image; no real parts, wiring or engineering checks");
   const isSaved = sourceMode === "fixture" || plan.provenance.generation_mode === "fixture";
   const capturedAt = isSaved && !isSynthetic ? plan.created_at : null;
   if (capturedAt) reasons.push(`Captured ${formatUtc(capturedAt)}`);
@@ -64,11 +74,12 @@ export function describeBuildTrust(
 
   const canDisplayAsVerified = !isSynthetic && plan.status === "verified" && blocking.length === 0;
   let label: string;
-  if (isSynthetic) label = SAVED_SYNTHETIC_EXAMPLE_LABEL;
+  if (isConcept) label = CONCEPT_MODEL_LABEL;
+  else if (isSynthetic) label = SAVED_SYNTHETIC_EXAMPLE_LABEL;
   else if (isSaved) label = SAVED_BUILD_LABEL;
   else if (plan.provenance.generation_mode === "fallback") label = "Fallback output";
   else label = "Live generation";
-  return { label, isSynthetic, isSaved, capturedAt, canDisplayAsVerified, reasons };
+  return { label, isSynthetic, isConcept, isSaved, capturedAt, canDisplayAsVerified, reasons };
 }
 
 export interface BomSummary {

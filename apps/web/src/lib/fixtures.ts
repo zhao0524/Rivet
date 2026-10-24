@@ -1,3 +1,4 @@
+import rawConceptPlan from './rivet/fixtures/concept-quadcopter-v1.json';
 import rawSourcedPlan from './rivet/fixtures/sourced-rover-obstacle-v1.json';
 import rawSourcedCatalog from './rivet/fixtures/sourced-seed-components.json';
 import rawIntent from './rivet/fixtures/synthetic-intent-rover-obstacle-v1.json';
@@ -37,6 +38,11 @@ export function getSourcedCatalog(): CatalogComponent[] {
   return parseCatalogComponents(structuredClone(rawSourcedCatalog));
 }
 
+/** Saved concept model (appearance only) served for concept requests in fixture mode. */
+export function getConceptExamplePlan(): BuildPlan {
+  return parseBuildPlan(structuredClone(rawConceptPlan));
+}
+
 export function getSourcedRoverPlan(): BuildPlan {
   const catalog = getSourcedCatalog();
   const plan = parseBuildPlan(structuredClone(rawSourcedPlan));
@@ -53,7 +59,7 @@ export function getCombinedFixtureCatalog(): CatalogComponent[] {
 
 export function createCombinedFixtureSource(defaultBuildId: string = SYNTHETIC_ROVER_BUILD_ID): FixtureSource {
   const catalog = getCombinedFixtureCatalog();
-  const plans = [getSyntheticRoverPlan(), getSourcedRoverPlan()];
+  const plans = [getSyntheticRoverPlan(), getSourcedRoverPlan(), getConceptExamplePlan()];
   const opened = plans.find((p) => p.build_id === defaultBuildId);
   return new FixtureSource({
     catalog,

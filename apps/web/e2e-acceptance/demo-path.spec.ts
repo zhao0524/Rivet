@@ -111,7 +111,7 @@ test('reference image to a real-engine rover: verified parts, assembly steps, BO
     const uploaded = page.waitForResponse(isPost('/api/assets/images'));
     let generateCount = 0;
     page.on('request', (request) => { if (request.method() === 'POST' && new URL(request.url()).pathname === '/api/projects/generate') generateCount += 1; });
-    await page.getByRole('button', { name: 'Review interpretation' }).click();
+    await page.getByRole('button', { name: 'Check for a real-parts rover build' }).click();
     await expect(page.getByTestId('interpretation-card')).toContainText('rover');
     expect(generateCount, 'engine must wait for confirmation').toBe(0);
     const generated = page.waitForResponse(isPost('/api/projects/generate'));

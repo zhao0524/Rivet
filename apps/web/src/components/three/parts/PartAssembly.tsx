@@ -17,6 +17,8 @@ export interface PartAssemblyProps {
   visibility?: Readonly<Record<string, PartVisibility>>;
   /** Per-`instance_id` presentation transforms (exploded view, previews). The plan is never mutated. */
   poseOverrides?: Readonly<Record<string, PoseOverride>>;
+  /** Instances drawn without pointer events, so parts behind them can be picked. */
+  inertInstanceIds?: ReadonlySet<string>;
 }
 
 export function indexCatalog(catalog: PartAssemblyProps['catalog']): ReadonlyMap<string, PartCatalogItem> {
@@ -36,6 +38,7 @@ export function PartAssembly({
   showMounts = false,
   visibility,
   poseOverrides,
+  inertInstanceIds,
 }: PartAssemblyProps) {
   const byId = useMemo(() => indexCatalog(catalog), [catalog]);
   const highlightedSet = useMemo(() => {
@@ -56,6 +59,7 @@ export function PartAssembly({
           showMounts={showMounts}
           visibility={visibility?.[component.instance_id]}
           poseOverride={poseOverrides?.[component.instance_id]}
+          interactive={!inertInstanceIds?.has(component.instance_id)}
           onSelect={onSelect}
           onHover={onHover}
         />

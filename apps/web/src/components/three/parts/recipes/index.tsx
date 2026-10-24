@@ -3,6 +3,7 @@ import { kindForCatalogPreset } from '../materials';
 import type { PartCatalogItem, PartSide, PlanComponentOccurrence, RecipeProps, Size3 } from '../types';
 import { CasterRecipe } from './Caster';
 import { ChassisRecipe } from './Chassis';
+import { ConceptPartRecipe, conceptShape } from './ConceptPart';
 import { Esp32BoardRecipe } from './Esp32Board';
 import { GenericPartRecipe, UnknownPartRecipe } from './Fallback';
 import { MotorDriverBoardRecipe } from './MotorDriverBoard';
@@ -21,6 +22,7 @@ export type RecipeId =
   | 'ultrasonic_sensor'
   | 'battery_pack'
   | 'usb_power_bank'
+  | 'concept'
   | 'generic'
   | 'unknown';
 
@@ -34,6 +36,7 @@ export const RECIPES: Record<RecipeId, ComponentType<RecipeProps>> = {
   ultrasonic_sensor: UltrasonicSensorRecipe,
   battery_pack: BatteryPackRecipe,
   usb_power_bank: UsbPowerBankRecipe,
+  concept: ConceptPartRecipe,
   generic: (props) => <GenericPartRecipe {...props} kind={kindForCatalogPreset(props.catalogItem?.physical?.material_preset)} />,
   unknown: UnknownPartRecipe,
 };
@@ -55,6 +58,7 @@ const CATEGORY_RECIPES: ReadonlyArray<[RegExp, RecipeId]> = [
 
 export function resolveRecipe(component: PlanComponentOccurrence, item: PartCatalogItem | undefined): RecipeId {
   if (!item) return 'unknown';
+  if (conceptShape(item.physical?.geometry_kind)) return 'concept';
   const explicit = CATALOG_RECIPES[item.catalog_id];
   if (explicit) return explicit;
   const category = `${item.identity?.category ?? ''}`.toLowerCase();

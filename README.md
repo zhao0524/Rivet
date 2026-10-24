@@ -1,8 +1,15 @@
 # Rivet
 
-AI-assisted hardware-building platform for the **SOON Hackathon**. Upload an inspiration image or describe a build; Rivet turns it into a component-backed design with interactive 3D, a real BOM, wiring, assembly steps, and ESP32 starter firmware.
+AI-assisted hardware-building platform for the **SOON Hackathon**. Upload a photo of any object (or describe one) and Rivet renders it as an interactive 3D model built from separate parts. For the supported rover it goes further: a component-backed design with a real BOM, wiring, assembly steps, simulation and ESP32 starter firmware.
 
-**Hackathon proof:** a differential-drive indoor rover end to end. Other product families stay labeled *planned* until implemented.
+Rivet has two build paths:
+
+| Path | Input | Output | Honesty label |
+|---|---|---|---|
+| **3D concept model** (default) | Any photo or description: drones, vehicles, furniture, appliances, gadgets, toys | Selectable 3D parts made of shaped primitives (box, cylinder, propeller, wheel, ring, ...) in the colors and materials of the photo; for powered devices, inferred internal boards and wiring, shown with **X-ray**; plain-language edits as new revisions; exploded view | *Concept model · appearance only*: no real products, prices, wiring checks or firmware; internal parts are marked inferred |
+| **Real-parts rover** | A small wheeled-robot reference or prompt | Engine-verified differential-drive rover from cataloged parts: BOM with purchase links, wiring, assembly steps, 2D simulation, firmware | Status and findings from the engineering engine |
+
+The rover is also the fallback: if a concept model cannot be built (provider error or unusable reply), the job builds the closest supported rover and says so in the build notes.
 
 ## Specs (start here)
 
@@ -70,11 +77,14 @@ keys are removed from the web subprocess environment.
 For the real engine with offline interpretation, set `RIVET_MODE=live` and
 `RIVET_VISION_PROVIDER=mock` in root `.env.local`, then run `pnpm dev`. The studio uses
 HTTP automatically unless `NEXT_PUBLIC_RIVET_USE_FIXTURES` explicitly overrides it.
-Mock interpretation does not read the image and is disclosed as fallback. Intake shows an
-interpretation for confirmation before generation; unsupported families require an explicit
-closest-rover choice. Saved examples open immediately without a provider.
+Mock interpretation does not read the image and is disclosed as fallback; in fixture or mock
+mode a concept request returns a saved quadcopter concept. In the intake, **Generate 3D model**
+builds a concept of whatever the image or text shows (`interpretation_choice: "concept_model"`);
+**Check for a real-parts rover build** shows an interpretation for confirmation before an
+engine build, and unsupported families there require an explicit closest-rover choice. Saved
+examples open immediately without a provider.
 
-For live image interpretation, install `services/api[live]`, then configure
+A live provider is needed for concept models of your own photos. For live image interpretation, install `services/api[live]`, then configure
 `RIVET_MODE=live`, `RIVET_VISION_PROVIDER=openai`, `RIVET_VISION_MODEL=gpt-4o` and
 `OPENAI_API_KEY` in root `.env.local`. See [provider verification](services/api/README.md)
 for the opt-in tests. Backboard image input remains unsupported for the demo.
@@ -113,11 +123,13 @@ Shared contracts live in `contracts/` and `fixtures/`. Do not invent interfaces 
 2. Real catalog parts and links only — never invent prices, stock, or SKUs. The API enforces this: it rejects unbacked `verified_product` BOM rows, synthetic parts in live plans, and BOM/firmware exports of synthetic builds (see `services/api/README.md`).
 3. AI proposes; deterministic code validates.
 4. Missing evidence → `UNKNOWN` / `WARN` / `NEEDS_REVIEW`, not a fake pass.
-5. Ship the rover flow before expanding scope.
+5. Only the rover is engineered. Every other object is a labeled 3D concept (appearance plus inferred internals), never presented as buildable, priced or verified.
 
 ## Demo target
 
-Upload a small wheeled-robot reference and ask: *“Design something like this that can avoid obstacles. Use real parts and explain how to build it.”*
+**Any photo:** upload a photo of a drone (or any object) and click **Generate 3D model**. Turn on **X-ray** to see the inferred flight controller, ESCs and wiring inside, then ask for a change such as *“Make the propellers blue and add a camera.”*
+
+**Real-parts rover:** upload a small wheeled-robot reference, choose **Check for a real-parts rover build**, and ask: *“Design something like this that can avoid obstacles. Use real parts and explain how to build it.”*
 
 Follow-up: *“Make it cheaper and move the sensor higher.”*
 

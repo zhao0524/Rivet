@@ -402,3 +402,21 @@ def test_pipeline_passes_only_sanitized_intent_to_the_engine(generate, stub_engi
     sent = engine.solve_calls[0]
     assert sent["requirements"]["max_budget"] is None
     assert sent["requirements"]["preferred_controller_catalog_id"] is None
+
+
+def test_out_of_range_image_trait_becomes_null_instead_of_failing():
+    # A drone has no drive wheels; models answer 0, which the contract (1..8) does not allow.
+    reply = {**GOOD, "project_family": "drone", "support_status": "unsupported",
+             "image_features": {"drive_wheel_count": 0, "wheel_size": "tiny", "body_color": "black"}}
+    provider, backend = live(reply)
+    traits = provider.interpret(IMAGE_REQ, (b"img", "image/png")).image_features
+    assert len(backend.calls) == 1
+    assert traits.drive_wheel_count is None and traits.wheel_size is None and traits.body_color == "black"
+
+
+def test_unknown_image_trait_key_is_still_rejected():
+    reply = {**GOOD, "image_features": {"propeller_count": 4}}
+    provider, _ = live(reply, reply)
+    with pytest.raises(ApiError) as exc:
+        provider.interpret(IMAGE_REQ, (b"img", "image/png"))
+    assert exc.value.code == "VISION_PARSE_FAILED"

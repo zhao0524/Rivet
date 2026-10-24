@@ -19,6 +19,10 @@ export type MaterialKind =
   | 'mesh'
   | 'led'
   | 'hole'
+  | 'glass'
+  | 'fabric'
+  | 'wood'
+  | 'carbon'
   | 'unknown';
 
 interface Preset {
@@ -50,6 +54,10 @@ const PRESETS: Record<MaterialKind, Preset> = {
   mesh: { color: '#3b3e42', roughness: 0.8, metalness: 0.5 },
   led: { color: '#ff3b30', roughness: 0.25, metalness: 0, emissiveIntensity: 1.4 },
   hole: { color: '#0b0c0d', roughness: 0.9, metalness: 0 },
+  glass: { color: '#9fc4d8', roughness: 0.06, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.05, transparent: true, opacity: 0.55 },
+  fabric: { color: '#5a5f66', roughness: 0.96, metalness: 0 },
+  wood: { color: '#a0744a', roughness: 0.72, metalness: 0 },
+  carbon: { color: '#1d1f22', roughness: 0.32, metalness: 0.25, clearcoat: 0.7, clearcoatRoughness: 0.25 },
   unknown: { color: '#c9ccd1', roughness: 0.7, metalness: 0, transparent: true, opacity: 0.55 },
 };
 

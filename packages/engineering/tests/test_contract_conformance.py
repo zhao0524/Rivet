@@ -121,6 +121,16 @@ ALLOWED_DIFFERENCES: dict[tuple[str, str, str], str] = {
         "the engine keeps hint keys in a dict[str, Any], so every hint the contract allows is accepted. "
         "Hints the engine emits are validated against the schema by the solve and apply_edit tests."
     ),
+    ("build-plan", "concept", MISSING): (
+        "Concept models (appearance only) are built by services/api/rivet_api/concept without the engine; "
+        "the engine never emits or accepts them."
+    ),
+    ("build-plan", "concept_catalog", MISSING): (
+        "Concept models carry their own concept.* catalog entries; built by services/api, never by the engine."
+    ),
+    ("build-plan", "behavior", NULLABLE): (
+        "Only concept models (built by services/api) have no behavior; every engine plan has one."
+    ),
 }
 
 

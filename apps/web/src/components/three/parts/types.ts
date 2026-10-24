@@ -81,6 +81,8 @@ export interface RecipeProps {
   color?: string;
   side: PartSide;
   catalogItem?: PartCatalogItem;
+  /** The occurrence's `render_overrides` (e.g. a concept cable's `path_mm`). */
+  overrides?: PlanComponentOccurrence['render_overrides'];
 }
 
 export interface PartSelectEvent {

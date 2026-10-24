@@ -40,6 +40,8 @@ export interface HardwarePartProps {
   visibility?: PartVisibility;
   /** Presentation-only transform (exploded view, ghost preview); never written back to the plan. */
   poseOverride?: PoseOverride;
+  /** False draws the part but lets pointer events pass through it (e.g. a see-through shell). */
+  interactive?: boolean;
   onSelect?: (event: PartSelectEvent) => void;
   onHover?: (instanceId: string | null) => void;
 }
@@ -57,6 +59,7 @@ export const HardwarePart = memo(function HardwarePart({
   showMounts = false,
   visibility,
   poseOverride,
+  interactive: pickable = true,
   onSelect,
   onHover,
 }: HardwarePartProps) {
@@ -76,7 +79,7 @@ export const HardwarePart = memo(function HardwarePart({
   );
   const renderState = useMemo(() => ({ ghost: mode === 'ghost', wireframe }), [mode, wireframe]);
 
-  const procedural = <Recipe size={size} color={color} side={side} catalogItem={catalogItem} />;
+  const procedural = <Recipe size={size} color={color} side={side} catalogItem={catalogItem} overrides={component.render_overrides} />;
   const physical = catalogItem?.physical;
   const useAsset = physical?.geometry_kind === 'glb' && isLocalModelPath(physical.asset_path);
 
@@ -134,7 +137,7 @@ export const HardwarePart = memo(function HardwarePart({
     onHover?.(null);
   }, [onHover]);
 
-  const interactive = mode !== 'hidden';
+  const interactive = mode !== 'hidden' && pickable;
   const mounts = catalogItem?.mounts ?? [];
 
   return (

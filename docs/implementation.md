@@ -22,12 +22,30 @@
 8. **No fake sponsor integration.** Actual Estelle calls, code references and compile/test results are captured; absence is shown honestly.
 9. **No pretending robotics simulation guarantees hardware behavior.** Simulation approximations are documented and labeled.
 10. **No copied source from Bricked unless licensing/permission is confirmed.** Reimplement described algorithms and architecture in original code; link to inspiration in documentation.
-11. **Ship the rover flow first.** Do not make a drone workflow, arbitrary CAD importer, payment processor, 6-DOF simulator, native mobile app, or collaborative editor before the acceptance gates pass.
+11. **Ship the rover flow first.** (Rover acceptance is met; see [0.1](#01-scope-update-any-photo-to-a-3d-concept-model) for the appearance-only concept path that now renders any photo.) Do not make an engineered drone workflow, arbitrary CAD importer, payment processor, 6-DOF simulator, native mobile app, or collaborative editor before the acceptance gates pass.
 12. **Every feature must have a deterministic fixture path.** External API unavailability must never prevent teammates from developing or the saved-build demo from opening.
 
 ### Success in one sentence
 
 A user uploads a rover reference, Rivet makes an honest component-backed model, lets the user inspect a real purchasable part and modify the design, verifies supported constraints, animates assembly and a bounded rover simulation, and provides a consistent build/export package.
+
+### 0.1 Scope update: any photo to a 3D concept model
+
+After the rover gates passed, scope was extended so **any uploaded photo (or description) renders as an interactive 3D model**. This adds a second, appearance-only build path next to the engineered rover; it does not relax any rule for engineered builds. Contract detail: [`contracts/api.md`](../contracts/api.md) "Concept models"; status and decision: [`context.md`](context.md) sections 4 and 5.
+
+| | 3D concept model | Engineered rover |
+|---|---|---|
+| Request | `interpretation_choice: "concept_model"` (the web intake default, no `intent_id` needed) | `as_interpreted` / `closest_supported_rover` |
+| Producer | `services/api/rivet_api/concept/` (vision model proposes, code cleans and validates); no engine run | `rivet_engine.solve` |
+| Parts | `concept.*` entries carried in the plan's `concept_catalog`: primitive shapes (`box`, `rounded_box`, `cylinder`, `tube`, `sphere`, `hemisphere`, `cone`, `capsule`, `torus`, `propeller`, `wheel`, `cable`), no SKU, price or link | Real catalog components |
+| Inside | Inferred internal parts (`render_overrides.internal: true`) and wires (`role: "wire"`, `concept:cable`, `path_mm`, `connects`) for powered devices; overlapping internals are stacked | Engine wiring and pin map |
+| Status | Always `needs_review`, blocking `UNKNOWN` `concept.not_engineered`, `behavior: null`, `simulation.kind: "none"` | From the engine's verification |
+| Edits | Plain-language `instruction`, applied by the vision model, new revision | Typed operations |
+| Exports | `build.json` only; BOM CSV `422 EXPORT_REFUSED_CONCEPT`, firmware refused | All |
+| Studio | Concept label, X-ray toggle, no Wiring or Simulate mode | Full studio |
+| Failure | Falls back to the closest supported rover with a labelled note | Error as before |
+
+Code still validates everything a model proposes: strict parsing with one repair round, clamped sizes and positions, parts placed by two endpoints instead of model-written rotations, a connectivity check for floating parts, wires only between existing named parts, and a contract check that no concept part claims sourcing.
 
 ---
 
@@ -1163,7 +1181,7 @@ A 2D differential-drive model can show how a rover **might** respond under abstr
 
 ### Cut immediately if the schedule slips
 
-- Drone/robot-arm support, universal device editor, full 3D generative CAD, PCB routing, high-fidelity robotics physics, fabrication ordering, marketplace checkout, native app, multi-user collaboration, real-time retailer stock sync, unbounded source-code editing, payments and manufacturing certification.
+- Engineered drone/robot-arm support (appearance-only concept models of any object are in scope, see 0.1), universal device editor, full 3D generative CAD, PCB routing, high-fidelity robotics physics, fabrication ordering, marketplace checkout, native app, multi-user collaboration, real-time retailer stock sync, unbounded source-code editing, payments and manufacturing certification.
 
 ---
 
@@ -1269,7 +1287,7 @@ Separate jobs: (1) shared JSON fixture/schema validation, (2) engineering `pytes
 - [ ] Estelle demonstration uses real code-grounded evidence and code change/test or is labeled unavailable.
 - [ ] Designer's UI does not break the core 3D model or obscure engineering warnings.
 - [ ] Demo has a **real** live path and a clearly labeled saved-example path.
-- [ ] No claimed general drone support, real-world safety certification, or exact hidden-part inference.
+- [ ] No claimed general drone support, real-world safety certification, or exact hidden-part inference. Concept models of any photo are labeled appearance-only and their internals inferred.
 - [ ] Teammates have not copied Bricked implementation without confirmed permission/license.
 - [ ] Automated contract/unit/browser checks pass, and the 3-minute demo is rehearsed.
 

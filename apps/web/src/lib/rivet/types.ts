@@ -374,6 +374,9 @@ export interface BuildPlan {
   simulation: SimulationSpec;
   firmware: FirmwareSpec;
   provenance: Provenance;
+  /** Concept models only: appearance-only `concept.*` entries the plan's components use. */
+  concept_catalog?: CatalogComponent[];
+  concept?: { object_type: string; summary: string; confidence: string };
 }
 
 // ---------------------------------------------------------------------------
@@ -387,7 +390,7 @@ export interface HealthResponse {
 
 export interface GenerateRequest {
   intent_id?: string;
-  interpretation_choice?: "as_interpreted" | "closest_supported_rover";
+  interpretation_choice?: "as_interpreted" | "closest_supported_rover" | "concept_model";
   input: {
     kind: InputKind;
     image_asset_id: string | null;

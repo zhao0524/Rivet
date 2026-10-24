@@ -78,6 +78,8 @@ export interface RoverSceneProps {
   active?: boolean;
   /** How non-isolated parts are rendered when an instance is isolated (`ghost` or `hide`). */
   isolatedOutBehavior?: 'ghost' | 'hide';
+  /** X-ray: outer parts turn see-through and click-through so internal parts (`render_overrides.internal`) show. */
+  xray?: boolean;
   className?: string;
   style?: CSSProperties;
 }
@@ -108,6 +110,7 @@ export function RoverScene({
   resetSignal,
   active = true,
   isolatedOutBehavior = 'ghost',
+  xray = false,
   className,
   style,
 }: RoverSceneProps) {
@@ -166,9 +169,10 @@ export function RoverScene({
   const [wireHighlightedIds, setWireHighlightedIds] = useState<string[]>([]);
   const [hoveredWire, setHoveredWire] = useState<WireRoute | null>(null);
 
-  const { poseOverrides, visibilityMap, positionOverridesMm, highlightedIds, counts } = useMemo(() => {
+  const { poseOverrides, visibilityMap, positionOverridesMm, highlightedIds, counts, inertIds } = useMemo(() => {
     const poses: Record<string, PoseOverride> = {};
     const vis: Record<string, PartVisibility> = {};
+    const inert = new Set<string>();
     const posMm: Record<string, readonly [number, number, number]> = {};
     const highlights = new Set<string>(wireHighlightedIds);
     let visibleCount = 0;
@@ -219,6 +223,10 @@ export function RoverScene({
       } else if (asmItem?.visibility === 'ghost') {
         partVis = 'ghost';
         ghostCount++;
+      } else if (xray && comp.render_overrides?.internal !== true) {
+        partVis = 'ghost';
+        inert.add(id);
+        ghostCount++;
       } else {
         partVis = 'visible';
         visibleCount++;
@@ -236,8 +244,9 @@ export function RoverScene({
       positionOverridesMm: posMm,
       highlightedIds: highlights,
       counts: { visibleCount, ghostCount, hiddenCount },
+      inertIds: inert,
     };
-  }, [plan.components, computedView, selection, isolatedOutBehavior, wireHighlightedIds, explodeOffsets]);
+  }, [plan.components, computedView, selection, isolatedOutBehavior, wireHighlightedIds, explodeOffsets, xray]);
 
   const boundsMm = useMemo(() => {
     const isolatedId = selection.state.isolated_instance_id;
@@ -365,6 +374,7 @@ export function RoverScene({
               showMounts={showMounts}
               visibility={visibilityMap}
               poseOverrides={poseOverrides}
+              inertInstanceIds={inertIds}
               onSelect={handlePartSelect}
               onHover={handlePartHover}
             />

@@ -23,6 +23,8 @@ from rivet_api.agents.product import (
     parse_with_retry,
     sanitize_guess,
 )
+from rivet_api.concept import concept_from_backend, fixture_concept, mock_edit_concept
+from rivet_api.concept.model import ConceptModel
 from rivet_api.config import Settings
 from rivet_api.errors import ApiError
 from rivet_api.models.intent import (
@@ -87,6 +89,10 @@ class VisionPort(Protocol):
 
     def identify(self, request: GenerateRequest, image: tuple[bytes, str] | None) -> ProductGuess: ...
 
+    def concept(self, request: GenerateRequest, image: tuple[bytes, str] | None) -> ConceptModel: ...
+
+    def edit_concept(self, concept: ConceptModel, instruction: str) -> ConceptModel: ...
+
 
 class MockVisionProvider:
     """Offline stand-in: returns the saved rover intent. It does not look at the image,
@@ -116,6 +122,12 @@ class MockVisionProvider:
     def identify(self, request: GenerateRequest, image: tuple[bytes, str] | None) -> ProductGuess:
         return sanitize_guess(mock_guess(request.input.user_text, image is not None))
 
+    def concept(self, request: GenerateRequest, image: tuple[bytes, str] | None) -> ConceptModel:
+        return fixture_concept()
+
+    def edit_concept(self, concept: ConceptModel, instruction: str) -> ConceptModel:
+        return mock_edit_concept(concept, instruction)
+
 
 class _ModelIntent(BaseModel):
     """What a model may return. Anything else (status, build ids, ...) is rejected."""
@@ -143,9 +155,24 @@ _FENCE_RE = re.compile(r"^```[a-zA-Z]*\s*\n?|\n?```\s*$")
 _FIELD_RE = re.compile(r"^[a-z_.]{1,40}$")
 
 
+def _null_invalid_traits(data: object) -> object:
+    """A known image trait with a value outside its contract (e.g. drive_wheel_count 0 for a
+    drone) means "not seen with confidence": null it instead of rejecting the whole intent.
+    Unknown trait keys are left in place, so they are still rejected."""
+    traits = data.get("image_features") if isinstance(data, dict) else None
+    if isinstance(traits, dict):
+        for key, value in traits.items():
+            if key in ImageFeatures.model_fields and value is not None:
+                try:
+                    ImageFeatures.model_validate({key: value})
+                except ValidationError:
+                    traits[key] = None
+    return data
+
+
 def _parse_model_reply(raw: str) -> _ModelIntent:
     text = _FENCE_RE.sub("", raw.strip()).strip()
-    return _ModelIntent.model_validate(json.loads(text))
+    return _ModelIntent.model_validate(_null_invalid_traits(json.loads(text)))
 
 
 def _rejection_hint(exc: Exception) -> str:
@@ -214,6 +241,12 @@ class LiveVisionProvider:
             message += "\nAn image is attached."
         guess = parse_with_retry(lambda m: self.backend.complete_json(PRODUCT_SYSTEM_PROMPT, m, image), message)
         return sanitize_guess(guess)
+
+    def concept(self, request: GenerateRequest, image: tuple[bytes, str] | None) -> ConceptModel:
+        return concept_from_backend(self.backend, request, image)
+
+    def edit_concept(self, concept: ConceptModel, instruction: str) -> ConceptModel:
+        return concept_from_backend(self.backend, None, None, current=concept, instruction=instruction)
 
 
 def build_vision_port(settings: Settings) -> VisionPort:

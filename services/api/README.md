@@ -59,7 +59,7 @@ A missing model, key or `openai` package for the selected provider fails at star
 
 ### Vision providers
 
-The provider turns the request (image and/or text) into a proposed `IntentSpec`; code then sanitizes it and decides support (only `rover` is supported). **`openai` is the live provider for the demo** (decision in [`docs/context.md`](../../docs/context.md) §5, 2026-10-24).
+The provider turns the request (image and/or text) into a proposed `IntentSpec`; code then sanitizes it and decides support (only `rover` is supported for engineered builds). Every provider also builds and edits **concept models** of any object (see [Concept models](#concept-models-any-photo)); `mock` answers those with a saved quadcopter concept that does not depend on the image. **`openai` is the live provider for the demo** (decision in [`docs/context.md`](../../docs/context.md) §5, 2026-10-24).
 
 | `RIVET_VISION_PROVIDER` | Status | Needs | What the model receives |
 |---|---|---|---|
@@ -125,6 +125,16 @@ RIVET_LIVE_VISION_TEST=1 .venv/bin/python -m pytest -q tests/test_live_vision_pr
 
 Without the flag, the key or the `openai` package, the two live tests are reported as skipped with the reason, for example `needs RIVET_LIVE_VISION_TEST=1, OPENAI_API_KEY`.
 
+## Concept models (any photo)
+
+Any uploaded photo or description can be rendered as an interactive 3D model. `POST /api/projects/generate` with `"interpretation_choice": "concept_model"` (the web intake's default; no `intent_id` needed) skips the engine:
+
+1. **Exterior:** the vision provider breaks the object into parts, each a primitive shape (`box`, `rounded_box`, `cylinder`, `tube`, `sphere`, `hemisphere`, `cone`, `capsule`, `torus`, `propeller`, `wheel`) with size, pose, color and material. Long thin parts may be placed by `from_mm`/`to_mm`; the server computes their rotation.
+2. **Inside:** for powered devices the same reply adds typical internal parts (`internal: true`, e.g. flight controller, ESCs, power distribution board, receiver) and `wires` between named parts. The server draws each wire through the two part centres, drops wires to unknown parts, and stacks overlapping internal parts.
+3. **Checks in code** (`rivet_api/concept/`): strict parse with one repair round (also for floating parts), clamped sizes and positions, model grounded and centred, and `check_concept_plan` (structure against the plan's own `concept_catalog`, no SKU, price or link anywhere, status `needs_review`).
+
+The stored plan is labelled: `provenance.catalog_version` `CONCEPT-1.0`, blocking `UNKNOWN` `concept.not_engineered`, advisory `concept.geometry_estimated` and `concept.internals_inferred`, `behavior: null`, `simulation.kind: "none"`. Plain-language edits (`{"base_revision", "instruction"}`) create new revisions (`422 CONCEPT_EDIT_NEEDS_TEXT` without text; `accepted: false` with `concept.edit_no_change` when nothing changes). BOM CSV and firmware exports are refused. If the concept cannot be built, the job builds the closest supported rover and records `A 3D concept of the upload could not be built, so this is the fallback rover (<CODE>)` in `provenance.notes`. Full contract: [`contracts/api.md`](../../contracts/api.md) "Concept models".
+
 ## Endpoints
 
 Errors always use `{"error": {"code", "message", "details", "retryable"}}`.
@@ -135,7 +145,7 @@ Errors always use `{"error": {"code", "message", "details", "retryable"}}`.
 | GET | `/api/catalog` | `?category=` filters by `identity.category` |
 | POST | `/api/assets/images` | multipart `file`; PNG/JPEG/WebP only, 10 MB, EXIF stripped, large images downscaled, per-session quota (`X-Rivet-Session`) |
 | GET | `/api/assets/{asset_id}/preview` | The stored (re-encoded) image |
-| POST | `/api/projects/generate` | 202 `{job_id, status: "queued", build_id: null}`; body `{input: {kind, image_asset_id?, user_text?}, requirements?}` |
+| POST | `/api/projects/generate` | 202 `{job_id, status: "queued", build_id: null}`; body `{input: {kind, image_asset_id?, user_text?}, requirements?, intent_id?, interpretation_choice?}`; `interpretation_choice: "concept_model"` renders any object as a concept model |
 | POST | `/api/intents/interpret` | Same body as generate; runs vision + sanitizer only (never the engine) and returns 200 `{intent_id, intent, supported, limitation, vision_mode}`, also for unsupported results (`limitation` = the 422 the support gate would raise). The intent is kept in memory for 1 h: generate with `intent_id` builds exactly it without calling vision again (404 `INTENT_NOT_FOUND`, 409 `INTENT_INPUT_MISMATCH`), and `interpretation_choice: "closest_supported_rover"` is the only way to build from an unsupported one (recorded in `provenance.notes` and a job event) |
 | GET | `/api/jobs/{job_id}` | `{status, stage, progress, build_id?, revision?, error?}`; `progress` is null unless real stages were planned |
 | GET | `/api/jobs/{job_id}/events` | Server-sent events with `id:` lines; reconnect with `Last-Event-ID` or `?last_event_id=` |
@@ -148,8 +158,8 @@ Errors always use `{"error": {"code", "message", "details", "retryable"}}`.
 | GET | `/api/projects/examples` | The saved build, labeled `fixture` |
 | GET | `/api/projects/{build_id}` | `?revision=` optional |
 | GET | `/api/projects/{build_id}/revisions` | Revision summaries |
-| POST | `/api/projects/{build_id}/edits` | `{base_revision, operation, instruction?}`; 409 on a stale `base_revision`; 422 `UNSUPPORTED_EDIT` for anything but the five allowed operations |
-| GET | `/api/projects/{build_id}/exports/bom.csv` | Null prices stay empty cells; the subtotal is the engine's, never computed here. Trailing `sku`, `vendor`, `offer_url` columns come from the catalog entry (empty when unknown; `offer_url` only when the purchase link is verified). 422 `EXPORT_REFUSED_SYNTHETIC` for a plan built from synthetic demo parts |
+| POST | `/api/projects/{build_id}/edits` | `{base_revision, operation, instruction?}`; 409 on a stale `base_revision`; 422 `UNSUPPORTED_EDIT` for anything but the five allowed operations; concept models take a plain-language `instruction` instead |
+| GET | `/api/projects/{build_id}/exports/bom.csv` | Null prices stay empty cells; the subtotal is the engine's, never computed here. Trailing `sku`, `vendor`, `offer_url` columns come from the catalog entry (empty when unknown; `offer_url` only when the purchase link is verified). 422 `EXPORT_REFUSED_SYNTHETIC` for a plan built from synthetic demo parts, `EXPORT_REFUSED_CONCEPT` for a concept model |
 | GET | `/api/projects/{build_id}/exports/build.json` | The stored revision; every export carries `X-Rivet-Synthetic: true\|false` |
 | GET | `/api/projects/{build_id}/exports/firmware.zip` | `?revision=`, `?compile=true`; header `X-Rivet-Compile-Status`. 422 `FIRMWARE_REFUSED` for synthetic or unbuildable plans |
 | GET | `/api/estelle/status` | Enabled/available, plus the output of `estelle doctor` when reachable |
@@ -168,6 +178,8 @@ curl -s -X POST localhost:8000/api/projects/<build_id>/edits -H 'content-type: a
 ## What has and has not been run
 
 Verified by the automated tests (offline, fake backends): the whole API contract above, storage and revisions, SSE replay, upload hardening, sanitizing of model output, exports, firmware generation, engine error mapping.
+
+**Run for real against OpenAI `gpt-4o` (2026-10-24, by hand):** concept models from a drone photo (quadcopter with arms, motors, rotors, guards, inferred flight controller, ESC, power distribution board, receiver and wiring), a text-only office chair, and a plain-language edit ("make all four propellers blue and add a small camera") creating revision 2; 8 of 8 interpretations of the drone photo parsed after the out-of-range image-trait fix.
 
 **Has not been run for real (needs a human with the right setup):**
 

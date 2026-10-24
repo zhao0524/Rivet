@@ -6,6 +6,8 @@ from fastapi import APIRouter, Query, Request
 from fastapi.responses import Response
 
 from rivet_api.bom_csv import bom_to_csv
+from rivet_api.concept import is_concept_plan
+from rivet_api.errors import ApiError
 from rivet_api.firmware.generate import generate_firmware
 from rivet_api.provenance import plan_is_synthetic, refuse_if_synthetic
 
@@ -30,6 +32,8 @@ def export_bom(build_id: str, request: Request, revision: int | None = Query(def
     deps = request.app.state.deps
     plan, catalog = deps.store.get(build_id, revision), deps.engine.get_catalog()
     refuse_if_synthetic(plan, catalog, "EXPORT_REFUSED_SYNTHETIC", "A BOM export")
+    if is_concept_plan(plan):
+        raise ApiError("EXPORT_REFUSED_CONCEPT", "A BOM export is not available for a concept model; it has no real products", 422)
     return _download(bom_to_csv(plan, catalog), "text/csv", f"{build_id}-r{plan['revision']}-bom.csv", plan, catalog)
 
 

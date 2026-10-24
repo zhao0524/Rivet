@@ -51,7 +51,7 @@ Request details:
 - `GET /api/projects/{build_id}` may add an optional, response-only `provenance.sourcing` object (`synthetic`, `synthetic_catalog_ids`, `unverified_link_count`, `sku_missing_count`, optional `link_checks`), computed from the catalog on read. Stored revisions, `build.json` exports and engine output never carry it. Clients should read `sourcing.synthetic` instead of searching notes for "SYNTHETIC".
 - Every export response carries `X-Rivet-Generation-Mode` and `X-Rivet-Synthetic: true|false`. A `verified_product` BOM row needs a catalog SKU and a verified https purchase link equal to the row's URL; a `live` plan with synthetic parts is refused with `502 SYNTHETIC_PARTS_IN_LIVE_PLAN`.
 - Every plan the API returns has passed schema and referential checks. Source mode is reported honestly in `provenance.generation_mode` (`live | fixture | fallback | manual_template`); a fallback is never presented as live output.
-- `generate` also takes optional `intent_id` (from `POST /api/intents/interpret`) and `interpretation_choice: "as_interpreted" | "closest_supported_rover"` (default `as_interpreted`); see [Interpretations](#interpretations).
+- `generate` also takes optional `intent_id` (from `POST /api/intents/interpret`) and `interpretation_choice: "as_interpreted" | "closest_supported_rover" | "concept_model"` (default `as_interpreted`); see [Interpretations](#interpretations) and [Concept models](#concept-models).
 
 ## Product resolution
 
@@ -118,6 +118,16 @@ Additive (issue #66): a client can show what the vision step understood before a
 ```
 
 `interpretation.intent_id` is stored as well, so a client can offer the closest-rover choice from a failed job. Job events have no `details` field, so for accepted runs the interpretation comes from `POST /api/intents/interpret`.
+
+## Concept models
+
+Additive: any image (or description) can be rebuilt in 3D as an appearance-only concept. The web intake sends this by default; the engineered rover stays available as the explicit alternative and as the fallback.
+
+- `generate` with `interpretation_choice: "concept_model"` does not need `intent_id` and never calls the engine. The vision provider returns parts made of primitive shapes (`box`, `rounded_box`, `cylinder`, `tube`, `sphere`, `hemisphere`, `cone`, `capsule`, `torus`, `propeller`, `wheel`) with size, pose, color and material; the server cleans and clamps them, grounds and centres the model, and stores a normal BuildPlan. Job stages: `upload`, `understand`, `assembly`, `validate`, `complete`.
+- The plan has `provenance.catalog_version` `CONCEPT-1.0`, `status` `needs_review`, a blocking `UNKNOWN` finding `concept.not_engineered`, `behavior: null`, `simulation.kind: "none"`, `firmware.target: "none"`, every BOM row `link_status: "not_available"`, and its own `concept_catalog` of `concept.*` CatalogComponents (`geometry_kind` `concept:<shape>`, no SKU, price or link). Clients merge `concept_catalog` into the catalog for that plan.
+- If the concept cannot be built (provider error or an unusable reply), the job builds the closest supported rover instead and records `A 3D concept of the upload could not be built, so this is the fallback rover (<CODE>)` in `provenance.notes` and an `understand` warning event.
+- `POST /api/projects/{build_id}/edits` on a concept plan takes `instruction` (plain language, e.g. "make the propellers blue"); the vision provider changes the model and the result is a new revision. No text: `422 CONCEPT_EDIT_NEEDS_TEXT`. A change that alters nothing: `accepted: false` with finding `concept.edit_no_change`.
+- `GET .../exports/bom.csv` on a concept plan: `422 EXPORT_REFUSED_CONCEPT`. Firmware is refused by the profile check. `build.json` works.
 
 ## Errors
 

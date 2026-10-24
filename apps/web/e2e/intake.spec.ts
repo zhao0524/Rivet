@@ -58,7 +58,7 @@ test('prompt generation completes through the fixture job path and closes into t
   await page.getByTestId('header-toggle-intake').click();
   const dialog = page.getByRole('dialog', { name: 'New build' });
   await dialog.getByLabel(/What should it do/).fill('Build a small rover that avoids obstacles');
-  await dialog.getByRole('button', { name: 'Review interpretation', exact: true }).click();
+  await dialog.getByRole('button', { name: 'Check for a real-parts rover build', exact: true }).click();
   await expect(dialog.getByTestId('interpretation-card')).toContainText('does not read your image');
   await dialog.getByRole('button', { name: 'Confirm and build', exact: true }).click();
 
@@ -67,6 +67,24 @@ test('prompt generation completes through the fixture job path and closes into t
   await expect(dialog).toBeHidden();
   await expect(page.getByTestId('studio-build-title')).toHaveText(SYNTHETIC_TITLE);
   await expect(page.getByTestId('provenance-trust-banner')).toHaveAttribute('data-trust-label', 'Saved synthetic example');
+
+  expect(errors).toEqual([]);
+});
+
+test('the default Generate builds a 3D concept of the input, without rover-only modes', async ({ page }) => {
+  const errors = watchPageErrors(page);
+  await page.goto('/studio');
+
+  await page.getByTestId('header-toggle-intake').click();
+  const dialog = page.getByRole('dialog', { name: 'New build' });
+  await dialog.getByLabel(/What should it do/).fill('A camera drone with four rotors');
+  await dialog.getByRole('button', { name: 'Generate 3D model', exact: true }).click();
+
+  await expect(dialog).toBeHidden();
+  await expect(page.getByTestId('provenance-trust-banner')).toHaveAttribute('data-trust-label', 'Concept model · appearance only');
+  await expect(page.getByTestId('studio-mode-wiring')).toHaveCount(0);
+  await expect(page.getByTestId('studio-mode-simulate')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Make it blue' })).toBeVisible();
 
   expect(errors).toEqual([]);
 });
