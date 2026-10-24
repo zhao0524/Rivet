@@ -4,26 +4,26 @@ from pathlib import Path
 
 import pytest
 
-FIXTURES = Path(__file__).parent / "fixtures"
+SHARED_FIXTURES = Path(__file__).resolve().parents[3] / "fixtures"
 
 
-def _load(name: str):
-    return json.loads((FIXTURES / name).read_text())
+def _load(relative: str):
+    return json.loads((SHARED_FIXTURES / relative).read_text())
 
 
 @pytest.fixture
 def intent_dict() -> dict:
-    return _load("intent_rover_obstacle_v1.json")
+    return _load("intent/rover_obstacle_v1.json")
 
 
 @pytest.fixture
 def plan_dict() -> dict:
-    return copy.deepcopy(_load("plan_rover_obstacle_v1.json"))
+    return copy.deepcopy(_load("plans/rover_obstacle_v1.json"))
 
 
 @pytest.fixture
 def catalog() -> list[dict]:
-    return copy.deepcopy(_load("seed-components.json"))
+    return copy.deepcopy(_load("catalog/seed-components.json"))
 
 
 # ---- app/client helpers shared by pipeline, edit and route tests -----------------
@@ -98,7 +98,7 @@ class StubEngine:
 
     def get_catalog(self):
         if self.real:
-            return realish(_load("plan_rover_obstacle_v1.json"), self._fx.get_catalog(), self.price)[1]
+            return realish(_load("plans/rover_obstacle_v1.json"), self._fx.get_catalog(), self.price)[1]
         return self._fx.get_catalog()
 
 

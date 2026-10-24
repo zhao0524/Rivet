@@ -1,7 +1,7 @@
 """Immutable offline test inputs for every engine task.
 
-- `appendix_*`: exact copies of docs/implementation.md Appendix A and section 3.1. Prefer
-  the shared repo `fixtures/` once they exist (see `shared_fixture`).
+- `appendix_*`: the shared repo `fixtures/` (docs/implementation.md Appendix A and
+  section 3.1), read in place so every lane tests against the same files.
 - `synthetic_*`: SYNTHETIC TEST-ONLY complete rover data (see synthetic.py).
 
 Each call returns a fresh deep copy, so tests can mutate results freely.
@@ -29,22 +29,28 @@ def _read(path: Path) -> Any:
     return json.loads(path.read_text())
 
 
-def shared_fixture(relative: str) -> Path | None:
-    """Path to a shared repo fixture if it has landed, else None."""
+def shared_fixture(relative: str) -> Path:
+    """Path to a shared repo fixture; fails loudly if it is missing."""
     path = SHARED_FIXTURES / relative
-    return path if path.exists() else None
+    if not path.exists():
+        raise FileNotFoundError(f"shared fixture missing: {path}")
+    return path
+
+
+def shared_json(relative: str) -> Any:
+    return copy.deepcopy(_read(shared_fixture(relative)))
 
 
 def appendix_catalog_records() -> list[dict[str, Any]]:
-    return copy.deepcopy(_read(SUPPORT_DIR / "appendix_a" / "seed-components.json"))
+    return shared_json("catalog/seed-components.json")
 
 
 def appendix_plan_dict() -> dict[str, Any]:
-    return copy.deepcopy(_read(SUPPORT_DIR / "appendix_a" / "rover_obstacle_v1.json"))
+    return shared_json("plans/rover_obstacle_v1.json")
 
 
 def appendix_intent_dict() -> dict[str, Any]:
-    return copy.deepcopy(_read(SUPPORT_DIR / "appendix_a" / "intent_rover_obstacle_v1.json"))
+    return shared_json("intent/rover_obstacle_v1.json")
 
 
 def appendix_catalog() -> Catalog:

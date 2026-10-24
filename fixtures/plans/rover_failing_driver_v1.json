@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
-  "build_id": "rivet-synthetic-rover-fixture",
+  "build_id": "rivet-synthetic-rover-failing-driver-fixture",
   "revision": 1,
   "project_family": "rover",
-  "title": "Synthetic starter rover (NOT SOURCED)",
+  "title": "Synthetic failing-driver rover (NOT SOURCED, test only)",
   "source_intent_id": "intent-rover-001",
   "created_at": "2026-10-24T00:00:00Z",
   "status": "needs_review",
@@ -290,6 +290,20 @@
       },
       "net_name": "DEMO_SDA_NOT_VERIFIED",
       "notes": "Synthetic display-only sample; not a verified electrical wiring guide"
+    },
+    {
+      "connection_id": "wire-motor-left-power-synthetic",
+      "kind": "electrical",
+      "from": {
+        "instance_id": "driver-1",
+        "port_id": "motor_a"
+      },
+      "to": {
+        "instance_id": "motor-left-1",
+        "port_id": "motor_pos"
+      },
+      "net_name": "DEMO_MOTOR_A_NOT_VERIFIED",
+      "notes": "SYNTHETIC TEST-ONLY: motor channel wired without any sourced motor stall-current or driver output-current rating, so motor/driver current compatibility cannot be confirmed. Not a real wiring instruction."
     }
   ],
   "verification": {
@@ -325,6 +339,17 @@
           "controller-1"
         ],
         "message": "Complete rated wiring and motor-current validation are not provided by this frontend scaffold",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "electrical.motor_driver_current",
+        "result": "UNKNOWN",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "driver-1",
+          "motor-left-1"
+        ],
+        "message": "Cannot confirm stall-current margin because motor-left-1's stall-current rating is not sourced (synthetic demo parts carry no electrical ratings)",
         "evidence_urls": []
       }
     ]
@@ -560,7 +585,8 @@
     "catalog_version": "SYNTHETIC-BOOTSTRAP",
     "generation_mode": "fixture",
     "notes": [
-      "Replace every demo.* item and source before presenting real buildability, wiring, purchasing or firmware"
+      "Replace every demo.* item and source before presenting real buildability, wiring, purchasing or firmware",
+      "SYNTHETIC TEST-ONLY failing-driver case: identical to rover_obstacle_v1 plus one driver-to-motor wire whose current compatibility has no sourced evidence. Verification must report electrical.motor_driver_current as UNKNOWN or FAIL; never treat this as real hardware."
     ]
   }
 }

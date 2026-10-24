@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "scenario_id": "rover-obstacle-box-ahead-v1",
+  "label": "Simplified kinematic simulation",
+  "description": "Synthetic rover starts at the origin facing +x with one solid box ahead. Expected transitions were produced by the apps/web simulation engine (fixed 1/60 s steps) and are asserted exactly by tests; they are deterministic model outputs, not measurements of real hardware.",
+  "plan_fixture": "plans/rover_obstacle_v1.json",
+  "seed": 0,
+  "turn_direction": "left",
+  "fixed_dt_s": 0.016666666666666666,
+  "sensor_ray_count": 9,
+  "start_pose": {
+    "x": 0,
+    "y": 0,
+    "theta": 0
+  },
+  "obstacles": [
+    {
+      "kind": "box",
+      "id": "box-ahead",
+      "min": {
+        "x": 1.0,
+        "y": -0.3
+      },
+      "max": {
+        "x": 1.2,
+        "y": 0.3
+      }
+    }
+  ],
+  "run_ticks": 600,
+  "expected": {
+    "transitions": [
+      {
+        "from": "FORWARD",
+        "to": "STOP",
+        "tick": 449,
+        "time_s": 7.483333333333333,
+        "reason": "obstacle_within_stop_distance"
+      },
+      {
+        "from": "STOP",
+        "to": "TURN",
+        "tick": 450,
+        "time_s": 7.5,
+        "reason": "stopped"
+      },
+      {
+        "from": "TURN",
+        "to": "FORWARD",
+        "tick": 486,
+        "time_s": 8.1,
+        "reason": "turn_complete"
+      },
+      {
+        "from": "FORWARD",
+        "to": "STOP",
+        "tick": 529,
+        "time_s": 8.816666666666666,
+        "reason": "obstacle_within_stop_distance"
+      },
+      {
+        "from": "STOP",
+        "to": "TURN",
+        "tick": 530,
+        "time_s": 8.833333333333334,
+        "reason": "stopped"
+      },
+      {
+        "from": "TURN",
+        "to": "FORWARD",
+        "tick": 566,
+        "time_s": 9.433333333333334,
+        "reason": "turn_complete"
+      }
+    ],
+    "final_state": "FORWARD",
+    "collision_count": 0
+  },
+  "limitations": [
+    "Simplified 2D differential-drive kinematics; no motor dynamics, slip, battery sag or sensor noise.",
+    "Synthetic plan parameters; timings do not predict a physical rover."
+  ]
+}

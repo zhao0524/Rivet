@@ -1,7 +1,7 @@
-import rawPlan from "./rover_obstacle_v1.fixture.json";
+import rawPlan from "../../../../../../../fixtures/plans/rover_obstacle_v1.json";
 import type { SelectablePlan } from "../types";
 
-/** Private copy of `fixtures/plans/rover_obstacle_v1.json` (implementation.md Appendix A.2). */
+/** Shared `fixtures/plans/rover_obstacle_v1.json` (implementation.md Appendix A.2). */
 export const roverPlanJson = JSON.stringify(rawPlan);
 
 export function loadRoverPlan(): SelectablePlan & Record<string, unknown> {

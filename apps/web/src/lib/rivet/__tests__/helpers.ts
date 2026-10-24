@@ -1,6 +1,6 @@
-import catalogJson from "../fixtures/synthetic-seed-components.json";
-import planJson from "../fixtures/synthetic-rover-obstacle-v1.json";
-import intentJson from "../fixtures/synthetic-intent-rover-obstacle-v1.json";
+import catalogJson from "../../../../../../fixtures/catalog/seed-components.json";
+import planJson from "../../../../../../fixtures/plans/rover_obstacle_v1.json";
+import intentJson from "../../../../../../fixtures/intent/rover_obstacle_v1.json";
 
 /** Fresh mutable deep copies of the raw fixture JSON for per-test corruption. */
 export const rawPlan = (): any => structuredClone(planJson);

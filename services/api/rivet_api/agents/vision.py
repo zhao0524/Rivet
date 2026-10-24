@@ -49,7 +49,14 @@ Reply with ONE JSON object and nothing else, with exactly these keys:
   support_status: one of supported | limited | planned | unsupported
 """
 
-_INTENT_FIXTURE = Path(__file__).resolve().parents[1] / "data" / "fixtures" / "intent" / "rover_obstacle_v1.json"
+_INTENT_RELATIVE = Path("intent") / "rover_obstacle_v1.json"
+_SHARED_INTENT = Path(__file__).resolve().parents[4] / "fixtures" / _INTENT_RELATIVE
+_PACKAGED_INTENT = Path(__file__).resolve().parents[1] / "data" / "fixtures" / _INTENT_RELATIVE
+
+
+def _intent_fixture() -> Path:
+    """Prefer the shared repo fixture; the packaged mirror covers installs outside the repo."""
+    return _SHARED_INTENT if _SHARED_INTENT.exists() else _PACKAGED_INTENT
 _UNSUPPORTED_KEYWORDS = {"drone": "drone", "quadcopter": "drone", "robotic arm": "robot_arm", "robot arm": "robot_arm"}
 
 
@@ -65,7 +72,7 @@ class MockVisionProvider:
     mode: Literal["live", "fixture", "fallback"] = "fixture"
 
     def interpret(self, request: GenerateRequest, image: tuple[bytes, str] | None) -> IntentSpec:
-        raw = json.loads(_INTENT_FIXTURE.read_text())
+        raw = json.loads(_intent_fixture().read_text())
         raw = copy.deepcopy(raw)
         raw["intent_id"] = f"intent-{uuid.uuid4().hex[:12]}"
         raw["input"] = {

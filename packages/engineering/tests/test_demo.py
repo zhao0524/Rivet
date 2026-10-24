@@ -153,13 +153,11 @@ def test_unwritable_output_exits_2(tmp_path, capsys):
     assert "cannot write" in capsys.readouterr().err
 
 
-# --- shared repo inputs, once they land ---------------------------------------------------
+# --- shared repo inputs ------------------------------------------------------------------
 
 
-def test_shared_intent_fixture_when_present(tmp_path):
+def test_shared_intent_fixture(tmp_path):
     path = support.shared_fixture("intent/rover_obstacle_v1.json")
-    if path is None:
-        pytest.skip("shared fixtures/ not landed; --sample covers the same intent")
     code, plan = _run(tmp_path, "--intent", str(path))
     assert code == 0
     BuildPlan.model_validate(plan)

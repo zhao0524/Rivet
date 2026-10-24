@@ -387,15 +387,13 @@ def test_appendix_starter_fixture_is_not_verified():
     assert non_pass(report, "completeness.real_parts")
 
 
-def test_shared_failing_fixture_when_present():
-    path = support.shared_fixture("plans/rover_failing_driver_v1.json")
-    if path is None:
-        pytest.skip("shared failing-driver fixture not landed; covered by synthetic current tests")
-    import json
-
-    plan = BuildPlan.model_validate(json.loads(path.read_text()))
+def test_shared_failing_driver_fixture():
+    plan = BuildPlan.model_validate(support.shared_json("plans/rover_failing_driver_v1.json"))
     report = verify_candidate(plan, support.appendix_catalog())
     assert report.overall in ("needs_review", "unbuildable")
+    current = non_pass(report, "electrical.motor_driver_current")
+    assert current and all(f.severity == "blocking" for f in current)
+    assert any({"driver-1", "motor-left-1"} <= set(f.affected_instance_ids) for f in current)
 
 
 def test_inputs_not_mutated_and_existing_verification_ignored():

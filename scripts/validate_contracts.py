@@ -28,6 +28,8 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import math
+import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -50,23 +52,16 @@ SCHEMA_FILES = {
 SHARED_CATALOGS = ("fixtures/catalog/seed-components.json",)
 KNOWN_INTENTS = (
     "fixtures/intent/rover_obstacle_v1.json",
-    "packages/engineering/tests/support/appendix_a/intent_rover_obstacle_v1.json",
     "services/api/rivet_api/data/fixtures/intent/rover_obstacle_v1.json",
-    "services/api/tests/fixtures/intent_rover_obstacle_v1.json",
     "apps/web/src/lib/rivet/fixtures/synthetic-intent-rover-obstacle-v1.json",
 )
 KNOWN_PLANS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("fixtures/plans/rover_obstacle_v1.json", SHARED_CATALOGS),
     ("fixtures/plans/rover_failing_driver_v1.json", SHARED_CATALOGS),
     (
-        "packages/engineering/tests/support/appendix_a/rover_obstacle_v1.json",
-        ("packages/engineering/tests/support/appendix_a/seed-components.json",),
-    ),
-    (
         "services/api/rivet_api/data/fixtures/plans/rover_obstacle_v1.json",
         ("services/api/rivet_api/data/fixtures/catalog/seed-components.json",),
     ),
-    ("services/api/tests/fixtures/plan_rover_obstacle_v1.json", ("services/api/tests/fixtures/seed-components.json",)),
     (
         "apps/web/src/lib/rivet/fixtures/synthetic-rover-obstacle-v1.json",
         ("apps/web/src/lib/rivet/fixtures/synthetic-seed-components.json",),
@@ -332,15 +327,170 @@ OTHER_REJECTIONS: tuple[tuple[str, str, Mutation, str], ...] = (
 
 
 def baseline() -> tuple[dict[str, Any], list[Any], dict[str, Any]] | None:
-    """Appendix A plan, catalog and intent: shared fixtures/ first, then the engine's copy."""
-    for plan, catalog, intent in (
-        ("fixtures/plans/rover_obstacle_v1.json", SHARED_CATALOGS[0], KNOWN_INTENTS[0]),
-        (KNOWN_PLANS[2][0], KNOWN_PLANS[2][1][0], KNOWN_INTENTS[1]),
-    ):
-        paths = [REPO_ROOT / p for p in (plan, catalog, intent)]
-        if all(p.exists() for p in paths):
-            return load_json(paths[0]), [load_json(paths[1])], load_json(paths[2])
+    """Appendix A plan, catalog and intent from the shared fixtures/."""
+    paths = [REPO_ROOT / p for p in (KNOWN_PLANS[0][0], SHARED_CATALOGS[0], KNOWN_INTENTS[0])]
+    if all(p.exists() for p in paths):
+        return load_json(paths[0]), [load_json(paths[1])], load_json(paths[2])
     return None
+
+
+# --- INT-2 shared fixture checks (beyond schema + section 3.4) ---------------------------
+
+SIM_SCENARIO = "fixtures/sim/obstacle-scenario.json"
+IMAGES_DIR = "fixtures/images"
+APPENDIX_A_COPIES = {
+    "fixtures/intent/rover_obstacle_v1.json": 0,
+    "fixtures/catalog/seed-components.json": 7,
+    "fixtures/plans/rover_obstacle_v1.json": 8,
+}
+REQUIRED_ROLES = {
+    "chassis": 1, "motor": 2, "wheel": 2, "motor_driver": 1, "controller": 1,
+    "distance_sensor": 1, "caster": 1, "power_supply": 1,
+}
+SIM_STATES = {"FORWARD", "STOP", "TURN", "DISABLED"}
+IMAGE_SIGNATURES = {".png": b"\x89PNG\r\n\x1a\n", ".jpg": b"\xff\xd8\xff", ".jpeg": b"\xff\xd8\xff", ".webp": b"RIFF"}
+
+
+def appendix_a_blocks() -> list[Any]:
+    text = (REPO_ROOT / "docs" / "implementation.md").read_text()
+    return [json.loads(block) for block in re.findall(r"```json\n(.*?)```", text, re.DOTALL)]
+
+
+def complete_rover_errors(plan: dict[str, Any]) -> list[str]:
+    errors = []
+    roles = Counter(c["role"] for c in plan["components"])
+    for role, need in REQUIRED_ROLES.items():
+        if roles[role] < need:
+            errors.append(f"needs {need} distinct '{role}' instance(s), found {roles[role]}")
+    if not plan["bom"]["items"]:
+        errors.append("BOM is empty")
+    if len(plan["assembly_steps"]) < 6:
+        errors.append(f"needs at least 6 assembly steps, found {len(plan['assembly_steps'])}")
+    if not any(c["parent_instance_id"] and c["attached_to_mount_id"] for c in plan["components"]):
+        errors.append("no mount references to check")
+    if not any(c["kind"] == "electrical" for c in plan["connections"]):
+        errors.append("no port references to check")
+    return errors
+
+
+def synthetic_marking_errors(plan: dict[str, Any], catalog: list[Any]) -> list[str]:
+    by_id = {r["catalog_id"]: r for r in catalog}
+    errors = []
+    if "synthetic" not in plan["title"].lower():
+        errors.append("plan title must say it is synthetic")
+    for cid in sorted({c["catalog_id"] for c in plan["components"]}):
+        record = by_id.get(cid)
+        if record is None or "SYNTHETIC" not in (record["identity"]["manufacturer"] or ""):
+            errors.append(f"{cid} is not explicitly marked synthetic in the catalog")
+        elif record["sourcing"]["purchase_url"] is not None:
+            errors.append(f"{cid} is synthetic but carries a purchase URL")
+    return errors
+
+
+def failing_driver_errors(plan: dict[str, Any]) -> list[str]:
+    errors = []
+    if plan["status"] == "verified" or plan["status"] == "verified_with_warnings":
+        errors.append(f"failing-driver plan must not be {plan['status']}")
+    current = [f for f in plan["verification"]["findings"] if f["rule_id"] == "electrical.motor_driver_current"]
+    if not any(f["result"] in ("FAIL", "UNKNOWN") and f["severity"] == "blocking" for f in current):
+        errors.append("needs a blocking FAIL/UNKNOWN electrical.motor_driver_current finding")
+    motor_ids = {c["instance_id"] for c in plan["components"] if c["role"] == "motor"}
+    driver_ids = {c["instance_id"] for c in plan["components"] if c["role"] == "motor_driver"}
+    wired = any(
+        {conn["from"]["instance_id"], conn["to"]["instance_id"]} & motor_ids
+        and {conn["from"]["instance_id"], conn["to"]["instance_id"]} & driver_ids
+        for conn in plan["connections"]
+    )
+    if not wired:
+        errors.append("no driver-to-motor connection carries the current case")
+    return errors
+
+
+def _finite(*values: Any) -> bool:
+    return all(isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v) for v in values)
+
+
+def sim_scenario_errors(doc: dict[str, Any]) -> list[str]:
+    errors = []
+    required = ("scenario_id", "label", "plan_fixture", "seed", "fixed_dt_s", "start_pose", "obstacles", "run_ticks", "expected")
+    missing = [k for k in required if k not in doc]
+    if missing:
+        return [f"missing keys: {missing}"]
+    if doc["label"] != "Simplified kinematic simulation":
+        errors.append("label must be 'Simplified kinematic simulation'")
+    if not (REPO_ROOT / "fixtures" / doc["plan_fixture"]).exists():
+        errors.append(f"plan_fixture {doc['plan_fixture']!r} does not exist")
+    pose = doc["start_pose"]
+    if not isinstance(pose, dict) or not _finite(pose.get("x"), pose.get("y"), pose.get("theta")):
+        return [*errors, "start_pose must be one finite {x, y, theta}"]
+    if not _finite(doc["fixed_dt_s"]) or abs(doc["fixed_dt_s"] - 1 / 60) > 1e-12:
+        errors.append("fixed_dt_s must be the engine's 1/60 s step")
+    hx, hy = math.cos(pose["theta"]), math.sin(pose["theta"])
+
+    def ahead(o: dict[str, Any]) -> bool:
+        if o.get("kind") == "box":
+            corners = [(x, y) for x in (o["min"]["x"], o["max"]["x"]) for y in (o["min"]["y"], o["max"]["y"])]
+        elif o.get("kind") == "wall":
+            corners = [(o["start"]["x"], o["start"]["y"]), (o["end"]["x"], o["end"]["y"])]
+        else:
+            return False
+        along = [(x - pose["x"]) * hx + (y - pose["y"]) * hy for x, y in corners]
+        across = [-(x - pose["x"]) * hy + (y - pose["y"]) * hx for x, y in corners]
+        return min(along) > 0 and min(across) <= 0 <= max(across)
+
+    if not any(ahead(o) for o in doc["obstacles"]):
+        errors.append("needs a wall or box directly ahead of start_pose")
+    transitions = doc["expected"].get("transitions") or []
+    if not transitions:
+        errors.append("expected.transitions is empty")
+    prev_tick, state = -1, "FORWARD"
+    for i, t in enumerate(transitions):
+        if t["from"] != state or t["to"] not in SIM_STATES:
+            errors.append(f"transition {i}: {t['from']}->{t['to']} does not follow {state}")
+        if not isinstance(t["tick"], int) or t["tick"] <= prev_tick:
+            errors.append(f"transition {i}: ticks must be strictly increasing integers")
+        elif abs(t["time_s"] - t["tick"] * doc["fixed_dt_s"]) > 1e-9:
+            errors.append(f"transition {i}: time_s must equal tick * fixed_dt_s")
+        prev_tick, state = t["tick"], t["to"]
+    if transitions and transitions[0]["reason"] != "obstacle_within_stop_distance":
+        errors.append("first transition must be the obstacle stop")
+    if prev_tick > doc["run_ticks"]:
+        errors.append("run_ticks ends before the last expected transition")
+    if doc["expected"].get("final_state") != state:
+        errors.append("expected.final_state disagrees with the last transition")
+    return errors
+
+
+def image_errors() -> list[str]:
+    images = sorted((REPO_ROOT / IMAGES_DIR).glob("rover-reference.*"))
+    if len(images) != 1:
+        return [f"expected exactly one {IMAGES_DIR}/rover-reference.*, found {len(images)}"]
+    signature = IMAGE_SIGNATURES.get(images[0].suffix.lower())
+    if signature is None or not images[0].read_bytes().startswith(signature):
+        return [f"{rel(images[0])} is not a PNG/JPEG/WebP file"]
+    readme = REPO_ROOT / "fixtures" / "README.md"
+    if not readme.exists() or "license" not in readme.read_text().lower():
+        return ["fixtures/README.md must record the image provenance and license"]
+    return []
+
+
+def check_shared_fixtures(report: Report) -> None:
+    shared = REPO_ROOT / "fixtures"
+    if not shared.exists():
+        report.result("shared     fixtures/", ["fixtures/ is missing"])
+        return
+    blocks = appendix_a_blocks()
+    for path, index in APPENDIX_A_COPIES.items():
+        report.result(f"appendix A {path}", [] if load_json(REPO_ROOT / path) == blocks[index] else ["differs from docs/implementation.md"])
+    catalog = catalog_records(load_json(REPO_ROOT / SHARED_CATALOGS[0]))
+    plan = load_json(REPO_ROOT / KNOWN_PLANS[0][0])
+    failing = load_json(REPO_ROOT / KNOWN_PLANS[1][0])
+    report.result(f"complete   {KNOWN_PLANS[0][0]}", complete_rover_errors(plan))
+    for path, doc in ((KNOWN_PLANS[0][0], plan), (KNOWN_PLANS[1][0], failing)):
+        report.result(f"synthetic  {path}", synthetic_marking_errors(doc, catalog))
+    report.result(f"failing    {KNOWN_PLANS[1][0]}", failing_driver_errors(failing))
+    report.result(f"sim        {SIM_SCENARIO}", sim_scenario_errors(load_json(REPO_ROOT / SIM_SCENARIO)))
+    report.result(f"image      {IMAGES_DIR}/rover-reference.*", image_errors())
 
 
 def check_rejections(validators: dict[str, Draft202012Validator], report: Report) -> None:
@@ -392,6 +542,7 @@ def main(argv: list[str] | None = None) -> int:
     explicit = args.plan or args.intent or args.component or args.error
     if not explicit:
         validate_known(validators, report)
+        check_shared_fixtures(report)
         check_rejections(validators, report)
     for path in args.intent:
         report.result(f"intent     {rel(path)}", schema_errors(validators["intent"], load_json(path)))

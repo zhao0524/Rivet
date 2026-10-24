@@ -1,4 +1,5 @@
 import json
+import re
 import typing
 
 import pytest
@@ -43,16 +44,15 @@ def test_connection_uses_from_on_the_wire():
     assert Connection.model_validate(wire) == conn
 
 
-def test_shared_fixtures_match_private_copies_when_present():
-    for relative, private in (
+def test_shared_fixtures_match_appendix_a():
+    blocks = re.findall(r"```json\n(.*?)```", (support.REPO_ROOT / "docs" / "implementation.md").read_text(), re.DOTALL)
+    appendix = [json.loads(b) for b in blocks]
+    for relative, loaded in (
         ("plans/rover_obstacle_v1.json", support.appendix_plan_dict()),
         ("catalog/seed-components.json", support.appendix_catalog_records()),
         ("intent/rover_obstacle_v1.json", support.appendix_intent_dict()),
     ):
-        path = support.shared_fixture(relative)
-        if path is None:
-            continue
-        assert json.loads(path.read_text()) == private, f"shared {relative} drifted from Appendix A copy"
+        assert loaded in appendix, f"shared {relative} drifted from docs/implementation.md"
 
 
 # --- nulls are preserved, never filled in -------------------------------------------
