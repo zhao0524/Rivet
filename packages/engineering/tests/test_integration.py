@@ -197,7 +197,7 @@ def test_budget_that_cannot_be_met_is_unbuildable_not_an_exception():
     plan = rivet_engine.solve(intent)
     assert plan["status"] == "unbuildable"
     [f] = [f for f in plan["verification"]["findings"] if f["rule_id"] == "budget.max_budget"]
-    assert f["result"] == "FAIL" and "102.50" in f["message"]
+    assert f["result"] == "FAIL" and "105.45" in f["message"]
 
 
 def test_sufficient_budget_passes():

@@ -9,6 +9,31 @@ from rivet_engine.validators.common import PlanView, Rule
 
 
 def check(view: PlanView) -> list[Finding]:
+    return _price_currency(view) + _budget(view)
+
+
+def _price_currency(view: PlanView) -> list[Finding]:
+    """Prices in another currency are left out of the subtotal; say so explicitly."""
+    rule = Rule("budget.price_currency", "advisory", "Every catalog price is in the BOM currency")
+    bom = view.plan.bom
+    for item in bom.items:
+        comp = view.catalog.get(item.catalog_id)
+        if comp is None or comp.sourcing.price_amount is None:
+            continue
+        if comp.sourcing.price_currency != bom.currency:
+            rule.unknown(
+                f"{item.catalog_id} is priced in {comp.sourcing.price_currency}, not {bom.currency}; "
+                "it is excluded from the subtotal (no conversion)",
+                item.instance_ids,
+                severity="advisory",
+            )
+        else:
+            rule.ok(item.instance_ids)
+    rule.applicable = bool(bom.items)
+    return rule.result()
+
+
+def _budget(view: PlanView) -> list[Finding]:
     req = view.context.requirements
     if req is None or req.max_budget is None:
         return []

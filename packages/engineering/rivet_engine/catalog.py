@@ -19,7 +19,7 @@ from rivet_engine.models import CatalogComponent
 from rivet_engine.ports import Catalog, CatalogError
 
 DATA_PATH = Path(__file__).resolve().parent / "data" / "components.json"
-CATALOG_VERSION = "catalog-v1-2026-10-24"
+CATALOG_VERSION = "catalog-v1.1-2026-10-24"
 
 
 def catalog_from_records(records: Iterable[dict[str, Any]], version: str) -> Catalog:
@@ -48,6 +48,38 @@ def _load(path: str) -> Catalog:
     if not isinstance(version, str) or not version:
         raise CatalogError("Catalog file has no catalog_version")
     return catalog_from_records(data["components"], version)
+
+
+FIT_EVIDENCE_PATH = Path(__file__).resolve().parent / "data" / "fit_evidence.json"
+
+
+@cache
+def _fit_text(path: str) -> str:
+    try:
+        return Path(path).read_text()
+    except OSError as exc:
+        raise CatalogError(f"Cannot read fit evidence file {path}", {"reason": str(exc)}) from exc
+
+
+def load_fit_evidence(path: str | None = None) -> dict[str, dict[str, Any]]:
+    """Physical-fit evidence per mounted pair. Returns a fresh copy each call."""
+    try:
+        data = json.loads(_fit_text(str(Path(path).resolve()) if path else str(FIT_EVIDENCE_PATH)))
+        fits = data["fits"]
+        for key, entry in fits.items():
+            if "#" not in key or "|" not in key or entry.get("status") not in ("documented", "assumed"):
+                raise ValueError(f"bad fit entry {key!r}")
+            if entry["status"] == "documented" and not entry.get("source"):
+                raise ValueError(f"documented fit {key!r} has no source")
+            if entry["status"] == "assumed" and entry.get("severity") not in ("blocking", "advisory"):
+                raise ValueError(f"assumed fit {key!r} needs a severity")
+    except (ValueError, KeyError, TypeError, AttributeError) as exc:
+        raise CatalogError("Malformed fit evidence file", {"reason": str(exc)}) from exc
+    return fits
+
+
+def fit_key(parent_catalog_id: str, mount_id: str, child_catalog_id: str) -> str:
+    return f"{parent_catalog_id}#{mount_id}|{child_catalog_id}"
 
 
 def load_catalog(path: str | None = None) -> Catalog:

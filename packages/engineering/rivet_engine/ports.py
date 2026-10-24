@@ -209,6 +209,9 @@ class VerificationContext:
     supported_firmware_profiles: frozenset[tuple[str, str]] = frozenset(
         {("rover.obstacle_avoidance.v1", "esp32_arduino_platformio")}
     )
+    # Physical-fit evidence per mounted pair ('<parent>#<mount>|<child>' -> entry), from
+    # catalog.load_fit_evidence(). None => the fit rule is not run.
+    fit_evidence: Mapping[str, Mapping[str, Any]] | None = None
 
 
 @dataclass(frozen=True)

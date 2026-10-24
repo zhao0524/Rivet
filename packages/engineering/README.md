@@ -47,18 +47,24 @@ error format (`INVALID_INPUT` 400, `UNSUPPORTED_REQUEST` 422, ...).
 
 ## What the default rover is
 
-15-part sourced catalog (`rivet_engine/data/components.json`, sources in
+16-part sourced catalog (`rivet_engine/data/components.json`, sources in
 `data/catalog_sources.md`): Espressif ESP32-DevKitC V4, Adafruit TB6612 driver, two
 Adafruit TT motors and wheels, SparkFun Shadow Chassis (nub caster and 4xAA holder
 included), Adafruit VL53L0X ToF sensor, Adafruit USB power bank, breadboard, wires,
-cables and a DC jack adapter. Priced BOM: **102.50 USD** (list prices on 2026-10-24).
+cables, a DC jack adapter and alkaline AA cells. Priced BOM: **105.45 USD** (list prices on 2026-10-24).
 
 Result today: **`unbuildable`**: the selected motors exceed the driver continuous-current rating. The engine returns a complete inspectable design with blocking findings, not a build-ready rover:
 
 - TT motor stall current (1.5 A at 6 V) exceeds the TB6612's 1.2 A continuous rating (3 A peak for ~20 ms).
 - The ESP32 board was out of stock at Adafruit when checked.
-- Battery voltage (4.8–6.0 V) is derived from 4 AA cells, not a holder rating; its current capacity is unknown.
+- No source documents the TT motor fitting the Shadow Chassis motor mounts (SparkFun's guide uses the
+  Hobby Gearmotor ROB-13302): blocking UNKNOWN from `mechanical.fit_evidence`.
+- Battery voltage (3.2–6.4 V) comes from the listed alkaline cells (1.6 V fresh to 0.8 V dead), so it is
+  only partly inside the motor (3–6 V) and driver VM (4.5–13.5 V) ratings; holder current capacity is unknown.
 - Mount coordinates and the chassis box are approximated, not measured CAD.
+
+Physical fit is tracked separately from mount geometry in `data/fit_evidence.json`: matching mount
+kinds only model geometry, and a fit counts as documented only with a cited source.
 
 ## Layout
 
@@ -85,5 +91,10 @@ copies and clearly labeled SYNTHETIC test data).
 - Stall current above the documented continuous driver rating blocks the build; peak ratings alone do not establish a supported stall duration.
 - Simulation speed (0.25 m/s) and sensor model are labeled nominal values.
 - `firmware.compile_status` is never `passed` here; compiling is services/api's job.
+- Edits are accepted only if they add no new blocking FAIL and keep the part the edit asked for;
+  otherwise `apply_edit` returns `{"accepted": false, "finding": ...}`. BOM prices stay in USD; a
+  budget in another currency is rejected for edits and reported UNKNOWN at solve time.
+- Loose kit items (wires, cells, breadboard, adapter) carry `render_overrides.visible = false`;
+  they have no modeled 3D position.
 - Edit state (budget, sensor offset) rides in one `engine_state:` line in `provenance.notes`,
   because the BuildPlan contract has no field for it.

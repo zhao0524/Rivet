@@ -138,11 +138,26 @@ def repair_candidate(plan: BuildPlan, catalog: Catalog, *, rebuild: RebuildFn, v
 - Never edits catalog records, never promotes an unverified substitute, never drops
   findings. Returns the best truthful plan with its report and the attempt log.
 
+### Verification context additions
+
+`VerificationContext.fit_evidence` (from `catalog.load_fit_evidence()`) enables the
+`mechanical.fit_evidence` rule: documented pairs PASS with their source, assumed pairs are
+UNKNOWN at the recorded severity, unlisted pairs are advisory UNKNOWN. `None` skips the rule
+(synthetic or caller-supplied catalogs).
+
+`budget.price_currency` reports every BOM row whose catalog price is in another currency
+(excluded from the subtotal, never converted).
+
+Placement marks loose kit items (`role == "accessory"`) with `render_overrides["visible"] = False`.
+
 ### P7 — `rivet_engine/__init__.py` (public)
 
 ```python
 def solve(intent: dict) -> dict                                 # BuildPlan wire dict
 def apply_edit(plan: dict, operation: dict) -> dict             # {"accepted", "plan"} | {"accepted": False, "finding"}
+# apply_edit accepts only if the rebuilt, repaired plan adds no blocking FAIL (keyed by rule_id and
+# affected instances) and still contains the part the edit asked for. A malformed engine_state note
+# raises InvalidInputError. Budgets must be in the catalog price currency (USD).
 def verify(plan: dict, catalog: dict | list | None = None) -> dict   # {"overall", "findings"}
 def get_catalog() -> list[dict]
 ```

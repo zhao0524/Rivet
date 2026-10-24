@@ -268,7 +268,8 @@ def place_rover(
                 attached_to_mount_id=None,
                 own_mount_id=None,
                 pose=accessory_parent.pose.model_copy(deep=True),
-                render_overrides=dict(options.render_overrides.get(iid, {})),
+                # Loose kit items (wires, cells, breadboard) have no modeled position.
+                render_overrides={**options.render_overrides.get(iid, {}), "visible": False},
             )
         )
 

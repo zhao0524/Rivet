@@ -59,10 +59,13 @@ def test_offset_on_fixed_part_rejected(plan):
     _reject(plan, {"op": "set_mount_offset_within_template", "instance_id": "controller-1", "offset_mm": [0, 1, 0]})
 
 
+def test_budget_edit_that_cannot_be_met_is_rejected(plan):
+    f = _reject(plan, {"op": "set_budget", "amount": "60", "currency": "USD"})
+    assert f["rule_id"] == "budget.max_budget" and "105.45" in f["message"] and f["message"].startswith("Edit rejected")
+
+
 def test_cheaper_budget_reverifies_and_is_honest(plan):
-    tight = _accept(plan, {"op": "set_budget", "amount": "60", "currency": "USD"})
-    assert tight["status"] == "unbuildable"
-    roomy = _accept(tight, {"op": "set_budget", "amount": "120", "currency": "USD"})
+    roomy = _accept(plan, {"op": "set_budget", "amount": "120", "currency": "USD"})
     [f] = [f for f in roomy["verification"]["findings"] if f["rule_id"] == "budget.max_budget"]
     assert f["result"] == "PASS"
     # The budget carries into later edits.
@@ -140,8 +143,12 @@ def test_unhashable_offset_instance_id_is_rejected(plan):
     _reject(plan, {"op": "set_mount_offset_within_template", "instance_id": [], "offset_mm": [0, 1, 0]})
 
 
-def test_clearing_budget_preserves_null_without_traceback(plan):
-    tight = _accept(plan, {"op": "set_budget", "amount": "60", "currency": "USD"})
+def test_clearing_budget_preserves_null_without_traceback():
+    intent = support.appendix_intent_dict()
+    intent["requirements"]["max_budget"] = "60"
+    tight = rivet_engine.solve(intent)
+    assert any(f["rule_id"] == "budget.max_budget" and f["result"] == "FAIL" for f in tight["verification"]["findings"])
+    # Removing a failure is never "adding" one, so clearing the budget is accepted.
     cleared = _accept(tight, {"op": "set_budget", "amount": None, "currency": "USD"})
     assert not any(f["rule_id"] == "budget.max_budget" for f in cleared["verification"]["findings"])
 

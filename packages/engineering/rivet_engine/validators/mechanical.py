@@ -15,6 +15,29 @@ def _mates(parent_mount, child_mount) -> bool:
     return not child_mount.allowed_mates or parent_mount.kind in child_mount.allowed_mates
 
 
+def _fit_evidence(view: PlanView) -> list[Finding]:
+    """Matching mount kinds are a model; this rule asks whether a source documents the fit."""
+    fits = view.context.fit_evidence
+    if fits is None:
+        return []
+    rule = Rule("mechanical.fit_evidence", pass_message="Every mounted part's fit is documented by a source")
+    for c in view.plan.components:
+        if not (c.attached_to_mount_id and c.parent_instance_id in view.by_id):
+            continue
+        parent = view.by_id[c.parent_instance_id]
+        entry = fits.get(f"{parent.catalog_id}#{c.attached_to_mount_id}|{c.catalog_id}")
+        ids = [c.instance_id, parent.instance_id]
+        if entry is None:
+            rule.unknown(f"No fit evidence for {c.catalog_id} on {parent.catalog_id} mount {c.attached_to_mount_id!r}", ids, severity="advisory")
+        elif entry["status"] == "documented":
+            # One PASS per documented pair, so each source stays visible next to any UNKNOWNs.
+            rule.add("PASS", f"{c.instance_id} on {parent.instance_id}.{c.attached_to_mount_id}: {entry['note']}", ids, [entry["source"]])
+        else:
+            rule.unknown(f"{c.instance_id} on {parent.instance_id}.{c.attached_to_mount_id}: fit not documented; {entry['note']}",
+                         ids, [entry.get("source", "")], severity=entry["severity"])
+    return rule.result()
+
+
 def check(view: PlanView) -> list[Finding]:
     plan, ctx = view.plan, view.context
     out: list[Finding] = []
@@ -36,6 +59,7 @@ def check(view: PlanView) -> list[Finding]:
                 [c.instance_id, c.parent_instance_id],
             )
     out += mates.result()
+    out += _fit_evidence(view)
 
     approx = Rule("mechanical.geometry_approximated", "advisory")
     approximated = [

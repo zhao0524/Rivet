@@ -18,11 +18,15 @@ from dataclasses import dataclass, field, replace
 from datetime import datetime, timezone
 from typing import Any
 
-from pydantic import ValidationError
+from typing import Annotated
+
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from rivet_engine import assembly, bom, mounts, repair, wiring
 from rivet_engine.models import (
     Behavior,
+    DecimalString,
+    RequestedBehavior,
     BuildPlan,
     Firmware,
     IntentRequirements,
@@ -52,6 +56,8 @@ PROFILE_ID = "rover.obstacle_avoidance.v1"
 FIRMWARE_TARGET = "esp32_arduino_platformio"
 TITLE = "Indoor obstacle rover"
 STATE_PREFIX = "engine_state: "
+# Every packaged catalog price is in USD; the BOM is never re-denominated (no conversion).
+CATALOG_CURRENCY = "USD"
 
 DEFAULT_SELECTION = RoverSelection(
     chassis="chassis.sparkfun_shadow_rob13301",
@@ -69,11 +75,14 @@ DEFAULT_SELECTION = RoverSelection(
         "wiring.adafruit_stemma_qt_to_male_4209",
         "wiring.adafruit_usb_a_microb_3ft_592",
         "accessory.adafruit_dc_jack_terminal_368",
+        "accessory.adafruit_aa_alkaline_4pack_3349",
     ),
 )
 
 DEFAULT_PARAMETERS = {"obstacle_stop_distance_m": 0.25, "turn_duration_ms": 600, "forward_speed_fraction": 0.45}
-# name -> (exclusive low, inclusive high); same bounds the firmware generator accepts
+# name -> (exclusive low, inclusive high). Deliberately tighter than the services/api firmware
+# generator (stop distance <= 8.0 m, turn <= 60000 ms, speed <= 1.0), so every accepted edit
+# is also accepted by firmware export. The engine keeps stop distance within sensor range.
 PARAMETER_BOUNDS = {
     "obstacle_stop_distance_m": (0.0, 2.0),
     "turn_duration_ms": (0.0, 5000.0),
@@ -89,6 +98,22 @@ HEURISTIC_SENSOR = (1.0, 25, "heuristic default; sensor range not modeled for th
 # Bounded nominal speed for the 2D simulation. TT motors at 6 V reach ~200-250 RPM no-load
 # (~0.65 m/s on 63 mm wheels); the simulation deliberately stays well below that.
 NOMINAL_MAX_WHEEL_SPEED_MPS = 0.25
+
+
+_Finite = Annotated[float, Field(allow_inf_nan=False)]
+
+
+class _StateNote(BaseModel):
+    """Schema of the engine_state provenance note."""
+
+    model_config = ConfigDict(extra="forbid", strict=True)
+
+    max_budget: DecimalString | None = None
+    currency: Annotated[str, Field(pattern=r"^[A-Z]{3}$")] = "USD"
+    requested_behavior: RequestedBehavior | None = None
+    max_length_mm: Annotated[_Finite, Field(gt=0)] | None = None
+    max_width_mm: Annotated[_Finite, Field(gt=0)] | None = None
+    mount_offsets: dict[str, Annotated[list[_Finite], Field(min_length=3, max_length=3)]] = {}
 
 
 @dataclass(frozen=True)
@@ -115,21 +140,25 @@ class EngineState:
 
     @classmethod
     def from_plan(cls, plan: BuildPlan) -> EngineState:
-        for note in plan.provenance.notes:
-            if note.startswith(STATE_PREFIX):
-                try:
-                    data = json.loads(note[len(STATE_PREFIX):])
-                    return cls(
-                        max_budget=data.get("max_budget"),
-                        currency=data.get("currency") or "USD",
-                        requested_behavior=data.get("requested_behavior"),
-                        max_length_mm=data.get("max_length_mm"),
-                        max_width_mm=data.get("max_width_mm"),
-                        mount_offsets={k: tuple(v) for k, v in (data.get("mount_offsets") or {}).items()},
-                    )
-                except (ValueError, TypeError, AttributeError):
-                    break
-        return cls()
+        """Read the state note. A malformed note is an input error, never a crash or a silent reset."""
+        notes = [n for n in plan.provenance.notes if n.startswith(STATE_PREFIX)]
+        if not notes:
+            return cls()
+        if len(notes) > 1:
+            raise InvalidInputError("Plan has more than one engine_state note")
+        try:
+            data = _StateNote.model_validate_json(notes[0][len(STATE_PREFIX):])
+        except ValidationError as exc:
+            errors = [f"{'.'.join(str(p) for p in e['loc'])}: {e['msg']}" for e in exc.errors()]
+            raise InvalidInputError("Malformed engine_state note in provenance", {"errors": errors}) from exc
+        return cls(
+            max_budget=data.max_budget,
+            currency=data.currency,
+            requested_behavior=data.requested_behavior,
+            max_length_mm=data.max_length_mm,
+            max_width_mm=data.max_width_mm,
+            mount_offsets={k: tuple(float(x) for x in v) for k, v in data.mount_offsets.items()},
+        )
 
     def requirements(self) -> IntentRequirements | None:
         if self.max_budget is None and self.max_length_mm is None and self.max_width_mm is None:
@@ -179,14 +208,19 @@ def check_supported(intent: IntentSpec) -> None:
         )
 
 
-def select_parts(intent: IntentSpec, catalog: Catalog, base: RoverSelection = DEFAULT_SELECTION) -> tuple[RoverSelection, list[str]]:
+def select_parts(
+    intent: IntentSpec,
+    catalog: Catalog,
+    base: RoverSelection = DEFAULT_SELECTION,
+    profiles: Sequence[dict[str, Any]] | None = None,
+) -> tuple[RoverSelection, list[str]]:
     """Choose catalog parts; returns the selection and notes explaining any intent-driven choice."""
     notes: list[str] = []
     selection = base
     preferred = intent.requirements.preferred_controller_catalog_id
     if preferred and preferred != base.controller:
         comp = catalog.get(preferred)
-        if comp is not None and comp.identity.category == "controller" and wiring.find_profile(preferred, base.motor_driver, wiring.load_profiles()):
+        if comp is not None and comp.identity.category == "controller" and wiring.find_profile(preferred, base.motor_driver, profiles if profiles is not None else wiring.load_profiles()):
             selection = replace(selection, controller=preferred)
             notes.append(f"Controller {preferred} chosen from the request")
         else:
@@ -220,7 +254,9 @@ def selection_from_plan(plan: BuildPlan) -> RoverSelection:
     missing = [s for s in _SLOTS if s not in values]
     if missing:
         raise UnsupportedRequestError("Plan is not a rover_2wd template build", {"missing_roles": missing})
-    accessories = tuple(c.catalog_id for c in sorted(plan.components, key=lambda c: c.instance_id) if c.role == "accessory")
+    kit = [c for c in plan.components if c.role == "accessory"]
+    kit.sort(key=lambda c: int(c.instance_id.rsplit("-", 1)[1]) if c.instance_id.rsplit("-", 1)[-1].isdigit() else 0)
+    accessories = tuple(c.catalog_id for c in kit)
     return RoverSelection(**values, accessories=accessories)
 
 
@@ -258,6 +294,8 @@ class Builder:
     catalog: Catalog
     profiles: Sequence[dict[str, Any]] | None = None
     generation_mode: str = "live"
+    # Physical-fit evidence; None means "not checked" (e.g. synthetic test catalogs).
+    fit_evidence: Mapping[str, Mapping[str, Any]] | None = None
 
     def assemble(
         self,
@@ -300,7 +338,7 @@ class Builder:
             connections=list(wired.connections),
             verification=Verification(overall="needs_review", findings=[]),
             assembly_steps=assembly.build_assembly_steps(components, wired.connections, self.catalog),
-            bom=bom.build_bom(components, self.catalog, state.currency),
+            bom=bom.build_bom(components, self.catalog, CATALOG_CURRENCY),
             behavior=Behavior(profile_id=PROFILE_ID, controller_catalog_id=controller.catalog_id, parameters=dict(parameters)),
             simulation=_simulation(components, self.catalog, selection.distance_sensor),
             firmware=Firmware(
@@ -324,6 +362,7 @@ class Builder:
             requirements=state.requirements(),
             requested_behavior=state.requested_behavior,
             bounds=mounts.world_aabb,
+            fit_evidence=self.fit_evidence,
         )
         report = verify_candidate(plan, self.catalog, context)
         if any(c.catalog_id not in self.catalog for c in plan.components):
@@ -385,7 +424,7 @@ def build_id_for(intent_id: str) -> str:
 
 def solve_intent(intent: IntentSpec, builder: Builder, created_at: str | None = None) -> BuildPlan:
     check_supported(intent)
-    selection, notes = select_parts(intent, builder.catalog)
+    selection, notes = select_parts(intent, builder.catalog, profiles=builder.profiles)
     if intent.requested_behavior in ("none", "unknown"):
         notes.append(f"Assumed obstacle avoidance; request said {intent.requested_behavior!r}")
     state = EngineState(
@@ -433,6 +472,11 @@ def edit_plan(plan: BuildPlan, operation: Mapping[str, Any], builder: Builder, c
                                preferred_controller_catalog_id=None, required_capabilities=[], preferred_color=None)
         except ValidationError:
             return _reject("edit.set_budget", f"Budget {amount!r} is not a non-negative decimal amount")
+        if validated.currency != CATALOG_CURRENCY:
+            return _reject(
+                "edit.set_budget",
+                f"Budget currency {validated.currency} differs from catalog prices ({CATALOG_CURRENCY}); no conversion is done",
+            )
         state = replace(state, max_budget=validated.max_budget, currency=validated.currency)
     elif op == "set_behavior_parameter":
         name, value = operation.get("name"), operation.get("value")
@@ -458,7 +502,7 @@ def edit_plan(plan: BuildPlan, operation: Mapping[str, Any], builder: Builder, c
         state = replace(state, mount_offsets={**state.mount_offsets, instance_id: tuple(float(v) for v in offset)})
     elif op == "change_appearance_color":
         instance_id, color = operation.get("instance_id"), operation.get("color")
-        if instance_id not in overrides:
+        if not isinstance(instance_id, str) or instance_id not in overrides:
             return _reject("edit.color", f"No component {instance_id!r} in this plan")
         if not isinstance(color, str) or not _COLOR.match(color):
             return _reject("edit.color", "color must be #RRGGBB", [instance_id])
@@ -480,5 +524,28 @@ def edit_plan(plan: BuildPlan, operation: Mapping[str, Any], builder: Builder, c
             extra_notes=[n for n in plan.provenance.notes if n.startswith(("Controller", "Requested controller", "Assumed"))],
         )
     except PlacementError as err:
-        return _reject("edit.placement", err.message, [operation.get("instance_id")] if operation.get("instance_id") else [])
-    return {"accepted": True, "plan": builder.finalize(new_plan).to_wire()}
+        iid = operation.get("instance_id")
+        return _reject("edit.placement", err.message, [iid] if isinstance(iid, str) else [])
+    final = builder.finalize(new_plan)
+
+    if op == "replace_optional_sensor" and selection_from_plan(final).distance_sensor != selection.distance_sensor:
+        return _reject(
+            "edit.replace_sensor",
+            f"{selection.distance_sensor} fails verification and repair would replace it; the edit was not applied",
+            ["sensor-1"],
+        )
+    before = _blocking_fail_keys(builder.verify(plan).findings)
+    added = [f for f in final.verification.findings if f.result == "FAIL" and f.severity == "blocking"
+             and (f.rule_id, tuple(f.affected_instance_ids)) not in before]
+    if added:
+        first = added[0]
+        return {
+            "accepted": False,
+            "finding": finding(first.rule_id, "FAIL", "blocking", f"Edit rejected: {first.message}",
+                               first.affected_instance_ids, first.evidence_urls).to_wire(),
+        }
+    return {"accepted": True, "plan": final.to_wire()}
+
+
+def _blocking_fail_keys(findings) -> set[tuple[str, tuple[str, ...]]]:
+    return {(f.rule_id, tuple(f.affected_instance_ids)) for f in findings if f.result == "FAIL" and f.severity == "blocking"}
