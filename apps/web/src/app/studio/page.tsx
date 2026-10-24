@@ -1,22 +1,12 @@
-import { Studio } from '../../components/studio/Studio';
-import { isDevModeEnabled, readIntakePrompt, readIntakeStart } from '../../lib/dev-mode';
-import { isResolveOutcome } from '../../lib/resolve/fixtures';
+import { redirect } from 'next/navigation';
 
-export default function StudioPage({
+/** The old single-screen studio is replaced by the step-by-step flow. Old links keep working. */
+export default function StudioRedirect({
   searchParams,
 }: {
   searchParams?: Record<string, string | string[] | undefined>;
 }) {
-  const start = readIntakeStart(searchParams);
-  const resolve = searchParams?.resolve;
-  const resolveOutcome = typeof resolve === 'string' && isResolveOutcome(resolve) ? resolve : null;
-  return (
-    <Studio
-      devMode={isDevModeEnabled(searchParams)}
-      initialIntakeOpen={start !== null}
-      initialIntakeFocus={start === 'describe' ? 'prompt' : 'image'}
-      initialIntakePrompt={readIntakePrompt(searchParams)}
-      initialResolveOutcome={resolveOutcome}
-    />
-  );
+  const prompt = searchParams?.prompt;
+  const text = Array.isArray(prompt) ? prompt[0] : prompt;
+  redirect(text ? `/new?prompt=${encodeURIComponent(text.slice(0, 2000))}` : '/projects');
 }

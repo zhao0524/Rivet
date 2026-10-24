@@ -1,0 +1,125 @@
+/* App chrome shared by every flow screen: header, stepper, step frame, PromptBox. */
+
+/* ── Logo ─────────────────────────────────────────────── */
+.logo { display: inline-flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 600; letter-spacing: -0.02em; color: var(--ui-text); }
+.logo__mark {
+  position: relative; width: 26px; height: 26px; border-radius: 7px; background: var(--ui-inverse);
+  box-shadow: inset 0 0 0 2px var(--ui-inverse), inset 0 0 0 3.5px var(--ui-orange);
+}
+.logo__mark::after { content: ''; position: absolute; inset: 8px; border-radius: 50%; background: var(--ui-on-inverse); }
+
+/* ── App header ───────────────────────────────────────── */
+.app { min-height: 100vh; display: flex; flex-direction: column; }
+.app-header {
+  position: sticky; top: 0; z-index: 40; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px;
+  min-height: 60px; padding: 0 20px; background: color-mix(in srgb, var(--ui-bg) 86%, transparent);
+  backdrop-filter: saturate(1.4) blur(12px); -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  border-bottom: 1px solid var(--ui-border);
+}
+.app-header__left, .app-header__right { display: flex; align-items: center; gap: 8px; }
+.app-header__right { justify-content: flex-end; }
+.app-header__center { min-width: 0; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.app-header__avatar {
+  display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--ui-accent-soft); color: var(--ui-accent-text); font-size: 13px; font-weight: 600;
+}
+.app-main { flex: 1; width: 100%; max-width: 1240px; margin: 0 auto; padding: 24px 20px 40px; }
+.app-main--narrow { max-width: 720px; }
+
+/* ── Stepper ──────────────────────────────────────────── */
+.stepper { display: flex; gap: 24px; overflow-x: auto; padding: 12px 20px; border-bottom: 1px solid var(--ui-border); background: var(--ui-surface); scrollbar-width: none; }
+.stepper__phase { display: grid; gap: 6px; flex: none; }
+.stepper__phase + .stepper__phase { padding-left: 24px; border-left: 1px solid var(--ui-border); }
+.stepper__phase-label { font: 500 11px/1.2 var(--ui-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ui-subtle); }
+.stepper__steps { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.stepper__step {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 0 12px 0 6px; border-radius: 999px;
+  font-size: 14px; font-weight: 500; color: var(--ui-muted); white-space: nowrap;
+}
+a.stepper__step:hover { background: var(--ui-raised); color: var(--ui-text); }
+.stepper__step[data-state='locked'] { color: var(--ui-subtle); }
+.stepper__step[data-state='current'] { background: var(--ui-accent-soft); color: var(--ui-accent-text); }
+.stepper__num {
+  display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%;
+  border: 1px solid var(--ui-border-strong); font-size: 12px; font-weight: 600;
+}
+.stepper__step[data-state='current'] .stepper__num { background: var(--ui-accent); border-color: var(--ui-accent); color: var(--ui-on-accent); }
+.stepper__step[data-state='done'] .stepper__num { background: var(--ui-ok-bg); border-color: var(--ui-ok); color: var(--ui-ok); }
+.stepper__phase[data-phase='2'] .stepper__step[data-state='current'] .stepper__num { background: var(--ui-inverse); border-color: var(--ui-inverse); color: var(--ui-on-inverse); }
+
+/* ── Step frame ───────────────────────────────────────── */
+.step { display: flex; flex-direction: column; gap: 20px; min-height: calc(100vh - 200px); }
+.step__head { display: flex; justify-content: space-between; gap: 16px; align-items: flex-end; }
+.step__body { flex: 1; min-height: 0; }
+.step__foot {
+  position: sticky; bottom: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  margin: 0 -20px; padding: 14px 20px; background: color-mix(in srgb, var(--ui-bg) 92%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid var(--ui-border);
+}
+.step__cta { display: flex; align-items: center; gap: 12px; text-align: right; }
+.step--bleed .step__body { margin: 0 -20px; }
+
+/* Two-column step body: content + viewport */
+.split { display: grid; grid-template-columns: minmax(320px, 1fr) minmax(0, 1.25fr); gap: 20px; align-items: start; }
+.viewport {
+  position: relative; min-height: 420px; height: min(62vh, 640px); border-radius: var(--ui-r-lg); overflow: hidden;
+  background: var(--ui-sunken); border: 1px solid var(--ui-border);
+}
+.viewport--sm { min-height: 240px; height: 300px; }
+.viewport > [data-testid='rover-scene'], .viewport > div:first-child { position: absolute; inset: 0; }
+.viewport__label {
+  position: absolute; left: 12px; bottom: 12px; z-index: 2; padding: 4px 10px; border-radius: 999px;
+  background: var(--ui-surface); color: var(--ui-muted); font-size: 12px; font-weight: 500; border: 1px solid var(--ui-border);
+}
+
+/* ── PromptBox ────────────────────────────────────────── */
+.pb { width: 100%; }
+.pb__field {
+  position: relative; isolation: isolate; border-radius: 16px; background: var(--ui-surface);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--ui-accent) 14%, transparent);
+}
+.pb__field::before {
+  content: ''; position: absolute; inset: -2px; z-index: -1; border-radius: 18px; background: var(--ui-grad);
+}
+.pb__field::after { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: 16px; background: var(--ui-surface); }
+.pb__input {
+  display: block; width: 100%; min-height: 64px; max-height: 220px; padding: 16px 18px 4px; border: 0; outline: 0; resize: none;
+  background: transparent; color: var(--ui-text); font-size: 16px; line-height: 1.5;
+}
+.pb__input::placeholder { color: var(--ui-subtle); }
+.pb__field:focus-within { box-shadow: 0 0 0 3px var(--ui-accent-soft), 0 10px 40px color-mix(in srgb, var(--ui-accent) 22%, transparent); }
+.pb__bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 8px 8px 12px; }
+.pb__bar > :first-child { margin-right: auto; }
+.pb__go { min-height: 42px; border-radius: 10px; }
+.pb__error { margin: 10px 0 0; font-size: 13px; color: var(--ui-danger); }
+.pb__foot { margin-top: 12px; font-size: 13px; color: var(--ui-muted); }
+
+/* ── Lists used by several steps ──────────────────────── */
+.list { display: grid; gap: 1px; margin: 0; padding: 0; list-style: none; border-radius: var(--ui-r-lg); overflow: hidden; border: 1px solid var(--ui-border); background: var(--ui-border); }
+.list__row { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 10px 14px; background: var(--ui-surface); }
+button.list__row { width: 100%; border: 0; text-align: left; cursor: pointer; }
+button.list__row:hover { background: var(--ui-raised); }
+.list__row[aria-pressed='true'], .list__row[aria-current='true'] { background: var(--ui-accent-soft); }
+.list__main { flex: 1; min-width: 0; }
+.list__title { display: block; font-size: 14px; font-weight: 500; color: var(--ui-text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.list__meta { display: block; font-size: 13px; color: var(--ui-muted); }
+
+/* Source tag on spec rows */
+.src { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: 4px; font: 500 11px/1.4 var(--ui-mono); background: var(--ui-raised); color: var(--ui-muted); border: 1px solid var(--ui-border); }
+.src--datasheet { background: var(--ui-ok-bg); color: var(--ui-ok); border-color: transparent; }
+.src--checked { background: var(--ui-accent-soft); color: var(--ui-accent-text); border-color: transparent; }
+.src--ai { background: var(--ui-warn-bg); color: var(--ui-warn); border-color: transparent; }
+
+@media (max-width: 900px) {
+  .split { grid-template-columns: 1fr; }
+  .viewport { height: 46vh; min-height: 300px; }
+  .app-header { grid-template-columns: auto 1fr auto; padding: 0 16px; }
+  .app-main { padding: 16px 16px 32px; }
+  .step__foot { margin: 0 -16px; padding: 12px 16px; }
+  .step--bleed .step__body { margin: 0 -16px; }
+}
+@media (max-width: 560px) {
+  .app-header__center { display: none; }
+  .step__cta { flex-direction: column-reverse; align-items: stretch; flex: 1; text-align: left; }
+  .step__cta .ui-btn { width: 100%; }
+}
