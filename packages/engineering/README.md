@@ -24,8 +24,10 @@ uv run python -m rivet_engine.demo --sample --max-budget 60 --output /tmp/rivet-
 ```
 
 `--sample` uses the §3.1 example intent built into `demo.py`. A missing `--intent` file
-is an error (exit 2), never silently replaced. Unsupported requests exit 3 with the
-error envelope on stderr.
+is an error (exit 2), never silently replaced; malformed intents, invalid `--max-budget`
+values and an unwritable `--output` also exit 2. Unsupported requests exit 3 with the
+error envelope on stderr. A written plan exits 0 whatever its status: the default sample
+is `unbuildable` and lists its blocking findings on stderr.
 
 ## Public API (what services/api calls)
 

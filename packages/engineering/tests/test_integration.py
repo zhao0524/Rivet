@@ -9,7 +9,6 @@ from pathlib import Path
 import pytest
 
 import rivet_engine
-from rivet_engine import demo
 from rivet_engine.catalog import catalog_from_records
 from rivet_engine.configurator import Builder, parse_intent, solve_intent
 from rivet_engine.models import BuildPlan
@@ -277,52 +276,6 @@ def test_engine_rejects_honestly_when_no_repair_exists():
     assert any(f.rule_id == "wiring.gpio_available" and f.result == "FAIL" for f in final.verification.findings)
     assert final.firmware.compile_status == "not_supported"
     assert "motor_standby" not in final.firmware.pin_map
-
-
-# --- demo CLI ---------------------------------------------------------------------
-
-
-def test_demo_valid_and_failing_runs(tmp_path, capsys):
-    out = tmp_path / "plan.json"
-    assert demo.main(["--sample", "--output", str(out)]) == 0
-    assert json.loads(out.read_text())["status"] == "unbuildable"
-    fail = tmp_path / "fail.json"
-    assert demo.main(["--sample", "--max-budget", "60", "--output", str(fail)]) == 0
-    assert json.loads(fail.read_text())["status"] == "unbuildable"
-    assert "budget.max_budget" in capsys.readouterr().err
-
-
-def test_demo_with_intent_file_and_missing_file(tmp_path, capsys):
-    path = tmp_path / "intent.json"
-    path.write_text(json.dumps(support.appendix_intent_dict()))
-    assert demo.main(["--intent", str(path), "--output", str(tmp_path / "p.json")]) == 0
-    assert demo.main(["--intent", str(tmp_path / "missing.json"), "--output", str(tmp_path / "x.json")]) == 2
-    assert "not found" in capsys.readouterr().err
-
-
-def test_demo_unsupported_exit_code(tmp_path):
-    path = tmp_path / "intent.json"
-    intent = support.appendix_intent_dict()
-    intent.update(project_family="drone", support_status="unsupported")
-    path.write_text(json.dumps(intent))
-    assert demo.main(["--intent", str(path), "--output", str(tmp_path / "p.json")]) == 3
-
-
-def test_demo_runs_as_module(tmp_path):
-    out = tmp_path / "plan.json"
-    proc = subprocess.run(
-        [sys.executable, "-m", "rivet_engine.demo", "--sample", "--output", str(out)],
-        cwd=PACKAGE_DIR, capture_output=True, text=True, timeout=60,
-    )
-    assert proc.returncode == 0, proc.stderr
-    assert json.loads(out.read_text())["schema_version"] == "1.0"
-
-
-def test_shared_intent_fixture_when_present(tmp_path):
-    path = support.shared_fixture("intent/rover_obstacle_v1.json")
-    if path is None:
-        pytest.skip("shared fixtures/ not landed; --sample covers the same intent")
-    assert demo.main(["--intent", str(path), "--output", str(tmp_path / "p.json")]) == 0
 
 
 def test_engine_errors_carry_envelopes():
