@@ -1,12 +1,13 @@
 /* App chrome shared by every flow screen: header, stepper, step frame, PromptBox. */
 
 /* ── Logo ─────────────────────────────────────────────── */
-.logo { display: inline-flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 600; letter-spacing: -0.02em; color: var(--ui-text); }
+/* The wordmark is a transparent PNG used as a mask, so it takes the theme's text color. */
+.logo { display: inline-flex; align-items: center; color: var(--ui-text); line-height: 0; }
 .logo__mark {
-  position: relative; width: 26px; height: 26px; border-radius: 7px; background: var(--ui-inverse);
-  box-shadow: inset 0 0 0 2px var(--ui-inverse), inset 0 0 0 3.5px var(--ui-orange);
+  display: block; width: 62px; height: 45px; background: currentColor;
+  -webkit-mask: url('/brand/rivet-wordmark.webp') center / contain no-repeat;
+  mask: url('/brand/rivet-wordmark.webp') center / contain no-repeat;
 }
-.logo__mark::after { content: ''; position: absolute; inset: 8px; border-radius: 50%; background: var(--ui-on-inverse); }
 
 /* ── App header ───────────────────────────────────────── */
 .app { min-height: 100vh; display: flex; flex-direction: column; }

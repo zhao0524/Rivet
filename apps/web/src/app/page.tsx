@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Logo } from '../components/flow/AppHeader';
 import { AssemblyScroll } from '../components/home/AssemblyScroll';
+import { Decor } from '../components/home/Decor';
 import { ExampleButton, HeroFlow } from '../components/home/HeroFlow';
 import { Icon } from '../components/system/Icon';
 import { ThemeToggle } from '../components/system/ThemeToggle';
@@ -34,14 +35,12 @@ const PROJECT_FAMILIES = [
   },
 ] as const;
 
-/** Floating part tiles around the hero, from the sourced seed catalog. */
-const HERO_PARTS = [
-  { side: 'left', name: 'ESP32-DevKitC V4', kind: 'Controller', tone: 'violet', cursor: 'Interpret' },
-  { side: 'left', name: 'TB6612 motor driver', kind: 'Driver', tone: 'pink' },
-  { side: 'left', name: 'SparkFun Shadow Chassis', kind: 'Chassis', tone: 'ink' },
-  { side: 'right', name: 'TT gearbox motor 1:90', kind: 'Motor', tone: 'orange', cursor: 'Verify' },
-  { side: 'right', name: 'VL53L0X ToF sensor', kind: 'Sensor', tone: 'blue' },
-  { side: 'right', name: '3 x AA holder, 2.1 mm', kind: 'Power', tone: 'green' },
+const HERO_DECOR = [
+  { name: 'gear', spot: 'hero-gear' },
+  { name: 'wrench-b', spot: 'hero-wrench' },
+  { name: 'nut-cube', spot: 'hero-nut' },
+  { name: 'spring', spot: 'hero-spring' },
+  { name: 'bolt', spot: 'hero-bolt' },
 ] as const;
 
 const OUTPUTS = [
@@ -86,17 +85,7 @@ export default function HomePage() {
 
       <main>
         <section className="mk-hero" aria-labelledby="home-title">
-          {(['left', 'right'] as const).map((side) => (
-            <div key={side} className={`mk-hero__float mk-hero__float--${side}`} aria-hidden="true">
-              {HERO_PARTS.filter((p) => p.side === side).map((p) => (
-                <div key={p.name} className={`mk-part mk-part--${p.tone}`}>
-                  <span className="mk-part__kind">{p.kind}</span>
-                  <span className="mk-part__name">{p.name}</span>
-                  {'cursor' in p ? <span className="mk-cursor">{p.cursor}</span> : null}
-                </div>
-              ))}
-            </div>
-          ))}
+          <Decor items={HERO_DECOR} eager />
 
           <div className="mk-hero__copy">
             <p className="mk-pill">
@@ -261,8 +250,8 @@ export default function HomePage() {
 
         <section id="outputs" className="mk-section mk-proof" aria-labelledby="mk-proof-title">
           <div className="mk-proof__head">
-            <div>
-              <span className="mk-proof__icon" aria-hidden="true" />
+            <div className="mk-proof__statwrap">
+              <Decor items={[{ name: 'crystal', spot: 'proof-crystal' }]} />
               <p className="mk-proof__stat">19</p>
               <p className="mk-proof__label">Sourced parts behind every build</p>
             </div>
@@ -297,6 +286,13 @@ export default function HomePage() {
 
       <footer className="mk-footer">
         <div className="mk-footer__cta">
+          <Decor
+            items={[
+              { name: 'bolt-tee', spot: 'cta-bolt' },
+              { name: 'nut-hex', spot: 'cta-nut' },
+              { name: 'wrench-a', spot: 'cta-wrench' },
+            ]}
+          />
           <h2 className="mk-footer__title">
             Describe it, review it, <span className="mk-grad">build it for real</span>
           </h2>

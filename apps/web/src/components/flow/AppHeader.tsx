@@ -9,7 +9,6 @@ export function Logo() {
   return (
     <Link href="/" className="logo" aria-label="Rivet home">
       <span className="logo__mark" aria-hidden="true" />
-      Rivet
     </Link>
   );
 }

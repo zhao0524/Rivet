@@ -101,42 +101,37 @@
   max-width: 560px; margin: 24px auto 0; font-size: 17px; color: var(--ui-muted); text-wrap: pretty;
 }
 
-/* Floating part tiles: soft tints of the brand tokens so the text stays body-colored. */
-.mk-hero__float {
-  position: absolute; top: 56px; z-index: 1; display: flex; flex-direction: column; gap: 16px;
+/* Decorative frosted renders (components/home/Decor.tsx). Absolutely placed in their section,
+   behind the copy, with a slow float. They sit on transparent backgrounds in both themes. */
+.mk-decor { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.mk-decor__item {
+  position: absolute; height: auto; user-select: none;
+  filter: drop-shadow(0 14px 18px color-mix(in srgb, var(--ui-accent) 9%, transparent));
+  animation: mk-float 9s ease-in-out infinite;
 }
-.mk-hero__float--left { left: max(16px, calc(50% - 690px)); align-items: flex-start; }
-.mk-hero__float--right { right: max(16px, calc(50% - 690px)); align-items: flex-end; }
-.mk-part {
-  --mk-tone: var(--ui-accent);
-  position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 4px;
-  width: 200px; height: 112px; padding: 14px 16px; border-radius: 10px; text-align: left;
-  color: var(--ui-text); box-shadow: var(--ui-shadow);
-  background: linear-gradient(140deg, color-mix(in srgb, var(--mk-tone) 14%, var(--ui-surface)), color-mix(in srgb, var(--mk-tone) 34%, var(--ui-surface)));
-  border: 1px solid color-mix(in srgb, var(--mk-tone) 30%, transparent);
+.mk-decor__item:nth-child(2n) { animation-duration: 11s; animation-delay: -3s; }
+.mk-decor__item:nth-child(3n) { animation-duration: 13s; animation-delay: -6s; }
+@keyframes mk-float {
+  0%, 100% { translate: 0 0; rotate: var(--mk-rot, 0deg); }
+  50% { translate: 0 -14px; rotate: calc(var(--mk-rot, 0deg) + 4deg); }
 }
-.mk-hero__float--left .mk-part:nth-child(2) { margin-left: 32px; }
-.mk-hero__float--right .mk-part:nth-child(2) { margin-right: 32px; }
-.mk-part--violet { --mk-tone: var(--ui-accent); }
-.mk-part--pink { --mk-tone: var(--ui-pink); }
-.mk-part--orange { --mk-tone: var(--ui-orange); }
-.mk-part--green { --mk-tone: var(--ui-ok); }
-.mk-part--blue { --mk-tone: var(--ui-info); }
-.mk-part--ink { background: var(--ui-inverse); color: var(--ui-on-inverse); border-color: transparent; }
-.mk-part__kind { font: 500 11px/1 var(--ui-mono); text-transform: uppercase; color: var(--ui-muted); }
-.mk-part--ink .mk-part__kind { color: inherit; opacity: 0.75; }
-.mk-part__name { font-size: 15px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em; }
-.mk-cursor {
-  position: absolute; bottom: -14px; right: -28px; padding: 3px 8px 3px 16px;
-  border-radius: 6px; background: var(--ui-accent); color: var(--ui-on-accent); font-size: 12px; font-weight: 500;
-}
-.mk-cursor::before {
-  content: ''; position: absolute; left: -2px; top: -10px; width: 0; height: 0;
-  border-left: 7px solid transparent; border-right: 7px solid transparent;
-  border-bottom: 13px solid var(--ui-accent); transform: rotate(-35deg);
-}
-.mk-hero__float--right .mk-cursor { right: auto; left: -28px; background: var(--ui-inverse); color: var(--ui-on-inverse); }
-.mk-hero__float--right .mk-cursor::before { border-bottom-color: var(--ui-inverse); }
+.mk-hero > .mk-decor { overflow: hidden; }
+.mk-decor--hero-gear { width: 210px; left: max(-40px, calc(50% - 720px)); top: 40px; --mk-rot: -12deg; }
+.mk-decor--hero-wrench { width: 92px; right: max(24px, calc(50% - 620px)); top: 36px; --mk-rot: 28deg; }
+.mk-decor--hero-nut { width: 130px; left: max(24px, calc(50% - 560px)); bottom: 60px; --mk-rot: 8deg; }
+.mk-decor--hero-spring { width: 190px; right: max(-30px, calc(50% - 720px)); bottom: 120px; --mk-rot: -6deg; }
+.mk-decor--hero-bolt { width: 120px; right: max(40px, calc(50% - 470px)); bottom: 24px; --mk-rot: -18deg; opacity: 0.9; }
+.mk-proof__statwrap { position: relative; }
+.mk-proof__statwrap > * { position: relative; z-index: 1; }
+.mk-proof__statwrap > .mk-decor { position: absolute; z-index: 0; }
+.mk-decor--proof-crystal { width: 170px; left: 150px; top: -40px; --mk-rot: 10deg; }
+.mk-footer__cta { position: relative; }
+.mk-footer__cta > :not(.mk-decor) { position: relative; z-index: 1; }
+.mk-decor--cta-bolt { width: 120px; right: 31%; top: -90px; --mk-rot: 14deg; }
+.mk-decor--cta-nut { width: 92px; right: 4px; top: -84px; --mk-rot: -10deg; }
+.mk-decor--cta-wrench { width: 50px; left: -84px; top: -40px; --mk-rot: -32deg; }
+.mk-hero__copy, .mk-hero > :not(.mk-decor) { position: relative; z-index: 1; }
+
 
 /* Shared PromptBox in the hero */
 .mk-prompt { position: relative; z-index: 2; width: min(640px, 100%); margin-top: 44px; text-align: left; }
@@ -317,10 +312,6 @@
 /* ── Proof + masonry ──────────────────────────────────── */
 .mk-proof { padding-top: 48px; }
 .mk-proof__head { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: end; margin-bottom: 48px; }
-.mk-proof__icon {
-  display: block; width: 56px; height: 56px; border-radius: 14px; background: var(--ui-inverse); margin-bottom: 20px;
-  box-shadow: 0 0 0 3px var(--ui-surface), 0 0 0 5px var(--ui-pink), 0 12px 30px color-mix(in srgb, var(--ui-pink) 35%, transparent);
-}
 .mk-proof__stat { margin: 0; font-size: clamp(96px, 14vw, 168px); line-height: 0.9; font-weight: 600; letter-spacing: -0.06em; color: var(--ui-text); }
 .mk-proof__label { margin: 12px 0 0; font-size: 22px; color: var(--ui-muted); }
 .mk-proof__title { margin: 0 0 24px; font-size: 26px; line-height: 1.25; font-weight: 600; letter-spacing: -0.02em; color: var(--ui-text); }
@@ -364,13 +355,19 @@
 
 /* ── Responsive ───────────────────────────────────────── */
 @media (max-width: 1240px) {
-  .mk-hero__float { display: none; }
+  .mk-decor--hero-gear { width: 140px; left: -36px; top: 8px; }
+  .mk-decor--hero-spring { width: 120px; right: -36px; bottom: auto; top: 12px; }
+  .mk-decor--hero-wrench, .mk-decor--hero-bolt { display: none; }
+  .mk-decor--hero-nut { width: 90px; left: auto; right: 12px; bottom: 16px; }
 }
 
 @media (max-width: 1000px) {
   .mk-nav { grid-template-columns: 1fr auto; }
   .mk-nav__links { display: none; }
   .mk-paths__head, .mk-proof__head, .mk-showcase__foot, .mk-footer__cta { grid-template-columns: 1fr; gap: 24px; }
+  .mk-decor--cta-wrench, .mk-decor--cta-bolt { display: none; }
+  .mk-decor--cta-nut { width: 72px; top: -64px; }
+  .mk-decor--proof-crystal { width: 120px; left: 120px; top: -20px; }
   .mk-footer__go { justify-self: start; text-align: left; }
   .mk-path, .mk-path--flip { grid-template-columns: 1fr; }
   .mk-path--flip .mk-path__visual { order: 2; }
@@ -400,3 +397,5 @@
   .mk-footer__cols { grid-template-columns: 1fr 1fr; }
   .mk-footer__base { flex-direction: column; align-items: flex-start; }
 }
+
+@media (prefers-reduced-motion: reduce) { .mk-decor__item { animation: none; } }
