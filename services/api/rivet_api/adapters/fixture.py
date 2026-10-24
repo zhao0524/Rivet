@@ -57,6 +57,16 @@ class FixtureEngineeringAdapter:
     def get_catalog(self) -> list[dict[str, Any]]:
         return copy.deepcopy(self._catalog)
 
+    def describe(self) -> dict[str, Any]:
+        """Summary for the examples list; always labeled as a saved fixture."""
+        return {
+            "example_id": self.fixture_name,
+            "title": self._plan["title"],
+            "project_family": self._plan["project_family"],
+            "status": self._plan["status"],
+            "generation_mode": "fixture",
+        }
+
     def solve(self, intent: dict[str, Any]) -> dict[str, Any]:
         plan = copy.deepcopy(self._plan)
         plan["source_intent_id"] = intent["intent_id"]
