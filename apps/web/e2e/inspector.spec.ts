@@ -19,8 +19,8 @@ test('selecting a part in PartsPanel shows its catalog data and matching BOM row
   await expect(page.getByTestId('inspector-link-status')).toHaveAttribute('data-link-status', 'not_available');
   await expect(page.getByTestId('inspector-bom-quantity')).toContainText('1');
 
-  // The BOM tab shows the same catalog row the inspector reported.
-  await page.getByTestId('inspector-tab-bom').click();
+  // Inspect mode shows the same catalog row the inspector reported.
+  await page.getByTestId('studio-mode-inspect').click();
   await expect(page.getByTestId('bom-panel')).toBeVisible();
   await expect(page.getByTestId('bom-row-demo.range')).toBeVisible();
   await expect(page.getByTestId('bom-qty-demo.range')).toHaveText('1');

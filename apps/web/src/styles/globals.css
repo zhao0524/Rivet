@@ -4,6 +4,44 @@
 
 :root {
   color-scheme: dark;
+
+  /* Design tokens (interim layer until D2 / #37 lands; rename freely, keep the roles). */
+  --rv-bg: #0b0d11;
+  --rv-surface: #11141b;
+  --rv-surface-panel: #0f1218;
+  --rv-surface-raised: #161b24;
+  --rv-surface-hover: #1c2230;
+  --rv-border: #232a36;
+  --rv-border-strong: #334155;
+  --rv-text: #e5e7eb;
+  --rv-text-strong: #f8fafc;
+  --rv-text-muted: #a3b0c2;
+  --rv-accent: #2563eb;
+  --rv-accent-border: #3b82f6;
+  --rv-accent-text: #93c5fd;
+  --rv-warn-bg: #1c1917;
+  --rv-warn-border: #292524;
+  --rv-warn-text: #fde68a;
+  --rv-danger-text: #fca5a5;
+  --rv-focus: #60a5fa;
+
+  --rv-font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --rv-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --rv-text-title: 15px;
+  --rv-text-section: 13px;
+  --rv-text-body: 13px;
+  --rv-text-caption: 12px;
+
+  --rv-space-1: 4px;
+  --rv-space-2: 8px;
+  --rv-space-3: 12px;
+  --rv-space-4: 16px;
+  --rv-radius-sm: 6px;
+  --rv-radius-md: 8px;
+  --rv-radius-lg: 12px;
+
+  --rv-topbar-height: 48px;
+  --rv-drawer-width: min(360px, 88vw);
 }
 
 * {
@@ -78,4 +116,531 @@ body {
 
 .rivet-panel a {
   color: #60a5fa;
+}
+
+/* ------------------------------------------------------------------------- */
+/* Studio shell (#49 viewport fit, #51 single navigation, #55 responsive)      */
+/* ------------------------------------------------------------------------- */
+
+.rv-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--rv-bg);
+  color: var(--rv-text);
+  font-family: var(--rv-font-sans);
+  font-size: var(--rv-text-body);
+}
+
+.rv-topbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--rv-space-3);
+  min-height: var(--rv-topbar-height);
+  padding: 6px var(--rv-space-3);
+  background: var(--rv-surface);
+  border-bottom: 1px solid var(--rv-border);
+}
+
+.rv-topbar__header {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.rv-topbar__actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--rv-space-2);
+}
+
+.rv-modenav {
+  flex: none;
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--rv-bg);
+  border: 1px solid var(--rv-border);
+  border-radius: var(--rv-radius-md);
+}
+
+.rv-modenav__item {
+  background: transparent;
+  color: var(--rv-text-muted);
+  border: 1px solid transparent;
+  border-radius: var(--rv-radius-sm);
+  padding: 5px 12px;
+  font: inherit;
+  font-size: var(--rv-text-caption);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.rv-modenav__item:hover {
+  color: var(--rv-text-strong);
+  background: var(--rv-surface-hover);
+}
+
+.rv-modenav__item[aria-current="page"] {
+  background: var(--rv-accent);
+  border-color: var(--rv-accent-border);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.rv-topbar .rv-panel-toggle,
+.rv-topbar__break {
+  display: none;
+}
+
+.rv-banner {
+  flex: none;
+  padding: 4px var(--rv-space-3);
+  background: var(--rv-warn-bg);
+  border-bottom: 1px solid var(--rv-warn-border);
+  font-size: var(--rv-text-caption);
+}
+
+.rv-workspace {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(260px, 300px) minmax(0, 1fr) minmax(320px, 380px);
+}
+
+.rv-panel {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--rv-space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--rv-space-3);
+  background: var(--rv-surface-panel);
+}
+
+.rv-panel--left {
+  border-right: 1px solid var(--rv-border);
+}
+
+.rv-panel--right {
+  border-left: 1px solid var(--rv-border);
+}
+
+.rv-center {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--rv-bg);
+}
+
+.rv-scene {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The scene toolbar floats over the canvas so it costs no vertical space. */
+.rv-toolbar-slot {
+  position: absolute;
+  top: var(--rv-space-2);
+  left: var(--rv-space-2);
+  right: var(--rv-space-2);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.rv-toolbar-slot > * {
+  pointer-events: auto;
+}
+
+.rv-timeline {
+  flex: none;
+  max-height: 40%;
+  overflow-y: auto;
+  padding: var(--rv-space-2) var(--rv-space-3);
+  background: var(--rv-surface);
+  border-top: 1px solid var(--rv-border);
+}
+
+.rv-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  overflow-y: auto;
+  padding: var(--rv-space-4);
+  background: rgba(11, 13, 17, 0.97);
+}
+
+.rv-scrim {
+  display: none;
+}
+
+/* Tablet: side panels become drawers opened from the top bar. */
+@media (max-width: 1099px) {
+  .rv-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rv-topbar .rv-panel-toggle {
+    display: inline-flex;
+  }
+
+  .rv-panel--left,
+  .rv-panel--right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 30;
+    width: var(--rv-drawer-width);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease, visibility 0.2s;
+  }
+
+  .rv-panel--left {
+    left: 0;
+    transform: translateX(-100%);
+  }
+
+  .rv-panel--right {
+    right: 0;
+    transform: translateX(100%);
+  }
+
+  .rv-panel[data-open="false"] {
+    visibility: hidden;
+  }
+
+  .rv-panel[data-open="true"] {
+    transform: none;
+  }
+
+  .rv-scrim[data-visible="true"] {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 25;
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Phone: full-width scene, details as a bottom sheet, modes on their own row. */
+@media (max-width: 699px) {
+  /* Two rows: [Parts] identity [actions] / [modes ......] [Details] */
+  .rv-topbar {
+    flex-wrap: wrap;
+    row-gap: 6px;
+    column-gap: var(--rv-space-2);
+  }
+
+  .rv-topbar > [data-testid="shell-toggle-sidebar"] { order: 0; }
+  .rv-topbar__header { order: 1; }
+  .rv-topbar__actions { order: 2; }
+  .rv-topbar__break { display: block; order: 3; flex-basis: 100%; height: 0; }
+  .rv-modenav { order: 4; flex: 1 1 0; min-width: 0; overflow-x: auto; }
+  .rv-topbar > [data-testid="shell-toggle-inspector"] { order: 5; }
+
+  .rv-hide-phone {
+    display: none !important;
+  }
+
+  .rv-modenav__item {
+    flex: 1 0 auto;
+    padding: 6px 8px;
+  }
+
+  .rv-panel--right {
+    top: auto;
+    left: 0;
+    width: auto;
+    max-height: 70%;
+    border-left: none;
+    border-top: 1px solid var(--rv-border);
+    border-radius: var(--rv-radius-lg) var(--rv-radius-lg) 0 0;
+    transform: translateY(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rv-panel--left,
+  .rv-panel--right {
+    transition: none;
+  }
+}
+
+/* ------------------------------------------------------------------------- */
+/* Controls                                                                   */
+/* ------------------------------------------------------------------------- */
+
+.rv-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 4px 10px;
+  background: var(--rv-surface-raised);
+  color: var(--rv-text);
+  border: 1px solid var(--rv-border-strong);
+  border-radius: var(--rv-radius-sm);
+  font: inherit;
+  font-size: var(--rv-text-caption);
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.rv-btn:hover:not(:disabled) {
+  background: var(--rv-surface-hover);
+  color: var(--rv-text-strong);
+}
+
+.rv-btn[aria-pressed="true"],
+.rv-btn--primary {
+  background: var(--rv-accent);
+  border-color: var(--rv-accent-border);
+  color: #ffffff;
+}
+
+.rv-btn--primary:hover:not(:disabled) {
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+.rv-btn--ghost {
+  background: transparent;
+  border-color: transparent;
+}
+
+.rv-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.rv-select {
+  min-height: 30px;
+  padding: 4px 8px;
+  background: var(--rv-surface-raised);
+  color: var(--rv-text);
+  border: 1px solid var(--rv-border-strong);
+  border-radius: var(--rv-radius-sm);
+  font: inherit;
+  font-size: var(--rv-text-caption);
+}
+
+.rv-btn:focus-visible,
+.rv-select:focus-visible,
+.rv-modenav__item:focus-visible,
+.rv-menu__item:focus-visible {
+  outline: 2px solid var(--rv-focus);
+  outline-offset: 2px;
+}
+
+/* Floating toolbar */
+.rv-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.rv-toolbar__group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  background: rgba(17, 20, 27, 0.88);
+  border: 1px solid var(--rv-border);
+  border-radius: var(--rv-radius-md);
+  backdrop-filter: blur(6px);
+}
+
+.rv-toolbar__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--rv-text-muted);
+  font-size: var(--rv-text-caption);
+}
+
+/* Menu button */
+.rv-menu {
+  position: relative;
+  display: inline-flex;
+}
+
+.rv-menu__list {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 50;
+  min-width: 200px;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--rv-surface);
+  border: 1px solid var(--rv-border-strong);
+  border-radius: var(--rv-radius-md);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+.rv-menu__list--start {
+  left: 0;
+  right: auto;
+}
+
+.rv-menu__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 7px 10px;
+  background: transparent;
+  color: var(--rv-text);
+  border: none;
+  border-radius: var(--rv-radius-sm);
+  font: inherit;
+  font-size: var(--rv-text-caption);
+  text-align: left;
+  cursor: pointer;
+}
+
+.rv-menu__item:hover:not(:disabled),
+.rv-menu__item:focus-visible {
+  background: var(--rv-surface-hover);
+}
+
+.rv-menu__item:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.rv-menu__check {
+  color: var(--rv-accent-text);
+  font-weight: 700;
+}
+
+.rv-menu__separator {
+  height: 1px;
+  margin: 4px 2px;
+  background: var(--rv-border);
+}
+
+/* Dialog */
+.rv-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--rv-space-4);
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.rv-dialog {
+  display: flex;
+  flex-direction: column;
+  width: min(640px, 100%);
+  max-height: min(90dvh, 900px);
+  background: var(--rv-surface);
+  border: 1px solid var(--rv-border-strong);
+  border-radius: var(--rv-radius-lg);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+}
+
+.rv-dialog--wide {
+  width: min(880px, 100%);
+}
+
+.rv-dialog__header {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--rv-space-3);
+  padding: var(--rv-space-3) var(--rv-space-4);
+  border-bottom: 1px solid var(--rv-border);
+}
+
+.rv-dialog__title {
+  margin: 0;
+  font-size: var(--rv-text-title);
+  font-weight: 600;
+  color: var(--rv-text-strong);
+}
+
+.rv-dialog__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--rv-space-4);
+}
+
+/* Headless assembly timeline (three/assembly/AssemblyTimelineControls) styled via data-part hooks. */
+[data-part="assembly-timeline"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--rv-space-2);
+  color: var(--rv-text-muted);
+  font-size: var(--rv-text-caption);
+}
+
+[data-part="assembly-timeline"] button {
+  min-height: 28px;
+  padding: 3px 10px;
+  background: var(--rv-surface-raised);
+  color: var(--rv-text);
+  border: 1px solid var(--rv-border-strong);
+  border-radius: var(--rv-radius-sm);
+  font: inherit;
+  cursor: pointer;
+}
+
+[data-part="assembly-timeline"] button:hover:not(:disabled) {
+  background: var(--rv-surface-hover);
+}
+
+[data-part="assembly-timeline"] button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+[data-part="assembly-timeline"] button[data-part="play"],
+[data-part="assembly-timeline"] button[data-part="pause"] {
+  background: var(--rv-accent);
+  border-color: var(--rv-accent-border);
+  color: #ffffff;
+}
+
+[data-part="assembly-timeline"] button:focus-visible,
+[data-part="assembly-timeline"] input:focus-visible {
+  outline: 2px solid var(--rv-focus);
+  outline-offset: 2px;
+}
+
+[data-part="assembly-timeline"] [data-part="scrub"] {
+  flex: 1 1 160px;
+  min-width: 120px;
+}
+
+[data-part="assembly-timeline"] [data-part="explode"] {
+  width: 96px;
+}
+
+[data-part="assembly-timeline"] [data-part="step-label"] {
+  color: var(--rv-text);
+  white-space: nowrap;
 }

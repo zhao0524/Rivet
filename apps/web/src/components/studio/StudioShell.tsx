@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import type { StudioActionMode } from '../../lib/plan-store';
 
 export const STUDIO_MODES: ReadonlyArray<{ id: StudioActionMode; label: string; description: string }> = [
@@ -11,35 +11,46 @@ export const STUDIO_MODES: ReadonlyArray<{ id: StudioActionMode; label: string; 
   { id: 'simulate', label: 'Simulate', description: 'Simplified 2D differential-drive obstacle avoidance' },
 ];
 
+type DrawerId = 'sidebar' | 'inspector';
+
 export interface StudioShellProps {
-  /** Left panel: project controls, component tree, and revision edits (`<ProjectControls />` / `<PartsPanel />`). */
+  /** Left panel: prompt, components and revision edits (`<PartsPanel />`). A drawer below 1100px. */
   sidebar: ReactNode;
-  /** Center primary viewport: 3D hardware stage (`<RoverScene />`). */
+  /** Center primary viewport: 3D hardware stage (`<RoverScene />`). Fills all free space. */
   scene: ReactNode;
-  /** Right panel: contextual part inspector, BOM, verification, and exports (`<PartInspector />` / `<Inspector />`). */
+  /**
+   * Right panel. Its content follows the active `mode` (there are no inspector tabs):
+   * design = part details, inspect = BOM + verification, wiring = netlist and pin map,
+   * assemble = steps, simulate = simulation model. A drawer below 1100px, a bottom sheet below 700px.
+   */
   inspector: ReactNode;
-  /** Assembly timeline strip (`<AssemblyTimeline />` / `<StepTimeline />`). */
+  /** Assembly timeline strip under the scene (`<StepTimeline />`); pass it only in assemble mode. */
   timeline?: ReactNode;
-  /** Bottom or simulation panel (`<SimulationPanel />` / `<SimView />`). */
+  /** Replaces the scene in simulate mode (`<SimView />`); otherwise rendered under the scene. */
   bottomPanel?: ReactNode;
-  /** Top navigation / build identity bar. */
+  /** Left part of the top bar: build identity. */
   header?: ReactNode;
-  /** Provenance / trust disclosure banner (`Saved synthetic example`, `Fallback`, etc.). */
+  /** Right part of the top bar: primary actions (New build, Export). */
+  headerActions?: ReactNode;
+  /** Provenance / trust disclosure banner (`Saved synthetic example`, `Fallback`, etc.). One line. */
   banner?: ReactNode;
-  /** Floating or top scene toolbar (`<Toolbar />`). */
+  /** Scene toolbar (`<Toolbar />`); floats over the top of the scene. */
   toolbar?: ReactNode;
-  /** Optional modal/drawer for image/prompt intake (`<BuildIntake />`). */
+  /** Layer over the workspace for image/prompt intake (`<BuildIntake />`); never shifts the layout. */
   intakeOverlay?: ReactNode;
-  /** Active studio action mode (`design | inspect | wiring | assemble | simulate`). */
+  /** Active studio mode: the single navigation for what the studio shows. */
   mode?: StudioActionMode;
   onModeChange?: (mode: StudioActionMode) => void;
+  /** Changing this value opens the inspector drawer on narrow screens (e.g. the selected part id). */
+  inspectorOpenSignal?: unknown;
   className?: string;
 }
 
 /**
  * Designer-replaceable Studio layout shell (implementation.md §6 C6).
- * Exposes predictable named slots (`sidebar`, `scene`, `inspector`, `timeline`, `bottomPanel`)
- * and `data-slot` attributes so visual styling can be updated without touching 3D or engine logic.
+ * Fits the viewport (100dvh, panels scroll internally), exposes named slots with `data-slot`
+ * attributes, and is styled by the `.rv-*` classes in `styles/globals.css` so visual changes
+ * never touch 3D or engine logic.
  */
 export function StudioShell({
   sidebar,
@@ -48,220 +59,151 @@ export function StudioShell({
   timeline,
   bottomPanel,
   header,
+  headerActions,
   banner,
   toolbar,
   intakeOverlay,
   mode = 'design',
   onModeChange,
+  inspectorOpenSignal,
   className,
 }: StudioShellProps) {
+  const [openDrawer, setOpenDrawer] = useState<DrawerId | null>(null);
+  const toggleDrawer = (id: DrawerId) => setOpenDrawer((current) => (current === id ? null : id));
+
+  useEffect(() => {
+    if (inspectorOpenSignal) setOpenDrawer('inspector');
+  }, [inspectorOpenSignal]);
+
+  useEffect(() => {
+    if (!openDrawer) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpenDrawer(null);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [openDrawer]);
+
+  const activeMode = STUDIO_MODES.find((m) => m.id === mode);
+
   return (
     <div
-      className={className}
+      className={className ? `rv-shell ${className}` : 'rv-shell'}
       data-rivet="studio-shell"
+      data-layout="viewport"
       data-mode={mode}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-        background: '#0b0d11',
-        color: '#e5e7eb',
-        fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
-      }}
     >
-      {header ? (
-        <header
-          data-slot="header"
-          style={{
-            borderBottom: '1px solid #1f242d',
-            background: '#11141b',
-            padding: '10px 16px',
-          }}
+      <header data-slot="header" className="rv-topbar">
+        <button
+          type="button"
+          className="rv-btn rv-panel-toggle"
+          data-testid="shell-toggle-sidebar"
+          aria-controls="rv-studio-sidebar"
+          aria-expanded={openDrawer === 'sidebar'}
+          onClick={() => toggleDrawer('sidebar')}
         >
-          {header}
-        </header>
-      ) : null}
+          Parts
+        </button>
 
-      {banner ? (
-        <div
-          data-slot="banner"
-          style={{
-            borderBottom: '1px solid #292524',
-            background: '#1c1917',
-            padding: '6px 16px',
-          }}
-        >
-          {banner}
-        </div>
-      ) : null}
+        <div className="rv-topbar__header">{header}</div>
 
-      {intakeOverlay ? (
-        <div
-          data-slot="intake-overlay"
-          style={{
-            borderBottom: '1px solid #1f242d',
-            background: '#131720',
-            padding: '16px',
-          }}
-        >
-          {intakeOverlay}
-        </div>
-      ) : null}
-
-      {/* Core 3-column Studio Grid */}
-      <div
-        data-slot="workspace"
-        style={{
-          flex: 1,
-          display: 'grid',
-          gridTemplateColumns: 'minmax(270px, 320px) minmax(0, 1fr) minmax(320px, 400px)',
-          minHeight: 0,
-        }}
-      >
-        <aside
-          data-slot="sidebar"
-          aria-label="Project controls and components"
-          style={{
-            borderRight: '1px solid #1f242d',
-            background: '#0f1218',
-            overflowY: 'auto',
-            padding: '12px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
-          }}
-        >
-          {sidebar}
-        </aside>
-
-        <main
-          data-slot="center"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            minWidth: 0,
-            minHeight: 540,
-            background: '#0b0d11',
-            position: 'relative',
-          }}
-        >
-          {toolbar ? (
-            <div
-              data-slot="toolbar"
-              style={{
-                borderBottom: '1px solid #1f242d',
-                background: '#11151d',
-                padding: '8px 12px',
-              }}
-            >
-              {toolbar}
-            </div>
-          ) : null}
-
-          <div
-            data-slot="scene"
-            style={{
-              flex: 1,
-              position: 'relative',
-              minHeight: 420,
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            {mode === 'simulate' && bottomPanel ? bottomPanel : scene}
-          </div>
-
-          {timeline ? (
-            <div
-              data-slot="timeline"
-              style={{
-                borderTop: '1px solid #1f242d',
-                background: '#10141c',
-                padding: '10px 14px',
-              }}
-            >
-              {timeline}
-            </div>
-          ) : null}
-
-          {mode !== 'simulate' && bottomPanel ? (
-            <div
-              data-slot="bottom-panel"
-              style={{
-                borderTop: '1px solid #1f242d',
-                background: '#0f131b',
-                padding: '10px 14px',
-              }}
-            >
-              {bottomPanel}
-            </div>
-          ) : null}
-        </main>
-
-        <aside
-          data-slot="inspector"
-          aria-label="Contextual hardware inspector"
-          style={{
-            borderLeft: '1px solid #1f242d',
-            background: '#0f1218',
-            overflowY: 'auto',
-            padding: '12px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
-          }}
-        >
-          {inspector}
-        </aside>
-      </div>
-
-      {/* Bottom Action Modes Bar (project.md §3) */}
-      <footer
-        data-slot="mode-bar"
-        role="navigation"
-        aria-label="Studio modes"
-        style={{
-          borderTop: '1px solid #1f242d',
-          background: '#11141b',
-          padding: '8px 16px',
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '10px',
-        }}
-      >
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+        <nav aria-label="Studio modes" data-slot="mode-nav" className="rv-modenav">
           {STUDIO_MODES.map((m) => {
             const active = mode === m.id;
             return (
               <button
                 key={m.id}
                 type="button"
+                className="rv-modenav__item"
                 data-testid={`studio-mode-${m.id}`}
-                aria-pressed={active}
+                aria-current={active ? 'page' : undefined}
                 title={m.description}
                 onClick={() => onModeChange?.(m.id)}
-                style={{
-                  background: active ? '#2563eb' : '#181c26',
-                  color: active ? '#ffffff' : '#cbd5e1',
-                  border: active ? '1px solid #3b82f6' : '1px solid #283040',
-                  borderRadius: 6,
-                  padding: '5px 12px',
-                  fontSize: 12,
-                  fontWeight: active ? 600 : 500,
-                  cursor: 'pointer',
-                }}
               >
                 {m.label}
               </button>
             );
           })}
+        </nav>
+
+        <div className="rv-topbar__actions">{headerActions}</div>
+        <span className="rv-topbar__break" aria-hidden="true" />
+
+        <button
+          type="button"
+          className="rv-btn rv-panel-toggle"
+          data-testid="shell-toggle-inspector"
+          aria-controls="rv-studio-inspector"
+          aria-expanded={openDrawer === 'inspector'}
+          onClick={() => toggleDrawer('inspector')}
+        >
+          Details
+        </button>
+      </header>
+
+      {banner ? (
+        <div data-slot="banner" className="rv-banner">
+          {banner}
         </div>
-        <div style={{ fontSize: 11, color: '#94a3b8' }}>
-          {STUDIO_MODES.find((m) => m.id === mode)?.description}
-        </div>
-      </footer>
+      ) : null}
+
+      <div data-slot="workspace" className="rv-workspace">
+        <aside
+          id="rv-studio-sidebar"
+          data-slot="sidebar"
+          data-open={openDrawer === 'sidebar'}
+          aria-label="Project controls and components"
+          className="rv-panel rv-panel--left"
+        >
+          {sidebar}
+        </aside>
+
+        <main data-slot="center" className="rv-center" aria-label={activeMode?.description}>
+          <div data-slot="scene" className="rv-scene">
+            {mode === 'simulate' && bottomPanel ? bottomPanel : scene}
+            {toolbar ? (
+              <div data-slot="toolbar" className="rv-toolbar-slot">
+                {toolbar}
+              </div>
+            ) : null}
+          </div>
+
+          {timeline ? (
+            <div data-slot="timeline" className="rv-timeline">
+              {timeline}
+            </div>
+          ) : null}
+
+          {mode !== 'simulate' && bottomPanel ? (
+            <div data-slot="bottom-panel" className="rv-timeline">
+              {bottomPanel}
+            </div>
+          ) : null}
+        </main>
+
+        <aside
+          id="rv-studio-inspector"
+          data-slot="inspector"
+          data-open={openDrawer === 'inspector'}
+          aria-label={`${activeMode?.label ?? 'Studio'} details`}
+          className="rv-panel rv-panel--right"
+        >
+          {inspector}
+        </aside>
+
+        <div
+          className="rv-scrim"
+          data-visible={openDrawer !== null}
+          aria-hidden="true"
+          onClick={() => setOpenDrawer(null)}
+        />
+
+        {intakeOverlay ? (
+          <div data-slot="intake-overlay" className="rv-overlay">
+            {intakeOverlay}
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

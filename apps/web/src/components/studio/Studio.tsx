@@ -14,7 +14,9 @@ import {
 import { usePartSelection } from '../three/interactions';
 import { DEFAULT_VIEW, type CameraView } from '../three/stage';
 import { useWiringOverlayState } from '../three/wiring';
-import { Inspector, type InspectorTab } from './Inspector';
+import { Dialog } from '../ui/Dialog';
+import { ExportPanel } from './ExportPanel';
+import { Inspector } from './Inspector';
 import { PartsPanel } from './PartsPanel';
 import { StepTimeline } from './StepTimeline';
 import { StudioShell } from './StudioShell';
@@ -37,7 +39,7 @@ export function Studio({
   const { plan, catalog, trust, activeMode, setActiveMode } = store;
 
   const [intakeOpen, setIntakeOpen] = useState(initialIntakeOpen);
-  const [inspectorTab, setInspectorTab] = useState<InspectorTab>('part');
+  const [exportOpen, setExportOpen] = useState(false);
 
   // 3D Stage & Assembly Timeline State
   const [assemblyMode, setAssemblyMode] = useState<AssemblyMode>('assembled');
@@ -63,24 +65,19 @@ export function Studio({
     setTimelinePlaying(false);
   }, [plan.build_id, plan.revision, plan.assembly_steps.length]);
 
-  // Synchronize Bottom Action Mode with Scene / Inspector views
+  // The studio mode is the single navigation: it decides the scene state and what the
+  // right panel shows. Selection and revision are untouched by mode switches.
   const handleModeChange = useCallback(
     (nextMode: StudioActionMode) => {
       setActiveMode(nextMode);
       if (nextMode === 'wiring') {
         wiringState.setVisible(true);
-        setInspectorTab('wiring');
       } else if (nextMode === 'assemble') {
         setAssemblyMode('step');
-      } else if (nextMode === 'inspect') {
-        setInspectorTab(
-          selection.selectedInstanceId ? 'part' : 'bom',
-        );
       } else if (nextMode === 'design') {
         setAssemblyMode(explodeAmount > 0 ? 'exploded' : 'assembled');
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setActiveMode, wiringState, explodeAmount],
   );
 
@@ -99,11 +96,8 @@ export function Studio({
   const handleSelectInstance = useCallback(
     (instanceId: string) => {
       selection.select(instanceId, { reason: 'api', reveal: true });
-      if (inspectorTab !== 'part' && inspectorTab !== 'bom') {
-        setInspectorTab('part');
-      }
     },
-    [selection, inspectorTab],
+    [selection],
   );
 
   const stepPos = useMemo(
@@ -128,124 +122,120 @@ export function Studio({
     [plan, assemblyMode, explodeAmount, stepPos, ghostFutureSteps, dimensionsByCatalogId],
   );
 
+  const selectedComponent = selection.selectedInstanceId
+    ? plan.components.find((c) => c.instance_id === selection.selectedInstanceId)
+    : undefined;
+  const selectedLabel = selectedComponent
+    ? catalogById.get(selectedComponent.catalog_id)?.identity?.model ?? selectedComponent.instance_id
+    : null;
+
   const isSelectedHidden = selection.selectedInstanceId
     ? selection.state.hidden_instance_ids.has(selection.selectedInstanceId)
     : false;
 
   const headerNode = (
-    <div
-      style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: 12,
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        <Link
-          href="/"
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+      <Link
+        href="/"
+        style={{
+          flex: 'none',
+          color: 'var(--rv-text-strong)',
+          textDecoration: 'none',
+          fontWeight: 700,
+          fontSize: 'var(--rv-text-title)',
+          letterSpacing: '-0.02em',
+        }}
+      >
+        RIVET
+      </Link>
+      <div style={{ minWidth: 0, display: 'flex', flexDirection: 'column', lineHeight: 1.25 }}>
+        <span
+          data-testid="studio-build-title"
+          title={plan.title}
           style={{
-            color: '#f8fafc',
-            textDecoration: 'none',
-            fontWeight: 700,
-            fontSize: 16,
-            letterSpacing: '-0.02em',
+            fontWeight: 600,
+            fontSize: 'var(--rv-text-section)',
+            color: 'var(--rv-text-strong)',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
           }}
         >
-          RIVET
-        </Link>
-        <span style={{ color: '#475569' }}>/</span>
-        <div>
-          <span
-            data-testid="studio-build-title"
-            style={{ fontWeight: 600, fontSize: 14, color: '#f1f5f9' }}
-          >
-            {plan.title}
-          </span>
-          <span
-            data-testid="studio-build-identity"
-            style={{
-              marginLeft: 8,
-              fontSize: 12,
-              color: '#94a3b8',
-              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-            }}
-          >
-            {plan.build_id} · rev {plan.revision} · status: {plan.status}
-          </span>
-        </div>
-      </div>
-
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>
-        {/* Data Source Mode Toggle (Fixture vs Live HTTP API) */}
-        <div
-          role="group"
-          aria-label="Data source mode"
-          data-testid="datasource-toggle"
+          {plan.title}
+        </span>
+        <span
+          data-testid="studio-build-identity"
           style={{
-            display: 'inline-flex',
-            background: '#181c26',
-            border: '1px solid #283040',
-            borderRadius: 6,
-            padding: 2,
+            fontSize: 11,
+            color: 'var(--rv-text-muted)',
+            fontFamily: 'var(--rv-font-mono)',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
           }}
         >
-          <button
-            type="button"
-            data-testid="datasource-mode-fixture"
-            aria-pressed={store.sourceMode === 'fixture'}
-            onClick={() => void store.setSourceMode('fixture')}
-            style={{
-              background: store.sourceMode === 'fixture' ? '#2563eb' : 'transparent',
-              color: store.sourceMode === 'fixture' ? '#ffffff' : '#94a3b8',
-              border: 'none',
-              borderRadius: 4,
-              padding: '3px 8px',
-              fontSize: 11,
-              cursor: 'pointer',
-            }}
-          >
-            Fixture Mode
-          </button>
-          <button
-            type="button"
-            data-testid="datasource-mode-http"
-            aria-pressed={store.sourceMode === 'http'}
-            onClick={() => void store.setSourceMode('http')}
-            style={{
-              background: store.sourceMode === 'http' ? '#2563eb' : 'transparent',
-              color: store.sourceMode === 'http' ? '#ffffff' : '#94a3b8',
-              border: 'none',
-              borderRadius: 4,
-              padding: '3px 8px',
-              fontSize: 11,
-              cursor: 'pointer',
-            }}
-          >
-            Live API Mode
-          </button>
-        </div>
-
-        <button
-          type="button"
-          data-testid="header-toggle-intake"
-          aria-expanded={intakeOpen}
-          onClick={() => setIntakeOpen((o) => !o)}
-          style={{
-            background: intakeOpen ? '#1e3a8a' : '#181c26',
-            color: '#e2e8f0',
-            border: '1px solid #3b82f6',
-            borderRadius: 6,
-            padding: '4px 10px',
-            fontSize: 12,
-            cursor: 'pointer',
-          }}
-        >
-          {intakeOpen ? 'Close intake' : 'Upload / Prompt'}
-        </button>
+          {plan.build_id} · rev {plan.revision} · status: {plan.status}
+        </span>
       </div>
     </div>
+  );
+
+  const headerActionsNode = (
+    <>
+      {/* Data Source Mode Toggle (Fixture vs Live HTTP API) */}
+      <div
+        role="group"
+        aria-label="Data source mode"
+        data-testid="datasource-toggle"
+        className="rv-hide-phone"
+        style={{
+          display: 'inline-flex',
+          background: 'var(--rv-bg)',
+          border: '1px solid var(--rv-border)',
+          borderRadius: 'var(--rv-radius-sm)',
+          padding: 2,
+        }}
+      >
+        <button
+          type="button"
+          data-testid="datasource-mode-fixture"
+          aria-pressed={store.sourceMode === 'fixture'}
+          onClick={() => void store.setSourceMode('fixture')}
+          className="rv-btn rv-btn--ghost"
+          style={{ minHeight: 24, padding: '2px 8px' }}
+        >
+          Fixture
+        </button>
+        <button
+          type="button"
+          data-testid="datasource-mode-http"
+          aria-pressed={store.sourceMode === 'http'}
+          onClick={() => void store.setSourceMode('http')}
+          className="rv-btn rv-btn--ghost"
+          style={{ minHeight: 24, padding: '2px 8px' }}
+        >
+          Live API
+        </button>
+      </div>
+      <button
+        type="button"
+        className="rv-btn"
+        data-testid="header-open-export"
+        aria-haspopup="dialog"
+        onClick={() => setExportOpen(true)}
+      >
+        Export
+      </button>
+      <button
+        type="button"
+        className="rv-btn rv-btn--primary"
+        data-testid="header-toggle-intake"
+        aria-expanded={intakeOpen}
+        onClick={() => setIntakeOpen((o) => !o)}
+      >
+        {intakeOpen ? 'Close intake' : 'New build'}
+      </button>
+    </>
   );
 
   const bannerNode = (
@@ -260,11 +250,13 @@ export function Studio({
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: 8,
-        fontSize: 12,
-        color: trust.isSynthetic ? '#fde68a' : '#bae6fd',
+        color: trust.isSynthetic ? 'var(--rv-warn-text)' : '#bae6fd',
       }}
     >
-      <div>
+      <div
+        title={trust.reasons.join(' · ')}
+        style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+      >
         <strong>{trust.label}</strong>
         {trust.reasons.length > 0 ? ` — ${trust.reasons.join(' · ')}` : ''}
       </div>
@@ -318,6 +310,7 @@ export function Studio({
         }}
         onExplodeAmountChange={setExplodeAmount}
         selectedInstanceId={selection.selectedInstanceId}
+        selectedLabel={selectedLabel}
         isolatedInstanceId={selection.state.isolated_instance_id}
         hiddenCount={selection.state.hidden_instance_ids.size}
         isSelectedHidden={isSelectedHidden}
@@ -360,7 +353,7 @@ export function Studio({
       activeConnectionId={wiringState.state.active_connection_id}
       onWireSelect={(w) => {
         wiringState.setActive(w.connection_id);
-        setInspectorTab('wiring');
+        setActiveMode('wiring');
       }}
       wireframe={wireframe}
       showMounts={showMounts}
@@ -374,7 +367,7 @@ export function Studio({
   );
 
   const timelineNode =
-    activeMode !== 'simulate' ? (
+    activeMode === 'assemble' ? (
       <StepTimeline
         plan={plan}
         assemblyMode={assemblyMode}
@@ -409,7 +402,7 @@ export function Studio({
 
   const simNode =
     activeMode === 'simulate' ? (
-      <div style={{ padding: 12 }}>
+      <div style={{ padding: 12, height: '100%', overflowY: 'auto' }}>
         <SimView plan={plan} height={460} />
       </div>
     ) : null;
@@ -435,27 +428,28 @@ export function Studio({
     <Inspector
       plan={plan}
       catalog={catalog}
+      mode={activeMode}
       selectedInstanceId={selection.selectedInstanceId}
       onSelectInstance={handleSelectInstance}
-      activeTab={inspectorTab}
-      onTabChange={setInspectorTab}
       wiringFilter={wiringState.state.filter}
       onToggleSignalFilter={wiringState.toggleSignal}
       onClearWiringFilter={wiringState.clearFilter}
       activeConnectionId={wiringState.state.active_connection_id}
       onSelectConnectionId={wiringState.setActive}
-      dataSource={store.dataSource}
-      estelleStatus={store.estelleStatus}
-      estelleGroundResult={store.estelleGroundResult}
-      estelleLoading={store.estelleLoading}
-      estelleError={store.estelleError}
-      onGroundSymbol={store.runEstelleGround}
+      activeStep={assemblyMode === 'step' ? stepPos.step : 0}
+      onSelectStep={(step) => {
+        setTimelinePlaying(false);
+        setAssemblyMode('step');
+        setScrubPosition(step);
+      }}
     />
   );
 
   return (
+    <>
     <StudioShell
       header={headerNode}
+      headerActions={headerActionsNode}
       banner={bannerNode}
       intakeOverlay={intakeNode}
       toolbar={toolbarNode}
@@ -466,6 +460,25 @@ export function Studio({
       inspector={inspectorNode}
       mode={activeMode}
       onModeChange={handleModeChange}
+      inspectorOpenSignal={selection.selectedInstanceId}
     />
+    <Dialog
+      open={exportOpen}
+      onClose={() => setExportOpen(false)}
+      title="Export build package"
+      wide
+      testId="export-dialog"
+    >
+      <ExportPanel
+        plan={plan}
+        dataSource={store.dataSource}
+        estelleStatus={store.estelleStatus}
+        estelleGroundResult={store.estelleGroundResult}
+        estelleLoading={store.estelleLoading}
+        estelleError={store.estelleError}
+        onGroundSymbol={store.runEstelleGround}
+      />
+    </Dialog>
+    </>
   );
 }

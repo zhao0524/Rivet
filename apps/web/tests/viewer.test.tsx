@@ -48,8 +48,8 @@ describe('3D Studio, Inspector, Timeline, Wiring & Edit Integration (C1–C7)', 
     expect(screen.getByTestId('inspector-link-purchase').tagName).toBe('SPAN');
     expect(screen.getByTestId('inspector-link-purchase').textContent).toBe('Not available');
 
-    // Switch to BOM tab -> row for demo.tb6612 is marked selected
-    fireEvent.click(screen.getByTestId('inspector-tab-bom'));
+    // Switch to Inspect mode -> BOM row for demo.tb6612 is marked selected
+    fireEvent.click(screen.getByTestId('studio-mode-inspect'));
     const driverRow = screen.getByTestId('bom-row-demo.tb6612');
     expect(driverRow.getAttribute('data-selected')).toBe('true');
     expect(screen.getByTestId('bom-total-unavailable')).toBeDefined();
@@ -65,7 +65,9 @@ describe('3D Studio, Inspector, Timeline, Wiring & Edit Integration (C1–C7)', 
     fireEvent.click(screen.getByTestId('toolbar-toggle-explode'));
     expect(scene.getAttribute('data-assembly-mode')).toBe('exploded');
 
-    // Scrub to Step 4 ("Place controller and driver") via timeline pill
+    // The assembly timeline lives in Assemble mode; scrub to Step 4 ("Place controller and driver")
+    expect(screen.queryByTestId('step-timeline-panel')).toBeNull();
+    fireEvent.click(screen.getByTestId('studio-mode-assemble'));
     fireEvent.click(screen.getByTestId('timeline-step-pill-4'));
     expect(scene.getAttribute('data-assembly-mode')).toBe('step');
     const stepDetails = screen.getByTestId('timeline-active-step-details');
@@ -75,7 +77,7 @@ describe('3D Studio, Inspector, Timeline, Wiring & Edit Integration (C1–C7)', 
     fireEvent.click(screen.getByTestId('timeline-step-instance-controller-1'));
     expect(screen.getByTestId('inspector-instance-id').textContent).toBe('controller-1');
 
-    // Switch to Wiring mode -> opens wiring tab with netlist and approximate disclosure
+    // Switch to Wiring mode -> right panel shows the netlist and approximate disclosure
     fireEvent.click(screen.getByTestId('studio-mode-wiring'));
     expect(screen.getByTestId('inspector-wiring-tab')).toBeDefined();
     expect(screen.getByTestId('wiring-counts').textContent).toContain(
@@ -145,19 +147,18 @@ describe('3D Studio, Inspector, Timeline, Wiring & Edit Integration (C1–C7)', 
     // Loose kit accessories are marked as unmodeled in the component tree
     expect(screen.getByTestId('tree-select-accessory-4').textContent).toContain('unmodeled kit item');
 
-    // BOM tab shows complete total of 105.45 USD and verified Adafruit/SparkFun product links
-    fireEvent.click(screen.getByTestId('inspector-tab-bom'));
+    // Inspect mode shows the complete total of 105.45 USD and verified Adafruit/SparkFun product links
+    fireEvent.click(screen.getByTestId('studio-mode-inspect'));
     expect(screen.getByTestId('bom-total').textContent).toContain('Total: 105.45 USD');
     expect(screen.getByTestId('bom-link-board.esp32_devkitc_v4_wroom32e').getAttribute('href')).toBe(
       'https://www.adafruit.com/product/3269',
     );
 
-    // Verify tab renders all 55 findings (including multiple mechanical.fit_evidence findings)
-    fireEvent.click(screen.getByTestId('inspector-tab-verify'));
+    // Inspect mode also renders all 55 findings (including multiple mechanical.fit_evidence findings)
     expect(screen.getAllByTestId('finding-mechanical.fit_evidence').length).toBeGreaterThan(1);
 
-    // Wiring tab shows all 20 electrical connections and the 9 ESP32 GPIO pins in pin_map
-    fireEvent.click(screen.getByTestId('inspector-tab-wiring'));
+    // Wiring mode shows all 20 electrical connections and the 9 ESP32 GPIO pins in pin_map
+    fireEvent.click(screen.getByTestId('studio-mode-wiring'));
     expect(screen.getByTestId('wiring-counts').textContent).toContain(
       '20 of 20 electrical connections drawn',
     );

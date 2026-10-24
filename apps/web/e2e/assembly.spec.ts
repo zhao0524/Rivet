@@ -17,7 +17,8 @@ test('exploded view toggles and the spread slider follows', async ({ page }) => 
 
   await explode.click();
   await expect(explode).toHaveAttribute('aria-pressed', 'false');
-  await expect(slider).toHaveValue('0');
+  // Spread is only offered while exploded.
+  await expect(slider).toHaveCount(0);
 
   expect(errors).toEqual([]);
 });
@@ -27,6 +28,8 @@ test('timeline scrubbing steps through assembly and links step parts to the insp
 }) => {
   const errors = watchPageErrors(page);
   await page.goto('/studio');
+  // The timeline is only shown in Assemble mode.
+  await page.getByTestId('studio-mode-assemble').click();
 
   const step1 = page.getByTestId('timeline-step-pill-1');
   await step1.click();
@@ -45,8 +48,10 @@ test('timeline scrubbing steps through assembly and links step parts to the insp
 
   // Step parts jump straight to the selected part in the inspector.
   await page.getByTestId('timeline-step-instance-motor-left-1').click();
-  await expect(page.getByTestId('inspector-instance-id')).toHaveText('motor-left-1');
   await expect(page.getByTestId('tree-item-motor-left-1')).toHaveCSS('background-color', 'rgb(30, 58, 138)');
+  await page.getByTestId('studio-mode-design').click();
+  await expect(page.getByTestId('inspector-instance-id')).toHaveText('motor-left-1');
+  await page.getByTestId('studio-mode-assemble').click();
 
   // Scrubbing back to position 0 (prep) clears the active step details.
   await page.getByTestId('timeline-step-pill-0').click();

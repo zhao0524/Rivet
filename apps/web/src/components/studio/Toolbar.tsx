@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import type { AssemblyMode } from '../three/assembly';
 import { DEFAULT_VIEW, type CameraView } from '../three/stage';
+import { MenuButton, type MenuEntry } from '../ui/MenuButton';
 
 export const CAMERA_PRESETS: ReadonlyArray<{ id: string; label: string; view: CameraView }> = [
   { id: 'hero', label: 'Hero 3/4', view: DEFAULT_VIEW },
@@ -16,6 +18,8 @@ export interface ToolbarProps {
   onAssemblyModeChange: (mode: AssemblyMode) => void;
   onExplodeAmountChange: (amount: number) => void;
   selectedInstanceId: string | null;
+  /** Human-readable name of the selected part, shown next to its Isolate/Hide actions. */
+  selectedLabel?: string | null;
   isolatedInstanceId: string | null;
   hiddenCount: number;
   isSelectedHidden: boolean;
@@ -39,22 +43,17 @@ export interface ToolbarProps {
   onToggleTheme: () => void;
 }
 
-const btnStyle = (active = false, disabled = false) => ({
-  background: active ? '#1d4ed8' : '#181d27',
-  color: disabled ? '#475569' : active ? '#ffffff' : '#d1d5db',
-  border: active ? '1px solid #3b82f6' : '1px solid #2b3445',
-  borderRadius: 5,
-  padding: '4px 9px',
-  fontSize: 12,
-  cursor: disabled ? 'not-allowed' : 'pointer',
-});
-
+/**
+ * Scene toolbar: a few primary controls (view preset, fit, explode, wireframe) plus a
+ * "View" menu for everything else. Part actions appear only while a part is selected.
+ */
 export function Toolbar({
   assemblyMode,
   explodeAmount,
   onAssemblyModeChange,
   onExplodeAmountChange,
   selectedInstanceId,
+  selectedLabel,
   isolatedInstanceId,
   hiddenCount,
   isSelectedHidden,
@@ -78,48 +77,76 @@ export function Toolbar({
   onToggleTheme,
 }: ToolbarProps) {
   const isExploded = assemblyMode === 'exploded' && explodeAmount > 0;
+  const [presetId, setPresetId] = useState(CAMERA_PRESETS[0]!.id);
+
+  const viewMenu: MenuEntry[] = [
+    {
+      id: 'steps',
+      label: 'Step-by-step assembly',
+      checked: assemblyMode === 'step',
+      onSelect: () => onAssemblyModeChange(assemblyMode === 'step' ? 'assembled' : 'step'),
+      testId: 'toolbar-toggle-steps',
+    },
+    { id: 'wiring', label: 'Wiring overlay', checked: showWiring, onSelect: onToggleWiring, testId: 'toolbar-toggle-wiring' },
+    { id: 'mounts', label: 'Mount points', checked: showMounts, onSelect: onToggleMounts, testId: 'toolbar-toggle-mounts' },
+    { id: 'grid', label: 'Grid', checked: showGrid, onSelect: onToggleGrid, testId: 'toolbar-toggle-grid' },
+    {
+      id: 'theme',
+      label: 'Light stage',
+      checked: themeMode === 'light',
+      onSelect: onToggleTheme,
+      testId: 'toolbar-toggle-theme',
+    },
+    { id: 'stats', label: 'Render stats', checked: showDebug, onSelect: onToggleDebug, testId: 'toolbar-toggle-debug' },
+  ];
+  if (isolatedInstanceId || hiddenCount > 0) {
+    viewMenu.push({ kind: 'separator', id: 'parts-sep' });
+    if (isolatedInstanceId) {
+      viewMenu.push({ id: 'exit-isolate', label: 'Exit isolate', onSelect: onExitIsolation, testId: 'toolbar-exit-isolate' });
+    }
+    if (hiddenCount > 0) {
+      viewMenu.push({
+        id: 'show-all',
+        label: `Show all parts (${hiddenCount} hidden)`,
+        onSelect: onShowAllHidden,
+        testId: 'toolbar-show-all',
+      });
+    }
+  }
 
   return (
-    <div
-      role="toolbar"
-      aria-label="3D Studio toolbar"
-      data-testid="studio-toolbar"
-      style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: 8,
-      }}
-    >
-      {/* Camera & View Group */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 6 }}>
-        <button
-          type="button"
-          data-testid="toolbar-fit-camera"
-          onClick={onFitCamera}
-          style={btnStyle(false)}
-          title="Reframe camera to fit assembly"
+    <div role="toolbar" aria-label="3D view controls" data-testid="studio-toolbar" className="rv-toolbar">
+      <div className="rv-toolbar__group">
+        <select
+          className="rv-select"
+          aria-label="Camera view"
+          data-testid="toolbar-camera-select"
+          value={presetId}
+          onChange={(e) => {
+            const preset = CAMERA_PRESETS.find((p) => p.id === e.target.value);
+            if (!preset) return;
+            setPresetId(preset.id);
+            onSelectCameraPreset(preset.view);
+          }}
         >
-          Fit view
-        </button>
-        {CAMERA_PRESETS.map((preset) => (
-          <button
-            key={preset.id}
-            type="button"
-            data-testid={`toolbar-camera-${preset.id}`}
-            onClick={() => onSelectCameraPreset(preset.view)}
-            style={btnStyle(false)}
-          >
-            {preset.label}
-          </button>
-        ))}
-
-        <span style={{ width: 1, height: 18, background: '#283040', margin: '0 2px' }} />
-
-        {/* Explode Controls */}
+          {CAMERA_PRESETS.map((preset) => (
+            <option key={preset.id} value={preset.id}>
+              {preset.label}
+            </option>
+          ))}
+        </select>
         <button
           type="button"
+          className="rv-btn"
+          data-testid="toolbar-fit-camera"
+          title="Reframe the camera to fit the whole assembly"
+          onClick={onFitCamera}
+        >
+          Fit
+        </button>
+        <button
+          type="button"
+          className="rv-btn"
           data-testid="toolbar-toggle-explode"
           aria-pressed={isExploded}
           onClick={() => {
@@ -131,144 +158,70 @@ export function Toolbar({
               onAssemblyModeChange('exploded');
             }
           }}
-          style={btnStyle(isExploded)}
         >
-          {isExploded ? `Exploded (${Math.round(explodeAmount * 100)}%)` : 'Explode'}
+          {isExploded ? `Exploded ${Math.round(explodeAmount * 100)}%` : 'Explode'}
         </button>
-
-        <label
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
-            fontSize: 11,
-            color: '#94a3b8',
-          }}
-        >
-          <span>Spread</span>
-          <input
-            type="range"
-            data-testid="toolbar-explode-slider"
-            aria-label="Explode spread"
-            min={0}
-            max={1}
-            step={0.01}
-            value={assemblyMode === 'exploded' ? explodeAmount : 0}
-            onChange={(e) => {
-              const next = Number(e.target.value);
-              onExplodeAmountChange(next);
-              onAssemblyModeChange(next > 0 ? 'exploded' : 'assembled');
-            }}
-            style={{ width: 84 }}
-          />
-        </label>
-
+        {isExploded ? (
+          <label className="rv-toolbar__label">
+            <span>Spread</span>
+            <input
+              type="range"
+              data-testid="toolbar-explode-slider"
+              aria-label="Explode spread"
+              min={0}
+              max={1}
+              step={0.01}
+              value={explodeAmount}
+              onChange={(e) => {
+                const next = Number(e.target.value);
+                onExplodeAmountChange(next);
+                onAssemblyModeChange(next > 0 ? 'exploded' : 'assembled');
+              }}
+              style={{ width: 84 }}
+            />
+          </label>
+        ) : null}
         <button
           type="button"
-          data-testid="toolbar-toggle-steps"
-          aria-pressed={assemblyMode === 'step'}
-          onClick={() =>
-            onAssemblyModeChange(assemblyMode === 'step' ? 'assembled' : 'step')
-          }
-          style={btnStyle(assemblyMode === 'step')}
-        >
-          Step mode
-        </button>
-      </div>
-
-      {/* Selection & Overlay Toggles */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 6 }}>
-        <button
-          type="button"
-          data-testid="toolbar-isolate"
-          disabled={!selectedInstanceId && !isolatedInstanceId}
-          aria-pressed={!!isolatedInstanceId}
-          onClick={() => {
-            if (isolatedInstanceId) onExitIsolation();
-            else onToggleIsolateSelected();
-          }}
-          style={btnStyle(!!isolatedInstanceId, !selectedInstanceId && !isolatedInstanceId)}
-        >
-          {isolatedInstanceId ? 'Exit isolate' : 'Isolate part'}
-        </button>
-
-        <button
-          type="button"
-          data-testid="toolbar-hide-selected"
-          disabled={!selectedInstanceId}
-          onClick={onToggleHideSelected}
-          style={btnStyle(isSelectedHidden, !selectedInstanceId)}
-        >
-          {isSelectedHidden ? 'Show part' : 'Hide part'}
-        </button>
-
-        {hiddenCount > 0 && (
-          <button
-            type="button"
-            data-testid="toolbar-show-all"
-            onClick={onShowAllHidden}
-            style={btnStyle(false)}
-          >
-            Show all ({hiddenCount} hidden)
-          </button>
-        )}
-
-        <span style={{ width: 1, height: 18, background: '#283040', margin: '0 2px' }} />
-
-        <button
-          type="button"
-          data-testid="toolbar-toggle-wiring"
-          aria-pressed={showWiring}
-          onClick={onToggleWiring}
-          style={btnStyle(showWiring)}
-        >
-          Wiring
-        </button>
-        <button
-          type="button"
-          data-testid="toolbar-toggle-mounts"
-          aria-pressed={showMounts}
-          onClick={onToggleMounts}
-          style={btnStyle(showMounts)}
-        >
-          Mounts
-        </button>
-        <button
-          type="button"
+          className="rv-btn"
           data-testid="toolbar-toggle-wireframe"
           aria-pressed={wireframe}
           onClick={onToggleWireframe}
-          style={btnStyle(wireframe)}
         >
           Wireframe
         </button>
-        <button
-          type="button"
-          data-testid="toolbar-toggle-grid"
-          aria-pressed={showGrid}
-          onClick={onToggleGrid}
-          style={btnStyle(showGrid)}
-        >
-          Grid
-        </button>
-        <button
-          type="button"
-          data-testid="toolbar-toggle-debug"
-          aria-pressed={showDebug}
-          onClick={onToggleDebug}
-          style={btnStyle(showDebug)}
-        >
-          Stats
-        </button>
-        <button
-          type="button"
-          data-testid="toolbar-toggle-theme"
-          onClick={onToggleTheme}
-          style={btnStyle(themeMode === 'light')}
-        >
-          {themeMode === 'dark' ? 'Light stage' : 'Dark stage'}
-        </button>
+        <MenuButton label="View" entries={viewMenu} testId="toolbar-view-menu" />
       </div>
+
+      {selectedInstanceId ? (
+        <div className="rv-toolbar__group" role="group" aria-label="Selected part" data-testid="toolbar-selection">
+          <span
+            className="rv-toolbar__label"
+            title={selectedLabel ?? selectedInstanceId}
+            style={{ display: 'inline-block', maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+          >
+            {selectedLabel ?? selectedInstanceId}
+          </span>
+          <button
+            type="button"
+            className="rv-btn"
+            data-testid="toolbar-isolate"
+            aria-pressed={!!isolatedInstanceId}
+            onClick={() => (isolatedInstanceId ? onExitIsolation() : onToggleIsolateSelected())}
+          >
+            {isolatedInstanceId ? 'Exit isolate' : 'Isolate'}
+          </button>
+          <button
+            type="button"
+            className="rv-btn"
+            data-testid="toolbar-hide-selected"
+            aria-pressed={isSelectedHidden}
+            onClick={onToggleHideSelected}
+          >
+            {isSelectedHidden ? 'Show' : 'Hide'}
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }
