@@ -3,6 +3,7 @@ import random
 
 import pytest
 
+from rivet_engine import mounts
 from rivet_engine.catalog import catalog_from_records
 from rivet_engine.models import BuildPlan, IntentRequirements, Pose
 from rivet_engine.ports import AABB, VerificationContext, finding
@@ -44,6 +45,7 @@ def run(plan_dict=None, records=None, **context):
     plan = BuildPlan.model_validate(plan_dict if plan_dict is not None else real_plan_dict())
     catalog = catalog_from_records(records if records is not None else real_records(), "t")
     context.setdefault("bounds", box_bounds)
+    context.setdefault("expected_position", mounts.expected_position)
     return verify_candidate(plan, catalog, VerificationContext(**context))
 
 
@@ -183,16 +185,41 @@ def test_impossible_budget_fails_even_with_missing_prices():
     assert f.result == "FAIL"
 
 
-def test_budget_pass_and_exact_decimal():
+def _priced_sensor():
+    """Catalog and plan where the only unpriced part (the sensor) costs 0.10 in the catalog."""
+    records = real_records()
+    next(r for r in records if r["catalog_id"] == "testpart.range_sensor")["sourcing"].update(price_amount="0.10", price_currency="USD")
     plan = real_plan_dict()
-    for item in plan["bom"]["items"]:
-        if item["unit_price_amount"] is None:
-            item["unit_price_amount"] = "0.10"
-    report = run(plan, requirements=requirements(max_budget="50.60"))
+    next(i for i in plan["bom"]["items"] if i["catalog_id"] == "testpart.range_sensor")["unit_price_amount"] = "0.10"
+    return plan, records
+
+
+def test_budget_pass_and_exact_decimal():
+    plan, records = _priced_sensor()
+    report = run(plan, records, requirements=requirements(max_budget="50.60"))
     [f] = [f for f in report.findings if f.rule_id == "budget.max_budget"]
     assert f.result == "PASS", f.message
-    [f] = non_pass(run(plan, requirements=requirements(max_budget="50.59")), "budget.max_budget")
+    [f] = non_pass(run(plan, records, requirements=requirements(max_budget="50.59")), "budget.max_budget")
     assert f.result == "FAIL"
+
+
+def test_forged_bom_prices_cannot_pass_a_budget():
+    plan, records = _priced_sensor()
+    for item in plan["bom"]["items"]:
+        item["unit_price_amount"] = "0.00"
+    plan["bom"]["known_subtotal_amount"] = "0.00"
+    report = run(plan, records, requirements=requirements(max_budget="1.00"))
+    [budget] = non_pass(report, "budget.max_budget")
+    assert budget.result == "FAIL" and "50.60" in budget.message
+    assert any("does not match the catalog" in f.message for f in non_pass(report, "integrity.bom"))
+    assert report.overall == "unbuildable"
+
+
+def test_forged_purchase_link_rejected():
+    plan = real_plan_dict()
+    plan["bom"]["items"][0].update(purchase_url="https://evil.example/buy", link_status="verified_product")
+    messages = [f.message for f in non_pass(run(plan), "integrity.bom")]
+    assert any("purchase_url" in m for m in messages) and any("verified product link" in m for m in messages)
 
 
 def test_mixed_currency_is_not_summed():

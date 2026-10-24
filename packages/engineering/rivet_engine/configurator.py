@@ -51,6 +51,7 @@ from rivet_engine.ports import (
     finding,
 )
 from rivet_engine.validators import aggregate, sort_findings, verify_candidate
+from rivet_engine.validators.firmware import BEHAVIOR_BOUNDS
 
 PROFILE_ID = "rover.obstacle_avoidance.v1"
 FIRMWARE_TARGET = "esp32_arduino_platformio"
@@ -80,14 +81,8 @@ DEFAULT_SELECTION = RoverSelection(
 )
 
 DEFAULT_PARAMETERS = {"obstacle_stop_distance_m": 0.25, "turn_duration_ms": 600, "forward_speed_fraction": 0.45}
-# name -> (exclusive low, inclusive high). Deliberately tighter than the services/api firmware
-# generator (stop distance <= 8.0 m, turn <= 60000 ms, speed <= 1.0), so every accepted edit
-# is also accepted by firmware export. The engine keeps stop distance within sensor range.
-PARAMETER_BOUNDS = {
-    "obstacle_stop_distance_m": (0.0, 2.0),
-    "turn_duration_ms": (0.0, 5000.0),
-    "forward_speed_fraction": (0.0, 1.0),
-}
+# Bounds live with the validator so edits and verification can never disagree.
+PARAMETER_BOUNDS = BEHAVIOR_BOUNDS
 
 # Simulation sensor model per sourced sensor: (range_m, fov_deg, source)
 SENSOR_SIMULATION = {
@@ -363,6 +358,7 @@ class Builder:
             requested_behavior=state.requested_behavior,
             bounds=mounts.world_aabb,
             fit_evidence=self.fit_evidence,
+            expected_position=mounts.expected_position,
         )
         report = verify_candidate(plan, self.catalog, context)
         if any(c.catalog_id not in self.catalog for c in plan.components):
@@ -480,11 +476,15 @@ def edit_plan(plan: BuildPlan, operation: Mapping[str, Any], builder: Builder, c
         state = replace(state, max_budget=validated.max_budget, currency=validated.currency)
     elif op == "set_behavior_parameter":
         name, value = operation.get("name"), operation.get("value")
-        if name not in PARAMETER_BOUNDS:
+        if not isinstance(name, str) or name not in PARAMETER_BOUNDS:
             return _reject("edit.behavior_parameter", f"Unknown behavior parameter {name!r}; allowed: {sorted(PARAMETER_BOUNDS)}")
         lo, hi = PARAMETER_BOUNDS[name]
         if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or not lo < value <= hi:
             return _reject("edit.behavior_parameter", f"{name} must be in ({lo}, {hi}]")
+        if name == "obstacle_stop_distance_m":
+            sensor_range = SENSOR_SIMULATION.get(selection.distance_sensor, HEURISTIC_SENSOR)[0]
+            if value >= sensor_range:
+                return _reject("edit.behavior_parameter", f"Stop distance {value} m must be below the {selection.distance_sensor} range {sensor_range} m", ["sensor-1"])
         parameters[name] = value
     elif op == "replace_optional_sensor":
         catalog_id = operation.get("catalog_id")

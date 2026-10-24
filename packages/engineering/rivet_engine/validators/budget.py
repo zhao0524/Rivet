@@ -44,15 +44,17 @@ def _budget(view: PlanView) -> list[Finding]:
         rule.unknown(f"Budget is in {req.currency} but the BOM is in {bom.currency}; no conversion is done")
         return rule.result()
 
+    # Prices come from the catalog, never from the plan: a plan's own BOM prices may be stale
+    # or forged (integrity.bom reports any mismatch). Quantities are the placed instances.
     known = Decimal("0")
     unpriced = []
     for item in bom.items:
         comp = view.catalog.get(item.catalog_id)
-        currency = comp.sourcing.price_currency if comp else None
-        if item.unit_price_amount is None or (currency is not None and currency != bom.currency):
+        price = comp.sourcing.price_amount if comp else None
+        if price is None or comp.sourcing.price_currency != bom.currency:
             unpriced.append(item)
         else:
-            known += Decimal(item.unit_price_amount) * item.quantity
+            known += Decimal(price) * len([i for i in item.instance_ids if i in view.by_id])
     ids = [i for item in unpriced for i in item.instance_ids]
     if known > budget:
         rule.fail(f"Known subtotal {known:.2f} {bom.currency} already exceeds the {budget:.2f} budget", ids)

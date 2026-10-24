@@ -69,10 +69,10 @@ def verify(plan: dict[str, Any], catalog: Any = None) -> dict[str, Any]:
         resolved = catalog_from_records(catalog["components"], str(catalog.get("catalog_version") or "caller-supplied"))
     else:
         raise InvalidInputError("catalog must be None, a list of components, or {components: [...]}")
-    from rivet_engine.catalog import load_fit_evidence
+    from rivet_engine.catalog import fit_evidence_for
 
-    # Fit evidence is keyed by packaged catalog IDs; it only applies to the packaged catalog.
-    report = Builder(resolved, fit_evidence=load_fit_evidence() if catalog is None else None).verify(model)
+    # Fit evidence is always checked; it transfers only to records identical to the packaged ones.
+    report = Builder(resolved, fit_evidence=fit_evidence_for(resolved)).verify(model)
     return {"overall": report.overall, "findings": [f.to_wire() for f in report.findings]}
 
 

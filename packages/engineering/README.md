@@ -53,14 +53,15 @@ Adafruit TT motors and wheels, SparkFun Shadow Chassis (nub caster and 4xAA hold
 included), Adafruit VL53L0X ToF sensor, Adafruit USB power bank, breadboard, wires,
 cables, a DC jack adapter and alkaline AA cells. Priced BOM: **105.45 USD** (list prices on 2026-10-24).
 
-Result today: **`unbuildable`**: the selected motors exceed the driver continuous-current rating. The engine returns a complete inspectable design with blocking findings, not a build-ready rover:
+Result today: **`unbuildable`**. The engine returns a complete, inspectable design with blocking findings, not a build-ready rover:
 
 - TT motor stall current (1.5 A at 6 V) exceeds the TB6612's 1.2 A continuous rating (3 A peak for ~20 ms).
 - The ESP32 board was out of stock at Adafruit when checked.
 - No source documents the TT motor fitting the Shadow Chassis motor mounts (SparkFun's guide uses the
   Hobby Gearmotor ROB-13302): blocking UNKNOWN from `mechanical.fit_evidence`.
-- Battery voltage (3.2–6.4 V) comes from the listed alkaline cells (1.6 V fresh to 0.8 V dead), so it is
-  only partly inside the motor (3–6 V) and driver VM (4.5–13.5 V) ratings; holder current capacity is unknown.
+- Battery voltage (3.2–6.4 V) comes from the listed alkaline cells (1.6 V fresh to 0.8 V dead). Fresh cells
+  exceed the motors' 6 V rated maximum (blocking FAIL); near empty they drop below the driver's 4.5 V VM
+  minimum (advisory brown-out WARN). Holder current capacity is unknown.
 - Mount coordinates and the chassis box are approximated, not measured CAD.
 
 Physical fit is tracked separately from mount geometry in `data/fit_evidence.json`: matching mount

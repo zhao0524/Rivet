@@ -22,6 +22,7 @@ from rivet_engine.models import (
     FindingResult,
     FindingSeverity,
     IntentRequirements,
+    Mount,
     PlanStatus,
     RequestedBehavior,
     Verification,
@@ -212,6 +213,9 @@ class VerificationContext:
     # Physical-fit evidence per mounted pair ('<parent>#<mount>|<child>' -> entry), from
     # catalog.load_fit_evidence(). None => the fit rule is not run.
     fit_evidence: Mapping[str, Mapping[str, Any]] | None = None
+    # Injected mount transform (parent instance, parent mount, child mount) -> expected child
+    # world position in mm. None => pose consistency is reported as not checked.
+    expected_position: Callable[[ComponentInstance, Mount, Mount], Sequence[float]] | None = None
 
 
 @dataclass(frozen=True)

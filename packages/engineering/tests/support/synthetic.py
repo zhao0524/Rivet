@@ -93,7 +93,7 @@ def _controller(catalog_id: str, gpios: list[int], *, restricted: bool = True, l
         ports += [_port(f"gpio{n}", "digital_input", logic=logic, notes=SYNTHETIC_NOTE + "; input only") for n in _INPUT_ONLY_GPIOS]
     ports += [
         _port("v3v3_out", "power_output", 3.3, 3.3, 0.5),
-        _port("vin_5v", "power_in", 4.75, 5.25),
+        _port("vin_5v", "power_in", 4.75, 5.25, 0.5),
         _port("gnd", "ground"),
     ]
     return _component(

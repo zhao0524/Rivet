@@ -119,6 +119,11 @@ def place_child(parent_world: Matrix, parent_mount: Mount, child_mount: Mount, o
     return multiply(multiply(multiply(parent_world, mount_matrix(parent_mount)), offset), inverse(mount_matrix(child_mount)))
 
 
+def expected_position(parent: ComponentInstance, parent_mount: Mount, child_mount: Mount) -> tuple[float, float, float]:
+    """World position a child should have when mounted with no template offset."""
+    return transform_point(place_child(pose_matrix(parent.pose), parent_mount, child_mount), (0, 0, 0))
+
+
 def mates(parent_mount: Mount, child_mount: Mount) -> bool:
     """Legal when each side lists the other's kind (an empty child list accepts any parent)."""
     if child_mount.kind not in parent_mount.allowed_mates:

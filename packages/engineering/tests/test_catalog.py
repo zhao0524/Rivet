@@ -152,7 +152,7 @@ def test_missing_file_rejected(tmp_path):
 
 
 def test_load_uses_no_network(monkeypatch):
-    catalog_module._load.cache_clear()
+    catalog_module._read.cache_clear()
 
     def refuse(*args, **kwargs):
         raise AssertionError("network access during catalog load")
@@ -163,7 +163,7 @@ def test_load_uses_no_network(monkeypatch):
 
 
 def test_load_is_deterministic():
-    catalog_module._load.cache_clear()
+    catalog_module._read.cache_clear()
     first = load_catalog().to_wire()
-    catalog_module._load.cache_clear()
+    catalog_module._read.cache_clear()
     assert load_catalog().to_wire() == first

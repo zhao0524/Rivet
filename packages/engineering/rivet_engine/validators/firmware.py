@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import math
+
 from rivet_engine.models import Finding
 from rivet_engine.validators.common import PlanView, Rule
 
@@ -18,6 +20,37 @@ PROFILE_SIGNALS = {
         "i2c_scl",
     )
 }
+
+
+# name -> (exclusive low, inclusive high). Deliberately tighter than the services/api firmware
+# generator (stop distance <= 8.0 m, turn <= 60000 ms, speed <= 1.0), so every plan that passes
+# here is also accepted by firmware export. Stop distance must also be below the sensor range.
+BEHAVIOR_BOUNDS = {
+    "obstacle_stop_distance_m": (0.0, 2.0),
+    "turn_duration_ms": (0.0, 5000.0),
+    "forward_speed_fraction": (0.0, 1.0),
+}
+
+
+def _behavior_parameters(view: PlanView) -> list[Finding]:
+    rule = Rule("firmware.behavior_parameters", pass_message="Behavior parameters are complete, in range and within sensor range")
+    params = view.plan.behavior.parameters
+    for name in sorted(set(params) - set(BEHAVIOR_BOUNDS)):
+        rule.fail(f"Unknown behavior parameter {name!r}")
+    for name, (lo, hi) in BEHAVIOR_BOUNDS.items():
+        value = params.get(name)
+        if value is None:
+            rule.fail(f"Behavior parameter {name} is missing")
+        elif not math.isfinite(value) or not lo < value <= hi:
+            rule.fail(f"Behavior parameter {name} = {value} is outside ({lo}, {hi}]")
+    stop, sensor_range = params.get("obstacle_stop_distance_m"), view.plan.simulation.sensor_range_m
+    sensors = [c.instance_id for c in view.role("distance_sensor")]
+    if stop is not None and math.isfinite(stop):
+        if sensor_range is None:
+            rule.unknown("Sensor range is not modeled, so the stop distance cannot be checked against it", sensors)
+        elif stop >= sensor_range:
+            rule.fail(f"Stop distance {stop} m is not below the sensor range {sensor_range} m; obstacles would never trigger a stop", sensors)
+    return rule.result()
 
 
 def check(view: PlanView) -> list[Finding]:
@@ -50,4 +83,5 @@ def check(view: PlanView) -> list[Finding]:
         if missing:
             support.fail(f"Firmware not ready: pin map lacks {', '.join(missing)}", severity="advisory")
     out += support.result()
+    out += _behavior_parameters(view)
     return out
