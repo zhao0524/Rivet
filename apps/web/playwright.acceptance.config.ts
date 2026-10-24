@@ -82,6 +82,7 @@ export default defineConfig({
       timeout: 180_000,
       env: {
         NEXT_PUBLIC_RIVET_USE_FIXTURES: 'false',
+        RIVET_NEXT_DIST_DIR: '.next-acceptance',
         // next.config.mjs rewrites /api/* to this origin; the browser stays same-origin.
         NEXT_PUBLIC_RIVET_API_URL: API_URL,
         NEXT_TELEMETRY_DISABLED: '1',

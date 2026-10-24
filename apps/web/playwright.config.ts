@@ -33,6 +33,7 @@ export default defineConfig({
         timeout: 180_000,
         env: {
           NEXT_PUBLIC_RIVET_USE_FIXTURES: 'true',
+          RIVET_NEXT_DIST_DIR: '.next-e2e',
         },
       },
 });
