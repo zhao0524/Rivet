@@ -23,6 +23,56 @@ export interface ClarifyAnswers {
   interpretation_choice?: 'as_interpreted' | 'closest_supported_rover' | 'concept_model';
 }
 
+/** What Rivet read from the prompt, kept so the workspace chat can show it after a reload. */
+export interface ProjectReading {
+  headline: string;
+  facts: string[];
+  /** Nothing was read: the saved example stood in (no live reader). */
+  offline: boolean;
+  /** The family is one Rivet engineers end to end. */
+  supported: boolean;
+  limitation: string | null;
+  /** Default for unsupported ideas when nobody has chosen yet. */
+  suggestedChoice: 'concept_model' | 'closest_supported_rover' | null;
+}
+
+export type ChatQuestion = 'use' | 'budget' | 'size';
+
+/** One persisted line of the workspace chat. Live state (a running job) is drawn from the store. */
+export type ChatEntry =
+  | { id: string; kind: 'prompt' }
+  | { id: string; kind: 'reading' }
+  | { id: string; kind: 'reading-error'; message: string }
+  | {
+      id: string;
+      kind: 'generation';
+      run: number;
+      /** The answers this run was built with, so a later answer only rebuilds when it changes them. */
+      clarify?: ClarifyAnswers;
+      summary?: GenerationSummary;
+      failed?: string;
+    }
+  | { id: string; kind: 'question'; question: ChatQuestion }
+  | { id: string; kind: 'user'; text: string }
+  | { id: string; kind: 'rivet'; text: string; detail?: string; tone?: 'ok' | 'warn' | 'danger' }
+  | { id: string; kind: 'wrap' };
+
+export interface GenerationSummary {
+  title: string;
+  parts: number;
+  total: string | null;
+  fixture: boolean;
+  concept: boolean;
+  decisions: Array<{ text: string; detail?: string }>;
+}
+
+export interface ProjectChat {
+  log: ChatEntry[];
+  answered: Partial<Record<ChatQuestion, boolean>>;
+  /** Generation runs started for this project (each one gets a chat entry). */
+  runs: number;
+}
+
 export interface ProjectRecord {
   /** The draft id: shared by the marketing PromptBox, the app prompt and the project URL. */
   id: string;
@@ -54,6 +104,13 @@ export interface ProjectRecord {
   /** Catalog ids marked missing during Build. */
   missingCatalogIds: string[];
   completedAt: string | null;
+  /** Workspace: what Rivet read, and the conversation so far. Missing on projects made before it. */
+  reading?: ProjectReading | null;
+  chat?: ProjectChat;
+  /** Last autosave or "Save build" checkpoint. */
+  savedAt?: string | null;
+  /** Shared to the community gallery (browser-only until accounts are live). */
+  publishedAt?: string | null;
 }
 
 export interface LocalAccount {
@@ -184,6 +241,67 @@ export function updateProject(id: string, patch: Partial<ProjectRecord>): Projec
   const current = getProject(id);
   if (!current) return null;
   return saveProject({ ...current, ...patch, id });
+}
+
+/**
+ * Saves a submitted prompt as a project under its draft id, ready for the workspace to read and build.
+ * Submitting the same draft again replaces the prompt, so the reading and the build start over.
+ * `image: 'keep'` leaves an earlier picture in place; a new picture passes its uploaded asset (or nulls).
+ */
+export function submitDraftProject(input: {
+  id: string;
+  prompt: string;
+  image: 'keep' | { assetId: string | null; previewUrl: string | null };
+}): ProjectRecord {
+  const prompt = input.prompt.trim();
+  const title = prompt ? titleFromPrompt(prompt) : 'Robot from a picture';
+  const existing = getProject(input.id);
+  const image = input.image === 'keep' ? null : input.image;
+  if (!existing) {
+    return saveProject(
+      createProjectRecord({
+        id: input.id,
+        prompt,
+        title,
+        imageAssetId: image?.assetId ?? null,
+        imagePreviewUrl: image?.previewUrl ?? null,
+        phase: 'clarify',
+      }),
+    );
+  }
+  const keepTitle = existing.title !== titleFromPrompt(existing.prompt) && existing.title !== 'Robot from a picture';
+  return saveProject({
+    ...existing,
+    prompt,
+    title: keepTitle ? existing.title : title,
+    imageAssetId: image ? image.assetId : existing.imageAssetId,
+    imagePreviewUrl: image ? image.previewUrl : existing.imagePreviewUrl,
+    phase: 'clarify',
+    intentId: null,
+    assumptions: [],
+    reading: null,
+    chat: undefined,
+    buildId: null,
+    exampleId: null,
+    revision: null,
+  });
+}
+
+/**
+ * Records a save checkpoint without touching `updatedAt`, so "last edited" stays honest. Edits are
+ * written as they happen; this is what the save indicator and "Save build" report.
+ */
+export function markSaved(id: string, patch: Partial<Pick<ProjectRecord, 'publishedAt' | 'title'>> = {}): ProjectRecord | null {
+  const current = getProject(id);
+  if (!current) return null;
+  const next = { ...current, ...patch, savedAt: new Date().toISOString() };
+  write(PROJECTS_KEY, JSON.stringify(listProjects().map((p) => (p.id === id ? next : p))));
+  return next;
+}
+
+/** Projects shared to the community gallery from this browser, newest first. */
+export function publishedProjects(projects: readonly ProjectRecord[]): ProjectRecord[] {
+  return projects.filter((p) => p.publishedAt).sort((a, b) => (b.publishedAt ?? '').localeCompare(a.publishedAt ?? ''));
 }
 
 export function deleteProject(id: string) {

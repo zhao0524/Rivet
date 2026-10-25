@@ -1,8 +1,14 @@
 'use client';
 
-import { GenerateScreen } from '../../../../../components/start/GenerateScreen';
+import { useEffect } from 'react';
+import { useAppRouter } from '../../../../../components/system/Navigation';
+import { projectPath } from '../../../../../lib/flow/steps';
 
-/** A3 Generate (header comes from ProjectShell). */
-export default function Page() {
-  return <GenerateScreen />;
+/** Older links: Clarify and Generate now happen inside the workspace chat. */
+export default function Page({ params }: { params: { id: string } }) {
+  const router = useAppRouter();
+  useEffect(() => {
+    router.replace(projectPath(params.id, 'workspace'));
+  }, [params.id, router]);
+  return null;
 }

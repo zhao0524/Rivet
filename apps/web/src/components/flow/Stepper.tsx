@@ -16,6 +16,10 @@ export function Stepper({ projectId, current, furthest }: StepperProps) {
   return (
     // tabIndex: on narrow screens the stepper scrolls sideways, so keyboard users need to reach it.
     <nav className="stepper" aria-label="Build steps" tabIndex={0} data-testid="stepper">
+      <Link href={projectPath(projectId, 'workspace')} className="stepper__back" data-testid="stepper-workspace">
+        <Icon name="arrowLeft" size={14} />
+        <span>Workspace</span>
+      </Link>
       {PHASES.map((phase) => (
         <div key={phase.n} className="stepper__phase" data-phase={phase.n}>
           <span className="stepper__phase-label">

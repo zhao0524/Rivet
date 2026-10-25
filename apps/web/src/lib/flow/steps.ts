@@ -42,6 +42,6 @@ export function advance(furthest: StepId, to: StepId): StepId {
   return stepIndex(to) > stepIndex(furthest) ? to : furthest;
 }
 
-export function projectPath(id: string, step?: StepId | 'clarify' | 'generate'): string {
+export function projectPath(id: string, step?: StepId | 'workspace' | 'clarify' | 'generate'): string {
   return step ? `/p/${id}/${step}` : `/p/${id}`;
 }

@@ -125,7 +125,8 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
       if (options.initialDataSource && options.initialDataSource.mode === 'fixture') {
         return options.initialDataSource;
       }
-      return createCombinedFixtureSource(SYNTHETIC_ROVER_BUILD_ID);
+      // Offline, a new build is the saved rover made of real, sourced parts: the one that would work.
+      return createCombinedFixtureSource(SOURCED_ROVER_BUILD_ID);
     }
     if (options.initialDataSource && options.initialDataSource.mode === 'http') {
       return options.initialDataSource;

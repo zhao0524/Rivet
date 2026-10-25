@@ -1,5 +1,4 @@
 import type { ProjectRecord } from '../../lib/flow/projects';
-import { STEPS } from '../../lib/flow/steps';
 import { blockers, buyLines, groupParts, isBlocking, partRows, type PartGroup, type PartRow } from '../../lib/flow/derive';
 import type {
   BuildPlan,
@@ -22,14 +21,15 @@ export const EXAMPLE_PROJECT = {
   prompt: 'Build a small rover that avoids obstacles',
 } as const;
 
-/** Where a project is, in words: "Clarifying", "Generating", "Step 3 of 5 · Wiring & firmware", "Done". */
+/** Where a project is, in words: "Reading your idea", "Building", "Step 2 of 3 · Buy", "Done". */
 export function whereIs(project: ProjectRecord): string {
   if (project.phase === 'draft') return 'Draft';
-  if (project.phase === 'clarify') return 'Clarifying';
-  if (project.phase === 'generating') return 'Generating';
+  if (project.phase === 'clarify') return 'Reading your idea';
+  if (project.phase === 'generating') return 'Building';
   if (project.furthestStep === 'done') return 'Done';
-  const step = STEPS.find((s) => s.id === project.furthestStep);
-  return step ? `Step ${step.n} of ${STEPS.length} · ${step.label}` : 'Ready';
+  // The workspace guide is three steps; Parts and Wiring sit between Review and Buy.
+  const guide = project.furthestStep === 'review' ? 1 : project.furthestStep === 'build' ? 3 : 2;
+  return `Step ${guide} of 3 · ${['Review', 'Buy', 'Build'][guide - 1]}`;
 }
 
 /** Relative time for "last updated", falling back to a date for anything older than a week. */

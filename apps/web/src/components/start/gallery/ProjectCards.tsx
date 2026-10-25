@@ -29,6 +29,7 @@ export function ProjectCard({
       meta={whereIs(project)}
       time={relativeTime(project.updatedAt, now)}
       image={thumbnailFor(project)}
+      tag={project.publishedAt ? 'Published' : undefined}
       label={`Open ${project.title}`}
       href={projectPath(project.id)}
       menu={menu}

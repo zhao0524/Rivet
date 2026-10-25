@@ -7,19 +7,21 @@ import {
   readAccount,
   saveAccount,
   saveProject,
+  submitDraftProject,
+  writeDraft,
   type Draft,
   type LocalAccount,
 } from '../../lib/flow/projects';
 import { setPendingImage } from '../../lib/flow/pending-image';
 import { projectPath } from '../../lib/flow/steps';
 import { PromptBox } from '../flow/PromptBox';
-import { Icon, type IconName } from '../system/Icon';
+import { Icon } from '../system/Icon';
 import { Modal } from '../system/Modal';
 
 /** The sourced saved example every "See an example" link opens. */
 export const EXAMPLE_ID = 'rivet-intent-rover-001';
 
-/** Saves a ready example project and returns the route of its Review step. */
+/** Saves a ready example project and returns the route of its workspace. */
 export function createExampleProject(): string {
   const record = saveProject(
     createProjectRecord({
@@ -30,7 +32,7 @@ export function createExampleProject(): string {
       phase: 'ready',
     }),
   );
-  return projectPath(record.id, 'review');
+  return projectPath(record.id, 'workspace');
 }
 
 /** A button that opens the saved example in the app. Used by the hero, the paths and the showcase. */
@@ -51,13 +53,6 @@ export function ExampleButton({
   );
 }
 
-const DELIVERABLES: ReadonlyArray<{ icon: IconName; title: string; body: string }> = [
-  { icon: 'cart', title: 'Parts list', body: 'Real parts. Prices and stores only where Rivet checked them.' },
-  { icon: 'bolt', title: 'Wiring', body: 'Every wire drawn on the 3D model, with the pin it plugs into.' },
-  { icon: 'download', title: 'Starter code', body: 'Code for the ESP32 controller board with your wiring already filled in.' },
-  { icon: 'check', title: 'Step-by-step build', body: 'The order to put it together, with safety notes on every step.' },
-];
-
 /** Starter prompts, from a first robot to an ambitious one. Short enough to share one row. */
 const EXAMPLE_PROMPTS = [
   'A robot car that avoids walls',
@@ -67,30 +62,26 @@ const EXAMPLE_PROMPTS = [
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
- * Landing hero flow (M1 → Guest preview → M2). The shared PromptBox keeps the draft in the
- * browser under a stable id; "Build it" previews what Rivet will make without generating
- * anything, "Save and continue" stores a local account (or skips when one exists) and hands
- * the draft id to the app prompt at `/new?draft=<id>`.
+ * Landing hero flow. "Build it" opens the project's workspace straight away, where Rivet reads the
+ * idea and builds it. Someone not signed in signs in first (M2), then lands in the same workspace; the
+ * prompt and picture carry over, so nothing is typed twice.
  */
 export function HeroFlow() {
   const router = useAppRouter();
   const [draft, setDraft] = useState<Draft | null>(null);
-  const [stage, setStage] = useState<'idle' | 'preview' | 'save'>('idle');
+  const [signIn, setSignIn] = useState(false);
 
-  function openApp(draftId: string) {
-    router.push(`/new?draft=${encodeURIComponent(draftId)}`);
+  function openWorkspace(next: Draft) {
+    // The picture, if any, waits in memory (pending-image) and is uploaded by the workspace.
+    submitDraftProject({ id: next.id, prompt: next.text, image: { assetId: null, previewUrl: null } });
+    writeDraft(null);
+    router.push(projectPath(next.id, 'workspace'));
   }
 
-  function continueFromPreview() {
-    if (!draft) return;
-    if (readAccount()) openApp(draft.id);
-    else setStage('save');
-  }
-
-  function saveAndContinue(account: LocalAccount) {
-    if (!draft) return;
+  function signedIn(account: LocalAccount) {
     saveAccount(account);
-    openApp(draft.id);
+    setSignIn(false);
+    if (draft) openWorkspace(draft);
   }
 
   return (
@@ -104,90 +95,16 @@ export function HeroFlow() {
         onSubmit={({ draft: next, image }) => {
           setPendingImage(next.id, image);
           setDraft(next);
-          setStage('preview');
+          if (readAccount()) openWorkspace(next);
+          else setSignIn(true);
         }}
       />
-
-      <GuestPreview
-        open={stage === 'preview'}
-        prompt={draft?.text ?? ''}
-        onClose={() => setStage('idle')}
-        onContinue={continueFromPreview}
-      />
-      <SaveModal open={stage === 'save'} onClose={() => setStage('preview')} onSave={saveAndContinue} />
+      <SaveModal open={signIn} onClose={() => setSignIn(false)} onSave={signedIn} />
     </div>
   );
 }
 
-/** Guest preview: what Rivet is about to make, before anything is generated. */
-function GuestPreview({
-  open,
-  prompt,
-  onClose,
-  onContinue,
-}: {
-  open: boolean;
-  prompt: string;
-  onClose: () => void;
-  onContinue: () => void;
-}) {
-  return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      title="Here is what Rivet will make"
-      description="Nothing is generated yet. Save the project to continue in the app."
-      testId="guest-preview"
-      initialFocus="[data-testid='preview-continue']"
-      footer={
-        <button type="button" className="ui-btn ui-btn--primary" onClick={onContinue} data-testid="preview-continue">
-          Save and continue
-          <Icon name="arrowRight" />
-        </button>
-      }
-    >
-      <div className="mk-preview">
-        <blockquote className="mk-preview__echo">
-          <span>Your prompt</span>
-          {prompt || 'A picture, no text'}
-        </blockquote>
-
-        <div className="mk-preview__frame">
-          <span className="ui-badge ui-badge--ok">
-            <Icon name="check" size={12} /> Rover · supported today
-          </span>
-          <span className="ui-small ui-muted">
-            Rivet builds indoor rovers today. It matches your idea to the closest rover it can make, and you confirm
-            the details before it starts designing.
-          </span>
-        </div>
-
-        <div className="mk-preview__scene mk-mock__scene" aria-hidden="true">
-          <span className="mk-mock__chassis" />
-          <span className="mk-mock__wheel mk-mock__wheel--l" />
-          <span className="mk-mock__wheel mk-mock__wheel--r" />
-          <span className="mk-mock__board" />
-        </div>
-
-        <ul className="mk-preview__list" aria-label="What you get">
-          {DELIVERABLES.map((d) => (
-            <li key={d.title}>
-              <span className="mk-preview__icon" aria-hidden="true">
-                <Icon name={d.icon} />
-              </span>
-              <div>
-                <strong>{d.title}</strong>
-                <span>{d.body}</span>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </Modal>
-  );
-}
-
-/** M2 Save your project. Hackathon scope: both paths store a local account; nothing is sent. */
+/** M2 Sign in before the first build. Hackathon scope: both paths store a local account; nothing is sent. */
 function SaveModal({
   open,
   onClose,
@@ -214,8 +131,8 @@ function SaveModal({
     <Modal
       open={open}
       onClose={onClose}
-      title="Save your project"
-      description="So you can come back to it and share it."
+      title="Sign in to build"
+      description="Rivet saves the project to your account, then opens it in the workspace."
       testId="save-modal"
     >
       <form className="mk-save" onSubmit={submitEmail} noValidate>

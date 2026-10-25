@@ -203,24 +203,7 @@ html:has(.mk) { overflow-anchor: none; }
 /* Shared PromptBox in the hero */
 .mk-prompt { position: relative; z-index: 2; width: min(640px, 100%); margin-top: 44px; text-align: left; }
 
-/* ── Guest preview + save modals ──────────────────────── */
-.mk-preview { display: grid; gap: 16px; }
-.mk-preview__echo {
-  margin: 0; padding: 12px 14px; border-radius: var(--ui-r); background: var(--ui-raised);
-  border-left: 3px solid var(--ui-accent); font-size: 15px; color: var(--ui-text);
-}
-.mk-preview__echo span { display: block; margin-bottom: 2px; font: 500 11px/1.4 var(--ui-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ui-subtle); }
-.mk-preview__frame { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-.mk-preview__scene { height: 150px; border-radius: var(--ui-r); overflow: hidden; }
-.mk-preview__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.mk-preview__list li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; font-size: 14px; }
-.mk-preview__list li strong { display: block; font-weight: 600; color: var(--ui-text); }
-.mk-preview__list li span { color: var(--ui-muted); }
-.mk-preview__icon {
-  display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px;
-  background: var(--ui-accent-soft); color: var(--ui-accent-text);
-}
-
+/* ── Sign-in modal ─────────────────────────────────── */
 .mk-save { display: grid; gap: 14px; }
 .mk-save__error { margin: 0; font-size: 13px; color: var(--ui-danger); }
 .mk-save__or {
