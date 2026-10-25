@@ -9,10 +9,10 @@ from PIL import Image
 from rivet_api.agents.vision import MockVisionProvider
 from rivet_api.concept import build_concept_plan
 from rivet_api.concept import demo as demo_pkg
-from rivet_api.concept.demo import demo_concept, demo_keys, match_upload, normalise_name
+from rivet_api.concept.demo import demo_concept, demo_keys, match_prompt, match_upload, normalise_name
 from rivet_api.concept.model import MAX_PARTS, floating_parts
 from rivet_api.errors import ApiError
-from rivet_api.orchestration.pipeline import DEMO_MODEL_NOTE, check_concept_plan
+from rivet_api.orchestration.pipeline import COMMUNITY_MODEL_NOTE, DEMO_MODEL_NOTE, check_concept_plan
 
 DEMO_FILES = {
     "drone.jpg": "drone",
@@ -164,3 +164,36 @@ def test_recolor_of_a_demo_model_is_applied_without_the_vision_model(make_client
     body_colors = {c["render_overrides"]["color"] for c in plan["components"] if c["role"] == "body"}
     assert body_colors == {"#2563eb"}
     assert any(c["render_overrides"]["color"] != "#2563eb" for c in plan["components"] if c["role"] == "propeller")
+
+
+@pytest.mark.parametrize(
+    "text,key",
+    [
+        ("A desk robot arm with a gripper that can pick up small blocks", "desk_arm"),
+        ("a small robot that follows a black tape line on the floor.", "line_follower"),
+        ("  A two-wheel  self-balancing robot that stays upright on its own ", "balancing_robot"),
+        ("A helper that checks the soil and waters my plant when it gets dry", "plant_waterer"),
+        ("A desk weather station that shows temperature and wind speed on a small screen", "weather_station"),
+        ("A camera on a pan-tilt mount that can turn to look around the room!", "camera_turret"),
+        ("A desk robot arm with a gripper", None),
+        ("", None),
+        (None, None),
+    ],
+)
+def test_community_build_prompts_are_recognised(text, key):
+    assert match_prompt(text) == key
+
+
+def test_a_community_build_prompt_builds_its_hand_built_model(make_client, wait_job):
+    client, _ = make_client()
+    body = {
+        "input": {"kind": "text", "user_text": "A camera on a pan-tilt mount that can turn to look around the room"},
+        "interpretation_choice": "as_interpreted",
+    }
+    resp = client.post("/api/projects/generate", json=body)
+    assert resp.status_code == 202, resp.text
+    job = wait_job(client, resp.json()["job_id"])
+    assert job["status"] == "complete", job
+    plan = client.get(f"/api/projects/{job['build_id']}").json()
+    assert plan["concept"]["demo"] == "camera_turret" and plan["title"] == "Pan-tilt camera"
+    assert COMMUNITY_MODEL_NOTE in plan["provenance"]["notes"]

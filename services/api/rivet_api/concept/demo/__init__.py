@@ -1,8 +1,9 @@
-"""Hand-built concept models for the demo photos.
+"""Hand-built concept models for the demo photos and the featured community builds.
 
-When one of the demo photos is uploaded (recognised by its file name or its exact bytes), the
-concept build serves the matching hand-built model instead of asking the vision model. The
-models are still concept models: appearance only, labelled `manual_template`, never sourced.
+When one of the demo photos is uploaded (recognised by its file name or its exact bytes), or the
+request text is one of the featured community builds' prompts, the concept build serves the
+matching hand-built model instead of asking the vision model. The models are still concept
+models: appearance only, labelled `manual_template`, never sourced.
 """
 
 import hashlib
@@ -32,6 +33,18 @@ _ENTRIES = (
     DemoEntry("pi_camera", ("raspberry pi camera",), "4934d5940f12f2697cb38bd378ada580b5d581570306a3de0266c8d1663f81fc"),
     DemoEntry("esp32", ("microconstroller", "microcontroller"), "5e87a8eb7f9d65a128c4bcc3765b4f8fa54abc54a0497af63fd671e74b21f917"),
 )
+
+
+# The featured community builds (web `lib/flow/community.ts`), by their sample prompt
+# (web `lib/flow/samples.ts`). "Use build as template" sends exactly this text.
+_PROMPTS = {
+    "desk_arm": "A desk robot arm with a gripper that can pick up small blocks",
+    "line_follower": "A small robot that follows a black tape line on the floor",
+    "balancing_robot": "A two-wheel self-balancing robot that stays upright on its own",
+    "plant_waterer": "A helper that checks the soil and waters my plant when it gets dry",
+    "weather_station": "A desk weather station that shows temperature and wind speed on a small screen",
+    "camera_turret": "A camera on a pan-tilt mount that can turn to look around the room",
+}
 
 
 def _entries() -> tuple[DemoEntry, ...]:
@@ -64,8 +77,20 @@ def match_upload(filename: str | None, data: bytes) -> str | None:
     return None
 
 
+def _normalise_text(text: str) -> str:
+    return " ".join(re.sub(r"[^a-z0-9\s-]", " ", text.lower()).split())
+
+
+def match_prompt(text: str | None) -> str | None:
+    """The community build whose sample prompt this is (case, spacing and punctuation aside)."""
+    if not text:
+        return None
+    wanted = _normalise_text(text)
+    return next((key for key, prompt in _PROMPTS.items() if _normalise_text(prompt) == wanted), None)
+
+
 def demo_keys() -> list[str]:
-    return [e.key for e in _entries()]
+    return [e.key for e in _entries()] + list(_PROMPTS)
 
 
 @cache
