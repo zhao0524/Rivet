@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { printableLines, stlFileName } from '../src/components/steps/buy/print-model';
 import { getConceptExamplePlan } from '../src/lib/fixtures';
 import { buyLines } from '../src/lib/flow/derive';
-import { partGeometry, printPlateStl } from '../src/lib/print/stl';
+import { partGeometry, printPlateObj, printPlateStl } from '../src/lib/print/stl';
 
 const SHAPES = ['box', 'rounded_box', 'cylinder', 'tube', 'sphere', 'hemisphere', 'cone', 'capsule', 'torus', 'propeller', 'wheel'];
 
@@ -21,6 +21,28 @@ describe('3D print files', () => {
     const ids = printableLines(buyLines(plan, catalog), catalog).map((p) => p.line.catalogId);
     expect(ids).toEqual(expect.arrayContaining(['concept.body', 'concept.cover', 'concept.landing-leg']));
     expect(ids.some((id) => /battery|flight-controller|esc|wire|motor/.test(id))).toBe(false);
+  });
+
+  it('prints the plastic around electronics (a dome, a ring, a panel) but never the sensor itself', () => {
+    const plan = getConceptExamplePlan();
+    const base = (plan.concept_catalog ?? []).find((c) => c.catalog_id === 'concept.cover')!;
+    const as = (id: string, model: string) => ({ ...base, catalog_id: id, identity: { ...base.identity, model, category: 'sensor' } });
+    const catalog = [as('concept.lidar-dome', 'Lidar dome'), as('concept.face-sensor', 'Face sensor'), as('concept.face-ring', 'Face sensor ring')];
+    const line = (catalogId: string, name: string) => ({
+      catalogId, name, quantity: 1, unitPrice: null, url: null, vendor: '', inStock: 'unknown' as const, checkedAt: null, fabricated: false, suggested: false,
+    });
+    const ids = printableLines(
+      [line('concept.lidar-dome', 'Lidar dome'), line('concept.face-sensor', 'Face sensor'), line('concept.face-ring', 'Face sensor ring')],
+      catalog,
+    ).map((p) => p.line.catalogId);
+    expect(ids).toEqual(['concept.lidar-dome', 'concept.face-ring']);
+  });
+
+  it('writes the same plate as OBJ text with vertices and faces', () => {
+    const obj = printPlateObj([{ shape: 'rounded_box', size: { x: 40, y: 12, z: 30 }, count: 2 }]);
+    expect(obj.startsWith('# Rivet custom part')).toBe(true);
+    expect((obj.match(/^v /gm) ?? []).length).toBeGreaterThan(8);
+    expect((obj.match(/^f /gm) ?? []).length).toBeGreaterThan(12);
   });
 
   it.each(SHAPES)('builds a %s at its catalog size', (shape) => {

@@ -81,6 +81,7 @@ export function Stage({
   const lines = useMemo(() => (plan ? buyLines(plan, catalog) : []), [plan, catalog]);
   const selected = selection.selectedInstanceId ? rows.find((r) => r.instanceId === selection.selectedInstanceId) ?? null : null;
   const selectedLine = selected ? lines.find((l) => l.catalogId === selected.catalogId) ?? null : null;
+  const hovered = selection.hoveredInstanceId ? rows.find((r) => r.instanceId === selection.hoveredInstanceId) ?? null : null;
 
   const mode: StageMode = replay !== null ? 'step' : view.mode;
   const step = replay ?? Math.min(Math.max(view.step, 1), Math.max(stepCount, 1));
@@ -102,6 +103,7 @@ export function Stage({
             showWiring={view.wires && mode !== 'exploded'}
             enclosure={view.body ? 'ghost' : 'none'}
             showGrid
+            hoverTooltip={false}
             themeOverrides={WORKSPACE_THEME}
             resetSignal={reset}
           />
@@ -186,6 +188,15 @@ export function Stage({
               >
                 <Icon name="arrowRight" size={15} />
               </button>
+            </div>
+          ) : null}
+
+          {hovered ? (
+            <div className="ws-hover" role="status" aria-live="polite" data-testid="workspace-hover">
+              <span className="ws-hover__meta">
+                {selection.hoverLabel ?? hovered.instanceId} · {rolePlain(hovered.role)}
+              </span>
+              <span className="ws-hover__name">{hovered.name}</span>
             </div>
           ) : null}
 

@@ -9,6 +9,7 @@ import { downloadBlob } from '../three/enclosure/export';
 import { usePrintFiles } from '../three/enclosure/usePrintFiles';
 import type { PartSelectionApi } from '../three/interactions';
 import { rolePlain } from '../start/shared';
+import { PrintButton, PrintMenu, usePrintable } from './PrintPart';
 
 /** The printed body is not a catalog part: it is made from the plan, so it gets its own row. */
 const BODY_ID = 'printed-body';
@@ -27,23 +28,34 @@ export function PartsPanel({
   catalog: readonly CatalogComponent[];
   selection: PartSelectionApi;
 }) {
-  const lines = useMemo(() => buyLines(plan, catalog), [plan, catalog]);
   const byId = useMemo(() => catalogIndex([...catalog, ...(plan.concept_catalog ?? [])]), [catalog, plan.concept_catalog]);
+  const lines = useMemo(() => buyLines(plan, [...byId.values()]), [plan, byId]);
+  const printable = usePrintable(plan, catalog);
   const print = usePrintFiles(plan, catalog);
   const [picked, setPicked] = useState<string | null>(null);
+  const [printing, setPrinting] = useState<string | null>(null);
   const [note, setNote] = useState<string | null>(null);
 
-  const bought = lines.filter((l) => !l.fabricated);
+  // Custom plastic pieces (shells, covers, hatches, decals) are made on a 3D printer, not bought.
+  const custom = lines.filter((l) => !l.fabricated && printable.has(l.catalogId));
+  const bought = lines.filter((l) => !l.fabricated && !printable.has(l.catalogId));
   const made = lines.filter((l) => l.fabricated);
   const instancesOf = (catalogId: string) => plan.bom.items.find((i) => i.catalog_id === catalogId)?.instance_ids ?? [];
   const total = bought.reduce((sum, l) => sum + (l.unitPrice ?? 0) * l.quantity, 0);
 
-  // A part picked in the model picks its row here.
+  // A part picked in the model picks its row here and brings it into view.
   useEffect(() => {
     const id = selection.selectedInstanceId;
     if (!id) return;
     const comp = plan.components.find((c) => c.instance_id === id);
-    if (comp) setPicked(comp.catalog_id);
+    if (!comp) return;
+    setPicked(comp.catalog_id);
+    const raf = requestAnimationFrame(() => {
+      document
+        .querySelector(`[data-testid="workspace-component-${comp.catalog_id.replace(/["\\]/g, '')}"]`)
+        ?.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' });
+    });
+    return () => cancelAnimationFrame(raf);
   }, [selection.selectedInstanceId, plan.components]);
 
   function pick(catalogId: string) {
@@ -74,7 +86,7 @@ export function PartsPanel({
         ))}
       </ul>
 
-      {print.spec || made.length > 0 ? (
+      {print.spec || made.length > 0 || custom.length > 0 ? (
         <>
           <p className="ws-guide__label">To make</p>
           <ul className="ws-guide__list">
@@ -117,6 +129,45 @@ export function PartsPanel({
                 ) : null}
               </li>
             ) : null}
+            {custom.map((l) => {
+              const part = printable.get(l.catalogId)!;
+              return (
+                <li key={l.catalogId}>
+                  <div className="ws-proj__custom">
+                  <button
+                    type="button"
+                    className="ws-guide__row"
+                    aria-expanded={picked === l.catalogId}
+                    onClick={() => pick(l.catalogId)}
+                    data-testid={`workspace-component-${l.catalogId}`}
+                  >
+                    <Icon name="cube" size={13} />
+                    <span>
+                      <strong>
+                        {l.quantity > 1 ? `${l.quantity} × ` : ''}
+                        {l.name}
+                      </strong>
+                      <span className="ws-guide__sub">Custom part</span>
+                    </span>
+                  </button>
+                  <PrintButton
+                    part={part}
+                    open={printing === l.catalogId}
+                    onToggle={() => setPrinting((p) => (p === l.catalogId ? null : l.catalogId))}
+                  />
+                  </div>
+                  {printing === l.catalogId ? <PrintMenu part={part} buildId={plan.build_id} onSaved={(file) => setNote(`Saved ${file}`)} /> : null}
+                  {picked === l.catalogId ? (
+                    <div className="ws-proj__detail" data-testid="workspace-component-detail">
+                      <p className="ws-guide__sub">
+                        {roleOf(plan, l.catalogId) ? `${rolePlain(roleOf(plan, l.catalogId)!)}. ` : ''}A custom plastic piece, printed from the
+                        model. Use the print icon for its .stl or .obj file.
+                      </p>
+                    </div>
+                  ) : null}
+                </li>
+              );
+            })}
             {made.map((l) => (
               <Row key={l.catalogId} line={l} open={picked === l.catalogId} onPick={() => pick(l.catalogId)} currency={plan.bom.currency} made>
                 <p className="ws-guide__sub">

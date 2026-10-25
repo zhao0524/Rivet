@@ -9,6 +9,7 @@ import { STEPS, advance, projectPath, type StepId } from '../../lib/flow/steps';
 import type { BuildPlan, CatalogComponent } from '../../lib/rivet/types';
 import { Icon } from '../system/Icon';
 import { usePrintFiles } from '../three/enclosure/usePrintFiles';
+import { PrintButton, PrintMenu, usePrintable } from './PrintPart';
 
 /**
  * The guide's steps: buy, then build. Parts have their own tab, wiring shows on the model (the Wires
@@ -190,9 +191,15 @@ function BuyBody({
   catalog: readonly CatalogComponent[];
   onNext: () => void;
 }) {
-  const lines = useMemo(() => buyLines(plan, catalog).filter((l) => !l.fabricated), [plan, catalog]);
+  const lines = useMemo(
+    () => buyLines(plan, [...catalog, ...(plan.concept_catalog ?? [])]).filter((l) => !l.fabricated),
+    [plan, catalog],
+  );
+  // Custom plastic pieces (shells, covers, decals) are printed, not bought.
+  const printable = usePrintable(plan, catalog);
   const owned = new Set(project.ownedCatalogIds);
-  const toBuy = lines.filter((l) => !owned.has(l.catalogId));
+  const toBuy = lines.filter((l) => !owned.has(l.catalogId) && !printable.has(l.catalogId));
+  const [printing, setPrinting] = useState<string | null>(null);
   const priced = toBuy.filter((l) => l.unitPrice !== null);
   const total = priced.reduce((sum, l) => sum + (l.unitPrice ?? 0) * l.quantity, 0);
 
@@ -208,8 +215,11 @@ function BuyBody({
         components.
       </p>
       <ul className="ws-guide__list">
-        {lines.map((l) => (
-          <li key={l.catalogId} className="ws-guide__buy" data-owned={owned.has(l.catalogId) || undefined}>
+        {lines.map((l) => {
+          const print = printable.get(l.catalogId);
+          return (
+          <li key={l.catalogId}>
+            <div className="ws-guide__buy" data-owned={owned.has(l.catalogId) || undefined} data-custom={print ? true : undefined}>
             <label className="ws-check">
               <input type="checkbox" checked={owned.has(l.catalogId)} onChange={() => toggle(l.catalogId)} data-testid={`workspace-buy-own-${l.catalogId}`} />
               <span className="ws-check__box" aria-hidden="true" />
@@ -221,17 +231,23 @@ function BuyBody({
                 {l.name}
               </strong>
               <span className="ws-guide__sub">
-                {l.unitPrice !== null ? formatMoney(l.unitPrice * l.quantity, plan.bom.currency) : 'No price yet'}
-                {l.url ? ` · ${l.vendor}` : ''}
+                {print
+                  ? 'Custom part'
+                  : `${l.unitPrice !== null ? formatMoney(l.unitPrice * l.quantity, plan.bom.currency) : 'No price yet'}${l.url ? ` · ${l.vendor}` : ''}`}
               </span>
             </span>
-            {l.url ? (
+            {print ? (
+              <PrintButton part={print} open={printing === l.catalogId} onToggle={() => setPrinting((p) => (p === l.catalogId ? null : l.catalogId))} />
+            ) : l.url ? (
               <a className="ws-guide__shop" href={l.url} target="_blank" rel="noreferrer" aria-label={`Buy ${l.name} at ${l.vendor}`}>
                 <Icon name="external" size={13} />
               </a>
             ) : null}
+            </div>
+            {print && printing === l.catalogId ? <PrintMenu part={print} buildId={plan.build_id} /> : null}
           </li>
-        ))}
+          );
+        })}
       </ul>
       <p className="ws-guide__total" data-testid="workspace-buy-total">
         <span>Still to buy</span>

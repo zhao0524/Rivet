@@ -66,6 +66,8 @@ export interface RoverSceneProps {
   showMounts?: boolean;
   /** Show floor millimeter grid. */
   showGrid?: boolean;
+  /** The built-in hover pill (bottom left). Off when the host shows hover details itself. Defaults to true. */
+  hoverTooltip?: boolean;
   /** Show debug telemetry overlay in the corner of the stage. */
   showDebugOverlay?: boolean;
   /** Stage lighting/color theme preset or custom overrides. */
@@ -115,6 +117,7 @@ export function RoverScene({
   wireframe = false,
   showMounts = false,
   showGrid = true,
+  hoverTooltip = true,
   showDebugOverlay = false,
   themeMode = 'dark',
   themeOverrides,
@@ -431,7 +434,7 @@ export function RoverScene({
       </PartSelectionProvider>
 
       {/* Hover Tooltip Pill */}
-      {(selection.hoverLabel || hoveredWire) && (
+      {hoverTooltip && (selection.hoverLabel || hoveredWire) && (
         <div
           role="status"
           aria-live="polite"

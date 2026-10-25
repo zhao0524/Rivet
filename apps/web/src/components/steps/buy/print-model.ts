@@ -13,6 +13,12 @@ export interface PrintLine {
 const NOT_PRINTABLE_CATEGORIES = new Set(['board', 'battery', 'sensor', 'antenna', 'cable', 'wire']);
 
 /**
+ * Within those groups, the plastic around the electronics still prints: a sensor's face panel, ring,
+ * dome, base or ribs are housings, not the sensor.
+ */
+const HOUSING_NAME = /\b(panel|ring|dome|base|ribs?|cover|shell|cap|bezel|housing|case|enclosure|bracket|mount|plate|frame|trim|hood|guard|lid)\b/i;
+
+/**
  * Concept parts with no store link and no price that can stand in as a 3D print: the part's
  * own shape at its estimated size. Kit contents and parts already marked as printed are left out.
  */
@@ -24,7 +30,8 @@ export function printableLines(lines: readonly BuyLine[], catalog: readonly Cata
     const cat = byId.get(line.catalogId);
     const shape = conceptShape(cat?.physical.geometry_kind);
     if (!cat || !shape || shape === 'cable') continue;
-    if (cat.physical.material_preset === 'pcb' || NOT_PRINTABLE_CATEGORIES.has(cat.identity.category)) continue;
+    if (cat.physical.material_preset === 'pcb') continue;
+    if (NOT_PRINTABLE_CATEGORIES.has(cat.identity.category) && !HOUSING_NAME.test(line.name)) continue;
     const { x, y, z } = cat.physical.dimensions_mm;
     if (![x, y, z].every((v) => Number.isFinite(v) && v > 0)) continue;
     out.push({ line, shape, size: { x, y, z } });
