@@ -13,7 +13,7 @@ pytest.importorskip("OCP", reason="install the engine's geometry extra: pip inst
 from rivet_engine import engineering_bridge, get_catalog  # noqa: E402
 from rivet_engine.design_compiler import DesignValidationError, compile_design  # noqa: E402
 from rivet_engine.design_ir import DesignSpec, apply_patch, changed_bodies, json_schema, topology_signature  # noqa: E402
-from rivet_engine.design_ir.models import Shape  # noqa: E402
+from rivet_engine.design_ir.models import Shape, implicit_anchor_axes  # noqa: E402
 from rivet_engine.geometry import freeform, occ, parametric  # noqa: E402
 from rivet_engine.geometry.catalog_geometry import catalog_regions  # noqa: E402
 from rivet_engine.geometry.meshing import decode_glb, edge_manifold_report, encode_stl, weld  # noqa: E402
@@ -231,6 +231,57 @@ def test_ungrounded_product_and_world_poses_are_rejected(tmp_path):
 def test_candidate_topology_signature_tells_designs_apart():
     sigs = {topology_signature(load(n)) for n in ("rover-two-wheel", "four-wheel", "robot-arm", "organic-concept")}
     assert len(sigs) == 4
+
+
+def test_joint_that_sweeps_into_its_parent_is_narrowed_not_moved(tmp_path):
+    spec = load("rover-two-wheel")
+    cover = next(b for b in spec["bodies"] if b["id"] == "cover")
+    cover["attachment"]["joint"] = "hinge"  # hinge the cover so it sweeps down through the deck
+    cover["attachment"]["axis"] = "X"
+    cover["attachment"]["limits"] = [0, 120]
+    before = compile_design(spec, CATALOG, output_dir=tmp_path / "before", write_exports=False)
+    assert before["geometry_report"]["counts"]["sweep_collisions"] > 0
+    fixed = repair(spec, CATALOG, output_dir=tmp_path / "after", initial=before)
+    report = fixed["result"]["geometry_report"]
+    assert report["counts"]["sweep_collisions"] == 0
+    assert "moving joints collide within their range" not in report["blocking"]
+    hinge = next(b for b in fixed["spec"]["bodies"] if b["id"] == "cover")["attachment"]
+    assert hinge["value"] == 0  # the shown pose never moves
+    assert hinge["joint"] == "rigid" or (hinge["limits"][0] <= 0 <= hinge["limits"][1] and hinge["limits"][1] < 120)
+    assert any(a["accepted"] and a["body_id"] == "cover" for a in fixed["actions"])
+
+
+def test_oversized_design_is_scaled_into_its_own_envelope(tmp_path):
+    spec = load("robot-arm")  # concept-only, every part is printed, so uniform scaling is valid
+    spec["constraints"]["max_bounds_mm"] = [150, 150, 150]
+    before = compile_design(spec, CATALOG, output_dir=tmp_path / "big", write_exports=False)
+    assert before["geometry_report"]["within_max_bounds"] is False
+    fixed = repair(spec, CATALOG, output_dir=tmp_path / "small", initial=before)
+    report = fixed["result"]["geometry_report"]
+    assert report["within_max_bounds"] is True
+    size, limit = report["bounds_mm"]["size"], fixed["spec"]["constraints"]["max_bounds_mm"]
+    assert all(s <= l + 1e-6 for s, l in zip(size, limit))
+    assert any(a["accepted"] and a.get("set", {}).get("__scale__") for a in fixed["actions"])
+    assert {b["id"] for b in fixed["spec"]["bodies"]} == {b["id"] for b in spec["bodies"]}
+
+
+def test_purchased_parts_block_scaling_and_keep_the_bounds_finding(tmp_path):
+    spec = load("rover-two-wheel")
+    spec["constraints"]["max_bounds_mm"] = [120, 100, 140]  # smaller than the design
+    before = compile_design(spec, CATALOG, output_dir=tmp_path / "big", write_exports=False)
+    assert before["geometry_report"]["within_max_bounds"] is False
+    fixed = repair(spec, CATALOG, output_dir=tmp_path / "small", initial=before)
+    assert fixed["result"]["geometry_report"]["within_max_bounds"] is False
+    assert not any(a.get("set", {}).get("__scale__") and a["accepted"] for a in fixed["actions"])
+    wheels = {p["body_id"]: p["bounds_mm"] for p in fixed["result"]["part_manifest"] if p["body_id"] in ("wheel_left", "wheel_right")}
+    assert all(abs(w["max"][1] - w["min"][1]) == pytest.approx(63, abs=0.5) for w in wheels.values())  # real wheels unchanged
+
+
+def test_anchor_names_tolerate_redundant_centre_words():
+    assert implicit_anchor_axes("bottom_center") == (0, -1, 0) == implicit_anchor_axes("bottom")
+    assert implicit_anchor_axes("top_middle") == (0, 1, 0)
+    assert implicit_anchor_axes("left_centre") == (-1, 0, 0)
+    assert implicit_anchor_axes("nonsense_face") is None  # still rejects unknown words
 
 
 def test_contract_schema_matches_the_model():

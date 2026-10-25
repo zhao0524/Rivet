@@ -37,6 +37,8 @@ MANUFACTURING = Literal["none", "3d_print", "cnc", "sheet_cut", "laser_cut", "mo
 # Implicit anchors: any face, edge or corner of a body's local bounding box, named by
 # up to one word per axis, e.g. "top", "front_top", "left_bottom_back"; plus "center".
 _AXIS_WORDS = {"left": (0, -1), "right": (0, 1), "bottom": (1, -1), "top": (1, 1), "back": (2, -1), "front": (2, 1)}
+# Redundant words models write to mean "middle of that face": "bottom_center" == "bottom".
+_NEUTRAL_WORDS = {"center", "centre", "middle", "mid"}
 _CANONICAL_ORDER = ("left", "right", "bottom", "top", "back", "front")
 
 
@@ -47,6 +49,8 @@ def implicit_anchor_axes(name: str) -> tuple[int, int, int] | None:
     words = name.lower().replace("-", "_").split("_")
     signs = [0, 0, 0]
     for word in words:
+        if word in _NEUTRAL_WORDS:
+            continue
         if word not in _AXIS_WORDS:
             return None
         axis, sign = _AXIS_WORDS[word]

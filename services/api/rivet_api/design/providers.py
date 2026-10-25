@@ -81,7 +81,38 @@ The child's anchor face is placed flat against the parent's anchor face; then of
 Use contact "embedded" only for intended overlaps of visual/organic parts or pin joints; physical parts must not overlap.
 Features (fabricated bodies, local coordinates): {"id","type":"fillet"|"chamfer" (radius_mm, edges all|vertical|horizontal|top|bottom)|"hole"|"counterbore"|"boss" (radius_mm, depth_mm, position_mm, axis, count, spacing_mm, pattern_axis)|"shell" (wall_mm, open_face)|"slot"|"window"|"pocket"|"grill"|"rib" (width_mm, length_mm, depth_mm, axis, pattern_axis, position_mm, count, spacing_mm)}.
 Purchased bodies need an exact catalog_id from the provided catalog and no shape or features (Rivet supplies their geometry).
-Prefer 8-30 bodies with recognisable, well-proportioned parts and real colours; make the silhouette and signature features unmistakable."""
+Prefer 8-30 bodies with recognisable, well-proportioned parts and real colours; make the silhouette and signature features unmistakable.
+
+STANDING ON THE FLOOR. The engine drops the whole assembly so its lowest point becomes y = 0, then checks static stability and rejects a design that cannot stand.
+- Only the parts you mean as wheels, feet or a base may be the lowest ones. Work out, in millimetres, how far below its parent each contact part reaches, and make every contact part reach the SAME lowest level.
+- Give it either one wide flat base, or at least three contact patches that are not in one straight line (two side wheels plus a rear caster or tail counts).
+- A wheel attached to its parent's side face lands centred on that face, so it reaches (wheel_radius - parent_height/2) below the parent's bottom. Keep wheel_radius > parent_height/2 or the body drags on the floor.
+- Keep heavy parts low and between the contact patches, so the centre of mass stays over them.
+
+NO OVERLAPS. Physical parts must not intersect: a child placed on a parent's face sits outside it, and offset_mm along the parent's own normal pushes it further out, not in. Use contact "embedded" only for blended visual forms and pin joints.
+
+FIT INSIDE max_bounds_mm. The assembled design, including every arm, propeller, wheel and appendage, must fit inside constraints.max_bounds_mm. Set max_bounds_mm from the object's own target_size_mm with headroom (about 1.3x), and choose part dimensions so the whole assembly stays inside it. Work out the span: a body 240 mm long with a 120 mm arm out each end is 480 mm across, not 240.
+
+MOVING PARTS. The joint defaults to "rigid": use "rigid" (or "bolt"/"face") for every part that is fixed in the pose shown. Only use "hinge", "shaft" or "slide" when the object genuinely moves in use, and only declare a range whose whole sweep stays clear of every other body; a hinge that sweeps into a propeller makes the design invalid. If a part only folds in the folded pose and you are showing it deployed, keep it "rigid".
+
+WORKED EXAMPLE (two-wheel rover, abridged; the same anchor and floor arithmetic applies to legs, feet, bases and arms):
+{"schema_version":"2.0","mode":"concept_only","subject":"two-wheel rover","seed":1,"strategy":"closest_to_reference",
+ "visual_goal":{"signature_features":["flat deck","large side wheels","front sensor pod"],"description":"compact indoor rover","palette":[{"name":"orange","hex":"#f08a24"}],"target_size_mm":[150,90,180]},
+ "constraints":{"max_bounds_mm":[300,300,300],"min_wall_mm":1.6,"min_general_clearance_mm":1.0,"must_be_stable":true},
+ "bodies":[
+  {"id":"chassis","name":"Chassis","role":"chassis","kind":"fabricated","parent_id":null,
+   "shape":{"type":"rounded_box","dimensions_mm":[120,24,160],"radius_mm":6},"material":{"name":"pla","color":"#f08a24"},"manufacturing":"3d_print"},
+  {"id":"wheel_left","name":"Left wheel","role":"wheel","kind":"fabricated","parent_id":"chassis",
+   "attachment":{"parent_anchor":"left","child_anchor":"right","joint":"shaft","axis":"X","offset_mm":[0,0,30],"contact":"touch","adjust_mm":6},
+   "shape":{"type":"wheel","radius_mm":34,"height_mm":12,"wall_mm":6,"axis":"X"},"material":{"name":"rubber","color":"#24272c"},"manufacturing":"3d_print"},
+  {"id":"wheel_right","name":"Right wheel","role":"wheel","kind":"fabricated","parent_id":"chassis",
+   "attachment":{"parent_anchor":"right","child_anchor":"left","joint":"shaft","axis":"X","offset_mm":[0,0,30],"contact":"touch","adjust_mm":6},
+   "shape":{"type":"wheel","radius_mm":34,"height_mm":12,"wall_mm":6,"axis":"X"},"material":{"name":"rubber","color":"#24272c"},"manufacturing":"3d_print"},
+  {"id":"caster","name":"Rear caster ball","role":"caster","kind":"fabricated","parent_id":"chassis",
+   "attachment":{"parent_anchor":"bottom","child_anchor":"top","offset_mm":[0,0,-60],"contact":"touch","adjust_mm":6},
+   "shape":{"type":"sphere","radius_mm":11},"material":{"name":"pla","color":"#24272c"},"manufacturing":"3d_print"}],
+ "notes":["wheels reach 34 - 24/2 = 22 mm below the chassis bottom, so the 22 mm tall caster ball reaches the same floor"]}
+Note how the caster's size follows from the wheel radius and the chassis height. Do that arithmetic for every contact part."""
 
 
 def _parse(reply: str) -> dict:

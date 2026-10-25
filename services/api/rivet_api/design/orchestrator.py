@@ -9,11 +9,15 @@ import hashlib
 import io
 import json
 import threading
+import types
+import typing
 import zipfile
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable
+
+from pydantic import BaseModel
 
 from rivet_engine import engineering_bridge
 from rivet_engine.design_compiler import DesignValidationError, compile_design, kernel_versions
@@ -59,6 +63,74 @@ def cache_key(svc: DesignServices, request: dict, image_sha: str | None, provide
     return digest({"prompt": " ".join(request["input"]["user_text"].lower().split()), "image": image_sha, "mode": request["mode"], "quality": request["quality"],
                    "candidates": request["candidate_count"], "rounds": request["review_rounds"], "constraints": request.get("constraints") or {},
                    "catalog": svc.catalog_digest(), "schema": "2.0", "kernel": kernel_versions()["geometry"], "providers": provider_names, "renderer": svc.renderer})
+
+
+def _as_text(value: Any) -> str:
+    """One line of prose from whatever shape the model used (string, list or object)."""
+    if value is None or isinstance(value, (str, int, float, bool)):
+        return str(value or "")
+    if isinstance(value, (list, tuple, set)):
+        return "; ".join(_as_text(v) for v in value if v not in (None, ""))
+    if isinstance(value, dict):
+        return "; ".join(f"{k}: {_as_text(v)}" for k, v in value.items() if v not in (None, ""))
+    return str(value)
+
+
+def _as_list(value: Any) -> list[str]:
+    """A model may answer a list field with one string; iterating it would store characters."""
+    if value is None:
+        return []
+    if isinstance(value, dict):
+        value = [f"{k}: {_as_text(v)}" for k, v in value.items()]
+    items = value if isinstance(value, (list, tuple, set)) else [value]
+    return [_as_text(x)[:200] for x in items if x not in (None, "", [], {})][:12]
+
+
+def _model_type(annotation: Any) -> Any:
+    """The BaseModel (or element type) behind a field annotation, unwrapping Optional/list."""
+    origin = typing.get_origin(annotation)
+    if origin is typing.Union or origin is types.UnionType:
+        args = [a for a in typing.get_args(annotation) if a is not type(None)]
+        return _model_type(args[0]) if args else None
+    if origin in (list, tuple, set, frozenset):
+        args = typing.get_args(annotation)
+        return _model_type(args[0]) if args else None
+    return annotation
+
+
+def _is_collection(annotation: Any) -> bool:
+    origin = typing.get_origin(annotation)
+    if origin is typing.Union or origin is types.UnionType:
+        args = [a for a in typing.get_args(annotation) if a is not type(None)]
+        return _is_collection(args[0]) if args else False
+    return origin in (list, tuple, set, frozenset)
+
+
+def prune_to_schema(model_cls: type[BaseModel], value: Any) -> Any:
+    """Drop keys and malformed items a model invented that the schema does not define.
+
+    Model output is untrusted: an extra field or a list of bare strings must not sink a whole
+    candidate. Unknown keys are ignored, non-object entries of a list of models are dropped, and a
+    lone object where a list was expected is wrapped; everything the schema defines is still
+    validated strictly afterwards.
+    """
+    if not isinstance(model_cls, type) or not issubclass(model_cls, BaseModel):
+        return value
+    if isinstance(value, list):
+        return [prune_to_schema(model_cls, v) for v in value if isinstance(v, dict)]
+    if not isinstance(value, dict):
+        return value
+    fields = model_cls.model_fields
+    out: dict[str, Any] = {}
+    for key, item in value.items():
+        field = fields.get(key)
+        if field is None:
+            continue
+        if _is_collection(field.annotation) and isinstance(item, dict):
+            item = [item]
+        target = _model_type(field.annotation)
+        out[key] = prune_to_schema(target, item) if isinstance(target, type) and issubclass(target, BaseModel) else item
+    return out
 
 
 class Run:
@@ -109,23 +181,28 @@ class Run:
         if self.model.mode == "live":
             self.spend("vision" if image else "chat")
         raw = self.model.distill(self.request["input"]["user_text"], image, self.request["mode"])
-        feats = [str(f)[:80] for f in (raw.get("signature_features") or []) if str(f).strip()][:6]
+        feats = _as_list(raw.get("signature_features"))[:6]
         while len(feats) < 3:
             feats.append(["clear silhouette", "recognisable proportions", "distinct parts"][len(feats)])
         clean = {k: raw.get(k) for k in DistilledIntent.model_fields if k in raw}
-        clean.update(signature_features=feats, subject=str(raw.get("subject") or "design")[:240], summary=str(raw.get("summary") or "")[:2000])
-        clean["palette"] = [p for p in (raw.get("palette") or []) if isinstance(p, dict) and isinstance(p.get("hex"), str) and len(p["hex"]) == 7 and p["hex"].startswith("#")][:8]
-        clean["proportions"] = {k: float(v) for k, v in (raw.get("proportions") or {}).items() if isinstance(v, (int, float)) and 0 < v <= 100}
-        if clean.get("target_size_mm") is not None and not (isinstance(clean["target_size_mm"], list) and len(clean["target_size_mm"]) == 3):
-            clean["target_size_mm"] = None
+        clean.update(signature_features=[f[:80] for f in feats], subject=str(raw.get("subject") or "design")[:240], summary=str(raw.get("summary") or "")[:2000])
+        palette = raw.get("palette") if isinstance(raw.get("palette"), list) else []
+        clean["palette"] = [p for p in palette if isinstance(p, dict) and isinstance(p.get("hex"), str) and len(p["hex"]) == 7 and p["hex"].startswith("#")][:8]
+        proportions = raw.get("proportions") if isinstance(raw.get("proportions"), dict) else {}
+        clean["proportions"] = {str(k)[:40]: float(v) for k, v in proportions.items() if isinstance(v, (int, float)) and not isinstance(v, bool) and 0 < v <= 100}
+        size = clean.get("target_size_mm")
+        clean["target_size_mm"] = (
+            [float(v) for v in size] if isinstance(size, (list, tuple)) and len(size) == 3
+            and all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in size) else None
+        )
         if clean.get("sensor_height") not in (None, "low", "mid", "high"):
             clean["sensor_height"] = None
         for key in ("goals", "materials", "mechanical_constraints", "supported", "unsupported", "simplifications", "uncertainties", "image_observations"):
-            clean[key] = [str(x)[:200] for x in (clean.get(key) or []) if x][:12]
-        if not isinstance(clean.get("wheel_count"), int):
-            clean["wheel_count"] = None
-        clean["functional_behavior"] = str(clean.get("functional_behavior") or "")[:400]
-        clean["archetype"] = str(clean.get("archetype") or "object")[:40]
+            clean[key] = _as_list(clean.get(key))
+        wheels = clean.get("wheel_count")
+        clean["wheel_count"] = wheels if isinstance(wheels, int) and not isinstance(wheels, bool) and 0 <= wheels <= 12 else None
+        clean["functional_behavior"] = _as_text(clean.get("functional_behavior"))[:400]
+        clean["archetype"] = _as_text(clean.get("archetype") or "object")[:40]
         clean["source"] = "model" if self.model.mode == "live" else "rules"
         intent = DistilledIntent.model_validate(clean).model_dump(mode="json")
         asset = self.put(json.dumps(intent, sort_keys=True).encode(), "application/json")
@@ -203,15 +280,15 @@ class Run:
             return self.model.author(intent, strategy, seed, self.request["mode"], self.svc.catalog, feedback)
         return procedural.author(intent, strategy, seed, self.request["mode"])
 
-    def propose(self, intent: dict, strategy: str, index: int) -> dict:
-        feedback: list[str] = []
+    def propose(self, intent: dict, strategy: str, index: int, feedback: list[str] | None = None) -> dict:
+        from rivet_engine.design_ir import DesignSpec
+
+        feedback = list(feedback or [])
         for attempt in range(2 if self.model.mode == "live" else 1):
             spec = self.author(intent, strategy, index * 101 + attempt, feedback)
             spec.update(mode=self.request["mode"], strategy=strategy)
             try:
-                from rivet_engine.design_ir import DesignSpec
-
-                return DesignSpec.model_validate(spec).model_dump(mode="json")
+                return DesignSpec.model_validate(prune_to_schema(DesignSpec, spec)).model_dump(mode="json")
             except Exception as exc:  # noqa: BLE001 - structured feedback for one repair round
                 errors = getattr(exc, "errors", lambda: [])()
                 feedback = [f"{'.'.join(str(p) for p in e.get('loc', []))}: {e.get('msg')}" for e in errors][:20] or [str(exc)[:300]]
@@ -232,15 +309,26 @@ class Run:
         if result["geometry_report"]["status"] != "valid" and self.model.mode == "live":
             self.spend("chat")
             issues = result["geometry_report"]["collisions"]["hard_collisions"][:8] + result["geometry_report"]["manufacturing"]["issues"][:6]
+            instruction = "Fix these geometry validation issues without changing the design intent."
             try:
-                patched = apply_patch(spec, self.model.patch(spec, "Fix these geometry validation issues without changing the design intent.", issues, []))
+                patched = apply_patch(spec, self.model.patch(spec, instruction, issues, []))
+            except ValueError as exc:
+                # One retry with the validation error fed back; a rejected patch is otherwise a lost revision.
+                self.spend("chat")
+                try:
+                    patched = apply_patch(spec, self.model.patch(spec, f"{instruction}\nYour previous patch was rejected: {exc}. Return a corrected DesignPatch.", issues, []))
+                except (ValueError, ApiError) as retry_exc:
+                    iterations.append({"kind": "model_patch", "accepted": False, "error": str(getattr(retry_exc, "message", retry_exc))[:300]})
+                    patched = None
+            except ApiError as exc:
+                iterations.append({"kind": "model_patch", "accepted": False, "error": str(exc.message)[:300]})
+                patched = None
+            if patched is not None:
                 trial = self.compile(patched.model_dump(mode="json"), cid, f"{tag}-patch", False)
                 ok = issue_score(trial) < issue_score(result)
                 iterations.append({"kind": "model_patch", "accepted": ok, "score_before": issue_score(result), "score_after": issue_score(trial), "changed": changed_bodies(spec, patched)})
                 if ok:
                     spec, result = patched.model_dump(mode="json"), trial
-            except (ValueError, ApiError) as exc:
-                iterations.append({"kind": "model_patch", "accepted": False, "error": str(getattr(exc, "message", exc))[:300]})
         rep = result["geometry_report"]
         mech_asset = self.put(json.dumps(rep, sort_keys=True, default=str).encode(), "application/json")
         self.emit("mechanical_report", f"{cid}: geometry {rep['status']}; {rep['counts']['hard_collisions']} hard collisions, stability {rep['stability']['verdict']}",
@@ -288,18 +376,70 @@ class Run:
             "bom": result["bom"], "assembly_steps": result["assembly_steps"], "iterations": iterations,
         }
 
+    @staticmethod
+    def geometry_feedback(cand: dict) -> list[str]:
+        """The engine's blocking findings, phrased for the authoring model."""
+        mech = cand.get("mechanical") or {}
+        notes = [f"The engine rejected the previous attempt: {reason}." for reason in (mech.get("blocking") or [])]
+        stab = mech.get("stability") or {}
+        if stab.get("verdict") in ("unstable", "uncertain", "marginal"):
+            notes.append(
+                f"Stability {stab['verdict']}: {stab.get('reason', '')} Contact parts were {stab.get('contact_bodies') or 'none'} "
+                f"over {stab.get('support_area_mm2', 0)} mm2. Make every intended wheel, foot or base reach the same lowest level "
+                "and give at least three contact patches that are not in a straight line."
+            )
+        for hit in (mech.get("collisions") or {}).get("hard_collisions", [])[:6]:
+            notes.append(f"{hit.get('a')} and {hit.get('b')} intersect by {hit.get('depth_mm', hit.get('volume_mm3'))}; move one onto the other's outer face instead.")
+        for body in (cand.get("part_manifest") or []):
+            if body.get("status") != "placed":
+                notes.append(f"Body {body['body_id']} could not be placed: {body.get('error') or body.get('status')}.")
+        return notes[:14]
+
     def candidate(self, intent, refs, strategy, index) -> dict:
         cid = f"cand-{index + 1}"
         self.emit("candidate_started", f"{cid}: authoring a {strategy.replace('_', ' ')} design", actor="planner", candidate_id=cid)
         try:
             spec = self.propose(intent, strategy, index)
-            return self.evaluate(cid, strategy, spec, intent, refs, "v1", True)
+            cand = self.evaluate(cid, strategy, spec, intent, refs, "v1", True)
+            if not cand["feasible"]:
+                cand = self.reauthor(cand, intent, refs, strategy, index)
+            return cand
         except (Cancelled, BudgetExhausted):
             raise
         except (ApiError, DesignValidationError) as exc:
             err = exc.envelope()["error"] if isinstance(exc, ApiError) else {"code": "DESIGN_INVALID", "message": str(exc), "details": {"errors": exc.errors[:20]}}
             self.emit("candidate_complete", f"{cid}: failed ({err['message'][:160]})", status="failed", actor="planner", candidate_id=cid)
             return {"id": cid, "strategy": strategy, "status": "failed", "error": err}
+
+    def reauthor(self, cand: dict, intent: dict, refs, strategy: str, index: int) -> dict:
+        """One extra authoring attempt once geometry repair and the model patch both failed.
+        Kept only if the new design is actually better; the rejected attempt stays in the log."""
+        feedback = self.geometry_feedback(cand)
+        if not feedback:
+            return cand
+        self.emit("candidate_started", f"{cand['id']}: re-authoring once with the engine's blocking findings", status="warning", actor="planner", candidate_id=cand["id"])
+        try:
+            spec = self.propose(intent, strategy, index, feedback=feedback)
+            retry = self.evaluate(cand["id"], strategy, spec, intent, refs, "reauthor", False)
+        except (ApiError, DesignValidationError) as exc:
+            cand["iterations"].append({"kind": "reauthor", "accepted": False, "feedback": feedback, "error": str(getattr(exc, "message", exc))[:300]})
+            return cand
+
+        def score(c: dict) -> tuple:
+            return (c["feasible"], -len(c["mechanical"]["blocking"]), c["visual"]["overall"])
+
+        better = score(retry) > score(cand)
+        record = {"kind": "reauthor", "accepted": better, "feedback": feedback, "blocking_before": cand["mechanical"]["blocking"],
+                  "blocking_after": retry["mechanical"]["blocking"], "score_before": cand["visual"]["overall"], "score_after": retry["visual"]["overall"]}
+        self.emit("candidate_complete" if better else "revision_ready",
+                  f"{cand['id']}: re-authored design {'kept' if better else 'rolled back'} "
+                  f"({len(cand['mechanical']['blocking'])} -> {len(retry['mechanical']['blocking'])} blocking findings)",
+                  status="ok" if better else "warning", actor="planner", candidate_id=cand["id"])
+        if better:
+            retry["iterations"] = cand["iterations"] + retry["iterations"] + [record]
+            return retry
+        cand["iterations"].append(record)
+        return cand
 
     def refine(self, cand: dict, intent: dict, refs) -> dict:
         review = cand["visual"]
