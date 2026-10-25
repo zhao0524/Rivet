@@ -47,8 +47,8 @@ test.describe('Recent projects gallery (/new)', () => {
     expect(await readProjects(page)).toEqual([]);
 
     await page.getByTestId('new-sample-example').click();
-    await expectUrl(page, /\/p\/p_[a-z0-9]+\/review$/);
-    await expect(page.getByTestId('review-step')).toBeVisible();
+    await expectUrl(page, /\/p\/p_[a-z0-9]+\/workspace$/);
+    await expect(page.getByTestId('workspace')).toBeVisible();
     const [project] = await readProjects(page);
     expect(project).toMatchObject({ exampleId: EXAMPLE_ID, buildId: EXAMPLE_ID, phase: 'ready' });
     expect(errors).toEqual([]);

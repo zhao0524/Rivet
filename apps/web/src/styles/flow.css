@@ -30,6 +30,8 @@
 /* ── Stepper ──────────────────────────────────────────── */
 .stepper { position: sticky; top: 60px; z-index: 35; display: flex; gap: 24px; overflow-x: auto; padding: 12px 20px; border-bottom: 1px solid var(--ui-border); background: var(--ui-surface); scrollbar-width: none; }
 .stepper__phase { display: grid; gap: 6px; flex: none; }
+.stepper__back { display: inline-flex; align-items: center; gap: 6px; align-self: flex-end; flex: none; height: 32px; padding: 0 12px 0 8px; border-radius: 8px; color: var(--ui-muted); font-size: 13px; font-weight: 500; text-decoration: none; }
+.stepper__back:hover { background: var(--ui-raised); color: var(--ui-text); }
 .stepper__phase + .stepper__phase { padding-left: 24px; border-left: 1px solid var(--ui-border); }
 .stepper__phase-label { font: 500 11px/1.2 var(--ui-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ui-subtle); }
 .stepper__steps { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; }

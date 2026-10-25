@@ -9,8 +9,8 @@ test.describe('Projects', () => {
     await expect(page.getByTestId('projects-new')).toHaveAttribute('href', '/new');
 
     await page.getByTestId('projects-example').click();
-    await expectUrl(page, /\/p\/p_[a-z0-9]+\/review$/);
-    await expect(page.getByTestId('review-step')).toBeVisible();
+    await expectUrl(page, /\/p\/p_[a-z0-9]+\/workspace$/);
+    await expect(page.getByTestId('workspace')).toBeVisible();
     const [project] = await readProjects(page);
     expect(project).toMatchObject({ exampleId: EXAMPLE_ID, phase: 'ready' });
     expect(errors).toEqual([]);
@@ -27,8 +27,8 @@ test.describe('Projects', () => {
     await expect(list).toBeVisible();
     const cards = list.locator('[data-testid^="projects-card-"]');
     await expect(cards).toHaveCount(2);
-    await expect(page.getByTestId(`projects-card-${ready.id}`)).toContainText('Step 3 of 5');
-    await expect(page.getByTestId(`projects-card-${clarifying.id}`)).toContainText('Clarifying');
+    await expect(page.getByTestId(`projects-card-${ready.id}`)).toContainText('Step 1 of 2 · Buy');
+    await expect(page.getByTestId(`projects-card-${clarifying.id}`)).toContainText('Reading your idea');
 
     // Rename
     await page.getByTestId(`projects-menu-${ready.id}`).click();
@@ -66,10 +66,10 @@ test.describe('Projects', () => {
     expect(saved.map((p) => p.title).sort()).toEqual(['Desk rover', 'Desk rover (copy)']);
     expect(saved.find((p) => p.id === clarifying.id)).toBeUndefined();
 
-    // Opening a card resumes at its furthest step.
+    // Opening a card opens its workspace, with the build guide open where it left off (past Wiring: Buy).
     await page.getByRole('link', { name: 'Open Desk rover', exact: true }).click();
-    await expectUrl(page, `/p/${ready.id}/wiring`);
-    await expect(page.getByTestId('wiring-step')).toBeVisible();
+    await expectUrl(page, `/p/${ready.id}/workspace`);
+    await expect(page.getByTestId('workspace-guide-buy-toggle')).toHaveAttribute('aria-expanded', 'true');
     expect(errors).toEqual([]);
   });
 });

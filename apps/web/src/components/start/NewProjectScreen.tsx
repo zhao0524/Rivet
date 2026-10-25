@@ -6,11 +6,11 @@ import { useAppRouter } from '../system/Navigation';
 import { useEffect, useMemo, useState } from 'react';
 import {
   createProjectRecord,
-  getProject,
   newId,
+  publishedProjects,
   readDraft,
   saveProject,
-  titleFromPrompt,
+  submitDraftProject,
   useProjects,
   writeDraft,
 } from '../../lib/flow/projects';
@@ -57,6 +57,7 @@ export function NewProjectScreen() {
     () => [...projects].sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt)).slice(0, RECENT_LIMIT),
     [projects],
   );
+  const community = useMemo(() => publishedProjects(projects), [projects]);
 
   // The stored list is only readable after mount; keep the gallery as skeletons until then.
   useEffect(() => {
@@ -109,7 +110,7 @@ export function NewProjectScreen() {
           furthestStep: 'review',
         }),
       );
-      router.push(projectPath(record.id, 'review'));
+      router.push(projectPath(record.id, 'workspace'));
       return;
     }
     fill(sample.prompt);
@@ -134,27 +135,14 @@ export function NewProjectScreen() {
       }
     }
 
-    const prompt = draft.text.trim();
-    const existing = getProject(draft.id);
-    const title = prompt ? titleFromPrompt(prompt) : 'Robot from a picture';
-    if (existing) {
-      // Same draft, new submission: the prompt changed, so the reading must be redone.
-      const keepTitle = existing.title !== titleFromPrompt(existing.prompt) && existing.title !== 'Robot from a picture';
-      saveProject({
-        ...existing,
-        prompt,
-        title: keepTitle ? existing.title : title,
-        imageAssetId: imageAssetId ?? (image ? null : existing.imageAssetId),
-        imagePreviewUrl: imagePreviewUrl ?? (image ? null : existing.imagePreviewUrl),
-        phase: 'clarify',
-        intentId: null,
-        assumptions: [],
-      });
-    } else {
-      saveProject(createProjectRecord({ id: draft.id, prompt, title, imageAssetId, imagePreviewUrl, phase: 'clarify' }));
-    }
+    submitDraftProject({
+      id: draft.id,
+      prompt: draft.text,
+      image: image ? { assetId: imageAssetId, previewUrl: imagePreviewUrl } : 'keep',
+    });
     writeDraft(null);
-    router.push(projectPath(draft.id, 'clarify'));
+    // Straight into the workspace: Rivet reads the idea, builds it and asks its questions in the chat.
+    router.push(projectPath(draft.id, 'workspace'));
   }
 
   return (
@@ -234,6 +222,28 @@ export function NewProjectScreen() {
             </ul>
           </div>
         </section>
+
+        {mounted && community.length > 0 ? (
+          <section className="gal" aria-labelledby="new-community-title" data-testid="new-community" id="community">
+            <div className="gal__head">
+              <div>
+                <h2 className="ui-h2" id="new-community-title">
+                  Community builds
+                </h2>
+                <p className="gal__lede">Builds people published. Open one to see how it&apos;s made, or build your own version.</p>
+              </div>
+            </div>
+            <div className="gal__clip">
+              <ul className="gal-grid" data-testid="new-community-list">
+                {community.map((p, i) => (
+                  <li key={p.id} data-kind="community">
+                    <ProjectCard project={p} now={now} index={i + 1} testPrefix="community" meta="Published by you" />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        ) : null}
       </main>
     </>
   );

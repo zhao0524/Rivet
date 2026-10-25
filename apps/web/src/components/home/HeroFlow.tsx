@@ -1,22 +1,27 @@
 'use client';
 
 import { useAppRouter } from '../system/Navigation';
-import { useState, type ReactNode } from 'react';
+import { useState, type FormEvent, type ReactNode } from 'react';
 import {
   createProjectRecord,
+  readAccount,
+  saveAccount,
   saveProject,
+  submitDraftProject,
+  writeDraft,
   type Draft,
+  type LocalAccount,
 } from '../../lib/flow/projects';
 import { setPendingImage } from '../../lib/flow/pending-image';
 import { projectPath } from '../../lib/flow/steps';
 import { PromptBox } from '../flow/PromptBox';
-import { Icon, type IconName } from '../system/Icon';
+import { Icon } from '../system/Icon';
 import { Modal } from '../system/Modal';
 
 /** The sourced saved example every "See an example" link opens. */
 export const EXAMPLE_ID = 'rivet-intent-rover-001';
 
-/** Saves a ready example project and returns the route of its Review step. */
+/** Saves a ready example project and returns the route of its workspace. */
 export function createExampleProject(): string {
   const record = saveProject(
     createProjectRecord({
@@ -27,7 +32,7 @@ export function createExampleProject(): string {
       phase: 'ready',
     }),
   );
-  return projectPath(record.id, 'review');
+  return projectPath(record.id, 'workspace');
 }
 
 /** A button that opens the saved example in the app. Used by the hero, the paths and the showcase. */
@@ -48,36 +53,35 @@ export function ExampleButton({
   );
 }
 
-const DELIVERABLES: ReadonlyArray<{ icon: IconName; title: string; body: string }> = [
-  { icon: 'cart', title: 'Parts list', body: 'Real parts. Prices and stores only where Rivet checked them.' },
-  { icon: 'bolt', title: 'Wiring', body: 'Every wire drawn on the 3D model, with the pin it plugs into.' },
-  { icon: 'download', title: 'Starter code', body: 'Code for the ESP32 controller board with your wiring already filled in.' },
-  { icon: 'check', title: 'Step-by-step build', body: 'The order to put it together, with safety notes on every step.' },
-];
-
 /** Starter prompts, from a first robot to an ambitious one. Short enough to share one row. */
 const EXAMPLE_PROMPTS = [
   'A robot car that avoids walls',
   'Help me build a drone from scratch',
 ] as const;
 
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 /**
- * The shared PromptBox keeps the draft in the
- * browser under a stable id; "Build it" previews what Rivet will make without generating
- * anything, then hands the draft to `/new?draft=<id>`. No account is needed for local projects.
+ * Landing hero flow. "Build it" opens the project's workspace straight away, where Rivet reads the
+ * idea and builds it. Someone not signed in signs in first (M2), then lands in the same workspace; the
+ * prompt and picture carry over, so nothing is typed twice.
  */
 export function HeroFlow() {
   const router = useAppRouter();
   const [draft, setDraft] = useState<Draft | null>(null);
-  const [stage, setStage] = useState<'idle' | 'preview'>('idle');
+  const [signIn, setSignIn] = useState(false);
 
-  function openApp(draftId: string) {
-    router.push(`/new?draft=${encodeURIComponent(draftId)}`);
+  function openWorkspace(next: Draft) {
+    // The picture, if any, waits in memory (pending-image) and is uploaded by the workspace.
+    submitDraftProject({ id: next.id, prompt: next.text, image: { assetId: null, previewUrl: null } });
+    writeDraft(null);
+    router.push(projectPath(next.id, 'workspace'));
   }
 
-  function continueFromPreview() {
-    if (!draft) return;
-    openApp(draft.id);
+  function signedIn(account: LocalAccount) {
+    saveAccount(account);
+    setSignIn(false);
+    if (draft) openWorkspace(draft);
   }
 
   return (
@@ -91,77 +95,95 @@ export function HeroFlow() {
         onSubmit={({ draft: next, image }) => {
           setPendingImage(next.id, image);
           setDraft(next);
-          setStage('preview');
+          if (readAccount()) openWorkspace(next);
+          else setSignIn(true);
         }}
       />
-
-      <GuestPreview
-        open={stage === 'preview'}
-        prompt={draft?.text ?? ''}
-        onClose={() => setStage('idle')}
-        onContinue={continueFromPreview}
-      />
+      <SignInModal open={signIn} onClose={() => setSignIn(false)} onSave={signedIn} />
     </div>
   );
 }
 
-/** Guest preview: what Rivet is about to make, before anything is generated. */
-function GuestPreview({
+/** M2 Sign in before the first build. Hackathon scope: both paths store a local account; nothing is sent. */
+export function SignInModal({
   open,
-  prompt,
   onClose,
-  onContinue,
+  onSave,
 }: {
   open: boolean;
-  prompt: string;
   onClose: () => void;
-  onContinue: () => void;
+  onSave: (account: LocalAccount) => void;
 }) {
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState<string | null>(null);
+
+  function submitEmail(e: FormEvent) {
+    e.preventDefault();
+    const value = email.trim();
+    if (!EMAIL.test(value)) {
+      setError('Enter an email address like you@school.edu.');
+      return;
+    }
+    onSave({ email: value, provider: 'email', savedAt: new Date().toISOString() });
+  }
+
   return (
     <Modal
       open={open}
       onClose={onClose}
-      title="Here is what Rivet will make"
-      description="Nothing is generated yet. Continue to confirm the request. Your project is saved in this browser."
-      testId="guest-preview"
-      initialFocus="[data-testid='preview-continue']"
-      footer={
-        <button type="button" className="ui-btn ui-btn--primary" onClick={onContinue} data-testid="preview-continue">
-          Continue to build
-          <Icon name="arrowRight" />
-        </button>
-      }
+      title="Sign in to build"
+      description="Rivet saves the project to your account, then opens it in the workspace."
+      testId="save-modal"
     >
-      <div className="mk-preview">
-        <blockquote className="mk-preview__echo">
-          <span>Your prompt</span>
-          {prompt || 'A picture, no text'}
-        </blockquote>
-
-        <div className="mk-preview__frame">
-          <span className="ui-badge ui-badge--ok">
-            <Icon name="check" size={12} /> Rover · supported today
-          </span>
-          <span className="ui-small ui-muted">
-            Rivet builds indoor rovers today. It matches your idea to the closest rover it can make, and you confirm
-            the details before it starts designing.
-          </span>
+      <form className="mk-save" onSubmit={submitEmail} noValidate>
+        <div className="ui-field">
+          <label htmlFor="save-email" className="ui-label">
+            Email
+          </label>
+          <input
+            id="save-email"
+            className="ui-input"
+            type="email"
+            autoComplete="email"
+            inputMode="email"
+            placeholder="you@school.edu"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setError(null);
+            }}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? 'save-email-err' : undefined}
+            data-testid="save-email"
+          />
+          {error ? (
+            <p id="save-email-err" role="alert" className="mk-save__error">
+              {error}
+            </p>
+          ) : null}
         </div>
-
-        <ul className="mk-preview__list" aria-label="What you get">
-          {DELIVERABLES.map((d) => (
-            <li key={d.title}>
-              <span className="mk-preview__icon" aria-hidden="true">
-                <Icon name={d.icon} />
-              </span>
-              <div>
-                <strong>{d.title}</strong>
-                <span>{d.body}</span>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+        <button type="submit" className="ui-btn ui-btn--primary ui-btn--block" data-testid="save-continue-email">
+          Continue with email
+        </button>
+        <div className="mk-save__or" aria-hidden="true">
+          or
+        </div>
+        <button
+          type="button"
+          className="ui-btn ui-btn--secondary ui-btn--block"
+          data-testid="save-continue-google"
+          onClick={() => onSave({ email: 'Google account', provider: 'google', savedAt: new Date().toISOString() })}
+        >
+          Continue with Google
+        </button>
+        <p className="mk-save__note">
+          <Icon name="info" />
+          <span>
+            Hackathon build: the project is saved in this browser only. Accounts are not live yet, so no email is sent
+            and nothing leaves this device.
+          </span>
+        </p>
+      </form>
     </Modal>
   );
 }

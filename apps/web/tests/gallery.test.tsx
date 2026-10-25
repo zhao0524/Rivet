@@ -51,8 +51,18 @@ describe('/new recent projects gallery', () => {
     expect(kinds.slice(2).every((k) => k === 'sample')).toBe(true);
     const items = within(list).getAllByRole('listitem');
     expect(items[0]!.textContent).toContain('Newer rover');
-    expect(items[0]!.textContent).toContain('Step 2 of 5');
+    expect(items[0]!.textContent).toContain('Step 1 of 2');
     expect(items[1]!.textContent).toContain('Older rover');
+  });
+
+  it('lists published builds under Community builds, tagged Published', async () => {
+    saveProject({ ...createProjectRecord({ id: 'p_pub', prompt: 'x', title: 'Wall-dodging rover', phase: 'ready' }), publishedAt: new Date().toISOString() });
+    saveProject(createProjectRecord({ id: 'p_private', prompt: 'y', title: 'Private rover', phase: 'ready' }));
+    await renderIn(<NewProjectScreen />);
+    const community = await screen.findByTestId('new-community-list');
+    expect(community.textContent).toContain('Wall-dodging rover');
+    expect(community.textContent).toContain('Published');
+    expect(community.textContent).not.toContain('Private rover');
   });
 
   it('tags every sample, and only samples, with "Sample"', async () => {
@@ -65,13 +75,13 @@ describe('/new recent projects gallery', () => {
     expect(within(screen.getByTestId('new-card-p_new')).queryByText('Sample')).toBeNull();
   });
 
-  it('the rover sample opens the saved example as a ready project on Review', async () => {
+  it('the rover sample opens the saved example as a ready project in its workspace', async () => {
     await renderIn(<NewProjectScreen />);
     fireEvent.click(await screen.findByTestId('new-sample-example'));
     const all = JSON.parse(localStorage.getItem('rivet.projects.v1') ?? '[]') as Array<Record<string, unknown>>;
     expect(all).toHaveLength(1);
     expect(all[0]).toMatchObject({ exampleId: 'rivet-intent-rover-001', buildId: 'rivet-intent-rover-001', phase: 'ready' });
-    expect(nav.push).toHaveBeenCalledWith(`/p/${all[0]!.id}/review`);
+    expect(nav.push).toHaveBeenCalledWith(`/p/${all[0]!.id}/workspace`);
   });
 
   it('a non-rover sample fills the prompt and focuses it, without creating a project', async () => {

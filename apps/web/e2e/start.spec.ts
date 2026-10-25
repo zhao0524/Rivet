@@ -3,8 +3,8 @@ import { expectUrl, projectRecord, readProject, readProjects, seedProjects, watc
 
 const PROMPT = 'Build a small rover that avoids obstacles';
 
-test.describe('Prompt → Clarify → Generate', () => {
-  test('three clarify cards with a budget choice, then the saved example loads and Review marks the project ready', async ({
+test.describe('Prompt → workspace', () => {
+  test('a prompt goes straight to the workspace: Rivet reads it, builds it, then asks about budget and size in the chat', async ({
     page,
   }) => {
     const errors = watchPageErrors(page);
@@ -17,105 +17,94 @@ test.describe('Prompt → Clarify → Generate', () => {
     await page.getByTestId('new-prompt-input').fill(PROMPT);
     await page.getByTestId('new-prompt-submit').click();
 
-    await expectUrl(page, /\/p\/p_[a-z0-9]+\/clarify$/);
+    // No clarify or generate screens in between.
+    await expectUrl(page, /\/p\/p_[a-z0-9]+\/workspace$/);
     const id = page.url().split('/')[4]!;
-    await expect(page.getByTestId('clarify-screen')).toBeVisible();
+    await expect(page.getByTestId('workspace-chat-prompt')).toContainText(PROMPT);
 
-    // Card 1: what Rivet understood, honestly labelled offline.
-    await expect(page.getByTestId('clarify-progress')).toHaveText('Question 1 of 3');
-    await expect(page.getByTestId('clarify-understood')).toBeVisible();
-    await expect(page.getByTestId('clarify-understood')).toContainText('The saved example is an indoor rover');
-    await expect(page.getByTestId('clarify-offline')).toContainText("This is a saved example. Rivet didn't read your words");
-    await expect(page.getByTestId('clarify-thinking-label')).toHaveText(/^Answered in \d/);
-    await expect(page.getByTestId('clarify-thinking-steps').locator('li')).toHaveCount(1);
-    await expect(page.getByTestId('clarify-next')).toHaveText(/^Next/);
-    await page.getByTestId('clarify-next').click();
+    // What Rivet read, honestly labelled offline, then what it built.
+    await expect(page.getByTestId('workspace-chat-understood')).toContainText('The saved example is an indoor rover');
+    await expect(page.getByTestId('workspace-chat-offline')).toContainText("isn't connected");
+    await expect(page.getByTestId('workspace-chat-built')).toContainText(/Picked \d+ parts/);
+    await expect(page.getByTestId('workspace-chat-built')).toContainText("This is a saved example. Rivet didn't design it from your words.");
+    const built = await readProject(page, id);
+    expect(built.phase).toBe('ready');
+    expect(built.buildId).toBeTruthy();
+    await expect(page.getByTestId('rover-scene').first()).toHaveAttribute('data-build-id', built.buildId!);
 
-    // Card 2: budget. A custom amount needs a number before Next works.
-    await expect(page.getByTestId('clarify-progress')).toHaveText('Question 2 of 3');
-    await expect(page.getByTestId('clarify-budget-none')).toHaveAttribute('aria-checked', 'true');
-    await page.getByTestId('clarify-budget-custom').click();
-    await expect(page.getByTestId('clarify-next')).toBeDisabled();
-    await page.getByTestId('clarify-budget-amount').fill('75');
-    await expect(page.getByTestId('clarify-next')).toBeEnabled();
-    await page.getByTestId('clarify-budget-50').click();
-    await expect(page.getByTestId('clarify-budget-50')).toHaveAttribute('aria-checked', 'true');
-    await page.getByTestId('clarify-next').click();
-
-    // Card 3: size, then Generate.
-    await expect(page.getByTestId('clarify-progress')).toHaveText('Question 3 of 3');
-    await expect(page.getByTestId('clarify-size-none')).toHaveAttribute('aria-checked', 'true');
-    await expect(page.getByTestId('clarify-next')).toHaveText(/^Generate/);
-    await page.getByTestId('clarify-next').click();
-
-    await expectUrl(page, `/p/${id}/generate`);
-    await expect(page.getByTestId('generate-screen')).toBeVisible();
+    // Budget: a custom amount needs a number; a preset answers it and rebuilds within it.
+    await expect(page.getByTestId('workspace-question-budget')).toBeVisible();
+    await page.getByTestId('workspace-answer-budget-custom').click();
+    await expect(page.getByTestId('workspace-answer-budget-set')).toBeDisabled();
+    await page.getByTestId('workspace-answer-budget-amount').fill('75');
+    await expect(page.getByTestId('workspace-answer-budget-set')).toBeEnabled();
+    await page.getByTestId('workspace-answer-budget-50').click();
+    await expect(page.getByTestId('workspace-question-size')).toBeVisible();
+    await page.getByTestId('workspace-answer-size-none').click();
+    await expect(page.getByTestId('workspace-chat-wrap')).toBeVisible();
     expect(await readProject(page, id)).toMatchObject({
-      phase: 'generating',
+      phase: 'ready',
       clarify: { max_budget: 50, max_length_mm: null, interpretation_choice: 'as_interpreted' },
     });
 
-    // Fixture mode: the saved example arrives as one real event; nothing pretends to generate.
-    await expect(page.getByTestId('generate-done')).toBeVisible();
-    await expect(page.getByTestId('generate-fixture-note')).toContainText("This is a saved example. Rivet didn't design it from your words.");
-    await expect(page.getByTestId('generate-thinking-label')).toHaveText('Loaded instantly');
-    await expect(page.getByTestId('generate-thinking-steps').locator('li')).toHaveCount(1);
-    await expect(page.getByTestId('generate-status')).toHaveText(/^Done: \d+ parts, ready to review$/);
-    await expect(page.getByTestId('generate-decided-parts')).toContainText(/Picked \d+ parts/);
-    await expect(page.getByTestId('generate-decided-checks')).toContainText(/Ran \d+ checks/);
-    // The folded trace reopens on click.
-    await expect(page.getByTestId('generate-thinking-toggle')).toHaveAttribute('aria-expanded', 'false');
-    await page.getByTestId('generate-thinking-toggle').click();
-    await expect(page.getByTestId('generate-thinking-toggle')).toHaveAttribute('aria-expanded', 'true');
-    await expect(page.getByTestId('generate-thinking-steps')).toContainText('Opened a saved example');
-    // The tree: parts open in plain groups; keyboard moves through it.
-    const tree = page.getByTestId('generate-tree');
-    await expect(page.getByTestId('generate-phase-parts')).toHaveAttribute('aria-expanded', 'true');
-    await expect(tree).toContainText('Wheels & motors');
-    await page.getByTestId('generate-phase-understand').focus();
-    await page.keyboard.press('ArrowRight');
-    await expect(page.getByTestId('generate-phase-understand')).toHaveAttribute('aria-expanded', 'true');
-    await tree.getByText('Frame', { exact: true }).click();
-    await page.getByTestId('generate-part-chassis-1').locator('> .tv-row').click();
-    await expect(page.getByTestId('generate-part-chassis-1')).toHaveAttribute('aria-selected', 'true');
-    await expect(page.getByTestId('generate-picked')).toContainText('highlighted in the model');
-    await expect(page.getByTestId('generate-viewport')).toBeVisible();
-    await expect(page.getByTestId('generate-cancel')).toHaveCount(0);
+    // The Build tab is Buy then Build. It starts closed, with a hint beside Buy that goes once Buy is opened.
+    await expect(page.getByTestId('workspace-guide-review')).toHaveCount(0);
+    await expect(page.getByTestId('workspace-guide-buy-toggle')).toHaveAttribute('aria-expanded', 'false');
+    await expect(page.getByTestId('workspace-start-hint')).toContainText('Step 1: Buy');
+    await page.getByTestId('workspace-guide-buy-toggle').click();
+    await expect(page.getByTestId('workspace-start-hint')).toHaveCount(0);
+    await expect(page.getByTestId('workspace-buy-total')).toContainText('$110.80');
 
-    await page.getByTestId('generate-review').click();
-    await expectUrl(page, `/p/${id}/review`);
-    await expect(page.getByTestId('review-step')).toBeVisible();
-    await expect(page.getByTestId('stepper')).toBeVisible();
-    const project = await readProject(page, id);
-    expect(project.phase).toBe('ready');
-    expect(project.buildId).toBeTruthy();
-    expect(project.furthestStep).toBe('review');
-    await expect(page.getByTestId('rover-scene').first()).toHaveAttribute('data-build-id', project.buildId!);
+    // The Parts tab: a part's store, picked in the model, and the printed body as a file to print.
+    await page.getByTestId('workspace-tab-left-parts').click();
+    await page.getByTestId('workspace-component-board.esp32_devkitc_v4_wroom32e').click();
+    await expect(page.getByTestId('workspace-component-buy')).toContainText('Buy at Adafruit');
+    await expect(page.getByTestId('workspace-picked')).toBeVisible();
+    await page.getByTestId('workspace-component-printed-body').click();
+    const download = page.waitForEvent('download');
+    await page.getByTestId('workspace-export-obj').click();
+    expect((await download).suggestedFilename()).toMatch(/printed-body\.obj$/);
+
+    // Saves show at the top right; Save and publish puts it in the community gallery.
+    await page.getByTestId('workspace-save').click();
+    await expect(page.getByTestId('workspace-saved')).toContainText('Saved just now');
+    await page.getByTestId('workspace-publish').click();
+    await page.getByTestId('publish-confirm').click();
+    await expect(page.getByTestId('workspace-toast')).toContainText('published');
+    expect((await readProject(page, id)).publishedAt).toBeTruthy();
+
+    // The chat and the guide survive a reload.
+    await page.reload();
+    await expect(page.getByTestId('workspace-chat-wrap')).toBeVisible();
+    await expect(page.getByTestId('workspace-guide-buy-toggle')).toHaveAttribute('aria-expanded', 'true');
+
+    // Each guide step links to its full page, which links back here.
+    await page.getByTestId('workspace-guide-buy-full').click();
+    await expectUrl(page, `/p/${id}/buy`);
+    await expect(page.getByTestId('buy-step')).toBeVisible();
+    await page.getByTestId('stepper-workspace').click();
+    await expectUrl(page, `/p/${id}/workspace`);
 
     expect(errors).toEqual([]);
   });
 
-  test('"Skip the rest" generates with the defaults', async ({ page }) => {
+  test('a reload mid-build starts the build again', async ({ page }) => {
     const errors = watchPageErrors(page);
-    const record = projectRecord({ id: 'p_e2eskip', prompt: PROMPT, phase: 'clarify' });
+    const record = projectRecord({ id: 'p_e2egen', prompt: PROMPT, phase: 'generating' });
     await seedProjects(page, [record]);
-    await page.goto(`/p/${record.id}/clarify`);
-    await expect(page.getByTestId('clarify-understood')).toBeVisible();
-    await page.getByTestId('clarify-skip').click();
-    await expectUrl(page, `/p/${record.id}/generate`);
-    expect(await readProject(page, record.id)).toMatchObject({
-      phase: 'generating',
-      clarify: { max_budget: null, max_length_mm: null },
-    });
-    await expect(page.getByTestId('generate-review')).toBeVisible();
+    await page.goto(`/p/${record.id}/workspace`);
+    await expect(page.getByTestId('workspace-question-budget')).toBeVisible();
+    expect((await readProject(page, record.id)).phase).toBe('ready');
     expect(errors).toEqual([]);
   });
 
-  test('/p/:id resumes where the project is, and an unknown id says so', async ({ page }) => {
+  test('/p/:id and old clarify links open the workspace, and an unknown id says so', async ({ page }) => {
     const clarifying = projectRecord({ id: 'p_e2eclar', prompt: PROMPT, phase: 'clarify' });
     await seedProjects(page, [clarifying]);
     await page.goto(`/p/${clarifying.id}`);
-    await expectUrl(page, `/p/${clarifying.id}/clarify`);
+    await expectUrl(page, `/p/${clarifying.id}/workspace`);
+    await page.goto(`/p/${clarifying.id}/clarify`);
+    await expectUrl(page, `/p/${clarifying.id}/workspace`);
 
     await page.goto('/p/p_doesnotexist/review');
     await expect(page.getByTestId('project-missing')).toBeVisible();

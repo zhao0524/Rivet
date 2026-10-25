@@ -303,6 +303,8 @@ button.ui-chip:hover { border-color: var(--ui-border-strong); color: var(--ui-te
 }
 .ui-modal--wide { width: min(880px, 100%); }
 .ui-modal__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 20px 20px 0; }
+.ui-modal__head--float { position: absolute; top: 12px; right: 12px; z-index: 1; padding: 0; }
+.ui-modal:has(.ui-modal__head--float) { position: relative; }
 .ui-modal__body { padding: 16px 20px; }
 .ui-modal__foot { display: flex; justify-content: flex-end; gap: 8px; padding: 0 20px 20px; }
 .ui-scrim--drawer { place-items: stretch end; padding: 0; }

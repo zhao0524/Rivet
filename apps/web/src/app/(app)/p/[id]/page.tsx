@@ -5,15 +5,12 @@ import { useEffect } from 'react';
 import { getProject } from '../../../../lib/flow/projects';
 import { projectPath } from '../../../../lib/flow/steps';
 
-/** `/p/:id` resumes where the project left off. */
+/** `/p/:id` opens the project's workspace. */
 export default function ProjectIndex({ params }: { params: { id: string } }) {
   const router = useAppRouter();
   useEffect(() => {
     const project = getProject(params.id);
-    if (!project) router.replace('/projects');
-    else if (project.phase === 'ready') router.replace(projectPath(project.id, project.furthestStep));
-    else if (project.phase === 'generating') router.replace(projectPath(project.id, 'generate'));
-    else router.replace(projectPath(project.id, 'clarify'));
+    router.replace(project ? projectPath(project.id, 'workspace') : '/projects');
   }, [params.id, router]);
   return null;
 }

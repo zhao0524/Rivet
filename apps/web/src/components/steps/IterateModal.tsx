@@ -20,7 +20,7 @@ function plainEngineText(message: string): string {
   return message.replace(/\b[a-z][a-z0-9]*(?:[._][a-z][a-z0-9]+)+\b/gi, (m) => m.replace(/^[a-z]+\./, '').replace(/[_.]+/g, ' '));
 }
 
-interface Preset {
+export interface Preset {
   id: string;
   label: string;
   instruction: string;
@@ -32,7 +32,7 @@ interface Preset {
  * edit selector is configured, so these presets send one of its five allowed operations.
  * A preset is offered only when the build has the part it touches.
  */
-function presetsFor(plan: BuildPlan): Preset[] {
+export function presetsFor(plan: BuildPlan): Preset[] {
   const byRole = (re: RegExp) => plan.components.find((c) => re.test(c.role))?.instance_id;
   const sensor = byRole(/sensor/i);
   const chassis = byRole(/chassis|frame/i);

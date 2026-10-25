@@ -101,6 +101,7 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
   let projectId = '';
   let assetId = '';
   let interpreted: Promise<Response> | null = null;
+  let generated: Promise<Response> | null = null;
   await test.step('/new: attach the reference image, enter the prompt, upload on submit', async () => {
     await page.goto('/new');
     await expect(page.getByTestId('new-screen')).toBeVisible();
@@ -110,8 +111,10 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
     await page.getByTestId('new-prompt-input').fill(PROMPT);
 
     const uploaded = page.waitForResponse(isPost('/api/assets/images'));
-    // Clarify interprets as soon as it mounts: listen before the navigation that triggers it.
+    // The workspace reads the prompt as soon as it mounts, then builds from that reading: listen for
+    // both before the navigation that triggers them.
     interpreted = page.waitForResponse(isPost('/api/intents/interpret'), { timeout: 120_000 });
+    generated = page.waitForResponse(isPost('/api/projects/generate'), { timeout: 120_000 });
     await page.getByTestId('new-prompt-submit').click();
     const upload = await uploaded;
     expect(upload.status(), 'image upload').toBe(200);
@@ -119,9 +122,9 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
     expect(asset.mime_type).toBe('image/png');
     assetId = asset.asset_id;
 
-    await expect(page).toHaveURL(/\/p\/p_[a-z0-9]+\/clarify$/, { timeout: 60_000 });
+    await expect(page).toHaveURL(/\/p\/p_[a-z0-9]+\/workspace$/, { timeout: 60_000 });
     projectId = page.url().split('/')[4]!;
-    expect(await readProject<StoredProject>(page, projectId)).toMatchObject({ phase: 'clarify', imageAssetId: assetId });
+    expect(await readProject<StoredProject>(page, projectId)).toMatchObject({ imageAssetId: assetId });
   });
 
   let generateCount = 0;
@@ -130,7 +133,7 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
   });
 
   let intentId = '';
-  await test.step('Clarify: the API reads the request first; the engine waits for confirmation', async () => {
+  await test.step('Workspace: the API reads the request, and the chat says what it read', async () => {
     const interpretedResponse = await interpreted!;
     expect(interpretedResponse.status(), 'interpret request').toBe(200);
     const interpretation = (await interpretedResponse.json()) as InterpretResponse;
@@ -141,27 +144,15 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
     expect(interpretation.intent.input).toMatchObject({ kind: 'image_and_text', image_asset_id: assetId, user_text: PROMPT });
     intentId = interpretation.intent_id;
 
-    await expect(page.getByTestId('clarify-progress')).toHaveText('Question 1 of 3');
-    await expect(page.getByTestId('clarify-understood')).toContainText('The saved example is an indoor rover');
-    await expect(page.getByTestId('clarify-offline')).toContainText("didn't read your words or picture");
-    await expect(page.getByTestId('clarify-limitation')).toHaveCount(0);
+    await expect(page.getByTestId('workspace-chat-understood')).toContainText('The saved example is an indoor rover');
+    await expect(page.getByTestId('workspace-chat-offline')).toContainText("isn't connected");
+    await expect(page.getByTestId('workspace-chat-limitation')).toHaveCount(0);
     expect(await readProject<StoredProject>(page, projectId)).toMatchObject({ intentId });
-    expect(generateCount, 'engine must wait for confirmation').toBe(0);
-
-    await page.getByTestId('clarify-next').click();
-    await expect(page.getByTestId('clarify-progress')).toHaveText('Question 2 of 3');
-    await expect(page.getByTestId('clarify-budget-none')).toHaveAttribute('aria-checked', 'true');
-    await page.getByTestId('clarify-next').click();
-    await expect(page.getByTestId('clarify-progress')).toHaveText('Question 3 of 3');
-    await expect(page.getByTestId('clarify-next')).toHaveText(/^Generate/);
-    expect(generateCount, 'engine must wait for confirmation').toBe(0);
   });
 
   let jobId = '';
-  await test.step('Generate: one generate request from the stored interpretation, real job events in the tape', async () => {
-    const generated = page.waitForResponse(isPost('/api/projects/generate'));
-    await page.getByTestId('clarify-next').click();
-    const generate = await generated;
+  await test.step('Generate: one generate request from the stored interpretation, straight after the reading', async () => {
+    const generate = await generated!;
     expect(generate.status(), 'generate request').toBe(202);
     expect(generate.request().postDataJSON()).toMatchObject({
       intent_id: intentId,
@@ -171,12 +162,10 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
     });
     jobId = ((await generate.json()) as { job_id: string }).job_id;
     expect(jobId).toBeTruthy();
-    await expect(page).toHaveURL(`/p/${projectId}/generate`, { timeout: 60_000 });
-    await expect(page.getByTestId('generate-screen')).toBeVisible();
   });
 
   let buildId = '';
-  await test.step('the job completes and the app reports the new build', async () => {
+  await test.step('the job completes, the model loads, and Rivet asks its questions in the chat', async () => {
     await expect
       .poll(async () => (await apiGet<JobResponse>(request, `/api/jobs/${jobId}`)).status, { timeout: 60_000 })
       .toBe('complete');
@@ -184,19 +173,25 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
     expect(job.build_id).toBeTruthy();
     expect(job.revision).toBe(1);
     buildId = job.build_id!;
-    expect(generateCount, 'exactly one generate request').toBe(1);
 
-    await expect(page.getByTestId('generate-done')).toBeVisible({ timeout: 60_000 });
+    const built = page.getByTestId('workspace-chat-built');
+    await expect(built).toBeVisible({ timeout: 60_000 });
     // Real stages from the engine, not a saved example.
-    await expect(page.getByTestId('generate-fixture-note')).toHaveCount(0);
+    await expect(built).not.toContainText('This is a saved example');
     // The Thinking trace lists one plain step per real engine stage, with the engine's message as detail.
-    const trace = page.getByTestId('generate-thinking-steps');
+    const trace = page.getByTestId('workspace-gen-thinking-steps');
     await expect(trace).toContainText('Image received');
     expect(await trace.locator('li').count()).toBeGreaterThan(1);
-    await expect(page.getByTestId('generate-viewport').getByTestId('rover-scene')).toHaveAttribute('data-build-id', buildId);
-    await expect(page.getByTestId('generate-status')).toContainText(/^Done: \d+ parts, ready to review$/);
+    await expect(page.getByTestId('workspace-stage').getByTestId('rover-scene')).toHaveAttribute('data-build-id', buildId);
+    await expect(page.getByTestId('workspace-status')).toHaveCount(0);
 
-    await page.getByTestId('generate-review').click();
+    // No limits: the answers match the build, so nothing is generated again.
+    await page.getByTestId('workspace-answer-budget-none').click();
+    await page.getByTestId('workspace-answer-size-none').click();
+    await expect(page.getByTestId('workspace-chat-wrap')).toBeVisible();
+    expect(generateCount, 'exactly one generate request').toBe(1);
+
+    await page.goto(`/p/${projectId}/review`);
     await expect(page).toHaveURL(`/p/${projectId}/review`, { timeout: 60_000 });
     expect(await readProject<StoredProject>(page, projectId)).toMatchObject({ phase: 'ready', buildId, revision: 1, furthestStep: 'review' });
   });

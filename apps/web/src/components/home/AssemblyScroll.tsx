@@ -3,7 +3,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { getSourcedCatalog, getSourcedRoverPlan } from '../../lib/fixtures';
+import { getRobotDogScrollPlan } from '../../lib/fixtures';
 import { scrubToStep } from '../three/assembly';
 import { useThemeMode } from '../system/ThemeToggle';
 import { RoverScene } from '../three/RoverScene';
@@ -25,13 +25,13 @@ const STEP_LABELS = [
 ] as const;
 
 /**
- * Scroll demo: the saved sourced rover assembles itself as the section is scrolled.
- * GSAP pins the section and scrubs a timeline position in [0, stepCount], which the
- * assembly engine turns into the current step and its seat-in progress.
+ * Scroll demo: the hand-built robot dog (the model an uploaded dog photo opens) assembles
+ * itself as the section is scrolled. GSAP pins the section and scrubs a timeline position
+ * in [0, stepCount], which the assembly engine turns into the current step and its seat-in progress.
  */
 export function AssemblyScroll() {
-  const plan = useMemo(() => getSourcedRoverPlan(), []);
-  const catalog = useMemo(() => getSourcedCatalog(), []);
+  const plan = useMemo(() => getRobotDogScrollPlan(), []);
+  const catalog = useMemo(() => plan.concept_catalog ?? [], [plan]);
   const steps = useMemo(
     () => [...plan.assembly_steps].sort((a, b) => a.step - b.step).slice(0, STEP_LABELS.length),
     [plan],

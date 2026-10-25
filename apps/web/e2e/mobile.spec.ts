@@ -20,8 +20,8 @@ test.describe('Mobile layout (390×844)', () => {
     await expectNoHorizontalScroll(page, 'landing');
     await page.getByTestId('home-prompt-input').fill('A tiny rover');
     await page.getByTestId('home-prompt-submit').click();
-    await expect(page.getByTestId('guest-preview')).toBeVisible();
-    await expectNoHorizontalScroll(page, 'guest preview');
+    await expect(page.getByTestId('save-modal')).toBeVisible();
+    await expectNoHorizontalScroll(page, 'sign in');
     await page.keyboard.press('Escape');
 
     await page.goto('/projects');
@@ -32,13 +32,17 @@ test.describe('Mobile layout (390×844)', () => {
     await expect(page.getByTestId('new-prompt')).toBeVisible();
     await expectNoHorizontalScroll(page, 'new');
 
-    await page.goto(`/p/${clarifying.id}/clarify`);
-    await expect(page.getByTestId('clarify-understood')).toBeVisible();
-    await expectNoHorizontalScroll(page, 'clarify');
+    // The workspace shows one panel at a time on a phone; none of them scrolls sideways.
+    await page.goto(`/p/${clarifying.id}/workspace`);
+    await expect(page.getByTestId('workspace-question-budget')).toBeAttached();
+    for (const pane of ['model', 'files', 'chat'] as const) {
+      await page.getByTestId(`workspace-tab-${pane}`).click();
+      await expectNoHorizontalScroll(page, `workspace ${pane}`);
+    }
 
-    await page.goto(`/p/${generating.id}/generate`);
-    await expect(page.getByTestId('generate-done')).toBeVisible();
-    await expectNoHorizontalScroll(page, 'generate');
+    await page.goto(`/p/${generating.id}/workspace`);
+    await expect(page.getByTestId('workspace-question-budget')).toBeAttached();
+    await expectNoHorizontalScroll(page, 'workspace after a reload mid-build');
 
     for (const step of STEPS) {
       await page.goto(`/p/${ready.id}/${step}`);

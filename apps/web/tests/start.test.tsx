@@ -3,9 +3,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { FlowProvider } from '../src/components/flow/FlowProvider';
 import { ProjectShell } from '../src/components/flow/ProjectShell';
 import { NewProjectScreen } from '../src/components/start/NewProjectScreen';
-import { ClarifyScreen } from '../src/components/start/ClarifyScreen';
-import { GenerateScreen } from '../src/components/start/GenerateScreen';
 import { ProjectsScreen } from '../src/components/start/ProjectsScreen';
+import { WorkspaceScreen } from '../src/components/workspace/WorkspaceScreen';
 import { summarizeIntent, whereIs } from '../src/components/start/shared';
 import { getSyntheticRoverIntent } from '../src/lib/fixtures';
 import { createProjectRecord, getProject, saveProject, writeDraft } from '../src/lib/flow/projects';
@@ -22,7 +21,7 @@ vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(nav.search),
 }));
 
-// The 3D scene needs WebGL; the Generate screen only needs to know it rendered.
+// The 3D scene needs WebGL; the workspace only needs to know it rendered.
 vi.mock('../src/components/three/RoverScene', () => ({
   RoverScene: (props: { assemblyMode?: string }) => <div data-testid="rover-scene" data-mode={props.assemblyMode} />,
 }));
@@ -81,13 +80,13 @@ async function renderIn(ui: React.ReactElement) {
 }
 
 describe('A1 Prompt', () => {
-  it('creates the project under the draft id and goes to clarify', async () => {
+  it('creates the project under the draft id and goes straight to the workspace', async () => {
     writeDraft({ id: 'p_draft1', text: 'A tiny rover that avoids chairs' });
     await renderIn(<NewProjectScreen />);
     const input = await screen.findByTestId('new-prompt-input');
     await waitFor(() => expect((input as HTMLTextAreaElement).value).toBe('A tiny rover that avoids chairs'));
     fireEvent.click(screen.getByTestId('new-prompt-submit'));
-    await waitFor(() => expect(nav.push).toHaveBeenCalledWith('/p/p_draft1/clarify'));
+    await waitFor(() => expect(nav.push).toHaveBeenCalledWith('/p/p_draft1/workspace'));
     const project = getProject('p_draft1');
     expect(project?.phase).toBe('clarify');
     expect(project?.prompt).toBe('A tiny rover that avoids chairs');
@@ -102,21 +101,30 @@ describe('A1 Prompt', () => {
     const input = await screen.findByTestId('new-prompt-input');
     await waitFor(() => expect((input as HTMLTextAreaElement).value).toBe('new prompt'));
     fireEvent.click(screen.getByTestId('new-prompt-submit'));
-    await waitFor(() => expect(nav.push).toHaveBeenCalledWith('/p/p_again/clarify'));
+    await waitFor(() => expect(nav.push).toHaveBeenCalledWith('/p/p_again/workspace'));
     const all = JSON.parse(localStorage.getItem('rivet.projects.v1') ?? '[]') as unknown[];
     expect(all).toHaveLength(1);
     expect(getProject('p_again')?.prompt).toBe('new prompt');
   });
 });
 
-describe('A2 Clarify', () => {
-  function seed(id: string) {
-    saveProject(createProjectRecord({ id, prompt: 'Build a small rover that avoids obstacles', phase: 'clarify' }));
-    nav.pathname = `/p/${id}/clarify`;
+describe('Workspace', () => {
+  function seed(id: string, extra: Partial<Parameters<typeof createProjectRecord>[0]> = {}) {
+    saveProject(createProjectRecord({ id, prompt: 'Build a small rover that avoids obstacles', phase: 'clarify', ...extra }));
+    nav.pathname = `/p/${id}/workspace`;
+  }
+
+  async function open(id: string) {
+    return renderIn(
+      <ProjectShell id={id}>
+        <WorkspaceScreen />
+      </ProjectShell>,
+    );
   }
 
   it('preserves the current screen when a slow project navigation times out', async () => {
-    seed('p_nav_timeout');
+    saveProject(createProjectRecord({ id: 'p_nav_timeout', prompt: 'rover', phase: 'ready', exampleId: 'rivet-intent-rover-001', buildId: 'rivet-intent-rover-001' }));
+    nav.pathname = '/p/p_nav_timeout/review';
     await renderIn(
       <>
         <NavigationWatch />
@@ -129,7 +137,7 @@ describe('A2 Clarify', () => {
     fireEvent.change(answer, { target: { value: 'Keep my answer' } });
     vi.useFakeTimers();
     try {
-      act(() => markNavigating('/p/p_nav_timeout/generate'));
+      act(() => markNavigating('/p/p_nav_timeout/parts'));
       act(() => vi.advanceTimersByTime(150));
       expect(screen.queryByRole('textbox', { name: 'Current answer' })).toBeNull();
       expect(answer.isConnected).toBe(true);
@@ -141,216 +149,158 @@ describe('A2 Clarify', () => {
     }
   });
 
-  it('asks three questions, maps the budget choice and ends on Generate', async () => {
-    seed('p_cl1');
-    await renderIn(
-      <ProjectShell id="p_cl1">
-        <ClarifyScreen />
-      </ProjectShell>,
-    );
-    await screen.findByTestId('clarify-understood');
-    expect(screen.getByTestId('clarify-progress').textContent).toBe('Question 1 of 3');
-    expect(screen.getByTestId('clarify-offline').textContent).toContain("This is a saved example. Rivet didn't read your words");
-    // The reading trace shows the real outcome of interpret, timed, and nothing else.
-    const trace = screen.getByTestId('clarify-thinking');
-    expect(screen.getByTestId('clarify-thinking-label').textContent).toMatch(/^Answered in \d/);
-    expect(trace.querySelectorAll('li')).toHaveLength(1);
-    expect(trace.textContent).toContain('Used a saved example instead of reading your words');
-    expect(screen.getByTestId('clarify-understood').textContent).not.toMatch(/board\.|esp32_|differential_drive/);
-    expect(getProject('p_cl1')?.intentId).toBe('intent-rover-001');
-    fireEvent.click(screen.getByTestId('clarify-next'));
-    expect(screen.getByTestId('clarify-progress').textContent).toBe('Question 2 of 3');
-    fireEvent.click(screen.getByTestId('clarify-budget-50'));
-    fireEvent.click(screen.getByTestId('clarify-next'));
-    expect(getProject('p_cl1')?.clarify.max_budget).toBe(50);
-    expect(screen.getByTestId('clarify-progress').textContent).toBe('Question 3 of 3');
-    expect(screen.getByTestId('clarify-next').textContent).toContain('Generate');
-    fireEvent.click(screen.getByTestId('clarify-next'));
-    const project = getProject('p_cl1');
-    expect(project?.phase).toBe('generating');
-    expect(project?.clarify).toMatchObject({ max_budget: 50, max_length_mm: null, interpretation_choice: 'as_interpreted' });
-    expect(nav.push).toHaveBeenCalledWith('/p/p_cl1/generate');
-  });
+  it('goes straight from the prompt to a build, then asks about budget and size in the chat', async () => {
+    seed('p_ws1');
+    await open('p_ws1');
+    // Three panels: the build guide and components, the model, the chat.
+    expect(screen.getByTestId('workspace-left')).toBeTruthy();
+    expect(screen.getByTestId('workspace-stage')).toBeTruthy();
+    expect(screen.getByTestId('workspace-chat-prompt').textContent).toContain('Build a small rover that avoids obstacles');
 
-  it('"Skip the rest" goes straight to Generate with defaults', async () => {
-    seed('p_cl2');
-    await renderIn(
-      <ProjectShell id="p_cl2">
-        <ClarifyScreen />
-      </ProjectShell>,
-    );
-    await screen.findByTestId('clarify-understood');
-    fireEvent.click(screen.getByTestId('clarify-skip'));
-    expect(getProject('p_cl2')?.phase).toBe('generating');
-    expect(getProject('p_cl2')?.clarify).toMatchObject({ max_budget: null, max_length_mm: null });
-    expect(nav.push).toHaveBeenCalledWith('/p/p_cl2/generate');
-  });
-
-  it('a custom budget needs a number before Next is enabled', async () => {
-    seed('p_cl3');
-    await renderIn(
-      <ProjectShell id="p_cl3">
-        <ClarifyScreen />
-      </ProjectShell>,
-    );
-    await screen.findByTestId('clarify-understood');
-    fireEvent.click(screen.getByTestId('clarify-next'));
-    fireEvent.click(screen.getByTestId('clarify-budget-custom'));
-    expect((screen.getByTestId('clarify-next') as HTMLButtonElement).disabled).toBe(true);
-    fireEvent.change(screen.getByTestId('clarify-budget-amount'), { target: { value: '75' } });
-    fireEvent.click(screen.getByTestId('clarify-next'));
-    expect(getProject('p_cl3')?.clarify.max_budget).toBe(75);
-  });
-
-  it('an unsupported reading builds a 3D model of the photo by default, or the closest rover on request', async () => {
-    unsupportedFamily = 'drone';
-    seed('p_cl4');
-    await renderIn(
-      <ProjectShell id="p_cl4">
-        <ClarifyScreen />
-      </ProjectShell>,
-    );
-    await screen.findByTestId('clarify-limitation');
-    expect(screen.getByTestId('clarify-unsupported-concept_model').getAttribute('aria-checked')).toBe('true');
-    fireEvent.click(screen.getByTestId('clarify-skip'));
-    expect(getProject('p_cl4')?.clarify.interpretation_choice).toBe('concept_model');
-
-    seed('p_cl5');
-    cleanup();
-    await renderIn(
-      <ProjectShell id="p_cl5">
-        <ClarifyScreen />
-      </ProjectShell>,
-    );
-    await screen.findByTestId('clarify-limitation');
-    fireEvent.click(screen.getByTestId('clarify-unsupported-closest_supported_rover'));
-    fireEvent.click(screen.getByTestId('clarify-skip'));
-    expect(getProject('p_cl5')?.clarify.interpretation_choice).toBe('closest_supported_rover');
-  });
-
-  it('a toy car reading defaults to the engineered rover', async () => {
-    unsupportedFamily = 'rc_car';
-    seed('p_cl6');
-    await renderIn(
-      <ProjectShell id="p_cl6">
-        <ClarifyScreen />
-      </ProjectShell>,
-    );
-    await screen.findByTestId('clarify-limitation');
-    await waitFor(() =>
-      expect(screen.getByTestId('clarify-unsupported-closest_supported_rover').getAttribute('aria-checked')).toBe('true'),
-    );
-    fireEvent.click(screen.getByTestId('clarify-skip'));
-    expect(getProject('p_cl6')?.clarify.interpretation_choice).toBe('closest_supported_rover');
-  });
-});
-
-describe('A3 Generate', () => {
-  it('starts generation once, shows the real event, then Review marks the project ready', async () => {
-    saveProject(createProjectRecord({ id: 'p_gen1', prompt: 'Build a small rover that avoids obstacles', phase: 'generating' }));
-    nav.pathname = '/p/p_gen1/generate';
-    await renderIn(
-      <ProjectShell id="p_gen1">
-        <GenerateScreen />
-      </ProjectShell>,
-    );
-    const review = await screen.findByTestId('generate-review');
+    await screen.findByTestId('workspace-question-budget', {}, { timeout: 8000 });
     expect(startGeneration).toHaveBeenCalledTimes(1);
     expect(startGeneration.mock.calls[0][0]).toMatchObject({
+      intent_id: 'intent-rover-001',
       input: { kind: 'text', image_asset_id: null, user_text: 'Build a small rover that avoids obstacles' },
-      requirements: { max_budget: null, currency: 'USD' },
+      requirements: { max_budget: null, currency: 'USD', max_length_mm: null },
     });
-    // Fixture: exactly one real event, worded plainly, and the honest note.
-    const steps = screen.getByTestId('generate-thinking-steps').querySelectorAll('li');
-    expect(steps).toHaveLength(1);
-    expect(steps[0]!.textContent).toContain('Opened a saved example');
-    expect(screen.getByTestId('generate-thinking-label').textContent).toBe('Loaded instantly');
-    expect(screen.getByTestId('generate-fixture-note').textContent).toContain("This is a saved example. Rivet didn't design it from your words.");
-    // What it decided, read from the plan.
-    expect(screen.getByTestId('generate-done').textContent).toContain('Read from the finished build');
-    expect(screen.getByTestId('generate-decided-parts').textContent).toMatch(/^Picked \d+ parts/);
-    expect(screen.getByTestId('generate-decided-wires').textContent).toMatch(/Connected them with \d+ wires/);
-    expect(screen.getByTestId('generate-decided-checks').textContent).toMatch(/Ran \d+ checks: \d+ passed/);
-    expect(screen.getByTestId('generate-status').textContent).toMatch(/^Done: \d+ parts, ready to review$/);
-    // The tree: five phases in order, parts opened into plain groups.
-    const tree = screen.getByRole('tree', { name: 'What Rivet is building' });
-    const top = Array.from(tree.children).map((li) => li.querySelector('.tv-name')?.textContent);
-    expect(top).toEqual(['Understanding your idea', 'Choosing parts', 'Placing parts', 'Checking it works', 'Writing the code']);
-    expect(screen.getByTestId('generate-phase-parts').getAttribute('aria-expanded')).toBe('true');
-    expect(tree.textContent).toContain('Wheels & motors');
-    expect(tree.textContent).not.toMatch(/chassis-1|catalog_selection|motor_driver/);
-    // Picking a part names it under the tree.
-    fireEvent.click(screen.getByTestId('generate-part-chassis-1').querySelector('.tv-row')!);
-    expect(screen.getByTestId('generate-picked').textContent).toContain('highlighted in the model');
-    expect(screen.queryByTestId('generate-cancel')).toBeNull();
-    fireEvent.click(review);
-    const project = getProject('p_gen1');
+    const project = getProject('p_ws1');
     expect(project?.phase).toBe('ready');
     expect(project?.buildId).toBeTruthy();
-    expect(project?.furthestStep).toBe('review');
-    expect(nav.push).toHaveBeenCalledWith('/p/p_gen1/review');
-  });
+    // What Rivet read, honestly labelled offline, and what it built, read from the plan.
+    expect(screen.getByTestId('workspace-chat-offline').textContent).toContain("isn't connected");
+    expect(screen.getByTestId('workspace-chat-understood').textContent).not.toMatch(/board\.|esp32_|differential_drive/);
+    expect(screen.getByTestId('workspace-chat-built').textContent).toMatch(/Picked \d+ parts/);
+    // The Build tab starts with every step closed; later steps stay locked until reached.
+    expect(screen.getByTestId('workspace-guide-buy-toggle').getAttribute('aria-expanded')).toBe('false');
+    expect((screen.getByTestId('workspace-guide-build-toggle') as HTMLButtonElement).disabled).toBe(true);
+    fireEvent.click(screen.getByTestId('workspace-guide-buy-toggle'));
+    expect(screen.getByTestId('workspace-guide-buy-toggle').getAttribute('aria-expanded')).toBe('true');
+    expect(getProject('p_ws1')?.guideStarted).toBe(true);
 
-  it('shows the engine error and Resume starts generation again', async () => {
+    // A budget that changes the build starts a new run with it.
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('workspace-answer-budget-50'));
+    });
+    expect(getProject('p_ws1')?.clarify.max_budget).toBe(50);
+    await screen.findByTestId('workspace-question-size', {}, { timeout: 8000 });
+    expect(startGeneration).toHaveBeenCalledTimes(2);
+    expect(startGeneration.mock.calls[1][0]).toMatchObject({ requirements: { max_budget: 50 } });
+
+    // A custom size needs a number before it can be set.
+    fireEvent.click(screen.getByTestId('workspace-answer-size-custom'));
+    expect((screen.getByTestId('workspace-answer-size-set') as HTMLButtonElement).disabled).toBe(true);
+    fireEvent.change(screen.getByTestId('workspace-answer-size-amount'), { target: { value: '300' } });
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('workspace-answer-size-set'));
+    });
+    await screen.findByTestId('workspace-chat-wrap', {}, { timeout: 8000 });
+    expect(startGeneration).toHaveBeenCalledTimes(3);
+    expect(startGeneration.mock.calls[2][0]).toMatchObject({ requirements: { max_budget: 50, max_length_mm: 300 } });
+    expect(getProject('p_ws1')?.chat?.answered).toEqual({ budget: true, size: true });
+  }, 20_000);
+
+  it('an answer that changes nothing does not rebuild', async () => {
+    seed('p_ws2');
+    await open('p_ws2');
+    await screen.findByTestId('workspace-question-budget', {}, { timeout: 8000 });
+    fireEvent.click(screen.getByTestId('workspace-answer-budget-none'));
+    await screen.findByTestId('workspace-question-size', {}, { timeout: 8000 });
+    fireEvent.click(screen.getByTestId('workspace-answer-size-none'));
+    await screen.findByTestId('workspace-chat-wrap', {}, { timeout: 8000 });
+    expect(startGeneration).toHaveBeenCalledTimes(1);
+  }, 20_000);
+
+  it('an idea Rivet cannot engineer builds a 3D model first, then asks what to use', async () => {
+    unsupportedFamily = 'drone';
+    seed('p_ws3');
+    await open('p_ws3');
+    await screen.findByTestId('workspace-question-use', {}, { timeout: 8000 });
+    expect(screen.getByTestId('workspace-chat-limitation')).toBeTruthy();
+    expect(startGeneration.mock.calls[0][0]).toMatchObject({ interpretation_choice: 'concept_model' });
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('workspace-answer-rover'));
+    });
+    await screen.findByTestId('workspace-question-budget', {}, { timeout: 8000 });
+    expect(startGeneration).toHaveBeenCalledTimes(2);
+    expect(startGeneration.mock.calls[1][0]).toMatchObject({ interpretation_choice: 'closest_supported_rover' });
+  }, 20_000);
+
+  it('a toy car reading starts from the engineered rover', async () => {
+    unsupportedFamily = 'rc_car';
+    seed('p_ws4');
+    await open('p_ws4');
+    await screen.findByTestId('workspace-question-use', {}, { timeout: 8000 });
+    expect(startGeneration.mock.calls[0][0]).toMatchObject({ interpretation_choice: 'closest_supported_rover' });
+  }, 20_000);
+
+  it('shows the engine error in the chat and on the stage, and Try again starts again', async () => {
     startOverride = () => Promise.reject(new Error('Engine offline'));
-    saveProject(createProjectRecord({ id: 'p_gen3', prompt: 'rover', phase: 'generating' }));
-    nav.pathname = '/p/p_gen3/generate';
-    await renderIn(
-      <ProjectShell id="p_gen3">
-        <GenerateScreen />
-      </ProjectShell>,
-    );
-    const error = await screen.findByTestId('generate-error');
-    expect(error.textContent).toContain('Engine offline');
-    expect(screen.getByTestId('generate-status').textContent).toBe('Something went wrong: Engine offline');
-    expect(screen.queryByTestId('generate-review')).toBeNull();
+    seed('p_ws5');
+    await open('p_ws5');
+    const failed = await screen.findByTestId('workspace-chat-failed', {}, { timeout: 8000 });
+    expect(failed.textContent).toContain('Engine offline');
+    expect(screen.getByTestId('workspace-failed')).toBeTruthy();
+    expect(screen.getByTestId('workspace-status').textContent).toBe('Stopped');
     expect(startGeneration).toHaveBeenCalledTimes(1);
     await act(async () => {
-      fireEvent.click(screen.getByTestId('generate-resume'));
+      fireEvent.click(screen.getByTestId('workspace-chat-retry'));
     });
-    expect(startGeneration).toHaveBeenCalledTimes(2);
-    fireEvent.click(screen.getByTestId('generate-cancel'));
-    expect(getProject('p_gen3')?.phase).toBe('clarify');
-    expect(nav.push).toHaveBeenCalledWith('/p/p_gen3/clarify');
-  });
+    await waitFor(() => expect(startGeneration).toHaveBeenCalledTimes(2));
+  }, 20_000);
 
-  it('returns an expired interpretation to Clarify instead of retrying the same rejected id', async () => {
+  it('an expired reading is dropped and the build retried from the prompt, once', async () => {
     startOverride = () => Promise.reject(new RivetError({ kind: 'not_found', code: 'INTENT_NOT_FOUND', message: 'Interpret the input again' }));
-    saveProject(createProjectRecord({ id: 'p_expired', prompt: 'rover', phase: 'generating', intentId: 'expired-id' }));
-    nav.pathname = '/p/p_expired/generate';
-    await renderIn(<ProjectShell id="p_expired"><GenerateScreen /></ProjectShell>);
-    await screen.findByTestId('generate-error');
-    const retry = screen.getByTestId('generate-resume');
-    expect(retry.textContent).toBe('Review request');
-    fireEvent.click(retry);
+    seed('p_expired', { phase: 'generating' });
+    saveProject({ ...getProject('p_expired')!, intentId: 'expired-id' });
+    await open('p_expired');
+    await screen.findByTestId('workspace-chat-failed', {}, { timeout: 8000 });
     expect(getProject('p_expired')?.intentId).toBeNull();
-    expect(nav.push).toHaveBeenCalledWith('/p/p_expired/clarify');
-    expect(startGeneration).toHaveBeenCalledTimes(1);
-  });
+    expect(startGeneration).toHaveBeenCalledTimes(2);
+    expect(startGeneration.mock.calls[1][0]).not.toHaveProperty('intent_id');
+  }, 20_000);
 
-  it('shows the done state without starting a job when the project is already ready', async () => {
-    saveProject(
-      createProjectRecord({
-        id: 'p_gen2',
-        prompt: 'x',
-        phase: 'ready',
-        exampleId: 'rivet-intent-rover-001',
-        buildId: 'rivet-intent-rover-001',
-      }),
-    );
-    nav.pathname = '/p/p_gen2/generate';
-    await renderIn(
-      <ProjectShell id="p_gen2">
-        <GenerateScreen />
-      </ProjectShell>,
-    );
-    await screen.findByTestId('generate-review');
+  it('opens a ready project without generating, and picking a part shows it', async () => {
+    seed('p_ws6', { phase: 'ready', exampleId: 'rivet-intent-rover-001', buildId: 'rivet-intent-rover-001' });
+    await open('p_ws6');
+    await screen.findByTestId('workspace-chat-wrap', {}, { timeout: 8000 });
     expect(startGeneration).not.toHaveBeenCalled();
-    // No events were recorded for this visit, so none are shown: just the plan's decisions.
-    expect(screen.queryByTestId('generate-thinking')).toBeNull();
-    expect(screen.getByTestId('generate-nolog')).toBeTruthy();
-    expect(screen.getByTestId('generate-done')).toBeTruthy();
-  });
+    expect(screen.getByTestId('workspace-chat-built').textContent).toMatch(/Picked \d+ parts/);
+    expect(screen.queryByTestId('workspace-question-budget')).toBeNull();
+    // Build tab: step 1 Buy, step 2 Build. No review, parts or wiring steps.
+    for (const gone of ['review', 'parts', 'wiring']) expect(screen.queryByTestId(`workspace-guide-${gone}`)).toBeNull();
+    fireEvent.click(screen.getByTestId('workspace-guide-buy-toggle'));
+    expect(screen.getByTestId('workspace-buy-total').textContent).toContain('$110.80');
+    expect(screen.getByTestId('workspace-guide-buy-next').textContent).toBe('Continue to Build');
+    // Ticking a part you own takes it off the total.
+    fireEvent.click(screen.getAllByRole('checkbox')[0]!);
+    expect(getProject('p_ws6')?.ownedCatalogIds).toHaveLength(1);
+    expect(screen.getByTestId('workspace-buy-total').textContent).not.toContain('$110.80');
+    fireEvent.click(screen.getByTestId('workspace-guide-buy-next'));
+    expect(getProject('p_ws6')?.furthestStep).toBe('build');
+
+    // Parts tab: every component, where to buy it, and the printed body to export.
+    fireEvent.click(screen.getByTestId('workspace-tab-left-parts'));
+    const parts = screen.getByTestId('workspace-parts');
+    expect(parts.textContent).toContain('To buy');
+    expect(parts.textContent).toContain('Printed body');
+    fireEvent.click(screen.getByTestId('workspace-component-printed-body'));
+    expect(screen.getByTestId('workspace-export-obj')).toBeTruthy();
+    fireEvent.click(screen.getByTestId('workspace-component-board.esp32_devkitc_v4_wroom32e'));
+    expect(screen.getByTestId('workspace-component-buy').textContent).toContain('Buy at Adafruit');
+    const picked = await screen.findByTestId('workspace-picked', {}, { timeout: 4000 });
+    expect(picked.textContent).toContain('ESP32');
+
+    // Save build saves; Save and publish puts it in the community gallery.
+    fireEvent.click(screen.getByTestId('workspace-save'));
+    await waitFor(() => expect(getProject('p_ws6')?.savedAt).toBeTruthy());
+    fireEvent.click(screen.getByTestId('workspace-publish'));
+    fireEvent.change(await screen.findByTestId('publish-title'), { target: { value: 'Wall-dodging rover' } });
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('publish-confirm'));
+    });
+    await waitFor(() => expect(getProject('p_ws6')).toMatchObject({ title: 'Wall-dodging rover', publishedAt: expect.any(String) }));
+  }, 20_000);
 });
 
 describe('A0 Projects', () => {
@@ -368,7 +318,7 @@ describe('A0 Projects', () => {
     saveProject({ ...createProjectRecord({ id: 'p_a', prompt: 'rover one', phase: 'ready', buildId: 'b' }), furthestStep: 'wiring' });
     await renderIn(<ProjectsScreen />);
     const card = await screen.findByTestId('projects-card-p_a');
-    expect(card.textContent).toContain(`Step 3 of 5 · ${STEPS.find((st) => st.id === 'wiring')!.label}`);
+    expect(card.textContent).toContain('Step 1 of 2 · Buy');
     fireEvent.click(screen.getByTestId('projects-menu-p_a'));
     fireEvent.click(screen.getByTestId('projects-delete'));
     await screen.findByTestId('projects-delete-modal');
@@ -379,8 +329,8 @@ describe('A0 Projects', () => {
 
 describe('wording', () => {
   it('describes where a project is and summarizes an intent without raw ids', () => {
-    expect(whereIs(createProjectRecord({ prompt: 'x', phase: 'clarify' }))).toBe('Clarifying');
-    expect(whereIs(createProjectRecord({ prompt: 'x', phase: 'generating' }))).toBe('Generating');
+    expect(whereIs(createProjectRecord({ prompt: 'x', phase: 'clarify' }))).toBe('Reading your idea');
+    expect(whereIs(createProjectRecord({ prompt: 'x', phase: 'generating' }))).toBe('Building');
     expect(whereIs({ ...createProjectRecord({ prompt: 'x', phase: 'ready' }), furthestStep: 'done' })).toBe('Done');
     const s = summarizeIntent(getSyntheticRoverIntent());
     expect(s.headline).toBe('Rivet read this as an indoor rover that drives around and avoids obstacles.');

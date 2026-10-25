@@ -6,6 +6,7 @@ import { BlueprintTitle } from '../components/home/BlueprintTitle';
 import { Decor } from '../components/home/Decor';
 import { HeroParallax } from '../components/home/HeroParallax';
 import { PartsTicker } from '../components/home/PartsTicker';
+import { CommunityGallery } from '../components/home/CommunityGallery';
 import { ShowcaseSamples } from '../components/home/ShowcaseSamples';
 import { TeamAvatars } from '../components/home/TeamAvatars';
 import { ExampleButton, HeroFlow } from '../components/home/HeroFlow';
@@ -23,15 +24,6 @@ const HERO_DECOR = [
   { name: 'crystal', spot: 'hero-crystal' },
 ] as const;
 
-const OUTPUTS = [
-  { key: 'parts list', tag: 'Parts list', title: 'A parts list you can shop from', body: 'Every line is a real part with a store, a price and a link, or it says plainly that it has none.' },
-  { key: 'verification', tag: 'Checks', title: 'Checks before you solder', body: 'Rivet checks power, wiring and fit every time the design changes. Anything serious stays on screen until it is sorted.' },
-  { key: 'wiring', tag: 'Wiring', title: 'Wires drawn on the model', body: 'Every wire is drawn on the 3D model and colored by what it carries. When exact pin spots are unknown, wires are placed roughly and labelled that way.' },
-  { key: 'firmware', tag: 'Starter code', title: 'Code for the controller board', body: 'Code for the ESP32 controller board that already knows which pin each wire uses. Download it as a ZIP (a PlatformIO project) and copy it onto the board over USB.' },
-  { key: 'simulation', tag: 'Test drive', title: 'Drive it before you build it', body: 'A simple simulation drives the rover on screen so you can watch it stop short of a wall.' },
-  { key: 'revisions', tag: 'Changes', title: 'Ask for a change', body: '“Make it cheaper and move the sensor higher.” Rivet saves a new version only if the change passes its checks.' },
-] as const;
-
 const FOOTER = [
   { title: 'Product', links: [['Start building', '/new'], ['Your projects', '/projects'], ['See an example', 'example']] },
   { title: 'Builds', links: [['Indoor rover', '/new'], ['Mini RC car (planned)', null], ['Drones and arms (later)', null]] },
@@ -46,7 +38,7 @@ export default function HomePage() {
         <Logo />
         <nav className="mk-nav__links" aria-label="Main">
           <a href="#how">How it works</a>
-          <a href="#outputs">What you get</a>
+          <a href="#community">Community</a>
           <a href="#families">Builds</a>
           <a href={REPO_URL}>Docs</a>
         </nav>
@@ -169,34 +161,21 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="outputs" className="mk-section mk-proof" aria-labelledby="mk-proof-title">
-          <div className="mk-proof__head">
+        <section id="community" className="mk-section mk-community" aria-labelledby="mk-community-title">
+          <div className="mk-community__head">
             <div>
-              <h2 id="mk-proof-title" className="mk-proof__title">
-                Every build comes with the files and checks you need to actually make it.
+              <h2 id="mk-community-title" className="mk-community__title">
+                Community
               </h2>
-              <div className="mk-row">
-                <Link href="/new" className="ui-btn ui-btn--dark">
-                  Start building
-                </Link>
-                <a href={`${REPO_URL}#readme`} className="ui-btn ui-btn--secondary">
-                  Read the docs
-                </a>
-              </div>
+              <p className="mk-community__lede">
+                Builds people made with Rivet and published to the gallery. Open one to start your own version.
+              </p>
             </div>
+            <Link href="/new" className="ui-btn ui-btn--dark" data-testid="home-community-publish">
+              Build and publish yours
+            </Link>
           </div>
-          <div className="mk-masonry">
-            {OUTPUTS.map((o) => (
-              <article key={o.key} className="mk-note">
-                <h3>{o.title}</h3>
-                <p>{o.body}</p>
-                <footer>
-                  <span className={`mk-note__dot mk-note__dot--${o.key.replace(/\s+/g, '-')}`} aria-hidden="true" />
-                  {o.tag}
-                </footer>
-              </article>
-            ))}
-          </div>
+          <CommunityGallery />
         </section>
       </main>
 

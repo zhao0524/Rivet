@@ -1,5 +1,4 @@
 import type { ProjectRecord } from '../../lib/flow/projects';
-import { STEPS } from '../../lib/flow/steps';
 import { blockers, buyLines, groupParts, isBlocking, partRows, type PartGroup, type PartRow } from '../../lib/flow/derive';
 import type {
   BuildPlan,
@@ -22,14 +21,14 @@ export const EXAMPLE_PROJECT = {
   prompt: 'Build a small rover that avoids obstacles',
 } as const;
 
-/** Where a project is, in words: "Clarifying", "Generating", "Step 3 of 5 · Wiring & firmware", "Done". */
+/** Where a project is, in words: "Reading your idea", "Building", "Step 1 of 2 · Buy", "Done". */
 export function whereIs(project: ProjectRecord): string {
   if (project.phase === 'draft') return 'Draft';
-  if (project.phase === 'clarify') return 'Clarifying';
-  if (project.phase === 'generating') return 'Generating';
+  if (project.phase === 'clarify') return 'Reading your idea';
+  if (project.phase === 'generating') return 'Building';
   if (project.furthestStep === 'done') return 'Done';
-  const step = STEPS.find((s) => s.id === project.furthestStep);
-  return step ? `Step ${step.n} of ${STEPS.length} · ${step.label}` : 'Ready';
+  // The workspace guide is two steps, Buy then Build; anything before Build counts as buying.
+  return project.furthestStep === 'build' ? 'Step 2 of 2 · Build' : 'Step 1 of 2 · Buy';
 }
 
 /** Relative time for "last updated", falling back to a date for anything older than a week. */

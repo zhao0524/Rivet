@@ -16,7 +16,7 @@ export interface ProjectContextValue {
   project: ProjectRecord;
   update: (patch: Partial<ProjectRecord>) => void;
   build: ProjectBuildState;
-  /** Current route segment: a step id, `clarify` or `generate`. */
+  /** Current route segment: `workspace` or a step id. */
   segment: string;
   /** Navigate to a step, recording it as reached when it moves forward. */
   goTo: (step: StepId) => void;
@@ -90,6 +90,16 @@ export function ProjectShell({ id, children }: { id: string; children: ReactNode
           )}
         </main>
       </>
+    );
+  }
+
+  // The workspace is full screen with its own header and panels.
+  if (segment === 'workspace') {
+    return (
+      <ProjectContext.Provider value={value}>
+        {children}
+        <IterateModal open={iterateOpen} onClose={() => setIterateOpen(false)} />
+      </ProjectContext.Provider>
     );
   }
 

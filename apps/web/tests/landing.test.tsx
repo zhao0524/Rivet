@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import HomePage from '../src/app/page';
-import { listProjects, readAccount, saveAccount } from '../src/lib/flow/projects';
+import { createProjectRecord, getProject, listProjects, readAccount, saveAccount, saveProject } from '../src/lib/flow/projects';
 
 const push = vi.fn();
 
@@ -33,7 +33,7 @@ function typePrompt(text: string) {
   fireEvent.click(screen.getByTestId('home-prompt-submit'));
 }
 
-describe('Landing page and guest preview', () => {
+describe('Landing page (M1, sign in, workspace)', () => {
   it('renders the shared PromptBox in the hero: plain example prompts, a picture upload and "Build it"', () => {
     render(<HomePage />);
     expect(screen.getByTestId('home-page')).toBeDefined();
@@ -52,42 +52,90 @@ describe('Landing page and guest preview', () => {
     expect(screen.getByTestId('theme-toggle')).toBeDefined();
   });
 
-  it('continues with the saved draft without asking for an account or email', async () => {
+  it('Build it signed out asks to sign in first, then opens the workspace with the prompt', async () => {
     render(<HomePage />);
     typePrompt('A desk rover that stops before a wall');
 
-    const preview = await screen.findByTestId('guest-preview');
-    expect(preview.textContent).toContain('A desk rover that stops before a wall');
-    expect(preview.textContent).toContain('Rover · supported today');
-    expect(preview.textContent).toContain('Parts list');
-    expect(preview.textContent).toContain('Wiring');
-    expect(preview.textContent).toContain('Starter code');
-    expect(preview.textContent).toContain('Step-by-step build');
+    // No preview: signing in is the only step before the workspace.
+    expect(screen.queryByTestId('guest-preview')).toBeNull();
+    const save = await screen.findByTestId('save-modal');
+    expect(save.textContent).toContain('Sign in to build');
+    expect(save.textContent).toMatch(/saved in this browser/i);
+    expect(save.textContent).toMatch(/not live yet/i);
     expect(push).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByTestId('preview-continue'));
-    expect(screen.queryByTestId('save-modal')).toBeNull();
+    // Invalid email shows an inline error and does not navigate.
+    fireEvent.change(screen.getByTestId('save-email'), { target: { value: 'nope' } });
+    fireEvent.click(screen.getByTestId('save-continue-email'));
+    expect(screen.getByRole('alert').textContent).toMatch(/email/i);
+    expect(push).not.toHaveBeenCalled();
+
+    fireEvent.change(screen.getByTestId('save-email'), { target: { value: 'becca@umich.edu' } });
+    fireEvent.click(screen.getByTestId('save-continue-email'));
 
     await waitFor(() => expect(push).toHaveBeenCalledTimes(1));
     const href = push.mock.calls[0]![0] as string;
-    expect(href).toMatch(/^\/new\?draft=p_[a-z0-9]+$/);
-    const draft = JSON.parse(window.localStorage.getItem('rivet.draft.v1')!) as { id: string; text: string };
-    expect(href).toBe(`/new?draft=${draft.id}`);
-    expect(draft.text).toBe('A desk rover that stops before a wall');
-    expect(readAccount()).toBeNull();
+    expect(href).toMatch(/^\/p\/p_[a-z0-9]+\/workspace$/);
+    const id = href.split('/')[2]!;
+    // The prompt is already the project's: nothing to type again.
+    expect(getProject(id)).toMatchObject({ prompt: 'A desk rover that stops before a wall', phase: 'clarify' });
+    expect(window.localStorage.getItem('rivet.draft.v1')).toBeNull();
+    expect(readAccount()).toMatchObject({ email: 'becca@umich.edu', provider: 'email' });
   });
 
-  it('still opens the draft when a legacy local account exists', async () => {
+  it('Continue with Google stores a google account and continues', async () => {
+    render(<HomePage />);
+    typePrompt('Rover');
+    fireEvent.click(await screen.findByTestId('save-continue-google'));
+    await waitFor(() => expect(push).toHaveBeenCalledTimes(1));
+    expect(readAccount()).toMatchObject({ email: 'Google account', provider: 'google' });
+  });
+
+  it('signed in, Build it goes straight to the workspace', async () => {
     saveAccount({ email: 'x@y.z', provider: 'email', savedAt: new Date().toISOString() });
     render(<HomePage />);
     typePrompt('Rover');
-    fireEvent.click(await screen.findByTestId('preview-continue'));
     await waitFor(() => expect(push).toHaveBeenCalledTimes(1));
-    expect(push.mock.calls[0]![0]).toMatch(/^\/new\?draft=/);
+    expect(push.mock.calls[0]![0]).toMatch(/^\/p\/p_[a-z0-9]+\/workspace$/);
     expect(screen.queryByTestId('save-modal')).toBeNull();
   });
 
-  it('See an example saves a ready example project and opens its review step', () => {
+  it('Community replaces the outputs section: published builds first, then featured ones', async () => {
+    saveProject({ ...createProjectRecord({ id: 'p_pub', prompt: 'x', title: 'Wall-dodging rover', phase: 'ready' }), publishedAt: new Date().toISOString() });
+    render(<HomePage />);
+    expect(screen.queryByText(/files and checks you need/)).toBeNull();
+    expect(screen.getByRole('heading', { name: 'Community' })).toBeDefined();
+    const list = await screen.findByTestId('home-community-list');
+    await waitFor(() => expect(list.querySelector('li[data-kind="published"]')).not.toBeNull());
+    const kinds = Array.from(list.querySelectorAll('li[data-kind]')).map((li) => li.getAttribute('data-kind'));
+    expect(kinds).toEqual(['published', 'featured', 'featured', 'featured', 'featured', 'featured']);
+    expect(list.textContent).toContain('Wall-dodging rover');
+    expect(list.textContent).toContain('Published by you');
+    expect(list.textContent).toContain('Featured');
+  });
+
+  it('a community card opens a preview over the page; Save for later and Use as template both act', async () => {
+    render(<HomePage />);
+    const card = await screen.findByTestId('home-community-robot-arm');
+    fireEvent.click(within(card).getAllByRole('button')[0]!);
+    const preview = await screen.findByTestId('community-preview');
+    expect(within(preview).getByTestId('community-preview-title').textContent).toBe('Desk robot arm');
+    expect(within(preview).getByTestId('community-preview-price').textContent).toContain('$96');
+    expect(within(preview).getByTestId('community-preview-creator').textContent).toContain('@maya.builds');
+    expect(push).not.toHaveBeenCalled();
+
+    fireEvent.click(within(preview).getByTestId('community-save'));
+    expect(listProjects().map((p) => p.title)).toEqual(['Desk robot arm']);
+    expect(screen.getByTestId('community-saved').textContent).toContain('Saved to');
+
+    // Signed out, using it as a template asks to sign in first, then opens its workspace.
+    fireEvent.click(within(preview).getByTestId('community-template'));
+    fireEvent.click(await screen.findByTestId('save-continue-google'));
+    await waitFor(() => expect(push).toHaveBeenCalledTimes(1));
+    expect(push.mock.calls[0]![0]).toMatch(/^\/p\/p_[a-z0-9]+\/workspace$/);
+  });
+
+  it('See an example saves a ready example project and opens its workspace', () => {
     render(<HomePage />);
     fireEvent.click(screen.getByTestId('home-see-example'));
     const projects = listProjects();
@@ -99,16 +147,15 @@ describe('Landing page and guest preview', () => {
       buildId: 'rivet-intent-rover-001',
       title: 'Indoor obstacle rover (example)',
     });
-    expect(push).toHaveBeenCalledWith(`/p/${p.id}/review`);
+    expect(push).toHaveBeenCalledWith(`/p/${p.id}/workspace`);
   });
 
-  it('shows the sourced example with its unresolved fit clearly labelled', () => {
+  it('shows one 3D scene in the scroll demo, with a six-step build overview', () => {
     render(<HomePage />);
     const section = screen.getByTestId('home-assembly-scroll');
     expect(screen.getByTestId('home-hero-stage')).toBeDefined();
     expect(section.querySelectorAll('[data-testid="rover-scene"]')).toHaveLength(1);
     expect(section.querySelectorAll('.mk-build__step')).toHaveLength(6);
-    expect(screen.getByText('Saved example · sourced parts · fit needs review')).toBeDefined();
   });
 
   it('shows three gallery samples, each tagged and honest about what Rivet builds', () => {
@@ -156,7 +203,5 @@ describe('Landing page and guest preview', () => {
     for (const word of [/\bBOM\b/, /schema/i, /\brevision/i, /fixture/i, /synthetic/i, /verification/i, /differential/i, /kinematic/i]) {
       expect(text).not.toMatch(word);
     }
-    // ESP32 always comes with a plain gloss.
-    expect(text).toContain('ESP32 controller board');
   });
 });
