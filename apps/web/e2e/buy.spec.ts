@@ -32,7 +32,7 @@ test.describe('Buy', () => {
 
     // Vendors come from the verified links; the kit caster has none and is named, not linked.
     await expect(page.getByTestId('buy-vendor-Adafruit')).toBeVisible();
-    await expect(page.getByTestId('buy-vendor-Sparkfun')).toBeVisible();
+    await expect(page.getByTestId('buy-vendor-SparkFun')).toBeVisible();
     const noVendor = page.getByTestId('buy-vendor-No verified vendor');
     await expect(noVendor).toContainText('no product page to link');
     await expect(noVendor.getByTestId(`buy-line-${CASTER}`)).toContainText('Shadow Chassis nub caster');
@@ -59,7 +59,7 @@ test.describe('Buy', () => {
     const cart = page.getByTestId('buy-cart');
     await expect(cart).toBeVisible();
     await expect(cart.getByTestId('buy-cart-vendor-Adafruit')).toBeVisible();
-    await expect(cart.getByTestId('buy-cart-vendor-Sparkfun')).toBeVisible();
+    await expect(cart.getByTestId('buy-cart-vendor-SparkFun')).toBeVisible();
     for (const line of LINES) {
       const link = cart.getByTestId(`buy-cart-link-${line.catalogId}`);
       if (line.catalogId === POWER_BANK) {
