@@ -1,0 +1,2464 @@
+{
+ "bodies": [
+  {
+   "anchors": [],
+   "attachment": null,
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "fuselage",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "none",
+   "material": {
+    "color": "#2B2D2F",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.1,
+    "name": "carbon_composite",
+    "opacity": 1.0,
+    "roughness": 0.5
+   },
+   "name": "Fuselage shell",
+   "parent_id": null,
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "hull",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Z",
+    "children": [],
+    "dimensions_mm": [
+     8.8613,
+     8.8613,
+     8.8613
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 8.8613,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [
+     [
+      0.0,
+      0.0
+     ],
+     [
+      31.0146,
+      106.3356
+     ],
+     [
+      97.4743,
+      413.5275
+     ],
+     [
+      159.5034,
+      827.0549
+     ],
+     [
+      221.5326,
+      1358.7331
+     ],
+     [
+      212.6713,
+      1417.8084
+     ],
+     [
+      168.3648,
+      1683.6475
+     ],
+     [
+      115.1969,
+      1905.1801
+     ],
+     [
+      101.905,
+      2060.2529
+     ],
+     [
+      101.905,
+      2126.7126
+     ]
+    ],
+    "radius_mm": 2.2153,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "revolve_profile",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": [
+    "streamlined",
+    "needle_nose"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "embedded",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     -88.613
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "canopy",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "none",
+   "material": {
+    "color": "#C0C5CA",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "polycarbonate_tinted",
+    "opacity": 1.0,
+    "roughness": 0.2
+   },
+   "name": "Bubble canopy",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "canopy",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     310.1456,
+     168.3648,
+     487.3716
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 8.8613,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [],
+    "radius_mm": 2.2153,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "ellipsoid",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": [
+    "set_back"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "right",
+    "clearance_mm": 0.0,
+    "contact": "embedded",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     -110.7663
+    ],
+    "parent_anchor": "left",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "intake_tube",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "none",
+   "material": {
+    "color": "#C0C5CA",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.85,
+    "name": "hypersilver_coated",
+    "opacity": 1.0,
+    "roughness": 0.2
+   },
+   "name": "Left intake lip and stub",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "intake",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "X",
+    "children": [],
+    "dimensions_mm": [
+     8.8613,
+     8.8613,
+     8.8613
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 97.4743,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [],
+    "radius_mm": 79.7517,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "tube",
+    "wall_mm": 7.9752
+   },
+   "standalone": false,
+   "tags": [
+    "asymmetric",
+    "left_only"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "right",
+    "clearance_mm": 0.0,
+    "contact": "embedded",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     -110.7663
+    ],
+    "parent_anchor": "left",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "intake_bulge",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "none",
+   "material": {
+    "color": "#2B2D2F",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.1,
+    "name": "carbon_composite",
+    "opacity": 1.0,
+    "roughness": 0.5
+   },
+   "name": "Intake fairing bulge",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "fairing",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     186.0874,
+     124.0582,
+     274.7004
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 8.8613,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [],
+    "radius_mm": 2.2153,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "ellipsoid",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": [
+    "left_blend"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     155.0728
+    ],
+    "parent_anchor": "back_top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "tail_fin",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "none",
+   "material": {
+    "color": "#2B2D2F",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.1,
+    "name": "carbon_composite",
+    "opacity": 1.0,
+    "roughness": 0.5
+   },
+   "name": "Swept tail fin",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "tail",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "X",
+    "children": [],
+    "dimensions_mm": [
+     8.8613,
+     8.8613,
+     8.8613
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 35.4452,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [
+     [
+      -177.2261,
+      230.3939
+     ],
+     [
+      -434.2038,
+      469.649
+     ],
+     [
+      -447.4958,
+      230.3939
+     ],
+     [
+      -310.1456,
+      203.81
+     ],
+     [
+      -177.2261,
+      230.3939
+     ]
+    ],
+    "radius_mm": 2.2153,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "extrude_profile",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": [
+    "tall",
+    "aft_rake"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "left",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     -387.682
+    ],
+    "parent_anchor": "right",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "right_strake",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "none",
+   "material": {
+    "color": "#2B2D2F",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.1,
+    "name": "carbon_composite",
+    "opacity": 1.0,
+    "roughness": 0.5
+   },
+   "name": "Right strake",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "wing",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     8.8613,
+     8.8613,
+     8.8613
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 26.5839,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [
+     [
+      221.5326,
+      -177.2261
+     ],
+     [
+      336.7295,
+      -398.7586
+     ],
+     [
+      221.5326,
+      -620.2912
+     ],
+     [
+      230.3939,
+      -398.7586
+     ],
+     [
+      221.5326,
+      -177.2261
+     ]
+    ],
+    "radius_mm": 2.2153,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "extrude_profile",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": [
+    "low_span"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "right",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     -387.682
+    ],
+    "parent_anchor": "left",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "left_strake",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "none",
+   "material": {
+    "color": "#2B2D2F",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.1,
+    "name": "carbon_composite",
+    "opacity": 1.0,
+    "roughness": 0.5
+   },
+   "name": "Left strake",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "wing",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     8.8613,
+     8.8613,
+     8.8613
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 26.5839,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [
+     [
+      -221.5326,
+      -177.2261
+     ],
+     [
+      -336.7295,
+      -398.7586
+     ],
+     [
+      -221.5326,
+      -620.2912
+     ],
+     [
+      -230.3939,
+      -398.7586
+     ],
+     [
+      -221.5326,
+      -177.2261
+     ]
+    ],
+    "radius_mm": 2.2153,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "extrude_profile",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": [
+    "low_span"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "front",
+    "clearance_mm": 0.0,
+    "contact": "embedded",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     88.613,
+     0.0
+    ],
+    "parent_anchor": "back",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "nozzle_upper",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "none",
+   "material": {
+    "color": "#C0C5CA",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.2,
+    "name": "ceramic_matrix_composite",
+    "opacity": 1.0,
+    "roughness": 0.3
+   },
+   "name": "Upper rear nozzle",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "thruster",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Z",
+    "children": [],
+    "dimensions_mm": [
+     8.8613,
+     8.8613,
+     8.8613
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 97.4743,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [],
+    "radius_mm": 79.7517,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "tube",
+    "wall_mm": 8.8613
+   },
+   "standalone": false,
+   "tags": [
+    "stacked_pair"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "front",
+    "clearance_mm": 0.0,
+    "contact": "embedded",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     -88.613,
+     0.0
+    ],
+    "parent_anchor": "back",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "nozzle_lower",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "none",
+   "material": {
+    "color": "#C0C5CA",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.2,
+    "name": "ceramic_matrix_composite",
+    "opacity": 1.0,
+    "roughness": 0.3
+   },
+   "name": "Lower rear nozzle",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "thruster",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Z",
+    "children": [],
+    "dimensions_mm": [
+     8.8613,
+     8.8613,
+     8.8613
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 97.4743,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [],
+    "radius_mm": 79.7517,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "tube",
+    "wall_mm": 8.8613
+   },
+   "standalone": false,
+   "tags": [
+    "stacked_pair"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "center",
+    "clearance_mm": 0.0,
+    "contact": "embedded",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     -17.7226
+    ],
+    "parent_anchor": "center",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "nozzle_glow_upper",
+   "internal": true,
+   "kind": "concept_visual",
+   "manufacturing": "none",
+   "material": {
+    "color": "#FF7A00",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "plasma_glow",
+    "opacity": 1.0,
+    "roughness": 0.0
+   },
+   "name": "Upper nozzle glow core",
+   "parent_id": "nozzle_upper",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "effect_core",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     8.8613,
+     8.8613,
+     8.8613
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 8.8613,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [],
+    "radius_mm": 42.0912,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "sphere",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": []
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "center",
+    "clearance_mm": 0.0,
+    "contact": "embedded",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     -17.7226
+    ],
+    "parent_anchor": "center",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "nozzle_glow_lower",
+   "internal": true,
+   "kind": "concept_visual",
+   "manufacturing": "none",
+   "material": {
+    "color": "#FF7A00",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "plasma_glow",
+    "opacity": 1.0,
+    "roughness": 0.0
+   },
+   "name": "Lower nozzle glow core",
+   "parent_id": "nozzle_lower",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "effect_core",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     8.8613,
+     8.8613,
+     8.8613
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 8.8613,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [],
+    "radius_mm": 42.0912,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "sphere",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": []
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "front",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     110.7663,
+     0.0
+    ],
+    "parent_anchor": "back",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "tail_heat_shield",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "none",
+   "material": {
+    "color": "#C0C5CA",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.85,
+    "name": "hypersilver_coated",
+    "opacity": 1.0,
+    "roughness": 0.2
+   },
+   "name": "Tail heat shield",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "heat_shield",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     230.3939,
+     17.7226,
+     186.0874
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 8.8613,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [],
+    "radius_mm": 7.9752,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": []
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "top",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     -5.465,
+     664.598
+    ],
+    "parent_anchor": "bottom",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "nose_skid_foot",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#FFD400",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.6,
+    "name": "titanium_skid_with_pad",
+    "opacity": 1.0,
+    "roughness": 0.6
+   },
+   "name": "Front skid foot",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "landing_foot",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     115.1969,
+     10.6336,
+     97.4743
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 8.8613,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [],
+    "radius_mm": 2.2153,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "plate",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": [
+    "retractable_profile"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "top",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     -274.7,
+     -5.465,
+     -487.372
+    ],
+    "parent_anchor": "bottom",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "rear_left_skid_foot",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#FFD400",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.6,
+    "name": "titanium_skid_with_pad",
+    "opacity": 1.0,
+    "roughness": 0.6
+   },
+   "name": "Rear left skid foot",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "landing_foot",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     106.3356,
+     10.6336,
+     106.3356
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 8.8613,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [],
+    "radius_mm": 2.2153,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "plate",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": [
+    "retractable_profile"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "top",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     274.7,
+     -5.465,
+     -487.372
+    ],
+    "parent_anchor": "bottom",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "rear_right_skid_foot",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#FFD400",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.6,
+    "name": "titanium_skid_with_pad",
+    "opacity": 1.0,
+    "roughness": 0.6
+   },
+   "name": "Rear right skid foot",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "landing_foot",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     106.3356,
+     10.6336,
+     106.3356
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 8.8613,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [],
+    "radius_mm": 2.2153,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "plate",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": [
+    "retractable_profile"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "top",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     12.668,
+     531.678
+    ],
+    "parent_anchor": "bottom",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     12.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "nose_skid_leg",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C5CA",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.7,
+    "name": "titanium_fairing",
+    "opacity": 1.0,
+    "roughness": 0.4
+   },
+   "name": "Front skid leg fairing",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "landing_leg",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     26.5839,
+     26.5839,
+     168.3648
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 8.8613,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [],
+    "radius_mm": 2.2153,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "box",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": [
+    "angled"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "top",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     -248.1165,
+     13.292,
+     -398.7586
+    ],
+    "parent_anchor": "bottom",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     -18.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "rear_left_skid_leg",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C5CA",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.7,
+    "name": "titanium_fairing",
+    "opacity": 1.0,
+    "roughness": 0.4
+   },
+   "name": "Rear left skid leg fairing",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "landing_leg",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     26.5839,
+     26.5839,
+     159.5034
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 8.8613,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [],
+    "radius_mm": 2.2153,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "box",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": [
+    "splayed"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "top",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     248.1165,
+     13.292,
+     -398.7586
+    ],
+    "parent_anchor": "bottom",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     18.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "rear_right_skid_leg",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C5CA",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.7,
+    "name": "titanium_fairing",
+    "opacity": 1.0,
+    "roughness": 0.4
+   },
+   "name": "Rear right skid leg fairing",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "landing_leg",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     26.5839,
+     26.5839,
+     159.5034
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 8.8613,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [],
+    "radius_mm": 2.2153,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "box",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": [
+    "splayed"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "top",
+    "clearance_mm": 0.0,
+    "contact": "embedded",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     88.613
+    ],
+    "parent_anchor": "bottom",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "lift_ports_front",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "none",
+   "material": {
+    "color": "#2B2D2F",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.1,
+    "name": "carbon_panel",
+    "opacity": 1.0,
+    "roughness": 0.5
+   },
+   "name": "Ventral lift port panel (front)",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "lift_system_cover",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     230.3939,
+     6.2029,
+     159.5034
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 8.8613,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [],
+    "radius_mm": 2.7913,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": [
+    "flush"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "top",
+    "clearance_mm": 0.0,
+    "contact": "embedded",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     -221.5326
+    ],
+    "parent_anchor": "bottom",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "lift_ports_rear",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "none",
+   "material": {
+    "color": "#2B2D2F",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.1,
+    "name": "carbon_panel",
+    "opacity": 1.0,
+    "roughness": 0.5
+   },
+   "name": "Ventral lift port panel (rear)",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "lift_system_cover",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     203.81,
+     6.2029,
+     141.7808
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 8.8613,
+    "hollow": false,
+    "minor_radius_mm": 0.3926,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 0.8861,
+    "profile_mm": [],
+    "radius_mm": 2.7913,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 0.8861,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 1.6
+   },
+   "standalone": false,
+   "tags": [
+    "flush"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "left",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     80.0,
+     120.0
+    ],
+    "parent_anchor": "right_back",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "tail_fin_starboard",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "none",
+   "material": {
+    "color": "#2B2D2F",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.1,
+    "name": "carbon_composite",
+    "opacity": 1.0,
+    "roughness": 0.5
+   },
+   "name": "Right auxiliary tail fin",
+   "parent_id": "fuselage",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "tail",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "X",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 26.5839,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [
+     [
+      -150.0,
+      160.0
+     ],
+     [
+      -300.0,
+      280.0
+     ],
+     [
+      -320.0,
+      150.0
+     ],
+     [
+      -220.0,
+      120.0
+     ],
+     [
+      -150.0,
+      160.0
+     ]
+    ],
+    "radius_mm": 5.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "extrude_profile",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "starboard_fin",
+    "smaller"
+   ]
+  }
+ ],
+ "constraints": {
+  "handedness": "right",
+  "max_bounds_mm": [
+   6480.0,
+   2160.0,
+   2360.0
+  ],
+  "mesh_tolerance_mm": 0.15,
+  "min_general_clearance_mm": 1.0,
+  "min_wall_mm": 1.6,
+  "must_be_stable": true,
+  "printer_volume_mm": [
+   256.0,
+   256.0,
+   256.0
+  ],
+  "units": "mm",
+  "up_axis": "Y"
+ },
+ "mode": "concept_only",
+ "notes": [],
+ "schema_version": "2.0",
+ "seed": 0,
+ "strategy": "closest_to_reference",
+ "subject": "Futuristic single-seat hover racer with asymmetric left intake",
+ "visual_goal": {
+  "description": "Streamlined one-person hover racer with minimal frontal area, asymmetric left intake, stacked twin nozzles, and clean low-drag surfaces. Skids deployed for ground stance.",
+  "palette": [
+   {
+    "hex": "#2B2D2F",
+    "name": "Graphite Composite"
+   },
+   {
+    "hex": "#C0C5CA",
+    "name": "Hypersilver Accent"
+   },
+   {
+    "hex": "#00F0FF",
+    "name": "Neon Cyan Trim"
+   },
+   {
+    "hex": "#FFD400",
+    "name": "Hazard Yellow Markings"
+   },
+   {
+    "hex": "#FF7A00",
+    "name": "Thruster Glow Orange"
+   }
+  ],
+  "proportion_targets": {
+   "canopy_position_length": 0.55,
+   "height_length": 0.36,
+   "intake_diameter_width": 0.22,
+   "length_width": 3.0,
+   "nose_length_length": 0.4
+  },
+  "reference_image_ids": [],
+  "signature_features": [
+   "Long needle-like nose taper",
+   "Bubble canopy set back from the nose",
+   "Single oversized air intake on the left flank only",
+   "Twin rear thruster nozzles on centerline (stacked vertically)",
+   "Tall swept tail fin with aft rake",
+   "Three-point retractable landing skids (triangular stance)"
+  ],
+  "target_size_mm": [
+   2126.7126,
+   708.9042,
+   775.364
+  ],
+  "uncertainties": []
+ }
+}

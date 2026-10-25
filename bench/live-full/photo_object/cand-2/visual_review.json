@@ -1,0 +1,220 @@
+{
+ "issues": [
+  {
+   "body_id": "dome_cap",
+   "observed": "The dome is depicted in black rather than polished steel.",
+   "patch": null,
+   "proposed_change": "Change the dome color to simulate a polished steel appearance.",
+   "severity": "major",
+   "target": "Polished steel",
+   "view": "all"
+  },
+  {
+   "body_id": "crank_arm",
+   "observed": "Crank arm and knob are black, inconsistent with reference metal and wood tones.",
+   "patch": null,
+   "proposed_change": "Adjust crank arm to a metallic finish and knob to amber-toned wood.",
+   "severity": "major",
+   "target": "Stainless steel and amber-toned wood",
+   "view": "all"
+  },
+  {
+   "body_id": "case_box",
+   "observed": "Wood color is pale and lacks texture similar to the references.",
+   "patch": null,
+   "proposed_change": "Apply a more nuanced wood texture and appropriate color to the box.",
+   "severity": "major",
+   "target": "Honey beech wood",
+   "view": "all"
+  },
+  {
+   "body_id": "front_badge",
+   "observed": "Missing front badge above the drawer.",
+   "patch": null,
+   "proposed_change": "Add a model of the badge/logo above the drawer on the front.",
+   "severity": "minor",
+   "target": "Small badge/logo",
+   "view": "front"
+  },
+  {
+   "body_id": "ring_flange",
+   "observed": "Screws around the dome are not visible.",
+   "patch": null,
+   "proposed_change": "Include screw details around the dome flange.",
+   "severity": "minor",
+   "target": "Exposed screws",
+   "view": "top"
+  },
+  {
+   "body_id": "drawer_box",
+   "observed": "Drawer appears to be fully opened or detached.",
+   "patch": null,
+   "proposed_change": "Ensure the drawer is shown partially open to indicate proper function and integration.",
+   "severity": "minor",
+   "target": "Drawer with stop integration",
+   "view": "left"
+  }
+ ],
+ "judge_model": "openai:gpt-5+critic:gpt-4o",
+ "metrics": {
+  "deterministic_overall": 7.36,
+  "deterministic_scores": {
+   "colour_and_surface": 10.0,
+   "pose_and_orientation": 8.0,
+   "proportions": 7.0,
+   "reference_consistency": 4.93,
+   "signature_features": 8.33,
+   "silhouette": 4.93
+  },
+  "features_named": {
+   "Exposed screws around the dome flange": true,
+   "Front pull-out drawer with round metal pull": true,
+   "Polished metal dome lid with central spindle": true,
+   "Side crank arm with spherical wooden knob": true,
+   "Small badge/logo on the front face": true,
+   "Square wooden box body with rounded edges": true
+  },
+  "measured_proportions": {
+   "height_length": 0.581,
+   "length_width": 1.194
+  },
+  "method": "deterministic matched-view silhouette, proportion, outline-detail and palette metrics; names and labels earn no credit",
+  "outline_detail_ratio": {
+   "back": 0.996,
+   "left": 0.581,
+   "perspective": 0.115,
+   "top": 0.64
+  },
+  "reference_silhouette_iou": {
+   "back": 0.34,
+   "left": 0.584,
+   "perspective": 0.557,
+   "top": 0.489
+  },
+  "silhouette_parts": [
+   {
+    "body_id": "case_box",
+    "protrudes": true,
+    "volume_share": 4.9959
+   },
+   {
+    "body_id": "front_bezel",
+    "protrudes": true,
+    "volume_share": 0.1403
+   },
+   {
+    "body_id": "drawer_box",
+    "protrudes": true,
+    "volume_share": 2.2011
+   },
+   {
+    "body_id": "drawer_front",
+    "protrudes": true,
+    "volume_share": 0.3628
+   },
+   {
+    "body_id": "drawer_knob_base",
+    "protrudes": true,
+    "volume_share": 0.0016
+   },
+   {
+    "body_id": "drawer_knob_head",
+    "protrudes": true,
+    "volume_share": 0.0108
+   },
+   {
+    "body_id": "top_board",
+    "protrudes": true,
+    "volume_share": 1.0645
+   },
+   {
+    "body_id": "ring_flange",
+    "protrudes": true,
+    "volume_share": 0.0886
+   },
+   {
+    "body_id": "dome_cap",
+    "protrudes": true,
+    "volume_share": 0.7256
+   },
+   {
+    "body_id": "bean_lid",
+    "protrudes": true,
+    "volume_share": 0.0033
+   },
+   {
+    "body_id": "lid_handle",
+    "protrudes": true,
+    "volume_share": 0.0005
+   },
+   {
+    "body_id": "spindle_post",
+    "protrudes": true,
+    "volume_share": 0.0109
+   },
+   {
+    "body_id": "arm_hub",
+    "protrudes": true,
+    "volume_share": 0.0097
+   },
+   {
+    "body_id": "crank_arm",
+    "protrudes": true,
+    "volume_share": 0.0544
+   },
+   {
+    "body_id": "knob_ferrule",
+    "protrudes": true,
+    "volume_share": 0.0109
+   },
+   {
+    "body_id": "knob_ball",
+    "protrudes": true,
+    "volume_share": 0.0867
+   },
+   {
+    "body_id": "cap_nut",
+    "protrudes": true,
+    "volume_share": 0.0073
+   },
+   {
+    "body_id": "ring_screw_n",
+    "protrudes": true,
+    "volume_share": 0.0003
+   },
+   {
+    "body_id": "ring_screw_e",
+    "protrudes": true,
+    "volume_share": 0.0003
+   },
+   {
+    "body_id": "ring_screw_s",
+    "protrudes": true,
+    "volume_share": 0.0003
+   },
+   {
+    "body_id": "ring_screw_w",
+    "protrudes": true,
+    "volume_share": 0.0003
+   },
+   {
+    "body_id": "front_badge",
+    "protrudes": true,
+    "volume_share": 0.0087
+   }
+  ],
+  "target_proportions": {}
+ },
+ "overall": 5.5,
+ "render_digest": "3e706257cd9c75e29ddf416043cc246ceffdb07a541d786a509211f72623130e",
+ "scores": {
+  "colour_and_surface": 4.0,
+  "pose_and_orientation": 6.0,
+  "proportions": 7.0,
+  "reference_consistency": 5.0,
+  "signature_features": 5.0,
+  "silhouette": 6.0
+ },
+ "subjective": true,
+ "summary": "The generated 3D model of the coffee grinder captures the basic form and function, but has notable deviations from the reference images in several aspects. The proportions are fairly accurate overall, but there are key areas where improvements are needed."
+}

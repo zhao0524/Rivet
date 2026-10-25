@@ -1,0 +1,5320 @@
+{
+ "calls": [
+  {
+   "estimated_usd": 0.24,
+   "images": 1,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.04,
+   "kind": "image",
+   "model": "gpt-image-1-mini",
+   "purpose": "view:left"
+  },
+  {
+   "estimated_usd": 0.04,
+   "kind": "image",
+   "model": "gpt-image-1-mini",
+   "purpose": "view:back"
+  },
+  {
+   "estimated_usd": 0.04,
+   "kind": "image",
+   "model": "gpt-image-1-mini",
+   "purpose": "view:top"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 4,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 4,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 4,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 4,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 4,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.04,
+   "images": 10,
+   "kind": "vision",
+   "model": "gpt-4o"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 4,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.04,
+   "images": 10,
+   "kind": "vision",
+   "model": "gpt-4o"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 4,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 4,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.04,
+   "images": 10,
+   "kind": "vision",
+   "model": "gpt-4o"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 4,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 4,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 4,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.04,
+   "images": 10,
+   "kind": "vision",
+   "model": "gpt-4o"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 4,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 4,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.04,
+   "images": 10,
+   "kind": "vision",
+   "model": "gpt-4o"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 4,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 4,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 4,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.04,
+   "images": 10,
+   "kind": "vision",
+   "model": "gpt-4o"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 8,
+   "kind": "vision",
+   "model": "gpt-5"
+  },
+  {
+   "estimated_usd": 0.04,
+   "images": 10,
+   "kind": "vision",
+   "model": "gpt-4o"
+  },
+  {
+   "estimated_usd": 0.24,
+   "images": 8,
+   "kind": "vision",
+   "model": "gpt-5"
+  }
+ ],
+ "events": [
+  {
+   "actor": "system",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": null,
+   "event_id": 1,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "Request accepted (concept_only, full quality, live providers, visual target 8.0/10)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "intake",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:29:23.822041Z"
+  },
+  {
+   "actor": "vision",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": null,
+   "event_id": 2,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "Understood: Vintage hand-crank coffee grinder (box mill) (Square wooden box body with rounded edges, Polished metal dome lid with central spindle, Side crank arm with spherical wooden knob)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-a65e9dbb3c292a689333fd5cc144445bfcdc4da82a01b39d76fb3cec455a6d78",
+     "type": "distilled",
+     "url": "/api/v2/assets/asset-a65e9dbb3c292a689333fd5cc144445bfcdc4da82a01b39d76fb3cec455a6d78"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "distilled",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:29:43.791079Z"
+  },
+  {
+   "actor": "system",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": null,
+   "event_id": 3,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "Using the uploaded image as the authoritative reference; no concept art generated",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-3f3d885b9750e349839aa5f093a2b15b3d0ff40803045cb71082af83c03315a8",
+     "type": "reference",
+     "url": "/api/v2/assets/asset-3f3d885b9750e349839aa5f093a2b15b3d0ff40803045cb71082af83c03315a8"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "concept_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:29:43.793255Z"
+  },
+  {
+   "actor": "vision",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": null,
+   "event_id": 4,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "Generated left reference view (inferred, not measured)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-550cf79fc4b557ada9f4bc7a5b5079db3ca7247af43b323cc970452a6c3be820",
+     "type": "view_left",
+     "url": "/api/v2/assets/asset-550cf79fc4b557ada9f4bc7a5b5079db3ca7247af43b323cc970452a6c3be820"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "view_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:29:55.419672Z"
+  },
+  {
+   "actor": "vision",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": null,
+   "event_id": 5,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "Generated back reference view (inferred, not measured)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-4244723138c8fe195ce08a08011b2865055d38c4e08ef385a9c13bdaf019a784",
+     "type": "view_back",
+     "url": "/api/v2/assets/asset-4244723138c8fe195ce08a08011b2865055d38c4e08ef385a9c13bdaf019a784"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "view_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:30:06.555500Z"
+  },
+  {
+   "actor": "vision",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": null,
+   "event_id": 6,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "Generated top reference view (inferred, not measured)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-f7b269af43ddebf420cdf08c1ea2370c1cc1dd28598828b327f8d352dd5f4a7e",
+     "type": "view_top",
+     "url": "/api/v2/assets/asset-f7b269af43ddebf420cdf08c1ea2370c1cc1dd28598828b327f8d352dd5f4a7e"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "view_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:30:17.582931Z"
+  },
+  {
+   "actor": "planner",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 7,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: authoring a simpler manufacture design",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "candidate_started",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:30:32.119961Z"
+  },
+  {
+   "actor": "planner",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 8,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: authoring a closest to reference design",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "candidate_started",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:30:32.162979Z"
+  },
+  {
+   "actor": "planner",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 9,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: authoring a signature geometry design",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "candidate_started",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:30:32.204869Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 10,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built base_plinth",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.298864Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 11,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: partial assembly with 1 bodies",
+   "preview_revision": 1,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-ab94deec5e4eecbab6a6131415f124e38949da17abafcebd9edb135900885041",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-ab94deec5e4eecbab6a6131415f124e38949da17abafcebd9edb135900885041"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "ab94deec5e4eecbab6a6131415f124e38949da17abafcebd9edb135900885041",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     }
+    ],
+    "preview_revision": 1,
+    "scene_asset_url": "/api/v2/assets/asset-ab94deec5e4eecbab6a6131415f124e38949da17abafcebd9edb135900885041"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.303679Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 12,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built box_body",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.546872Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 13,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: partial assembly with 2 bodies",
+   "preview_revision": 2,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-805f5683862280e145e2addd526139006ddd42026f17f05723a5f4c8cdbacd36",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-805f5683862280e145e2addd526139006ddd42026f17f05723a5f4c8cdbacd36"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "805f5683862280e145e2addd526139006ddd42026f17f05723a5f4c8cdbacd36",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "box_body"
+     }
+    ],
+    "preview_revision": 2,
+    "scene_asset_url": "/api/v2/assets/asset-805f5683862280e145e2addd526139006ddd42026f17f05723a5f4c8cdbacd36"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.552654Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 14,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built top_plate",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.577992Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 15,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built drawer_box",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.582809Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 16,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built badge_plate",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.610228Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 17,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built lower_burr",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.616860Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 18,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: partial assembly with 6 bodies",
+   "preview_revision": 3,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-6333e1670f0c0ff887414390121f2c751c7961f7f20a5a5b5e4a9a7eaa7cdb62",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-6333e1670f0c0ff887414390121f2c751c7961f7f20a5a5b5e4a9a7eaa7cdb62"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "6333e1670f0c0ff887414390121f2c751c7961f7f20a5a5b5e4a9a7eaa7cdb62",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "box_body"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "badge_plate"
+     },
+     {
+      "body_id": "lower_burr"
+     }
+    ],
+    "preview_revision": 3,
+    "scene_asset_url": "/api/v2/assets/asset-6333e1670f0c0ff887414390121f2c751c7961f7f20a5a5b5e4a9a7eaa7cdb62"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.626505Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 19,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built flange_ring",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.636166Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 20,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built drawer_front_panel",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.661957Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 21,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built flange_screw_1",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.666789Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 22,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built flange_screw_2",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.677251Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 23,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built flange_screw_3",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.685359Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 24,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built flange_screw_4",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.694414Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 25,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: partial assembly with 12 bodies",
+   "preview_revision": 4,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-6e334ce162117c99ec7ccb9809dc182db45168c2cbf78397a3f5556a975326a9",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-6e334ce162117c99ec7ccb9809dc182db45168c2cbf78397a3f5556a975326a9"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "6e334ce162117c99ec7ccb9809dc182db45168c2cbf78397a3f5556a975326a9",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "box_body"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "flange_ring"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "drawer_front_panel"
+     },
+     {
+      "body_id": "badge_plate"
+     },
+     {
+      "body_id": "flange_screw_1"
+     },
+     {
+      "body_id": "flange_screw_2"
+     },
+     {
+      "body_id": "flange_screw_3"
+     },
+     {
+      "body_id": "flange_screw_4"
+     },
+     {
+      "body_id": "lower_burr"
+     }
+    ],
+    "preview_revision": 4,
+    "scene_asset_url": "/api/v2/assets/asset-6e334ce162117c99ec7ccb9809dc182db45168c2cbf78397a3f5556a975326a9"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.705213Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 26,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built corner_screw_fl",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.709365Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 27,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built corner_screw_fr",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.714897Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 28,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built corner_screw_bl",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.720739Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 29,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built corner_screw_br",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.725065Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 30,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: partial assembly with 16 bodies",
+   "preview_revision": 5,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-0dfcb6149b4a53c7ebac23c116c6f4dd26f1a9d7b8f6aeb334208ebce9fc3192",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-0dfcb6149b4a53c7ebac23c116c6f4dd26f1a9d7b8f6aeb334208ebce9fc3192"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "0dfcb6149b4a53c7ebac23c116c6f4dd26f1a9d7b8f6aeb334208ebce9fc3192",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "box_body"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "flange_ring"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "drawer_front_panel"
+     },
+     {
+      "body_id": "badge_plate"
+     },
+     {
+      "body_id": "flange_screw_1"
+     },
+     {
+      "body_id": "flange_screw_2"
+     },
+     {
+      "body_id": "flange_screw_3"
+     },
+     {
+      "body_id": "flange_screw_4"
+     },
+     {
+      "body_id": "corner_screw_fl"
+     },
+     {
+      "body_id": "corner_screw_fr"
+     },
+     {
+      "body_id": "corner_screw_bl"
+     },
+     {
+      "body_id": "corner_screw_br"
+     },
+     {
+      "body_id": "lower_burr"
+     }
+    ],
+    "preview_revision": 5,
+    "scene_asset_url": "/api/v2/assets/asset-0dfcb6149b4a53c7ebac23c116c6f4dd26f1a9d7b8f6aeb334208ebce9fc3192"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.738660Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 31,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built dome_cap",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.749098Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 32,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built drawer_knob_stem",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.754526Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 33,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: partial assembly with 18 bodies",
+   "preview_revision": 6,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-ac70a4e8d30fe5b4247c99fb1003f189268de1fd7dc9106ca747449abb45e7da",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-ac70a4e8d30fe5b4247c99fb1003f189268de1fd7dc9106ca747449abb45e7da"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "ac70a4e8d30fe5b4247c99fb1003f189268de1fd7dc9106ca747449abb45e7da",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "box_body"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "flange_ring"
+     },
+     {
+      "body_id": "dome_cap"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "drawer_front_panel"
+     },
+     {
+      "body_id": "drawer_knob_stem"
+     },
+     {
+      "body_id": "badge_plate"
+     },
+     {
+      "body_id": "flange_screw_1"
+     },
+     {
+      "body_id": "flange_screw_2"
+     },
+     {
+      "body_id": "flange_screw_3"
+     },
+     {
+      "body_id": "flange_screw_4"
+     },
+     {
+      "body_id": "corner_screw_fl"
+     },
+     {
+      "body_id": "corner_screw_fr"
+     },
+     {
+      "body_id": "corner_screw_bl"
+     },
+     {
+      "body_id": "corner_screw_br"
+     },
+     {
+      "body_id": "lower_burr"
+     }
+    ],
+    "preview_revision": 6,
+    "scene_asset_url": "/api/v2/assets/asset-ac70a4e8d30fe5b4247c99fb1003f189268de1fd7dc9106ca747449abb45e7da"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.768087Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 34,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built spindle_collar",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.772128Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 35,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built hinge_pin",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.777598Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 36,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built drawer_knob_cap",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.786236Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 37,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: partial assembly with 21 bodies",
+   "preview_revision": 7,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-d8f6e672dc47a217906c6030f724c04c0367d2ebf0628c059c9dbc30bd2156d1",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-d8f6e672dc47a217906c6030f724c04c0367d2ebf0628c059c9dbc30bd2156d1"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "d8f6e672dc47a217906c6030f724c04c0367d2ebf0628c059c9dbc30bd2156d1",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "box_body"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "flange_ring"
+     },
+     {
+      "body_id": "dome_cap"
+     },
+     {
+      "body_id": "spindle_collar"
+     },
+     {
+      "body_id": "hinge_pin"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "drawer_front_panel"
+     },
+     {
+      "body_id": "drawer_knob_stem"
+     },
+     {
+      "body_id": "drawer_knob_cap"
+     },
+     {
+      "body_id": "badge_plate"
+     },
+     {
+      "body_id": "flange_screw_1"
+     },
+     {
+      "body_id": "flange_screw_2"
+     },
+     {
+      "body_id": "flange_screw_3"
+     },
+     {
+      "body_id": "flange_screw_4"
+     },
+     {
+      "body_id": "corner_screw_fl"
+     },
+     {
+      "body_id": "corner_screw_fr"
+     },
+     {
+      "body_id": "corner_screw_bl"
+     },
+     {
+      "body_id": "corner_screw_br"
+     },
+     {
+      "body_id": "lower_burr"
+     }
+    ],
+    "preview_revision": 7,
+    "scene_asset_url": "/api/v2/assets/asset-d8f6e672dc47a217906c6030f724c04c0367d2ebf0628c059c9dbc30bd2156d1"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.803704Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 38,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built spindle_post",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.808042Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 39,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built fill_flap",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.833352Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 40,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: partial assembly with 23 bodies",
+   "preview_revision": 8,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-034887a9f7776e60be49de55aec11ca9129da5ee9192d15bb1defb956ba5f739",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-034887a9f7776e60be49de55aec11ca9129da5ee9192d15bb1defb956ba5f739"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "034887a9f7776e60be49de55aec11ca9129da5ee9192d15bb1defb956ba5f739",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "box_body"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "flange_ring"
+     },
+     {
+      "body_id": "dome_cap"
+     },
+     {
+      "body_id": "spindle_collar"
+     },
+     {
+      "body_id": "spindle_post"
+     },
+     {
+      "body_id": "hinge_pin"
+     },
+     {
+      "body_id": "fill_flap"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "drawer_front_panel"
+     },
+     {
+      "body_id": "drawer_knob_stem"
+     },
+     {
+      "body_id": "drawer_knob_cap"
+     },
+     {
+      "body_id": "badge_plate"
+     },
+     {
+      "body_id": "flange_screw_1"
+     },
+     {
+      "body_id": "flange_screw_2"
+     },
+     {
+      "body_id": "flange_screw_3"
+     },
+     {
+      "body_id": "flange_screw_4"
+     },
+     {
+      "body_id": "corner_screw_fl"
+     },
+     {
+      "body_id": "corner_screw_fr"
+     },
+     {
+      "body_id": "corner_screw_bl"
+     },
+     {
+      "body_id": "corner_screw_br"
+     },
+     {
+      "body_id": "lower_burr"
+     }
+    ],
+    "preview_revision": 8,
+    "scene_asset_url": "/api/v2/assets/asset-034887a9f7776e60be49de55aec11ca9129da5ee9192d15bb1defb956ba5f739"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.869508Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 41,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built crank_hub",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.875155Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 42,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built upper_burr",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.886300Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 43,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: partial assembly with 25 bodies",
+   "preview_revision": 9,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-779c70826ba8475bbdb641d795b932d901365bf5e01a512f575232b987239351",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-779c70826ba8475bbdb641d795b932d901365bf5e01a512f575232b987239351"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "779c70826ba8475bbdb641d795b932d901365bf5e01a512f575232b987239351",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "box_body"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "flange_ring"
+     },
+     {
+      "body_id": "dome_cap"
+     },
+     {
+      "body_id": "spindle_collar"
+     },
+     {
+      "body_id": "spindle_post"
+     },
+     {
+      "body_id": "crank_hub"
+     },
+     {
+      "body_id": "hinge_pin"
+     },
+     {
+      "body_id": "fill_flap"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "drawer_front_panel"
+     },
+     {
+      "body_id": "drawer_knob_stem"
+     },
+     {
+      "body_id": "drawer_knob_cap"
+     },
+     {
+      "body_id": "badge_plate"
+     },
+     {
+      "body_id": "flange_screw_1"
+     },
+     {
+      "body_id": "flange_screw_2"
+     },
+     {
+      "body_id": "flange_screw_3"
+     },
+     {
+      "body_id": "flange_screw_4"
+     },
+     {
+      "body_id": "corner_screw_fl"
+     },
+     {
+      "body_id": "corner_screw_fr"
+     },
+     {
+      "body_id": "corner_screw_bl"
+     },
+     {
+      "body_id": "corner_screw_br"
+     },
+     {
+      "body_id": "lower_burr"
+     },
+     {
+      "body_id": "upper_burr"
+     }
+    ],
+    "preview_revision": 9,
+    "scene_asset_url": "/api/v2/assets/asset-779c70826ba8475bbdb641d795b932d901365bf5e01a512f575232b987239351"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.920103Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 44,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built crank_arm",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.949679Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 45,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built lock_nut",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.957106Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 46,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: partial assembly with 27 bodies",
+   "preview_revision": 10,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-0c1efad2c717a772604d74d428e72ca659bc3e81a6c02c5d497da8ef640d27fc",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-0c1efad2c717a772604d74d428e72ca659bc3e81a6c02c5d497da8ef640d27fc"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "0c1efad2c717a772604d74d428e72ca659bc3e81a6c02c5d497da8ef640d27fc",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "box_body"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "flange_ring"
+     },
+     {
+      "body_id": "dome_cap"
+     },
+     {
+      "body_id": "spindle_collar"
+     },
+     {
+      "body_id": "spindle_post"
+     },
+     {
+      "body_id": "crank_hub"
+     },
+     {
+      "body_id": "crank_arm"
+     },
+     {
+      "body_id": "lock_nut"
+     },
+     {
+      "body_id": "hinge_pin"
+     },
+     {
+      "body_id": "fill_flap"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "drawer_front_panel"
+     },
+     {
+      "body_id": "drawer_knob_stem"
+     },
+     {
+      "body_id": "drawer_knob_cap"
+     },
+     {
+      "body_id": "badge_plate"
+     },
+     {
+      "body_id": "flange_screw_1"
+     },
+     {
+      "body_id": "flange_screw_2"
+     },
+     {
+      "body_id": "flange_screw_3"
+     },
+     {
+      "body_id": "flange_screw_4"
+     },
+     {
+      "body_id": "corner_screw_fl"
+     },
+     {
+      "body_id": "corner_screw_fr"
+     },
+     {
+      "body_id": "corner_screw_bl"
+     },
+     {
+      "body_id": "corner_screw_br"
+     },
+     {
+      "body_id": "lower_burr"
+     },
+     {
+      "body_id": "upper_burr"
+     }
+    ],
+    "preview_revision": 10,
+    "scene_asset_url": "/api/v2/assets/asset-0c1efad2c717a772604d74d428e72ca659bc3e81a6c02c5d497da8ef640d27fc"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.993100Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 47,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built knob_stem",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:35.999641Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 48,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: partial assembly with 28 bodies",
+   "preview_revision": 11,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-7a4591a64ff275ee1ac84ed56560c01955ef7a017aa5cc28f551171cbda042ad",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-7a4591a64ff275ee1ac84ed56560c01955ef7a017aa5cc28f551171cbda042ad"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "7a4591a64ff275ee1ac84ed56560c01955ef7a017aa5cc28f551171cbda042ad",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "box_body"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "flange_ring"
+     },
+     {
+      "body_id": "dome_cap"
+     },
+     {
+      "body_id": "spindle_collar"
+     },
+     {
+      "body_id": "spindle_post"
+     },
+     {
+      "body_id": "crank_hub"
+     },
+     {
+      "body_id": "crank_arm"
+     },
+     {
+      "body_id": "knob_stem"
+     },
+     {
+      "body_id": "lock_nut"
+     },
+     {
+      "body_id": "hinge_pin"
+     },
+     {
+      "body_id": "fill_flap"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "drawer_front_panel"
+     },
+     {
+      "body_id": "drawer_knob_stem"
+     },
+     {
+      "body_id": "drawer_knob_cap"
+     },
+     {
+      "body_id": "badge_plate"
+     },
+     {
+      "body_id": "flange_screw_1"
+     },
+     {
+      "body_id": "flange_screw_2"
+     },
+     {
+      "body_id": "flange_screw_3"
+     },
+     {
+      "body_id": "flange_screw_4"
+     },
+     {
+      "body_id": "corner_screw_fl"
+     },
+     {
+      "body_id": "corner_screw_fr"
+     },
+     {
+      "body_id": "corner_screw_bl"
+     },
+     {
+      "body_id": "corner_screw_br"
+     },
+     {
+      "body_id": "lower_burr"
+     },
+     {
+      "body_id": "upper_burr"
+     }
+    ],
+    "preview_revision": 11,
+    "scene_asset_url": "/api/v2/assets/asset-7a4591a64ff275ee1ac84ed56560c01955ef7a017aa5cc28f551171cbda042ad"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:36.034583Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 49,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: built knob_ball",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:36.053780Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 50,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: complete assembly with 29 bodies",
+   "preview_revision": 12,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-b6f4847032b089efe22118fab19e35be7cb919415eecd6b871ce0b90c7d90511",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-b6f4847032b089efe22118fab19e35be7cb919415eecd6b871ce0b90c7d90511"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "b6f4847032b089efe22118fab19e35be7cb919415eecd6b871ce0b90c7d90511",
+    "is_partial": false,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "box_body"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "flange_ring"
+     },
+     {
+      "body_id": "dome_cap"
+     },
+     {
+      "body_id": "spindle_collar"
+     },
+     {
+      "body_id": "spindle_post"
+     },
+     {
+      "body_id": "crank_hub"
+     },
+     {
+      "body_id": "crank_arm"
+     },
+     {
+      "body_id": "knob_stem"
+     },
+     {
+      "body_id": "knob_ball"
+     },
+     {
+      "body_id": "lock_nut"
+     },
+     {
+      "body_id": "hinge_pin"
+     },
+     {
+      "body_id": "fill_flap"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "drawer_front_panel"
+     },
+     {
+      "body_id": "drawer_knob_stem"
+     },
+     {
+      "body_id": "drawer_knob_cap"
+     },
+     {
+      "body_id": "badge_plate"
+     },
+     {
+      "body_id": "flange_screw_1"
+     },
+     {
+      "body_id": "flange_screw_2"
+     },
+     {
+      "body_id": "flange_screw_3"
+     },
+     {
+      "body_id": "flange_screw_4"
+     },
+     {
+      "body_id": "corner_screw_fl"
+     },
+     {
+      "body_id": "corner_screw_fr"
+     },
+     {
+      "body_id": "corner_screw_bl"
+     },
+     {
+      "body_id": "corner_screw_br"
+     },
+     {
+      "body_id": "lower_burr"
+     },
+     {
+      "body_id": "upper_burr"
+     }
+    ],
+    "preview_revision": 12,
+    "scene_asset_url": "/api/v2/assets/asset-b6f4847032b089efe22118fab19e35be7cb919415eecd6b871ce0b90c7d90511"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:36.459567Z"
+  },
+  {
+   "actor": "repair",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 51,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: deterministic repair applied (14 actions)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "repair",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:39.839700Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 52,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built base_plinth",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:44.693370Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 53,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: partial assembly with 1 bodies",
+   "preview_revision": 1,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-e6bf89991eeb062a6d952253caaf2728170a6bc50c948cfde4085de1cbcec9bb",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-e6bf89991eeb062a6d952253caaf2728170a6bc50c948cfde4085de1cbcec9bb"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "e6bf89991eeb062a6d952253caaf2728170a6bc50c948cfde4085de1cbcec9bb",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     }
+    ],
+    "preview_revision": 1,
+    "scene_asset_url": "/api/v2/assets/asset-e6bf89991eeb062a6d952253caaf2728170a6bc50c948cfde4085de1cbcec9bb"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:44.701841Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 54,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built wood_box",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:44.940659Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 55,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: partial assembly with 2 bodies",
+   "preview_revision": 2,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-031e91b81f32f6e04f21bf50d2ba0b10baf5a019130393c97906e0da5fdbe788",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-031e91b81f32f6e04f21bf50d2ba0b10baf5a019130393c97906e0da5fdbe788"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "031e91b81f32f6e04f21bf50d2ba0b10baf5a019130393c97906e0da5fdbe788",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "wood_box"
+     }
+    ],
+    "preview_revision": 2,
+    "scene_asset_url": "/api/v2/assets/asset-031e91b81f32f6e04f21bf50d2ba0b10baf5a019130393c97906e0da5fdbe788"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:44.948802Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 56,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built top_plate",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:44.975757Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 57,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built drawer_box",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:44.979371Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 58,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built front_badge",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.006320Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 59,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: partial assembly with 5 bodies",
+   "preview_revision": 3,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-acc9909e9418c4e2fcb97d17cf1697af6fe651b10db22451f7dc68b08ed276d7",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-acc9909e9418c4e2fcb97d17cf1697af6fe651b10db22451f7dc68b08ed276d7"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "acc9909e9418c4e2fcb97d17cf1697af6fe651b10db22451f7dc68b08ed276d7",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "wood_box"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "front_badge"
+     }
+    ],
+    "preview_revision": 3,
+    "scene_asset_url": "/api/v2/assets/asset-acc9909e9418c4e2fcb97d17cf1697af6fe651b10db22451f7dc68b08ed276d7"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.016304Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 60,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built flange_ring",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.025238Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 61,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built drawer_front",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.052363Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 62,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built ring_screw_n",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.058830Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 63,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built ring_screw_e",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.067612Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 64,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built ring_screw_s",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.075219Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 65,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built ring_screw_w",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.079810Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 66,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: partial assembly with 11 bodies",
+   "preview_revision": 4,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-00ff4ba039ba2558923c2b014ccea9de0a7d7bb844ae6ab269c259582854903a",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-00ff4ba039ba2558923c2b014ccea9de0a7d7bb844ae6ab269c259582854903a"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "00ff4ba039ba2558923c2b014ccea9de0a7d7bb844ae6ab269c259582854903a",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "wood_box"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "flange_ring"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "drawer_front"
+     },
+     {
+      "body_id": "front_badge"
+     },
+     {
+      "body_id": "ring_screw_n"
+     },
+     {
+      "body_id": "ring_screw_e"
+     },
+     {
+      "body_id": "ring_screw_s"
+     },
+     {
+      "body_id": "ring_screw_w"
+     }
+    ],
+    "preview_revision": 4,
+    "scene_asset_url": "/api/v2/assets/asset-00ff4ba039ba2558923c2b014ccea9de0a7d7bb844ae6ab269c259582854903a"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.091616Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 67,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built top_screw_ne",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.096920Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 68,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built top_screw_nw",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.101867Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 69,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built top_screw_se",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.106657Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 70,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built top_screw_sw",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.111902Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 71,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: partial assembly with 15 bodies",
+   "preview_revision": 5,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-4743aecbf67d4589a523d87b10359a1fa02f4aeb1b6de5411d509d9ae7538a54",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-4743aecbf67d4589a523d87b10359a1fa02f4aeb1b6de5411d509d9ae7538a54"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "4743aecbf67d4589a523d87b10359a1fa02f4aeb1b6de5411d509d9ae7538a54",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "wood_box"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "flange_ring"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "drawer_front"
+     },
+     {
+      "body_id": "front_badge"
+     },
+     {
+      "body_id": "ring_screw_n"
+     },
+     {
+      "body_id": "ring_screw_e"
+     },
+     {
+      "body_id": "ring_screw_s"
+     },
+     {
+      "body_id": "ring_screw_w"
+     },
+     {
+      "body_id": "top_screw_ne"
+     },
+     {
+      "body_id": "top_screw_nw"
+     },
+     {
+      "body_id": "top_screw_se"
+     },
+     {
+      "body_id": "top_screw_sw"
+     }
+    ],
+    "preview_revision": 5,
+    "scene_asset_url": "/api/v2/assets/asset-4743aecbf67d4589a523d87b10359a1fa02f4aeb1b6de5411d509d9ae7538a54"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.125828Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 72,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built dome_cap",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.137194Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 73,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built drawer_pull",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.143034Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 74,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: partial assembly with 17 bodies",
+   "preview_revision": 6,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-e4104bdcc8e067731ee4364b843a69fdc8d518342d2b2d8521acb8c81ae467a2",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-e4104bdcc8e067731ee4364b843a69fdc8d518342d2b2d8521acb8c81ae467a2"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "e4104bdcc8e067731ee4364b843a69fdc8d518342d2b2d8521acb8c81ae467a2",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "wood_box"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "flange_ring"
+     },
+     {
+      "body_id": "dome_cap"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "drawer_front"
+     },
+     {
+      "body_id": "drawer_pull"
+     },
+     {
+      "body_id": "front_badge"
+     },
+     {
+      "body_id": "ring_screw_n"
+     },
+     {
+      "body_id": "ring_screw_e"
+     },
+     {
+      "body_id": "ring_screw_s"
+     },
+     {
+      "body_id": "ring_screw_w"
+     },
+     {
+      "body_id": "top_screw_ne"
+     },
+     {
+      "body_id": "top_screw_nw"
+     },
+     {
+      "body_id": "top_screw_se"
+     },
+     {
+      "body_id": "top_screw_sw"
+     }
+    ],
+    "preview_revision": 6,
+    "scene_asset_url": "/api/v2/assets/asset-e4104bdcc8e067731ee4364b843a69fdc8d518342d2b2d8521acb8c81ae467a2"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.157310Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 75,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built bean_lid",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.182874Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 76,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built bean_lid_hinge",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.187247Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 77,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built spindle_post",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.191925Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 78,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: partial assembly with 20 bodies",
+   "preview_revision": 7,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-aafdc4bab7c55ce97f53ba7a669c78a28e2a73c04c86ff1e4e5c35f6f34fd020",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-aafdc4bab7c55ce97f53ba7a669c78a28e2a73c04c86ff1e4e5c35f6f34fd020"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "aafdc4bab7c55ce97f53ba7a669c78a28e2a73c04c86ff1e4e5c35f6f34fd020",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "wood_box"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "flange_ring"
+     },
+     {
+      "body_id": "dome_cap"
+     },
+     {
+      "body_id": "bean_lid"
+     },
+     {
+      "body_id": "bean_lid_hinge"
+     },
+     {
+      "body_id": "spindle_post"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "drawer_front"
+     },
+     {
+      "body_id": "drawer_pull"
+     },
+     {
+      "body_id": "front_badge"
+     },
+     {
+      "body_id": "ring_screw_n"
+     },
+     {
+      "body_id": "ring_screw_e"
+     },
+     {
+      "body_id": "ring_screw_s"
+     },
+     {
+      "body_id": "ring_screw_w"
+     },
+     {
+      "body_id": "top_screw_ne"
+     },
+     {
+      "body_id": "top_screw_nw"
+     },
+     {
+      "body_id": "top_screw_se"
+     },
+     {
+      "body_id": "top_screw_sw"
+     }
+    ],
+    "preview_revision": 7,
+    "scene_asset_url": "/api/v2/assets/asset-aafdc4bab7c55ce97f53ba7a669c78a28e2a73c04c86ff1e4e5c35f6f34fd020"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.205663Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 79,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built crank_arm",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.231107Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 80,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: partial assembly with 21 bodies",
+   "preview_revision": 8,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-caa14a81cca7bb0346b2658d69eae1121570bfcb51743de77a82dcc793347dd7",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-caa14a81cca7bb0346b2658d69eae1121570bfcb51743de77a82dcc793347dd7"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "caa14a81cca7bb0346b2658d69eae1121570bfcb51743de77a82dcc793347dd7",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "wood_box"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "flange_ring"
+     },
+     {
+      "body_id": "dome_cap"
+     },
+     {
+      "body_id": "bean_lid"
+     },
+     {
+      "body_id": "bean_lid_hinge"
+     },
+     {
+      "body_id": "spindle_post"
+     },
+     {
+      "body_id": "crank_arm"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "drawer_front"
+     },
+     {
+      "body_id": "drawer_pull"
+     },
+     {
+      "body_id": "front_badge"
+     },
+     {
+      "body_id": "ring_screw_n"
+     },
+     {
+      "body_id": "ring_screw_e"
+     },
+     {
+      "body_id": "ring_screw_s"
+     },
+     {
+      "body_id": "ring_screw_w"
+     },
+     {
+      "body_id": "top_screw_ne"
+     },
+     {
+      "body_id": "top_screw_nw"
+     },
+     {
+      "body_id": "top_screw_se"
+     },
+     {
+      "body_id": "top_screw_sw"
+     }
+    ],
+    "preview_revision": 8,
+    "scene_asset_url": "/api/v2/assets/asset-caa14a81cca7bb0346b2658d69eae1121570bfcb51743de77a82dcc793347dd7"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.245796Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 81,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built top_nut",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.250300Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 82,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built handle_stub",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.254735Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 83,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: partial assembly with 23 bodies",
+   "preview_revision": 9,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-c47af054eb84f39968ea31300433b8e6cda25041378ffb1eeb8bef6da947c006",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-c47af054eb84f39968ea31300433b8e6cda25041378ffb1eeb8bef6da947c006"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "c47af054eb84f39968ea31300433b8e6cda25041378ffb1eeb8bef6da947c006",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "wood_box"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "flange_ring"
+     },
+     {
+      "body_id": "dome_cap"
+     },
+     {
+      "body_id": "bean_lid"
+     },
+     {
+      "body_id": "bean_lid_hinge"
+     },
+     {
+      "body_id": "spindle_post"
+     },
+     {
+      "body_id": "crank_arm"
+     },
+     {
+      "body_id": "top_nut"
+     },
+     {
+      "body_id": "handle_stub"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "drawer_front"
+     },
+     {
+      "body_id": "drawer_pull"
+     },
+     {
+      "body_id": "front_badge"
+     },
+     {
+      "body_id": "ring_screw_n"
+     },
+     {
+      "body_id": "ring_screw_e"
+     },
+     {
+      "body_id": "ring_screw_s"
+     },
+     {
+      "body_id": "ring_screw_w"
+     },
+     {
+      "body_id": "top_screw_ne"
+     },
+     {
+      "body_id": "top_screw_nw"
+     },
+     {
+      "body_id": "top_screw_se"
+     },
+     {
+      "body_id": "top_screw_sw"
+     }
+    ],
+    "preview_revision": 9,
+    "scene_asset_url": "/api/v2/assets/asset-c47af054eb84f39968ea31300433b8e6cda25041378ffb1eeb8bef6da947c006"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.269968Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 84,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: built handle_knob",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.281130Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 85,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: complete assembly with 24 bodies",
+   "preview_revision": 10,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-e66d4ebf0feceff596f55e6b1ced2844a38df1b9682f300b30894472cf6d506b",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-e66d4ebf0feceff596f55e6b1ced2844a38df1b9682f300b30894472cf6d506b"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "e66d4ebf0feceff596f55e6b1ced2844a38df1b9682f300b30894472cf6d506b",
+    "is_partial": false,
+    "part_manifest": [
+     {
+      "body_id": "base_plinth"
+     },
+     {
+      "body_id": "wood_box"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "flange_ring"
+     },
+     {
+      "body_id": "dome_cap"
+     },
+     {
+      "body_id": "bean_lid"
+     },
+     {
+      "body_id": "bean_lid_hinge"
+     },
+     {
+      "body_id": "spindle_post"
+     },
+     {
+      "body_id": "crank_arm"
+     },
+     {
+      "body_id": "top_nut"
+     },
+     {
+      "body_id": "handle_stub"
+     },
+     {
+      "body_id": "handle_knob"
+     },
+     {
+      "body_id": "drawer_box"
+     },
+     {
+      "body_id": "drawer_front"
+     },
+     {
+      "body_id": "drawer_pull"
+     },
+     {
+      "body_id": "front_badge"
+     },
+     {
+      "body_id": "ring_screw_n"
+     },
+     {
+      "body_id": "ring_screw_e"
+     },
+     {
+      "body_id": "ring_screw_s"
+     },
+     {
+      "body_id": "ring_screw_w"
+     },
+     {
+      "body_id": "top_screw_ne"
+     },
+     {
+      "body_id": "top_screw_nw"
+     },
+     {
+      "body_id": "top_screw_se"
+     },
+     {
+      "body_id": "top_screw_sw"
+     }
+    ],
+    "preview_revision": 10,
+    "scene_asset_url": "/api/v2/assets/asset-e66d4ebf0feceff596f55e6b1ced2844a38df1b9682f300b30894472cf6d506b"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:45.409270Z"
+  },
+  {
+   "actor": "repair",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 86,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: deterministic repair applied (14 actions)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "repair",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:32:48.454204Z"
+  },
+  {
+   "actor": "validator",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 87,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: geometry invalid; 6 hard collisions, stability stable",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-cebdcb684eaf687d29fddfa00817191da767498eb1c92bb1333ee257ddb4c9ce",
+     "type": "mechanical_report",
+     "url": "/api/v2/assets/asset-cebdcb684eaf687d29fddfa00817191da767498eb1c92bb1333ee257ddb4c9ce"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "mechanical_report",
+   "status": "warning",
+   "timestamp": "2026-10-25T04:33:27.550742Z"
+  },
+  {
+   "actor": "validator",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 88,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: electrical/firmware not_applicable (concept-only design: no electrical, firmware or purchase claims are made)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "engineering_report",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:27.564353Z"
+  },
+  {
+   "actor": "system",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 89,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: six camera renders of the generated geometry (three-chromium)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-4c89f469e5b83e66570ccf83feab64f0b86c74f8c31840098f0c9dcc3aa985e3",
+     "type": "shot_front",
+     "url": "/api/v2/assets/asset-4c89f469e5b83e66570ccf83feab64f0b86c74f8c31840098f0c9dcc3aa985e3"
+    },
+    {
+     "id": "asset-1bb2903da8ba43f32f76170060af6f3fb7e32e8d7c34bff52212c6f4795f7477",
+     "type": "shot_left",
+     "url": "/api/v2/assets/asset-1bb2903da8ba43f32f76170060af6f3fb7e32e8d7c34bff52212c6f4795f7477"
+    },
+    {
+     "id": "asset-e6d94652478716f2822361c2569ceddb1092ef2f8d62f9f62436c8d4ce938372",
+     "type": "shot_back",
+     "url": "/api/v2/assets/asset-e6d94652478716f2822361c2569ceddb1092ef2f8d62f9f62436c8d4ce938372"
+    },
+    {
+     "id": "asset-24cbf54f38d23fdf96ac10f51a6da00b18d81e2519e36ba4d9b51182805e8fee",
+     "type": "shot_right",
+     "url": "/api/v2/assets/asset-24cbf54f38d23fdf96ac10f51a6da00b18d81e2519e36ba4d9b51182805e8fee"
+    },
+    {
+     "id": "asset-2c977ab561e57f3986ac4aad643cabfdb7da971acc857feb4ecc06f0d9e9cc87",
+     "type": "shot_top",
+     "url": "/api/v2/assets/asset-2c977ab561e57f3986ac4aad643cabfdb7da971acc857feb4ecc06f0d9e9cc87"
+    },
+    {
+     "id": "asset-d08c66532eb6850b164727e91d0d8bbf65785f6c914637e8d1654f55e6bd8f09",
+     "type": "shot_perspective",
+     "url": "/api/v2/assets/asset-d08c66532eb6850b164727e91d0d8bbf65785f6c914637e8d1654f55e6bd8f09"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "render_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:28.646630Z"
+  },
+  {
+   "actor": "vision",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 90,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: visual score 5.0/10 (subjective, openai:gpt-5+critic:gpt-4o); 7 issues",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "visual_review",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:35.621358Z"
+  },
+  {
+   "actor": "planner",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 91,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: re-authoring once with the engine's blocking findings",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "candidate_started",
+   "status": "warning",
+   "timestamp": "2026-10-25T04:33:35.792333Z"
+  },
+  {
+   "actor": "validator",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 92,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: geometry invalid; 2 hard collisions, stability stable",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-5a0466243abeb7a50f947fe93fafe8634f0ef84cedaf8766d7313a1ec3818871",
+     "type": "mechanical_report",
+     "url": "/api/v2/assets/asset-5a0466243abeb7a50f947fe93fafe8634f0ef84cedaf8766d7313a1ec3818871"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "mechanical_report",
+   "status": "warning",
+   "timestamp": "2026-10-25T04:33:42.335302Z"
+  },
+  {
+   "actor": "validator",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 93,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: electrical/firmware not_applicable (concept-only design: no electrical, firmware or purchase claims are made)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "engineering_report",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:42.338710Z"
+  },
+  {
+   "actor": "system",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 94,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: six camera renders of the generated geometry (three-chromium)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-54db9eb57857562c7c5ea3af93a9e3e1e1cafbda584603a11019bdd71b697005",
+     "type": "shot_front",
+     "url": "/api/v2/assets/asset-54db9eb57857562c7c5ea3af93a9e3e1e1cafbda584603a11019bdd71b697005"
+    },
+    {
+     "id": "asset-49915d560c86fca567f73ca3cf228d77df6859d13d0f77ab45b941ee1803fe63",
+     "type": "shot_left",
+     "url": "/api/v2/assets/asset-49915d560c86fca567f73ca3cf228d77df6859d13d0f77ab45b941ee1803fe63"
+    },
+    {
+     "id": "asset-efdcd686f8d2116c282bb07d2fd02e4012068e130b5b08498c81f7317a34f1d1",
+     "type": "shot_back",
+     "url": "/api/v2/assets/asset-efdcd686f8d2116c282bb07d2fd02e4012068e130b5b08498c81f7317a34f1d1"
+    },
+    {
+     "id": "asset-86dfd199193ff0d7d82620165cccab2042976b0cc42524029e90dae4880f9790",
+     "type": "shot_right",
+     "url": "/api/v2/assets/asset-86dfd199193ff0d7d82620165cccab2042976b0cc42524029e90dae4880f9790"
+    },
+    {
+     "id": "asset-7cbd24254d0eb5a314549b652d7234fbba690d068373958a6c82a14346278a48",
+     "type": "shot_top",
+     "url": "/api/v2/assets/asset-7cbd24254d0eb5a314549b652d7234fbba690d068373958a6c82a14346278a48"
+    },
+    {
+     "id": "asset-87466cac9d75d90e4c8d2bf6e3e4c17748704538085e6de370d7f9e63646b9c0",
+     "type": "shot_perspective",
+     "url": "/api/v2/assets/asset-87466cac9d75d90e4c8d2bf6e3e4c17748704538085e6de370d7f9e63646b9c0"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "render_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:43.389200Z"
+  },
+  {
+   "actor": "vision",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 95,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: visual score 5.0/10 (subjective, openai:gpt-5+critic:gpt-4o); 6 issues",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "visual_review",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:50.633922Z"
+  },
+  {
+   "actor": "planner",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 96,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: re-authoring once with the engine's blocking findings",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "candidate_started",
+   "status": "warning",
+   "timestamp": "2026-10-25T04:33:50.820836Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 97,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built plinth",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.435928Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 98,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: partial assembly with 1 bodies",
+   "preview_revision": 1,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-162fd2e69eef0f41297f24793ba822f7ec1ca0215ba409364514a9c8fb6aff47",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-162fd2e69eef0f41297f24793ba822f7ec1ca0215ba409364514a9c8fb6aff47"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "162fd2e69eef0f41297f24793ba822f7ec1ca0215ba409364514a9c8fb6aff47",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "plinth"
+     }
+    ],
+    "preview_revision": 1,
+    "scene_asset_url": "/api/v2/assets/asset-162fd2e69eef0f41297f24793ba822f7ec1ca0215ba409364514a9c8fb6aff47"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.443209Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 99,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built box",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.689778Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 100,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: partial assembly with 2 bodies",
+   "preview_revision": 2,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-f53bf174efef6875ca27e006d4876711331d2fa8f669e5bae4232694799cbf38",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-f53bf174efef6875ca27e006d4876711331d2fa8f669e5bae4232694799cbf38"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "f53bf174efef6875ca27e006d4876711331d2fa8f669e5bae4232694799cbf38",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "plinth"
+     },
+     {
+      "body_id": "box"
+     }
+    ],
+    "preview_revision": 2,
+    "scene_asset_url": "/api/v2/assets/asset-f53bf174efef6875ca27e006d4876711331d2fa8f669e5bae4232694799cbf38"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.698941Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 101,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built top_plate",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.738809Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 102,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built drawer",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.767420Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 103,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built badge",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.796191Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 104,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built lower_burr_stub",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.805882Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 105,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: partial assembly with 6 bodies",
+   "preview_revision": 3,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-3c2c252d845bd0e3b798aff74226f19fc5e9e25aeabe5a96f15d85c91173155f",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-3c2c252d845bd0e3b798aff74226f19fc5e9e25aeabe5a96f15d85c91173155f"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "3c2c252d845bd0e3b798aff74226f19fc5e9e25aeabe5a96f15d85c91173155f",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "plinth"
+     },
+     {
+      "body_id": "box"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "drawer"
+     },
+     {
+      "body_id": "badge"
+     },
+     {
+      "body_id": "lower_burr_stub"
+     }
+    ],
+    "preview_revision": 3,
+    "scene_asset_url": "/api/v2/assets/asset-3c2c252d845bd0e3b798aff74226f19fc5e9e25aeabe5a96f15d85c91173155f"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.814591Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 106,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built dome_ring",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.823288Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 107,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built dome",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.841157Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 108,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built drawer_face",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.870546Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 109,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built ring_screw_e",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.874862Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 110,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built ring_screw_w",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.879562Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 111,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built ring_screw_n",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.883875Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 112,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: partial assembly with 12 bodies",
+   "preview_revision": 4,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-6be2ee14a657a500504786bd3365cbd251e1d83b70b51d048fb766c8f0d20caf",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-6be2ee14a657a500504786bd3365cbd251e1d83b70b51d048fb766c8f0d20caf"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "6be2ee14a657a500504786bd3365cbd251e1d83b70b51d048fb766c8f0d20caf",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "plinth"
+     },
+     {
+      "body_id": "box"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "dome_ring"
+     },
+     {
+      "body_id": "dome"
+     },
+     {
+      "body_id": "drawer"
+     },
+     {
+      "body_id": "drawer_face"
+     },
+     {
+      "body_id": "badge"
+     },
+     {
+      "body_id": "ring_screw_e"
+     },
+     {
+      "body_id": "ring_screw_w"
+     },
+     {
+      "body_id": "ring_screw_n"
+     },
+     {
+      "body_id": "lower_burr_stub"
+     }
+    ],
+    "preview_revision": 4,
+    "scene_asset_url": "/api/v2/assets/asset-6be2ee14a657a500504786bd3365cbd251e1d83b70b51d048fb766c8f0d20caf"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.895604Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 113,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built ring_screw_s",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.899609Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 114,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built top_screw_ne",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.903372Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 115,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built top_screw_nw",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.907292Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 116,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built top_screw_sw",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.911506Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 117,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built top_screw_se",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.915366Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 118,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: partial assembly with 17 bodies",
+   "preview_revision": 5,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-1f4e09cbb66c35dc7752b3dd11b3f03e6bfef152ba4f2a152ead07aa88b93fc3",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-1f4e09cbb66c35dc7752b3dd11b3f03e6bfef152ba4f2a152ead07aa88b93fc3"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "1f4e09cbb66c35dc7752b3dd11b3f03e6bfef152ba4f2a152ead07aa88b93fc3",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "plinth"
+     },
+     {
+      "body_id": "box"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "dome_ring"
+     },
+     {
+      "body_id": "dome"
+     },
+     {
+      "body_id": "drawer"
+     },
+     {
+      "body_id": "drawer_face"
+     },
+     {
+      "body_id": "badge"
+     },
+     {
+      "body_id": "ring_screw_e"
+     },
+     {
+      "body_id": "ring_screw_w"
+     },
+     {
+      "body_id": "ring_screw_n"
+     },
+     {
+      "body_id": "ring_screw_s"
+     },
+     {
+      "body_id": "top_screw_ne"
+     },
+     {
+      "body_id": "top_screw_nw"
+     },
+     {
+      "body_id": "top_screw_sw"
+     },
+     {
+      "body_id": "top_screw_se"
+     },
+     {
+      "body_id": "lower_burr_stub"
+     }
+    ],
+    "preview_revision": 5,
+    "scene_asset_url": "/api/v2/assets/asset-1f4e09cbb66c35dc7752b3dd11b3f03e6bfef152ba4f2a152ead07aa88b93fc3"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.935187Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 119,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built bean_lid",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.939053Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 120,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built spindle",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.944153Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 121,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built pull_base",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.948317Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 122,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: partial assembly with 20 bodies",
+   "preview_revision": 6,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-8f576aec990dbaaa992d2c19d85b0fb12f561a7363596db5c3c081f086cf543c",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-8f576aec990dbaaa992d2c19d85b0fb12f561a7363596db5c3c081f086cf543c"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "8f576aec990dbaaa992d2c19d85b0fb12f561a7363596db5c3c081f086cf543c",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "plinth"
+     },
+     {
+      "body_id": "box"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "dome_ring"
+     },
+     {
+      "body_id": "dome"
+     },
+     {
+      "body_id": "bean_lid"
+     },
+     {
+      "body_id": "spindle"
+     },
+     {
+      "body_id": "drawer"
+     },
+     {
+      "body_id": "drawer_face"
+     },
+     {
+      "body_id": "pull_base"
+     },
+     {
+      "body_id": "badge"
+     },
+     {
+      "body_id": "ring_screw_e"
+     },
+     {
+      "body_id": "ring_screw_w"
+     },
+     {
+      "body_id": "ring_screw_n"
+     },
+     {
+      "body_id": "ring_screw_s"
+     },
+     {
+      "body_id": "top_screw_ne"
+     },
+     {
+      "body_id": "top_screw_nw"
+     },
+     {
+      "body_id": "top_screw_sw"
+     },
+     {
+      "body_id": "top_screw_se"
+     },
+     {
+      "body_id": "lower_burr_stub"
+     }
+    ],
+    "preview_revision": 6,
+    "scene_asset_url": "/api/v2/assets/asset-8f576aec990dbaaa992d2c19d85b0fb12f561a7363596db5c3c081f086cf543c"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.964011Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 123,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built spindle_collar",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.968299Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 124,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built crank_arm",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.971446Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 125,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built cap_nut",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.975453Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 126,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built pull_button",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:52.984536Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 127,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: partial assembly with 24 bodies",
+   "preview_revision": 7,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-a973a44a2da126635515bf9aca58dbf2886f753e3ca7ad1608eb917cfa1d374a",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-a973a44a2da126635515bf9aca58dbf2886f753e3ca7ad1608eb917cfa1d374a"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "a973a44a2da126635515bf9aca58dbf2886f753e3ca7ad1608eb917cfa1d374a",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "plinth"
+     },
+     {
+      "body_id": "box"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "dome_ring"
+     },
+     {
+      "body_id": "dome"
+     },
+     {
+      "body_id": "bean_lid"
+     },
+     {
+      "body_id": "spindle"
+     },
+     {
+      "body_id": "spindle_collar"
+     },
+     {
+      "body_id": "crank_arm"
+     },
+     {
+      "body_id": "cap_nut"
+     },
+     {
+      "body_id": "drawer"
+     },
+     {
+      "body_id": "drawer_face"
+     },
+     {
+      "body_id": "pull_base"
+     },
+     {
+      "body_id": "pull_button"
+     },
+     {
+      "body_id": "badge"
+     },
+     {
+      "body_id": "ring_screw_e"
+     },
+     {
+      "body_id": "ring_screw_w"
+     },
+     {
+      "body_id": "ring_screw_n"
+     },
+     {
+      "body_id": "ring_screw_s"
+     },
+     {
+      "body_id": "top_screw_ne"
+     },
+     {
+      "body_id": "top_screw_nw"
+     },
+     {
+      "body_id": "top_screw_sw"
+     },
+     {
+      "body_id": "top_screw_se"
+     },
+     {
+      "body_id": "lower_burr_stub"
+     }
+    ],
+    "preview_revision": 7,
+    "scene_asset_url": "/api/v2/assets/asset-a973a44a2da126635515bf9aca58dbf2886f753e3ca7ad1608eb917cfa1d374a"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:53.000084Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 128,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built handle_stub",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:53.003735Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 129,
+   "is_partial": true,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: partial assembly with 25 bodies",
+   "preview_revision": 8,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-6f227d28c85dd57def7bd23f85f9df75b50bce0377006e354a3542301b17fc34",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-6f227d28c85dd57def7bd23f85f9df75b50bce0377006e354a3542301b17fc34"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "6f227d28c85dd57def7bd23f85f9df75b50bce0377006e354a3542301b17fc34",
+    "is_partial": true,
+    "part_manifest": [
+     {
+      "body_id": "plinth"
+     },
+     {
+      "body_id": "box"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "dome_ring"
+     },
+     {
+      "body_id": "dome"
+     },
+     {
+      "body_id": "bean_lid"
+     },
+     {
+      "body_id": "spindle"
+     },
+     {
+      "body_id": "spindle_collar"
+     },
+     {
+      "body_id": "crank_arm"
+     },
+     {
+      "body_id": "cap_nut"
+     },
+     {
+      "body_id": "handle_stub"
+     },
+     {
+      "body_id": "drawer"
+     },
+     {
+      "body_id": "drawer_face"
+     },
+     {
+      "body_id": "pull_base"
+     },
+     {
+      "body_id": "pull_button"
+     },
+     {
+      "body_id": "badge"
+     },
+     {
+      "body_id": "ring_screw_e"
+     },
+     {
+      "body_id": "ring_screw_w"
+     },
+     {
+      "body_id": "ring_screw_n"
+     },
+     {
+      "body_id": "ring_screw_s"
+     },
+     {
+      "body_id": "top_screw_ne"
+     },
+     {
+      "body_id": "top_screw_nw"
+     },
+     {
+      "body_id": "top_screw_sw"
+     },
+     {
+      "body_id": "top_screw_se"
+     },
+     {
+      "body_id": "lower_burr_stub"
+     }
+    ],
+    "preview_revision": 8,
+    "scene_asset_url": "/api/v2/assets/asset-6f227d28c85dd57def7bd23f85f9df75b50bce0377006e354a3542301b17fc34"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:53.021002Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 130,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: built handle_knob",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "body_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:53.033066Z"
+  },
+  {
+   "actor": "engineer",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 131,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: complete assembly with 26 bodies",
+   "preview_revision": 9,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-165083ce0edf991fd0b6560710232532344b8e801da9eba0df77f59f2d4dfb1b",
+     "type": "geometry",
+     "url": "/api/v2/assets/asset-165083ce0edf991fd0b6560710232532344b8e801da9eba0df77f59f2d4dfb1b"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": {
+    "geometry_digest": "165083ce0edf991fd0b6560710232532344b8e801da9eba0df77f59f2d4dfb1b",
+    "is_partial": false,
+    "part_manifest": [
+     {
+      "body_id": "plinth"
+     },
+     {
+      "body_id": "box"
+     },
+     {
+      "body_id": "top_plate"
+     },
+     {
+      "body_id": "dome_ring"
+     },
+     {
+      "body_id": "dome"
+     },
+     {
+      "body_id": "bean_lid"
+     },
+     {
+      "body_id": "spindle"
+     },
+     {
+      "body_id": "spindle_collar"
+     },
+     {
+      "body_id": "crank_arm"
+     },
+     {
+      "body_id": "cap_nut"
+     },
+     {
+      "body_id": "handle_stub"
+     },
+     {
+      "body_id": "handle_knob"
+     },
+     {
+      "body_id": "drawer"
+     },
+     {
+      "body_id": "drawer_face"
+     },
+     {
+      "body_id": "pull_base"
+     },
+     {
+      "body_id": "pull_button"
+     },
+     {
+      "body_id": "badge"
+     },
+     {
+      "body_id": "ring_screw_e"
+     },
+     {
+      "body_id": "ring_screw_w"
+     },
+     {
+      "body_id": "ring_screw_n"
+     },
+     {
+      "body_id": "ring_screw_s"
+     },
+     {
+      "body_id": "top_screw_ne"
+     },
+     {
+      "body_id": "top_screw_nw"
+     },
+     {
+      "body_id": "top_screw_sw"
+     },
+     {
+      "body_id": "top_screw_se"
+     },
+     {
+      "body_id": "lower_burr_stub"
+     }
+    ],
+    "preview_revision": 9,
+    "scene_asset_url": "/api/v2/assets/asset-165083ce0edf991fd0b6560710232532344b8e801da9eba0df77f59f2d4dfb1b"
+   },
+   "stage": "geometry_preview",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:53.235799Z"
+  },
+  {
+   "actor": "repair",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 132,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: deterministic repair applied (26 actions)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "repair",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:33:58.023143Z"
+  },
+  {
+   "actor": "validator",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 133,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: geometry invalid; 7 hard collisions, stability stable",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-09211470f95b46ba57f53185429b369395deee2802244238013c1f481b1c59dc",
+     "type": "mechanical_report",
+     "url": "/api/v2/assets/asset-09211470f95b46ba57f53185429b369395deee2802244238013c1f481b1c59dc"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "mechanical_report",
+   "status": "warning",
+   "timestamp": "2026-10-25T04:34:36.910351Z"
+  },
+  {
+   "actor": "validator",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 134,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: electrical/firmware not_applicable (concept-only design: no electrical, firmware or purchase claims are made)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "engineering_report",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:34:36.912298Z"
+  },
+  {
+   "actor": "system",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 135,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: six camera renders of the generated geometry (three-chromium)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-a5ae065062a73eee65a8061a37d0d6a6cece5bbca9bed922cceb422d1994c634",
+     "type": "shot_front",
+     "url": "/api/v2/assets/asset-a5ae065062a73eee65a8061a37d0d6a6cece5bbca9bed922cceb422d1994c634"
+    },
+    {
+     "id": "asset-10fba42af61117621ebcd90c2e938a0b1fb80ff65ba4d3659e47f648554f90d2",
+     "type": "shot_left",
+     "url": "/api/v2/assets/asset-10fba42af61117621ebcd90c2e938a0b1fb80ff65ba4d3659e47f648554f90d2"
+    },
+    {
+     "id": "asset-39806ec8ad0148136c97621a0e8784ead15c64b10ea513047b70a4fc04e9c89d",
+     "type": "shot_back",
+     "url": "/api/v2/assets/asset-39806ec8ad0148136c97621a0e8784ead15c64b10ea513047b70a4fc04e9c89d"
+    },
+    {
+     "id": "asset-abc68833b6a8c9f8d4e0fb82406d0c7d5c8e28f12be1dd6b58baa6235cced349",
+     "type": "shot_right",
+     "url": "/api/v2/assets/asset-abc68833b6a8c9f8d4e0fb82406d0c7d5c8e28f12be1dd6b58baa6235cced349"
+    },
+    {
+     "id": "asset-606316c375a7f40146e22ecbb7ed810a397e1edbae8aa4ae31fdc211e5491e29",
+     "type": "shot_top",
+     "url": "/api/v2/assets/asset-606316c375a7f40146e22ecbb7ed810a397e1edbae8aa4ae31fdc211e5491e29"
+    },
+    {
+     "id": "asset-cb9031caa3cd53b8f70d548d88d274bceb942fc5e0116214b0234273c677d60b",
+     "type": "shot_perspective",
+     "url": "/api/v2/assets/asset-cb9031caa3cd53b8f70d548d88d274bceb942fc5e0116214b0234273c677d60b"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "render_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:34:37.984267Z"
+  },
+  {
+   "actor": "vision",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 136,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: visual score 5.0/10 (subjective, openai:gpt-5+critic:gpt-4o); 7 issues",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "visual_review",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:34:46.004772Z"
+  },
+  {
+   "actor": "planner",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 137,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: re-authoring once with the engine's blocking findings",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "candidate_started",
+   "status": "warning",
+   "timestamp": "2026-10-25T04:34:46.133727Z"
+  },
+  {
+   "actor": "repair",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 138,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: deterministic repair applied (8 actions)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "repair",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:35:35.577302Z"
+  },
+  {
+   "actor": "validator",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 139,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: geometry valid; 0 hard collisions, stability stable",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-359c604233340c94b8b6a7afbc7427fcc8c5ebb083b01bfe92238dcff89b760e",
+     "type": "mechanical_report",
+     "url": "/api/v2/assets/asset-359c604233340c94b8b6a7afbc7427fcc8c5ebb083b01bfe92238dcff89b760e"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "mechanical_report",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:36:00.708666Z"
+  },
+  {
+   "actor": "validator",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 140,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: electrical/firmware not_applicable (concept-only design: no electrical, firmware or purchase claims are made)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "engineering_report",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:36:00.711035Z"
+  },
+  {
+   "actor": "system",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 141,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: six camera renders of the generated geometry (three-chromium)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-8daebbe359b30d8e70cafb459d59e48387b7a7bf4ef336a1396089c29d74ca45",
+     "type": "shot_front",
+     "url": "/api/v2/assets/asset-8daebbe359b30d8e70cafb459d59e48387b7a7bf4ef336a1396089c29d74ca45"
+    },
+    {
+     "id": "asset-18a7fdc8f34110ea55ab36400a85d0c24a936a622d0a7ce5fe8905f50e231cdf",
+     "type": "shot_left",
+     "url": "/api/v2/assets/asset-18a7fdc8f34110ea55ab36400a85d0c24a936a622d0a7ce5fe8905f50e231cdf"
+    },
+    {
+     "id": "asset-e81b370f37858438c27f0c0401d260cf9eb80cdbd507d9c18b7ddf854abae61b",
+     "type": "shot_back",
+     "url": "/api/v2/assets/asset-e81b370f37858438c27f0c0401d260cf9eb80cdbd507d9c18b7ddf854abae61b"
+    },
+    {
+     "id": "asset-d648ffd7fa5a9c5ccf773d96caad30c920f0dadf872d03116d10d2b917a680eb",
+     "type": "shot_right",
+     "url": "/api/v2/assets/asset-d648ffd7fa5a9c5ccf773d96caad30c920f0dadf872d03116d10d2b917a680eb"
+    },
+    {
+     "id": "asset-9c7e81fba59419f42d9ddff8bc8afe44239a2523b7d77fc7abf0ef2d656c9571",
+     "type": "shot_top",
+     "url": "/api/v2/assets/asset-9c7e81fba59419f42d9ddff8bc8afe44239a2523b7d77fc7abf0ef2d656c9571"
+    },
+    {
+     "id": "asset-5c2ed0052c21474cdc868fc8cb7472ea6157ad93d56226fc81796aec8bb3cd5c",
+     "type": "shot_perspective",
+     "url": "/api/v2/assets/asset-5c2ed0052c21474cdc868fc8cb7472ea6157ad93d56226fc81796aec8bb3cd5c"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "render_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:36:01.763900Z"
+  },
+  {
+   "actor": "vision",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 142,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: visual score 5.5/10 (subjective, openai:gpt-5+critic:gpt-4o); 6 issues",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "visual_review",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:36:09.008286Z"
+  },
+  {
+   "actor": "planner",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 143,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: re-authored design kept (2 -> 0 blocking findings)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "candidate_complete",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:36:09.180277Z"
+  },
+  {
+   "actor": "repair",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 144,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: deterministic repair applied (6 actions)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "repair",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:36:46.746538Z"
+  },
+  {
+   "actor": "validator",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 145,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: geometry valid; 0 hard collisions, stability stable",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-1d5ae2a724c3839da20380b63a173f9cf0e20fa58852448d41a43f58d000738e",
+     "type": "mechanical_report",
+     "url": "/api/v2/assets/asset-1d5ae2a724c3839da20380b63a173f9cf0e20fa58852448d41a43f58d000738e"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "mechanical_report",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:37:15.143442Z"
+  },
+  {
+   "actor": "validator",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 146,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: electrical/firmware not_applicable (concept-only design: no electrical, firmware or purchase claims are made)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "engineering_report",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:37:15.146107Z"
+  },
+  {
+   "actor": "system",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 147,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: six camera renders of the generated geometry (three-chromium)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-eec3332aef8fd27581fa444ccd8958e59f12e73e2c5f27ba0271a405a4a33307",
+     "type": "shot_front",
+     "url": "/api/v2/assets/asset-eec3332aef8fd27581fa444ccd8958e59f12e73e2c5f27ba0271a405a4a33307"
+    },
+    {
+     "id": "asset-404e2aacead7e628e0953e2254c33d94dd6227c1276951d0200a298d73cdd08a",
+     "type": "shot_left",
+     "url": "/api/v2/assets/asset-404e2aacead7e628e0953e2254c33d94dd6227c1276951d0200a298d73cdd08a"
+    },
+    {
+     "id": "asset-6b39f8e087cb75550138cb7036c3e54df93f233e92307d10ed3d46e91e13424c",
+     "type": "shot_back",
+     "url": "/api/v2/assets/asset-6b39f8e087cb75550138cb7036c3e54df93f233e92307d10ed3d46e91e13424c"
+    },
+    {
+     "id": "asset-03703e581a56ea44f9100ac28236350861a7f6449339572b90e6c54668eb0024",
+     "type": "shot_right",
+     "url": "/api/v2/assets/asset-03703e581a56ea44f9100ac28236350861a7f6449339572b90e6c54668eb0024"
+    },
+    {
+     "id": "asset-a0b74be9575add4b4a5f18be1df24905cc5c790ed7d11384a4971eeb48d5dbe1",
+     "type": "shot_top",
+     "url": "/api/v2/assets/asset-a0b74be9575add4b4a5f18be1df24905cc5c790ed7d11384a4971eeb48d5dbe1"
+    },
+    {
+     "id": "asset-6e344310768f569f21d8c5c9204bf46cba76c75d33be02d635687b573ee9a0cd",
+     "type": "shot_perspective",
+     "url": "/api/v2/assets/asset-6e344310768f569f21d8c5c9204bf46cba76c75d33be02d635687b573ee9a0cd"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "render_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:37:16.187845Z"
+  },
+  {
+   "actor": "vision",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 148,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: visual score 6.8/10 (subjective, openai:gpt-5+critic:gpt-4o); 8 issues",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "visual_review",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:37:22.098136Z"
+  },
+  {
+   "actor": "planner",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 149,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: re-authored design kept (2 -> 0 blocking findings)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "candidate_complete",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:37:22.275979Z"
+  },
+  {
+   "actor": "repair",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 150,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: deterministic repair applied (10 actions)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "repair",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:39:29.160460Z"
+  },
+  {
+   "actor": "validator",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 151,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: geometry invalid; 0 hard collisions, stability stable",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-11c86d4cea67259251fa23246b7c33636908bceecb5f649464f787b048586e5b",
+     "type": "mechanical_report",
+     "url": "/api/v2/assets/asset-11c86d4cea67259251fa23246b7c33636908bceecb5f649464f787b048586e5b"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "mechanical_report",
+   "status": "warning",
+   "timestamp": "2026-10-25T04:40:18.019984Z"
+  },
+  {
+   "actor": "validator",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 152,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: electrical/firmware not_applicable (concept-only design: no electrical, firmware or purchase claims are made)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "engineering_report",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:40:18.022316Z"
+  },
+  {
+   "actor": "system",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 153,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: six camera renders of the generated geometry (three-chromium)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-ff59c21798443f1c5cf3f05d1283ae3db342f5ee5108132963521e2dbb0ea8c8",
+     "type": "shot_front",
+     "url": "/api/v2/assets/asset-ff59c21798443f1c5cf3f05d1283ae3db342f5ee5108132963521e2dbb0ea8c8"
+    },
+    {
+     "id": "asset-1240ab26f7f3cf7e92f799e8fcd9834ca6e5cf0b474496c174fb8a06baac6455",
+     "type": "shot_left",
+     "url": "/api/v2/assets/asset-1240ab26f7f3cf7e92f799e8fcd9834ca6e5cf0b474496c174fb8a06baac6455"
+    },
+    {
+     "id": "asset-7c34d1c517dbf80aa8db62d3e839bd580781d8b647ff4cbe747444969f5468f6",
+     "type": "shot_back",
+     "url": "/api/v2/assets/asset-7c34d1c517dbf80aa8db62d3e839bd580781d8b647ff4cbe747444969f5468f6"
+    },
+    {
+     "id": "asset-f3152533658239c1680e6791ca987654da08704733c3c9284f0ca60253253672",
+     "type": "shot_right",
+     "url": "/api/v2/assets/asset-f3152533658239c1680e6791ca987654da08704733c3c9284f0ca60253253672"
+    },
+    {
+     "id": "asset-3bcbedf00ff25d99142e70cb084953f1fba9c3c871fc6d1616070b4895403a73",
+     "type": "shot_top",
+     "url": "/api/v2/assets/asset-3bcbedf00ff25d99142e70cb084953f1fba9c3c871fc6d1616070b4895403a73"
+    },
+    {
+     "id": "asset-a9cf8454cc5036ea6811063d579fa769f3141c1f77f8bd0a5c9f8371cbe1a2a5",
+     "type": "shot_perspective",
+     "url": "/api/v2/assets/asset-a9cf8454cc5036ea6811063d579fa769f3141c1f77f8bd0a5c9f8371cbe1a2a5"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "render_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:40:19.039244Z"
+  },
+  {
+   "actor": "vision",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 154,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: visual score 5.0/10 (subjective, openai:gpt-5+critic:gpt-4o); 6 issues",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "visual_review",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:40:24.249806Z"
+  },
+  {
+   "actor": "planner",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 155,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: re-authored design rolled back (2 -> 2 blocking findings)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "revision_ready",
+   "status": "warning",
+   "timestamp": "2026-10-25T04:40:24.377371Z"
+  },
+  {
+   "actor": "planner",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 156,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: feasible (concept_only), visual 6.8/10",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "candidate_complete",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:40:24.383175Z"
+  },
+  {
+   "actor": "planner",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-2",
+   "event_id": 157,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-2: feasible (concept_only), visual 5.5/10",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "candidate_complete",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:40:24.385190Z"
+  },
+  {
+   "actor": "planner",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-3",
+   "event_id": 158,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-3: not feasible (concept_only), visual 5.0/10",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "candidate_complete",
+   "status": "warning",
+   "timestamp": "2026-10-25T04:40:24.386989Z"
+  },
+  {
+   "actor": "planner",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 159,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "Recommended cand-1: highest visual score among 2 feasible candidate(s): closest to reference scored 6.8/10 (subjective). You can choose another candidate.",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "choice_requested",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:40:24.388655Z"
+  },
+  {
+   "actor": "repair",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 160,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: deterministic repair applied (8 actions)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "repair",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:41:33.499291Z"
+  },
+  {
+   "actor": "validator",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 161,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: geometry valid; 0 hard collisions, stability stable",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-802bdfe2b63229ac2e30f74987c5225feebd4973fff7aa9b70c440bb7e39ea3a",
+     "type": "mechanical_report",
+     "url": "/api/v2/assets/asset-802bdfe2b63229ac2e30f74987c5225feebd4973fff7aa9b70c440bb7e39ea3a"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "mechanical_report",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:41:33.505142Z"
+  },
+  {
+   "actor": "validator",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 162,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: electrical/firmware not_applicable (concept-only design: no electrical, firmware or purchase claims are made)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "engineering_report",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:41:33.508106Z"
+  },
+  {
+   "actor": "system",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 163,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: six camera renders of the generated geometry (three-chromium)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [
+    {
+     "id": "asset-43a4d5adca5afb568f5bcff9bf6742dec2d86ecd46ec18d91e268a62d82491cf",
+     "type": "shot_front",
+     "url": "/api/v2/assets/asset-43a4d5adca5afb568f5bcff9bf6742dec2d86ecd46ec18d91e268a62d82491cf"
+    },
+    {
+     "id": "asset-3ff7b8b48cc59b03b485015bc1d124ef5ccf809ac07ca622daca5ea20cf31cba",
+     "type": "shot_left",
+     "url": "/api/v2/assets/asset-3ff7b8b48cc59b03b485015bc1d124ef5ccf809ac07ca622daca5ea20cf31cba"
+    },
+    {
+     "id": "asset-bbfa27b6e7c03567d86947b5771e6693e1ebded03fd49975d0cfa046aded4a3e",
+     "type": "shot_back",
+     "url": "/api/v2/assets/asset-bbfa27b6e7c03567d86947b5771e6693e1ebded03fd49975d0cfa046aded4a3e"
+    },
+    {
+     "id": "asset-1f955328b52676fe232179dfd0b7b108c2daaf13f0e9f217946a3d7caf8b7988",
+     "type": "shot_right",
+     "url": "/api/v2/assets/asset-1f955328b52676fe232179dfd0b7b108c2daaf13f0e9f217946a3d7caf8b7988"
+    },
+    {
+     "id": "asset-fcff7b020e68eff76e3c42f8a2feadc6d27260783cc03dc04eca77a768f10cc9",
+     "type": "shot_top",
+     "url": "/api/v2/assets/asset-fcff7b020e68eff76e3c42f8a2feadc6d27260783cc03dc04eca77a768f10cc9"
+    },
+    {
+     "id": "asset-dc5c3b5835e5fadc4cd7739bfc196766aade0d93ed621686379b82a55f1f9379",
+     "type": "shot_perspective",
+     "url": "/api/v2/assets/asset-dc5c3b5835e5fadc4cd7739bfc196766aade0d93ed621686379b82a55f1f9379"
+    }
+   ],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "render_ready",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:41:34.551845Z"
+  },
+  {
+   "actor": "vision",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 164,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: visual score 6.0/10 (subjective, openai:gpt-5+critic:gpt-4o); 7 issues",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "visual_review",
+   "status": "ok",
+   "timestamp": "2026-10-25T04:41:41.493709Z"
+  },
+  {
+   "actor": "vision",
+   "build_id": "design-9b50e152bcac515e7f8db6ee",
+   "candidate_id": "cand-1",
+   "event_id": 165,
+   "is_partial": false,
+   "job_id": "gen-83f23b671314e74d6a315fbd",
+   "message": "cand-1: critic-guided revision 1 rolled back (no improvement) (6.8 -> 6.0, target 8.0)",
+   "preview_revision": null,
+   "provenance": null,
+   "references": [],
+   "revision": null,
+   "schema_version": "2.0",
+   "snapshot": null,
+   "stage": "revision_ready",
+   "status": "warning",
+   "timestamp": "2026-10-25T04:41:41.685699Z"
+  }
+ ],
+ "stages": [
+  {
+   "at": "2026-10-25T04:29:23.824025Z",
+   "detail": "renderer chromium",
+   "stage": "intake",
+   "status": "ok"
+  },
+  {
+   "at": "2026-10-25T04:29:43.792961Z",
+   "detail": "model",
+   "stage": "distill",
+   "status": "ok"
+  },
+  {
+   "at": "2026-10-25T04:29:43.794514Z",
+   "detail": "uploaded reference replaces generated concept art",
+   "stage": "concept",
+   "status": "skipped"
+  },
+  {
+   "at": "2026-10-25T04:30:32.114651Z",
+   "detail": "3 views; consistent=False",
+   "stage": "multiview",
+   "status": "ok"
+  },
+  {
+   "at": "2026-10-25T04:40:24.388358Z",
+   "detail": "3/3 complete",
+   "stage": "candidate_generation",
+   "status": "ok"
+  },
+  {
+   "at": "2026-10-25T04:42:51.220825Z",
+   "detail": "2 round(s); visual target 8.0/10 not met",
+   "stage": "refinement",
+   "status": "warning"
+  }
+ ]
+}
