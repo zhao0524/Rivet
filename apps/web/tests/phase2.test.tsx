@@ -163,6 +163,20 @@ describe('Step 4 Buy for a concept model', () => {
     expect(screen.queryByTestId('buy-line-concept.body')).toBeNull();
     expect(screen.queryByTestId(`buy-vendor-${NO_VENDOR}`)).toBeNull();
   });
+
+  it('offers a 3D print file for shapes with no store link or price, but not for boards or wires', async () => {
+    const concept = getConceptExamplePlan();
+    seed({ exampleId: concept.build_id, buildId: concept.build_id });
+    await renderStep('buy', <BuyStep />);
+    const print = await screen.findByTestId('buy-print', {}, { timeout: 8000 });
+    for (const id of ['concept.body', 'concept.cover', 'concept.landing-leg']) {
+      expect(within(print).getByTestId(`buy-print-stl-${id}`)).toBeDefined();
+    }
+    for (const id of ['concept.flight-controller', 'concept.battery', 'concept.wire-power-3-0']) {
+      expect(within(print).queryByTestId(`buy-print-${id}`)).toBeNull();
+    }
+    expect(screen.getByTestId('buy-suggested-notice').textContent).toContain('can be 3D-printed below');
+  });
 });
 
 describe('Build model', () => {
