@@ -1,0 +1,215 @@
+{
+  "schema_version": "1.0",
+  "product_id": "sample-simple-raspberry-pi-robot",
+  "name": "Simple Raspberry Pi Robot",
+  "category": "rover",
+  "summary": "A two-wheel robot built on the Adafruit Mini Robot Rover chassis, driven by a Raspberry Pi with the DC & Stepper Motor HAT, powered from AA cells and a USB battery pack. Hand-made sample built from the guide page; several of the parts it links are no longer stocked.",
+  "image": {
+    "url": "https://cdn-learn.adafruit.com/guides/images/000/001/207/medium800/IMG_4453.jpg",
+    "credit": "Adafruit Learning System",
+    "license": "CC BY-SA 3.0"
+  },
+  "source": {
+    "url": "https://learn.adafruit.com/simple-raspberry-pi-robot",
+    "host_tier": "manufacturer",
+    "title": "Overview | Simple Raspberry Pi Robot | Adafruit Learning System",
+    "fetched_at": "2026-10-24T23:07:00Z",
+    "content_sha256": "e0d3371c83d1a1adcf8a86de16d4675342eac68ebbe4d52b07329ac3ea3cb118"
+  },
+  "parts": [
+    {
+      "part_id": "adafruit-2939",
+      "name": "Mini Robot Rover Chassis Kit - 2WD with DC Motors",
+      "quantity": 1,
+      "sku": "2939",
+      "mpn": null,
+      "manufacturer": "Adafruit",
+      "vendor": {
+        "id": "adafruit",
+        "name": "Adafruit Industries",
+        "tier": "manufacturer",
+        "domain": "adafruit.com"
+      },
+      "url": "https://www.adafruit.com/product/2939",
+      "price_amount": "24.95",
+      "currency": "USD",
+      "availability": "out_of_stock",
+      "fetched_at": "2026-10-24T18:49:04Z",
+      "source_sha256": "81aa68a9493c1fcdac595033765c383f2aced46db415b029c8360a70a12b5db3",
+      "evidence_level": "verified",
+      "evidence_quote": "\"sku\":2939",
+      "bom_quote": "Mini Robot Rover Chassis Kit - 2WD with DC Motors"
+    },
+    {
+      "part_id": "adafruit-2358",
+      "name": "Raspberry Pi 2 - Model B v1.2 - ARM Cortex-A53 with 1G RAM",
+      "quantity": 1,
+      "sku": "2358",
+      "mpn": null,
+      "manufacturer": "Adafruit",
+      "vendor": {
+        "id": "adafruit",
+        "name": "Adafruit Industries",
+        "tier": "manufacturer",
+        "domain": "adafruit.com"
+      },
+      "url": "https://www.adafruit.com/product/2358",
+      "price_amount": "39.95",
+      "currency": "USD",
+      "availability": "discontinued",
+      "fetched_at": "2026-10-24T23:09:12Z",
+      "source_sha256": "058ff4f94ee33da179ab76d07a14c3517554854f1fe7f22fd6b9611386711630",
+      "evidence_level": "verified",
+      "evidence_quote": "\"sku\":2358",
+      "bom_quote": "Raspberry Pi 2 - Model B v1.2 - ARM Cortex-A53 with 1G RAM"
+    },
+    {
+      "part_id": "adafruit-2266",
+      "name": "Raspberry Pi Model A+ 512MB RAM",
+      "quantity": 1,
+      "sku": "2266",
+      "mpn": null,
+      "manufacturer": "Adafruit",
+      "vendor": {
+        "id": "adafruit",
+        "name": "Adafruit Industries",
+        "tier": "manufacturer",
+        "domain": "adafruit.com"
+      },
+      "url": "https://www.adafruit.com/product/2266",
+      "price_amount": "24.95",
+      "currency": "USD",
+      "availability": "discontinued",
+      "fetched_at": "2026-10-24T23:09:15Z",
+      "source_sha256": "ec8f3d2a37a0eb9dbf73cf288f64a0c30d79772f6361eed7ed7f6998ff71afd0",
+      "evidence_level": "verified",
+      "evidence_quote": "\"sku\":2266",
+      "bom_quote": "Raspberry Pi Model A+ 512MB RAM"
+    },
+    {
+      "part_id": "adafruit-2348",
+      "name": "Adafruit DC & Stepper Motor HAT for Raspberry Pi - Mini Kit",
+      "quantity": 1,
+      "sku": "2348",
+      "mpn": null,
+      "manufacturer": "Adafruit",
+      "vendor": {
+        "id": "adafruit",
+        "name": "Adafruit Industries",
+        "tier": "manufacturer",
+        "domain": "adafruit.com"
+      },
+      "url": "https://www.adafruit.com/product/2348",
+      "price_amount": "22.50",
+      "currency": "USD",
+      "availability": "in_stock",
+      "fetched_at": "2026-10-24T23:09:17Z",
+      "source_sha256": "3e508f3d5512d6c73e631fac255d74901baeee738f54e0ad2bb94246efde57f0",
+      "evidence_level": "verified",
+      "evidence_quote": "\"sku\":2348",
+      "bom_quote": "Adafruit DC & Stepper Motor HAT for Raspberry Pi - Mini Kit"
+    },
+    {
+      "part_id": "adafruit-2336",
+      "name": "Brass M2.5 Standoffs for Pi HATs - Black Plated - Pack of 2",
+      "quantity": 1,
+      "sku": "2336",
+      "mpn": null,
+      "manufacturer": "Adafruit",
+      "vendor": {
+        "id": "adafruit",
+        "name": "Adafruit Industries",
+        "tier": "manufacturer",
+        "domain": "adafruit.com"
+      },
+      "url": "https://www.adafruit.com/product/2336",
+      "price_amount": "0.75",
+      "currency": "USD",
+      "availability": "in_stock",
+      "fetched_at": "2026-10-24T23:09:20Z",
+      "source_sha256": "c334e0955f346e9a32533b57bf4ef284db48f1ae03c8544f5562433979c447de",
+      "evidence_level": "verified",
+      "evidence_quote": "\"sku\":2336",
+      "bom_quote": "Brass M2.5 Standoffs for Pi HATs - Black Plated - Pack of 2"
+    },
+    {
+      "part_id": "adafruit-830",
+      "name": "4 x AA Battery Holder with On/Off Switch",
+      "quantity": 1,
+      "sku": "830",
+      "mpn": null,
+      "manufacturer": "Adafruit",
+      "vendor": {
+        "id": "adafruit",
+        "name": "Adafruit Industries",
+        "tier": "manufacturer",
+        "domain": "adafruit.com"
+      },
+      "url": "https://www.adafruit.com/product/830",
+      "price_amount": "2.95",
+      "currency": "USD",
+      "availability": "in_stock",
+      "fetched_at": "2026-10-24T23:09:24Z",
+      "source_sha256": "907271509e3cb686a0436f4409519e15dcc5d502cdd4e04ba07ac46efa2bcb01",
+      "evidence_level": "verified",
+      "evidence_quote": "\"sku\":830",
+      "bom_quote": "4 x AA Battery Holder with On/Off Switch"
+    },
+    {
+      "part_id": "adafruit-1959",
+      "name": "USB Battery Pack - 2200 mAh Capacity - 5V 1A Output",
+      "quantity": 1,
+      "sku": "1959",
+      "mpn": null,
+      "manufacturer": "Adafruit",
+      "vendor": {
+        "id": "adafruit",
+        "name": "Adafruit Industries",
+        "tier": "manufacturer",
+        "domain": "adafruit.com"
+      },
+      "url": "https://www.adafruit.com/product/1959",
+      "price_amount": "14.95",
+      "currency": "USD",
+      "availability": "discontinued",
+      "fetched_at": "2026-10-24T23:09:26Z",
+      "source_sha256": "9675d46b7b9c1c7eb530e5222f3a3446b8b9c5415b5fb5ddc892b13c6f6e113a",
+      "evidence_level": "verified",
+      "evidence_quote": "\"sku\":1959",
+      "bom_quote": "USB Battery Pack - 2200 mAh Capacity - 5V 1A Output"
+    },
+    {
+      "part_id": "adafruit-814",
+      "name": "Miniature WiFi (802.11b/g/n) Module: For Raspberry Pi and more",
+      "quantity": 1,
+      "sku": "814",
+      "mpn": null,
+      "manufacturer": "Adafruit",
+      "vendor": {
+        "id": "adafruit",
+        "name": "Adafruit Industries",
+        "tier": "manufacturer",
+        "domain": "adafruit.com"
+      },
+      "url": "https://www.adafruit.com/product/814",
+      "price_amount": "11.95",
+      "currency": "USD",
+      "availability": "discontinued",
+      "fetched_at": "2026-10-24T23:09:28Z",
+      "source_sha256": "e2a60abad2795a1bd06a9559cbbe2eb42a724f1e8ce95447035a8f67d69dc109",
+      "evidence_level": "verified",
+      "evidence_quote": "\"sku\":814",
+      "bom_quote": "Miniature WiFi (802.11b/g/n) Module: For Raspberry Pi and more"
+    }
+  ],
+  "unsourced_parts": [],
+  "totals": {
+    "parts_total": 8,
+    "parts_verified": 8,
+    "price_total_amount": "142.95",
+    "currency": "USD"
+  },
+  "status": "complete",
+  "generated_at": "2026-10-24T23:15:00Z",
+  "synthetic": false
+}

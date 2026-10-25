@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-10-24T23:15:00Z",
+  "products": [
+    {
+      "product_id": "sample-simple-raspberry-pi-robot",
+      "name": "Simple Raspberry Pi Robot",
+      "category": "rover",
+      "image": {
+        "url": "https://cdn-learn.adafruit.com/guides/images/000/001/207/medium800/IMG_4453.jpg",
+        "credit": "Adafruit Learning System",
+        "license": "CC BY-SA 3.0"
+      },
+      "parts_total": 8,
+      "parts_verified": 8,
+      "status": "complete"
+    },
+    {
+      "product_id": "sample-sparkfun-inventors-kit-v412",
+      "name": "SparkFun Inventor's Kit - v4.1.2",
+      "category": "other",
+      "image": {
+        "url": "https://www.sparkfun.com/media/catalog/product/cache/f8158826193ba5faa8b862a9bd1eb9e9/1/5/15267-SparkFun_Inventor_s_Kit_-_v4.1-01a_1.jpg",
+        "credit": "SparkFun Electronics",
+        "license": "not stated on fetched page"
+      },
+      "parts_total": 26,
+      "parts_verified": 22,
+      "status": "partial"
+    }
+  ]
+}

@@ -10,6 +10,8 @@ export default defineConfig({
     alias: [
       { find: '@', replacement: path.resolve(__dirname, 'src') },
       { find: /^three$/, replacement: path.resolve(__dirname, 'node_modules/three/build/three.module.js') },
+      // `require.context` is webpack-only; under Vite the showcase fixtures are enumerated with `import.meta.glob`.
+      { find: /^\.\/enumerate-files$/, replacement: path.resolve(__dirname, 'src/lib/showcase/fixtures/enumerate-files.vite.ts') },
     ],
   },
   test: {
