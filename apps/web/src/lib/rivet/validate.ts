@@ -433,6 +433,8 @@ export const buildPlanCheck: Check<BuildPlan> = object<BuildPlan>({
     generation_mode: oneOf(GENERATION_MODES),
     notes: strArray,
   }),
+  concept_catalog: optional(arrayOf(catalogComponentCheck)),
+  concept: optional(object({ object_type: str, summary: str, confidence: str })),
 });
 
 export const apiErrorBodyCheck: Check<ApiErrorBody> = object<ApiErrorBody>({
@@ -450,7 +452,7 @@ export const healthResponseCheck: Check<HealthResponse> = object<HealthResponse>
 export const generateRequestCheck: Check<GenerateRequest> = (v, p, issues) => {
   const req = object<GenerateRequest>({
     intent_id: optional(nonEmptyStr),
-    interpretation_choice: optional(oneOf(["as_interpreted", "closest_supported_rover"] as const)),
+    interpretation_choice: optional(oneOf(["as_interpreted", "closest_supported_rover", "concept_model"] as const)),
     input: object({ kind: oneOf(INPUT_KINDS), image_asset_id: nullable(nonEmptyStr), user_text: nullable(str) }),
     requirements: optional(plainObject) as Check<GenerateRequest["requirements"]>,
   })(v, p, issues);

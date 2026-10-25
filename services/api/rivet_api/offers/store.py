@@ -30,11 +30,13 @@ class OfferSetStore:
     def new_id() -> str:
         return f"ofs-{uuid.uuid4().hex[:12]}"
 
-    def put(self, offer_set: OfferSet) -> str:
+    def put(self, offer_set: OfferSet, cache_key: str | None = None) -> str:
+        """Store a set; it is cached under the query's normalised key unless `cache_key` names another
+        (showcase parts use their own key because their search also verifies curated seed pages)."""
         offer_set_id = self.new_id()
         with self._lock:
             self._by_id[offer_set_id] = offer_set
-            self._by_key[offer_set.query.normalized_key] = (offer_set_id, self._clock() + self.cache_ttl_s)
+            self._by_key[cache_key or offer_set.query.normalized_key] = (offer_set_id, self._clock() + self.cache_ttl_s)
             while len(self._by_id) > self.max_items:
                 evicted, _ = self._by_id.popitem(last=False)
                 self._by_key = {k: v for k, v in self._by_key.items() if v[0] != evicted}

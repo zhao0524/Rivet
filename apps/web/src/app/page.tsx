@@ -33,7 +33,7 @@ const OUTPUTS = [
 ] as const;
 
 const FOOTER = [
-  { title: 'Product', links: [['Start building', '/new'], ['Your projects', '/projects'], ['See an example', 'example']] },
+  { title: 'Product', links: [['Start building', '/new'], ['Your projects', '/projects'], ['Sandbox', '/sandbox'], ['See an example', 'example']] },
   { title: 'Builds', links: [['Indoor rover', '/new'], ['Mini RC car (planned)', null], ['Drones and arms (later)', null]] },
   { title: 'Docs', links: [['Read me first', `${REPO_URL}#readme`], ['Developer API', `${REPO_URL}/blob/main/contracts/api.md`], ['Project plan', `${REPO_URL}/blob/main/docs/project.md`]] },
   { title: 'Project', links: [['GitHub', REPO_URL], ['SOON Hackathon', null]] },
@@ -48,6 +48,7 @@ export default function HomePage() {
           <a href="#how">How it works</a>
           <a href="#outputs">What you get</a>
           <a href="#families">Builds</a>
+          <Link href="/sandbox" data-testid="home-nav-sandbox">Sandbox</Link>
           <a href={REPO_URL}>Docs</a>
         </nav>
         <div className="mk-nav__actions">

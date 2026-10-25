@@ -1,0 +1,1385 @@
+<!doctype html>
+<html lang="en-US" prefix="og: http://ogp.me/ns#" data-theme="system">
+<head>
+  <meta charset="utf-8">
+  <link rel="mask-icon" href="/assets/adafruit_favicon-fa25640e.svg" color="#000000">
+  <link rel="icon" type="image/x-icon" href="/assets/favicon-5362a6c7.ico" />
+    <title>Overview | Circuit Playground Bike Light | Adafruit Learning System</title>
+<link rel="canonical" href="https://learn.adafruit.com/circuit-playground-bike-light/overview" />
+<meta name="guide-title" content="Circuit Playground Bike Light">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@adafruit">
+<meta name="twitter:title" content="Circuit Playground Bike Light">
+<meta name="twitter:description" content="Blinky bikey fun!">
+<meta name="twitter:image:src" content="https://cdn-learn.adafruit.com/guides/images/000/001/628/medium800thumb/ani_banner.gif">
+<meta name="twitter:domain" content="https://learn.adafruit.com">
+<meta property="og:site_name" content="Adafruit Learning System" />
+<meta property="og:title" content="Circuit Playground Bike Light" />
+<meta property="og:description" content="Use your Circuit Playground to make a custom safety light for your bicycle. Learn about colors, using NeoPixels, how to create various animations, and how to choose them using button presses." />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="https://cdn-learn.adafruit.com/guides/images/000/001/628/medium800thumb/ani_banner.gif" />
+<meta property="og:url" content="https://learn.adafruit.com/circuit-playground-bike-light/overview" />
+<script type="application/ld+json" nonce="WQhe7VnTHZGtoBIH9Q24FQ==">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "headline": "Circuit Playground Bike Light",
+    "description": "Use your Circuit Playground to make a custom safety light for your bicycle. Learn about colors, using NeoPixels, how to create various animations, and how to choose them using button presses.",
+    "image": "https://cdn-learn.adafruit.com/guides/images/000/001/628/medium800thumb/ani_banner.gif",
+    "url": "https://learn.adafruit.com/circuit-playground-bike-light/overview",
+    "publisher": "Adafruit",
+    "datePublished": "2017-04-24T22:03:14-04:00",
+    "author": {
+      "@type": "Person",
+      "name": "Carter Nelson"
+    }
+  }
+</script>
+  <meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="58UO23zx4wN9WppT9rM-2-4e3XfjB_6rqJ88SOJcJwr3dfBGvUOqAL36UGNxTYCVb27NnfEWD-LEs2FjcOqbpg" />
+  <meta name="shop-uri" content="https://www.adafruit.com">
+  <link rel="alternate" type="application/atom+xml" title="ATOM" href="/feed" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.rss" />
+  <link rel="stylesheet" href="/assets/application-8813e530.css" data-turbo-track="reload" media="screen" />
+  <link rel="preload" href="https://cdn-shop.adafruit.com/fonts/proximanova/proximanova-light-webfont.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://cdn-shop.adafruit.com/fonts/proximanova/proximanova-regular-webfont.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://cdn-shop.adafruit.com/fonts/proximanova/proximanova-semibold-webfont.woff2" as="font" type="font/woff2" crossorigin>
+  <meta name='viewport' content='initial-scale=1, viewport-fit=cover'>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <script type="application/ld+json" nonce="WQhe7VnTHZGtoBIH9Q24FQ==">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "url": "https://learn.adafruit.com/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://learn.adafruit.com/search?q={search_term}",
+        "query-input": "required name=search_term"
+      }
+    }
+  </script>
+</head>
+<body class="application pages show production" data-rails-env="production">
+  <div id="outer-wrapper">
+    <div id="inner-wrapper">
+      <nav class="skip-links" aria-label="Skip links">
+  <ul>
+    <li><a data-turbo="false" href="#main-content-container">Skip to main content</a></li>
+      <li><a data-turbo="false" href="#article-body">Skip to article content</a></li>
+  </ul>
+</nav>
+        <div id="messaging-wrapper" class="messages-container" data-load="https://www.adafruit.com/api/multi_message.php"></div>
+      <header id="adafruit-header" aria-label="Adafruit header">
+  <div id="small-header">
+  <div class="first-row">
+      <nav aria-label="Adafruit applications menu">
+    <ul class="application-links">
+      <li><a aria-label="Adafruit Shop" href="https://www.adafruit.com">Shop</a></li>
+      <li class="selected"><a aria-label="Adafruit Learning System" href="https://learn.adafruit.com">Learn</a></li>
+      <li><a aria-label="Adafruit Blog" href="https://blog.adafruit.com">Blog</a></li>
+      <li><a aria-label="Adafruit Forums and Support" href="https://forums.adafruit.com">Forums</a></li>
+      <li><a aria-label="Adafruit IO, the internet of things" href="https://io.adafruit.com">IO</a></li>
+      <li><a aria-label="Adafruit Youtube Videos" href="https://www.youtube.com/adafruit/live">LIVE!</a></li>
+        <li><a aria-label="Adafruit product box subscription" href="https://www.adabox.com">AdaBox</a></li>
+    </ul>
+  </nav>
+  </div>
+  <div class="second-row">
+    <div class="row-content">
+      <div id="mobile-header-logo">
+        <a href="https://learn.adafruit.com">
+        <img id="small-logo" height="50" width="50" alt="Adafruit Logo" src="/logos/adafruit_logo_small.png?3343756081246158728" />
+</a>      </div>
+      <button id="mobile-menu-button" class="c-hamburger c-hamburger--htx">
+        <span>toggle menu</span>
+      </button>
+      <div id="mobile-search-wrapper">
+        <form action="https://learn.adafruit.com/search" method="get">
+          <label for="mobile-search" style="display:none;">Search</label>
+          <input id="mobile-search" type="text" name="q" autocomplete="off"
+            data-app-id="W9DMM4OTH0"
+            data-app-key="28a76a2b87be38db12283ebda329425a"
+            data-app-index="learn_guides_production"
+            data-app-uri="https://learn.adafruit.com" />
+          <button type="submit" aria-label="Submit search"><i class="fa fa-search"></i></button>
+        </form>
+      </div>
+      <a id="mobile-header-cart" href="https://www.adafruit.com/shopping_cart">
+        <span class="small-cart-count" aria-live="polite">0</span>
+        <i class="fa fa-shopping-cart"></i>
+</a>    </div>
+  </div>
+  <nav id="small-header-nav">
+    <div id="small-menu">
+      <ul>
+          <li class="account-info">
+            <a href="/users/sign_in?return_to=%2Fcircuit-playground-bike-light">Sign In</a> | <a href="https://accounts.adafruit.com/">Create Account</a>
+          </li>
+        <li><a href="https://adafruit-playground.com">Playground</a></li>
+          <li><a href="/guides/latest">New Guides</a></li>
+          <li><a href="/groups">Series</a></li>
+          <li><a href="https://www.adafruit.com/wishlists">Wishlists</a></li>
+          <li>
+            <a class="random-guide-link" aria-label="View a Random Guide" href="https://learn.adafruit.com/guides/random">
+</a>
+          </li>
+      </ul>
+    </div>
+    <div id="mobile-search-results"></div>
+  </nav>
+</div>
+  <div id="large-header">
+    <nav class="first-row" aria-label="Adafruit main site">
+      <div class="row-content">
+          <nav aria-label="Adafruit applications menu">
+    <ul class="application-links">
+      <li><a aria-label="Adafruit Shop" href="https://www.adafruit.com">Shop</a></li>
+      <li class="selected"><a aria-label="Adafruit Learning System" href="https://learn.adafruit.com">Learn</a></li>
+      <li><a aria-label="Adafruit Blog" href="https://blog.adafruit.com">Blog</a></li>
+      <li><a aria-label="Adafruit Forums and Support" href="https://forums.adafruit.com">Forums</a></li>
+      <li><a aria-label="Adafruit IO, the internet of things" href="https://io.adafruit.com">IO</a></li>
+      <li><a aria-label="Adafruit Youtube Videos" href="https://www.youtube.com/adafruit/live">LIVE!</a></li>
+        <li><a aria-label="Adafruit product box subscription" href="https://www.adabox.com">AdaBox</a></li>
+    </ul>
+  </nav>
+        <div id="account">
+            <span class="sign-out"><a href="/users/sign_in?return_to=%2Fcircuit-playground-bike-light">Sign In</a></span>
+          <div class="cart">
+            <a aria-label="Shopping Cart, 0 items" aria-live="polite" href="https://www.adafruit.com/shopping_cart">
+              <i class="fa fa-shopping-cart"></i> 0
+</a>          </div>
+        </div>
+      </div>
+    </nav>
+    <nav class="second-row" aria-label="Adafruit Learn application">
+      <div class="row-content">
+        <div class="left-content">
+          <div id="logo">
+            <a title="Adafruit Learning System" href="https://learn.adafruit.com">
+              <img alt="Adafruit Logo" src="/logos/logo_2x.png?3343756081246158728" />
+</a>          </div>
+          <ul class="main-nav-links">
+            <li class="dropdown with-overlay">
+              <button class="dropdown-label nav-link" aria-haspopup="true">Explore & Learn</button>
+              <div class="dropdown-container">
+                <div class="dropdown-content" tabindex="-1">
+                    <div class="flyout">
+      <div class="three-panels">
+        <div class="first-column">
+          <div class="content-header">
+            <span class="title">Learn Categories</span>
+          </div>
+          <div class="categories">
+            <ul>
+                <li>
+                  <a href="https://learn.adafruit.com/category/3d-printing">3D Printing</a>
+                </li>
+                <li>
+                  <a href="https://learn.adafruit.com/category/adabox">AdaBox</a>
+                </li>
+                <li>
+                  <a href="https://learn.adafruit.com/category/adafruit-products">Adafruit Products</a>
+                </li>
+                <li>
+                  <a href="https://learn.adafruit.com/category/arduino">Arduino Compatibles</a>
+                </li>
+                <li>
+                  <a href="https://learn.adafruit.com/category/breakout-boards">Breakout Boards</a>
+                </li>
+                <li>
+                  <a href="https://learn.adafruit.com/category/circuit-playground">Circuit Playground</a>
+                </li>
+                <li>
+                  <a href="https://learn.adafruit.com/category/circuitpython">CircuitPython</a>
+                </li>
+                <li>
+                  <a href="https://learn.adafruit.com/category/clue">CLUE</a>
+                </li>
+                <li>
+                  <a href="https://learn.adafruit.com/category/community-support">Community Support</a>
+                </li>
+                <li>
+                  <a href="https://learn.adafruit.com/category/components">Components</a>
+                </li>
+                <li>
+                  <a href="https://learn.adafruit.com/category/crickit">Crickit</a>
+                </li>
+                <li>
+                  <a href="https://learn.adafruit.com/category/customer-projects">Customer &amp; Partner Projects</a>
+                </li>
+                <li>
+                  <a href="https://learn.adafruit.com/category/development-boards">Development Boards</a>
+                </li>
+                <li>
+                  <a href="https://learn.adafruit.com/category/educators">Educators</a>
+                </li>
+                <li>
+                  <a href="https://learn.adafruit.com/category/el">EL Wire/Tape/Panel</a>
+                </li>
+                <li>
+                  <a href="https://learn.adafruit.com/category/feather">Feather</a>
+                </li>
+                <li>
+                  <a href="https://learn.adafruit.com/category/gaming-1">Gaming</a>
+                </li>
+            </ul>
+            <ul>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/hacks">Hacks</a>
+                  </li>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/internet-of-things-iot">Internet of Things - IOT</a>
+                  </li>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/lcds-and-displays">LCDs &amp; Displays</a>
+                  </li>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/leds">LEDs</a>
+                  </li>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/machine-learning">Machine Learning</a>
+                  </li>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/makecode">MakeCode</a>
+                  </li>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/maker-business">Maker Business</a>
+                  </li>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/micro-bit">micro:bit</a>
+                  </li>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/microcontrollers">Microcontrollers</a>
+                  </li>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/programming">Programming</a>
+                  </li>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/raspberry-pi">Raspberry Pi</a>
+                  </li>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/robotics">Robotics &amp; CNC</a>
+                  </li>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/sensors">Sensors</a>
+                  </li>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/stemma">STEMMA</a>
+                  </li>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/tools">Tools</a>
+                  </li>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/trellis">Trellis</a>
+                  </li>
+                  <li>
+                    <a href="https://learn.adafruit.com/category/wearables">Wearables</a>
+                  </li>
+            </ul>
+          </div>
+        </div>
+        <div class="middle-column">
+        </div>
+        <div class="last-column hide-md">
+          <section class="image-content-card">
+  <img loading="lazy" aria-hidden="true" alt="Explore, Groups to get your gears turning" src="https://learn.adafruit.com/assets/headlines/stemma-690676c3.jpg" />
+  <div class="text">
+    <div class="main">
+      <span>Explore</span>
+    </div>
+    <div class="tagline">
+      <span>Groups to get your gears turning</span>
+    </div>
+  </div>
+  <div class="button">
+    <a title="Groups to get your gears turning, Explore" href="https://learn.adafruit.com/explore">Explore Groups</a>
+  </div>
+</section>
+      </div>
+    </div>
+  </div>
+                </div>
+              </div>
+            </li>
+            <li class="nav-link">
+              <a class="new-guides-link" href="https://learn.adafruit.com/guides/latest">New Guides</a>
+            </li>
+            <li class="nav-link">
+              <a href="https://adafruit-playground.com">Playground</a>
+            </li>
+            <li class="nav-link">
+              <a class="random-guide-link" aria-label="View a Random Guide" href="https://learn.adafruit.com/guides/random">
+</a>
+            </li>
+          </ul>
+        </div>
+        <div class="right-content">
+            <div class="search-wrapper">
+              <div id="search-info" data-page=""
+                data-app-id="W9DMM4OTH0"
+                data-app-key="28a76a2b87be38db12283ebda329425a"
+                data-app-index="learn_guides_production"
+                data-app-uri="https://learn.adafruit.com"></div>
+              <div id="search"></div>
+              <i class="fa fa-search"></i>
+            </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+      <turbo-frame id="flash"></turbo-frame>
+      <main id="main-content">
+        <div id="main-content-container" tabindex="-1">
+            <div class="toolbar-primary ">
+    <div class="content">
+      <div class="left-content">
+        <div class="breadcrumbs" aria-label="Breadcrumbs">
+          <a href="https://learn.adafruit.com/"><i class='fa fa-home' role='img' title="Learn home"></i></a>
+            <i class="fa fa-chevron-right separator"></i>
+            <a href="/circuit-playground-bike-light">Circuit Playground Bike Light</a> <i class="fa fa-chevron-right separator"></i> Overview
+        </div>
+      </div>
+      <div class="right-content">
+      </div>
+    </div>
+  </div>
+<article id="content-wrapper" lang="en" class="" data-page-id="9189" data-guide-id="1628">
+  <header aria-label="Guide information" class="title-header">
+  <h1 class="title">Circuit Playground Bike Light</h1>
+  <p>Blinky bikey fun!</p>
+  <div class="details">
+      <div style="background-color: #0062c7" class="user-image adabot-avatar"></div>
+      <div class="metadata">
+          <div class="byline">
+    by
+    <a aria-label="Guide author" data-turbo="false" href="/u/caternuson">Carter Nelson</a>
+  </div>
+        <div class="updated">
+            published April 24, 2017, last edited March 08, 2024<br>
+        </div>
+        <div class="small">
+          posted in   <a href="/category/circuit-playground">Circuit Playground</a>/
+<a href="/category/classic">Classic</a>
+  <a href="/category/circuit-playground">Circuit Playground</a>/
+<a href="/category/express">Express</a>
+        </div>
+      </div>
+  </div>
+  <div class="buttons">
+    <span id="guide-favorite" class="button">
+  <span data-controller="modals">
+    <a data-action="click-&gt;modals#show" class="bg-btn-secondary" aria-label="Select to Save this guide." href="/guides/1628/favorites">
+      <i class="fa fa-bookmark-o"></i> Save
+</a>    <div class="dialog-container modal"
+     id="favorites-modal"
+     data-modals-target="modal"
+     aria-labelledby="dialog-title"
+     aria-hidden="true">
+  <div class="dialog-overlay" data-a11y-dialog-hide></div>
+  <div class="dialog-content dialog-small">
+    <div class="dialog-header">
+      <div>
+      <h5 class="dialog-title">New Favorite</h5>
+      </div>
+      <a href="#" class="dialog-close" data-a11y-dialog-hide="favorites-modal" aria-label="Close this dialog window">&times;</a>
+    </div>
+    <div class="dialog-body">
+        <p>Please <a href="/users/sign_in?return_to=%2Fcircuit-playground-bike-light">sign in</a> to include this guide in your list of favorites.</p>
+        <p>You will be redirected back to this guide once you <a href="/users/sign_in?return_to=%2Fcircuit-playground-bike-light">sign in</a>, and can then save this guide as one of your favorites.</p>
+    </div>
+    <div class="dialog-footer">
+      <a href="#" class="dialog-close" data-a11y-dialog-hide="favorites-modal" aria-label="Close this dialog window">Close</a>
+    </div>
+  </div>
+</div>
+  </span>
+</span>
+    <span class="button">
+  <a class="bg-btn-secondary remote-modal" data-remote="true" data-method="get" href="/guides/1628/user_page_associations/new">
+    <i class="fa fa-link"></i> Link Note
+</a></span>
+      <a class="bg-btn-secondary button" href="https://cdn-learn.adafruit.com/downloads/pdf/circuit-playground-bike-light.pdf">
+          <i class="fa fa-download"></i> Download
+</a>
+  </div>
+</header>
+  <div class="left-sidebar-layout" role="region" aria-label="Page content">
+    <div class="sidebar">
+  <nav aria-label="Guide navigation">
+      <div class="data-group">
+        <ul class="nested-page-list" aria-label="Guide pages">
+           <li class='parent' data-controller="collapse">
+        <a class="published active" aria-current="page" href="/circuit-playground-bike-light/overview">Overview</a>
+</li>
+ <li class='parent' data-controller="collapse">
+        <a class="published " href="/circuit-playground-bike-light/hello-color">Hello Color</a>
+</li>
+ <li class='parent' data-controller="collapse">
+        <a class="published " href="/circuit-playground-bike-light/hello-neopixel">Hello NeoPixel</a>
+</li>
+ <li class='parent' data-controller="collapse">
+        <a class="published " href="/circuit-playground-bike-light/basic-neopixel-animation">Basic NeoPixel Animation</a>
+</li>
+ <li class='parent' data-controller="collapse">
+        <a class="published " href="/circuit-playground-bike-light/the-flasher">The Flasher</a>
+</li>
+ <li class='parent' data-controller="collapse">
+        <a class="published " href="/circuit-playground-bike-light/the-spinner">The Spinner</a>
+</li>
+ <li class='parent' data-controller="collapse">
+        <a class="published " href="/circuit-playground-bike-light/the-cylon">The Cylon</a>
+</li>
+ <li class='parent' data-controller="collapse">
+        <a class="published " href="/circuit-playground-bike-light/the-bedazzler">The Bedazzler</a>
+</li>
+ <li class='parent' data-controller="collapse">
+        <a class="published " href="/circuit-playground-bike-light/the-rainbow-chaser">The Rainbow Chaser</a>
+</li>
+ <li class='parent' data-controller="collapse">
+        <a class="published " href="/circuit-playground-bike-light/the-all-of-them">The All Of Them</a>
+</li>
+ <li class='parent' data-controller="collapse">
+        <a class="published " href="/circuit-playground-bike-light/the-all-of-them-circuitpython">The All Of Them CircuitPython</a>
+</li>
+ <li class='parent' data-controller="collapse">
+        <a class="published " href="/circuit-playground-bike-light/making-the-bike-light">Making the Bike Light</a>
+</li>
+ <li class='parent' data-controller="collapse">
+        <a class="published " href="/circuit-playground-bike-light/questions-and-code-challenges">Questions and Code Challenges</a>
+</li>
+        </ul>
+        <div class="single-page-spacer"></div>
+        <ul class="nested-page-list" aria-label="Guide resources">
+          <li>
+              <a href="/circuit-playground-bike-light?view=all">Single page</a>
+          </li>
+          <li>
+                <div id="feedback_page_9189">
+      <a data-turbo-stream="true" class="feedback-link" title="Feedback? Corrections?" rel="nofollow" href="/feedback/new?page_id=9189">
+            Feedback?  Corrections?
+</a>    </div>
+          </li>
+          <li>
+            <a href="/circuit-playground-bike-light.md?view=all">Text View</a>
+          </li>
+        </ul>
+      </div>
+      <section class="list-with-header">
+        <div class="list-header">
+          Guide Products
+          <span class="view-all">
+            <a class="featured-products-link" href="/circuit-playground-bike-light/featured_products">view all</a>
+          </span>
+        </div>
+        <ul class="small-product-list">
+  <li class="small-product-content-card">
+    <input type="hidden" name="product_analytics_3333" id="product_analytics_3333" value="{
+  &quot;item_list_id&quot;: 2671,
+  &quot;item_list_name&quot;: &quot;anatomical-3d-printed-beating-heart-with-makecode&quot;,
+  &quot;items&quot;: {
+    &quot;item_id&quot;: 3333,
+    &quot;item_name&quot;: &quot;Circuit Playground Express&quot;,
+    &quot;affiliation&quot;: &quot;Featured Product&quot;
+  }
+}" class="product-json" />
+    <div class="product-image">
+        <img class='image-preview product-asset' src='https://cdn-shop.adafruit.com/640x480/3333-05.jpg' loading='lazy' alt='A Black woman&#39;s manicured hand holds a round microcontroller with lit up LEDs.' />
+    </div>
+    <div class="product-details">
+        <span class="featured-badge">Featured</span>
+      <div>
+        <a class="product-title" href="https://www.adafruit.com/product/3333">Circuit Playground Express</a>
+      </div>
+        <div class="product-price">$24.95</div>
+      <a id="3333-product" class="product-buy btn-primary " data-pid="3333" data-qty="1" data-name="Circuit Playground Express" target="_blank" aria-live="polite" rel="noopener noreferrer" href="https://www.adafruit.com/product/3333">Add  to Cart</a>
+    </div>
+  </li>
+  <li class="small-product-content-card">
+    <input type="hidden" name="product_analytics_3000" id="product_analytics_3000" value="{
+  &quot;item_list_id&quot;: 1376,
+  &quot;item_list_name&quot;: &quot;circuit-playground-lesson-number-0&quot;,
+  &quot;items&quot;: {
+    &quot;item_id&quot;: 3000,
+    &quot;item_name&quot;: &quot;Circuit Playground Classic&quot;,
+    &quot;affiliation&quot;: &quot;Featured Product&quot;
+  }
+}" class="product-json" />
+    <div class="product-image">
+          <video class="video-preview product-asset" preload="auto" muted="muted" loop="loop" playsinline poster="https://cdn-shop.adafruit.com/product-videos/640x480/3000-06.jpg" aria-hidden=true>
+      <source data-src="https://cdn-shop.adafruit.com/product-videos/640x480/3000-06.mp4">
+      <source data-src="https://cdn-shop.adafruit.com/product-videos/640x480/3000-06.webm" type="video/webm; codecs=vp8,vorbis">
+      Your browser does not support the video tag.
+    </video>
+  <img class='image-preview product-asset' src='https://cdn-shop.adafruit.com/product-videos/640x480/3000-06.jpg' loading='lazy' alt='Video of a round microcontroller with lit up LEDs.' />
+    </div>
+    <div class="product-details">
+        <span class="featured-badge">Featured</span>
+      <div>
+        <a class="product-title" href="https://www.adafruit.com/product/3000">Circuit Playground Classic</a>
+      </div>
+        <div class="product-price">$19.95</div>
+      <a id="3000-product" class="product-buy btn-primary " data-pid="3000" data-qty="1" data-name="Circuit Playground Classic" target="_blank" aria-live="polite" rel="noopener noreferrer" href="https://www.adafruit.com/product/3000">Add  to Cart</a>
+    </div>
+  </li>
+  <li class="small-product-content-card">
+    <input type="hidden" name="product_analytics_727" id="product_analytics_727" value="{
+  &quot;item_list_id&quot;: 910,
+  &quot;item_list_name&quot;: &quot;textile-potentiometer-hoodie&quot;,
+  &quot;items&quot;: {
+    &quot;item_id&quot;: 727,
+    &quot;item_name&quot;: &quot;3 x AAA Battery Holder with On/Off Switch and 2-Pin JST&quot;,
+    &quot;affiliation&quot;: &quot;Featured Product&quot;
+  }
+}" class="product-json" />
+    <div class="product-image">
+        <img class='image-preview product-asset' src='https://cdn-shop.adafruit.com/640x480/727-07.jpg' loading='lazy' alt='Front angled shot of 3 x AAA battery holder with on-off switch and 2-pin JST PH connector.' />
+    </div>
+    <div class="product-details">
+        <span class="featured-badge">Featured</span>
+      <div>
+        <a class="product-title" href="https://www.adafruit.com/product/727">3 x AAA Battery Holder with On/Off Switch and 2-Pin JST</a>
+      </div>
+        <div class="product-price">$1.95</div>
+      <a id="727-product" class="product-buy btn-primary " data-pid="727" data-qty="1" data-name="3 x AAA Battery Holder with On/Off Switch and 2-Pin JST" target="_blank" aria-live="polite" rel="noopener noreferrer" href="https://www.adafruit.com/product/727">Add  to Cart</a>
+    </div>
+  </li>
+  <li class="small-product-content-card">
+    <input type="hidden" name="product_analytics_1578" id="product_analytics_1578" value="{
+  &quot;item_list_id&quot;: 3843,
+  &quot;item_list_name&quot;: &quot;adabot-rp2040&quot;,
+  &quot;items&quot;: {
+    &quot;item_id&quot;: 1578,
+    &quot;item_name&quot;: &quot;Lithium Ion Polymer Battery - 3.7v 500mAh&quot;,
+    &quot;affiliation&quot;: &quot;Featured Product&quot;
+  }
+}" class="product-json" />
+    <div class="product-image">
+        <img class='image-preview product-asset' src='https://cdn-shop.adafruit.com/640x480/1578-03.jpg' loading='lazy' alt='Angled shot of a Lithium Ion Polymer Battery 3.7V 500mAh with JST-PH connector.' />
+    </div>
+    <div class="product-details">
+        <span class="featured-badge">Featured</span>
+      <div>
+        <a class="product-title" href="https://www.adafruit.com/product/1578">Lithium Ion Polymer Battery - 3.7v 500mAh</a>
+      </div>
+        <div class="product-price">$7.95</div>
+      <a id="1578-product" class="product-buy btn-primary " data-pid="1578" data-qty="1" data-name="Lithium Ion Polymer Battery - 3.7v 500mAh" target="_blank" aria-live="polite" rel="noopener noreferrer" href="https://www.adafruit.com/product/1578">Add  to Cart</a>
+    </div>
+  </li>
+  <li class="small-product-content-card">
+    <input type="hidden" name="product_analytics_3064" id="product_analytics_3064" value="{
+  &quot;item_list_id&quot;: 2466,
+  &quot;item_list_name&quot;: &quot;robotic-tapping-hand-with-cpx&quot;,
+  &quot;items&quot;: {
+    &quot;item_id&quot;: 3064,
+    &quot;item_name&quot;: &quot;JST 2-pin Extension Cable with On/Off Switch - JST PH2&quot;,
+    &quot;affiliation&quot;: &quot;Featured Product&quot;
+  }
+}" class="product-json" />
+    <div class="product-image">
+        <img class='image-preview product-asset' src='https://cdn-shop.adafruit.com/640x480/3064-02.jpg' loading='lazy' alt='Top view shot of JST 2-pin Extension Cable with On/Off Switch.' />
+    </div>
+    <div class="product-details">
+        <span class="featured-badge">Featured</span>
+      <div>
+        <a class="product-title" href="https://www.adafruit.com/product/3064">JST 2-pin Extension Cable with On/Off Switch - JST PH2</a>
+      </div>
+      <a id="3064-product" class="notify product-buy btn-primary " data-pid="3064" data-qty="1" data-name="JST 2-pin Extension Cable with On/Off Switch - JST PH2" target="_blank" aria-live="polite" rel="noopener noreferrer" href="https://www.adafruit.com/product/3064">Out of Stock</a>
+    </div>
+  </li>
+          <li>
+            <a class="full-size" href="/circuit-playground-bike-light/featured_products">
+              View product details
+              <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</a>          </li>
+        </ul>
+      </section>
+  </nav>
+</div>
+    <div class="right-content" id="article-body" tabindex="-1">
+      <div class="badges headline-badges">
+      <div class="badge favorites-count " title="Saves" aria-label="This many users have saved this guide">
+        38
+      </div>
+    <div class="badge skill-level" title="Skill Level" aria-label="Guide skill level">
+      Beginner
+    </div>
+    <div class="badge skill-level" title="Guide Type" aria-label="Guide type">
+      Project guide
+    </div>
+  <turbo-frame id="display_reactions"></turbo-frame>
+</div>
+        <h2>
+          <span id="overview">Overview</span>
+        </h2>
+        <div class="page-content">
+            <div class="" role="region" aria-label="Page content">
+        <figure class="element image-element">
+    <a href="/assets/40993">
+        <img class="40993-asset"
+             srcset="https://cdn-learn.adafruit.com/assets/assets/000/040/993/small360/circuit_playground_banner.jpg?1492891723 360w,
+               https://cdn-learn.adafruit.com/assets/assets/000/040/993/medium640/circuit_playground_banner.jpg?1492891723 640w,
+               https://cdn-learn.adafruit.com/assets/assets/000/040/993/medium800/circuit_playground_banner.jpg?1492891723 800w,
+               https://cdn-learn.adafruit.com/assets/assets/000/040/993/large1024/circuit_playground_banner.jpg?1492891723 1024w"
+              sizes="(max-width: 360px) 360px, (max-width: 640px) 640px, (max-width: 800px) 800px, 1024px"
+             src="https://cdn-learn.adafruit.com/assets/assets/000/040/993/medium800/circuit_playground_banner.jpg?1492891723"
+             loading="lazy"
+             alt="" />
+</a>  </figure>
+      <div class="text-element">
+      <p>In this guide we will use our Circuit Playground to create a customizable bike light. We'll look at how we define colors in code and use that to make some fun animations with the NeoPixels. We'll provide some example animations you can customize. Or you can modify and adapt the examples to try and create your own.</p>
+<p>In a world of blinking red bike lights, add some color and pizazz to stand out!</p>
+</div>
+      <div class="text-element">
+      <h1><div class="anchor-anchor"><a href="#required-parts-2462209" class="anchor-link"><span class="fa fa-link"></span></a><span id="required-parts-2462209" class="anchor-link-target"></span></div>Required Parts</h1>
+<p>In addition to a Circuit Playground, you will need some form of battery power so you can ride around outside with your bike light. Choose an option that works for how you plan to mount things to your bike.</p>
+</div>
+      <div class="side-element">
+    <div class="side-images">
+      <div class="anchor-anchor">
+        <a href="#step-2462210" class='anchor-link'><span class='fa fa-link'></span></a>
+      </div>
+      <span id="step-2462210"  class='anchor-link-target'></span>
+      <div class="side-image-display">
+    <img class='40998-asset medium-side-image' src='https://cdn-learn.adafruit.com/assets/assets/000/040/998/medium640/circuit_playground_cp.jpg?1492892430' alt='circuit_playground_cp.jpg' loading='lazy' />
+    <a class="side-image-link" aria-label="View larger image" href="/elements/2462210/assets/40998/exhibit#step-2462210">
+</a></div>
+    </div>
+  <div class="side-text"><div class="text"><ul>
+<li>Circuit Playground</li>
+<ul>
+<li><a href="https://www.adafruit.com/products/3000">Classic</a></li>
+<li><a href="https://www.adafruit.com/products/3333">Express</a></li>
+</ul>
+</ul></div></div>
+</div>
+      <div class="side-element">
+    <div class="side-images">
+      <div class="anchor-anchor">
+        <a href="#step-2462211" class='anchor-link'><span class='fa fa-link'></span></a>
+      </div>
+      <span id="step-2462211"  class='anchor-link-target'></span>
+      <div class="side-image-display">
+    <img class='40996-asset medium-side-image' src='https://cdn-learn.adafruit.com/assets/assets/000/040/996/medium640/circuit_playground_battery.jpg?1492892283' alt='circuit_playground_battery.jpg' loading='lazy' />
+    <a class="side-image-link" aria-label="View larger image" href="/elements/2462211/assets/40996/exhibit#step-2462211">
+</a></div>
+    </div>
+  <div class="side-text"><div class="text"><p><a href="https://www.adafruit.com/products/727">3 x AAA Battery Holder with On/Off Switch and 2-Pin JST</a></p>
+<p> </p>
+<p>(also need AAA batteries)</p></div></div>
+</div>
+      <div class="side-element">
+    <div class="side-images">
+      <div class="anchor-anchor">
+        <a href="#step-2462212" class='anchor-link'><span class='fa fa-link'></span></a>
+      </div>
+      <span id="step-2462212"  class='anchor-link-target'></span>
+      <div class="side-image-display">
+    <img class='40997-asset medium-side-image' src='https://cdn-learn.adafruit.com/assets/assets/000/040/997/medium640/circuit_playground_lipo.jpg?1492892305' alt='circuit_playground_lipo.jpg' loading='lazy' />
+    <a class="side-image-link" aria-label="View larger image" href="/elements/2462212/assets/40997/exhibit#step-2462212">
+</a></div>
+    </div>
+  <div class="side-text"><div class="text"><p><a href="https://www.adafruit.com/products/1578">Lithium Ion Polymer Battery - 3.7v 500mAh</a></p>
+<p> </p>
+<p>(or similar)</p></div></div>
+</div>
+      <div class="side-element">
+    <div class="side-images">
+      <div class="anchor-anchor">
+        <a href="#step-2462213" class='anchor-link'><span class='fa fa-link'></span></a>
+      </div>
+      <span id="step-2462213"  class='anchor-link-target'></span>
+      <div class="side-image-display">
+    <img class='41000-asset medium-side-image' src='https://cdn-learn.adafruit.com/assets/assets/000/041/000/medium640/circuit_playground_jst_switch.jpg?1492892674' alt='circuit_playground_jst_switch.jpg' loading='lazy' />
+    <a class="side-image-link" aria-label="View larger image" href="/elements/2462213/assets/41000/exhibit#step-2462213">
+</a></div>
+    </div>
+  <div class="side-text"><div class="text"><p><a href="https://www.adafruit.com/product/3064">JST 2-pin Extension Cable with On/Off Switch</a></p>
+<p> </p>
+<p>(useful if using LiPo)</p></div></div>
+</div>
+      <div class="text-element">
+      <p>If you go with the LiPo battery, be sure you have a way to <a href="https://www.adafruit.com/categories/575">charge it</a>.</p>
+</div>
+      <div class="text-element">
+  <h1><div class="anchor-anchor"><a href="#before-starting-2462215" class="anchor-link"><span class="fa fa-link"></span></a><span id="before-starting-2462215" class="anchor-link-target"></span></div>Before Starting</h1>
+<p>If you are new to the Circuit Playground, you may want to first read these overview guides.</p>
+<h2><div class="anchor-anchor"><a href="#circuit-playground-classic-2462215" class="anchor-link"><span class="fa fa-link"></span></a><span id="circuit-playground-classic-2462215" class="anchor-link-target"></span></div>Circuit Playground Classic</h2>
+<ul>
+<li><a href="../../../introducing-circuit-playground">Overview</a></li>
+<li><a href="../../../circuit-playground-lesson-number-0">Lesson #0</a></li>
+</ul>
+<h2><div class="anchor-anchor"><a href="#circuit-playground-express-2462215" class="anchor-link"><span class="fa fa-link"></span></a><span id="circuit-playground-express-2462215" class="anchor-link-target"></span></div>Circuit Playground Express</h2>
+<ul>
+<li><a href="../../../adafruit-circuit-playground-express/">Overview</a></li>
+</ul>
+</div>
+  </div>
+          <div class="page-last-updated">
+  <p>Page last edited March 08, 2024</p>
+</div>
+        </div>
+        <div class="page-navigation">
+            <a class="next-page btn-primary large" aria-label="Next page" href="/circuit-playground-bike-light/hello-color">
+              Hello Color&nbsp;<i class="fa fa-chevron-right"></i>
+</a>        </div>
+    </div>
+  </div>
+</article>
+    <div class="related-guides-wrapper">
+  <section class="content-card-group-preview">
+  <div class="group-preview-headline">
+    <div class="title">
+      Related Guides
+    </div>
+  </div>
+  <a class="scroll-back"><i class="fa fa-angle-left"></i></a>
+  <div class="content-card-group-container">
+    <div class="content-card-group">
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/introducing-circuit-playground">
+      <div class="image-container">
+        <img loading="lazy" alt="A circular Circuit Playground Classic board with lit multicolor LEDs around the edge. USB connection at the top, labeled pins, and central reset button." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/001/280/medium640/thumb.jpg?1515090018" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/introducing-circuit-playground">Introducing Circuit Playground</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/adafruit2">
+        <span class="name">lady ada</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge product-guide" aria-label="Product guide">
+      Product Guide
+    </div>
+  <div class="badge favorites " title="Saved 104 times" aria-label="This guide has been saved 104 times">
+    <span>104</span>
+  </div>
+</div>
+  </div>
+</div>
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/adafruit-circuit-playground-express">
+      <div class="image-container">
+        <img loading="lazy" alt="A circular Circuit Playground Express board with glowing green LEDs and various labeled connection pads. A micro USB cable is connected at the top." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/001/799/medium640/cpx01.jpg?1520545756" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/adafruit-circuit-playground-express">Adafruit Circuit Playground Express</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/adafruit2">
+        <span class="name">lady ada</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge product-guide" aria-label="Product guide">
+      Product Guide
+    </div>
+  <div class="badge favorites " title="Saved 450 times" aria-label="This guide has been saved 450 times">
+    <span>450</span>
+  </div>
+</div>
+  </div>
+</div>
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/glowing-lotus-flower-electronic-origami-for-beginners">
+      <div class="image-container">
+          <video class="video-preview lazy" preload="auto" muted="muted" loop="loop" playsinline tabindex="-1" poster="https://cdn-learn.adafruit.com/guides/cropped_images/000/004/344/medium640thumb/lotus_gif2.gif?1756141495" aria-hidden="true">
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/004/344/medium640mp4/lotus_gif2.mp4?1756141495"></source>
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/004/344/medium640webm/lotus_gif2.webm?1756141495" type="video/webm; codecs=vp8,vorbis"></source>
+      Your browser does not support the video tag. This links to the guide Glowing Lotus Flower - Electronic Origami for Beginners.
+  </video>
+<img loading="lazy" alt="Colorful Glowing Lotus Flower with LED lights create a swirling, kaleidoscopic pattern with overlapping translucent layers. A central starburst shape is visible." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/004/344/medium640thumb/lotus_gif2.gif?1756141495" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/glowing-lotus-flower-electronic-origami-for-beginners">Glowing Lotus Flower - Electronic Origami for Beginners</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/firepixie">
+        <span class="name">Erin St Blaine</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge" aria-label="Guide skill level">
+      beginner
+    </div>
+  <div class="badge favorites " title="Saved 15 times" aria-label="This guide has been saved 15 times">
+    <span>15</span>
+  </div>
+</div>
+  </div>
+</div>
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/make-it-bubble">
+      <div class="image-container">
+          <video class="video-preview lazy" preload="auto" muted="muted" loop="loop" playsinline tabindex="-1" poster="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/125/medium640thumb/Untitled.gif?1534446051" aria-hidden="true">
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/125/medium640mp4/Untitled.mp4?1534446051"></source>
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/125/medium640webm/Untitled.webm?1534446051" type="video/webm; codecs=vp8,vorbis"></source>
+      Your browser does not support the video tag. This links to the guide Make It Bubble.
+  </video>
+<img loading="lazy" alt="A LEGO base holds a DC motor with a fan blowing and a servo motor dipping a bubble blower into bubble solution below. It&#39;s all controlled by a Crickit motor board and Circuit Playground Express." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/125/medium640thumb/Untitled.gif?1534446051" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/make-it-bubble">Make It Bubble</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/AnneBarela">
+        <span class="name">Anne Barela</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge" aria-label="Guide skill level">
+      beginner
+    </div>
+  <div class="badge favorites " title="Saved 55 times" aria-label="This guide has been saved 55 times">
+    <span>55</span>
+  </div>
+</div>
+  </div>
+</div>
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/data-logging-and-file-storage-in-makecode">
+      <div class="image-container">
+        <img loading="lazy" alt="A circular Circuit Playground Express microcontroller board with multiple components and labeled pins is overlaid on a graphic of ascending purple bars suggesting data collection." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/684/medium640/graphic_4x3.png?1566676878" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/data-logging-and-file-storage-in-makecode">Datalogging and File Storage in MakeCode</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/AnneBarela">
+        <span class="name">Anne Barela</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge" aria-label="Guide skill level">
+      beginner
+    </div>
+  <div class="badge favorites " title="Saved 12 times" aria-label="This guide has been saved 12 times">
+    <span>12</span>
+  </div>
+</div>
+  </div>
+</div>
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/crickit-lab-shaker">
+      <div class="image-container">
+          <video class="video-preview lazy" preload="auto" muted="muted" loop="loop" playsinline tabindex="-1" poster="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/132/medium640thumb/3d_printing_guide-thumb.gif?1535142234" aria-hidden="true">
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/132/medium640mp4/3d_printing_guide-thumb.mp4?1535142234"></source>
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/132/medium640webm/3d_printing_guide-thumb.webm?1535142234" type="video/webm; codecs=vp8,vorbis"></source>
+      Your browser does not support the video tag. This links to the guide Crickit Lab Shaker.
+  </video>
+<img loading="lazy" alt="A small motorized platform shakes a container with a black object inside. A knob on the device&#39;s front adjusts the speed." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/132/medium640thumb/3d_printing_guide-thumb.gif?1535142234" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/crickit-lab-shaker">Crickit Lab Shaker</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/pixil3d">
+        <span class="name">Ruiz Brothers</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge" aria-label="Guide skill level">
+      beginner
+    </div>
+  <div class="badge favorites " title="Saved 54 times" aria-label="This guide has been saved 54 times">
+    <span>54</span>
+  </div>
+</div>
+  </div>
+</div>
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/circuit-playground-bluefruit-quick-draw-duo">
+      <div class="image-container">
+        <img loading="lazy" alt="Two identical cartoon cowboys stand in front of circular Circuit Playground Bluefruit boards with various electronic components and labeled pins. The boards feature connectors and microcontrollers, with cowboys holding guns and wearing hats and coats." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/802/medium640/quick-draw-bluefruit-twocowboys-v2.jpg?1575921993" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/circuit-playground-bluefruit-quick-draw-duo">Circuit Playground Bluefruit Quick Draw Duo</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/kevinjwalters">
+        <span class="name">Kevin Walters</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge" aria-label="Guide skill level">
+      beginner
+    </div>
+  <div class="badge favorites " title="Saved 12 times" aria-label="This guide has been saved 12 times">
+    <span>12</span>
+  </div>
+</div>
+  </div>
+</div>
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/dance-reactive-tutu-sparkle-skirt">
+      <div class="image-container">
+          <video class="video-preview lazy" preload="auto" muted="muted" loop="loop" playsinline tabindex="-1" poster="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/354/medium640thumb/dance_reactive_tutu.gif?1546988588" aria-hidden="true">
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/354/medium640mp4/dance_reactive_tutu.mp4?1546988588"></source>
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/354/medium640webm/dance_reactive_tutu.webm?1546988588" type="video/webm; codecs=vp8,vorbis"></source>
+      Your browser does not support the video tag. This links to the guide Dance-Reactive Tutu Sparkle Skirt.
+  </video>
+<img loading="lazy" alt="Person with a blue wig wearing a shiny, futuristic costume with blue and silver colors, featuring illuminated skirt. The background is lit with colorful lights." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/354/medium640thumb/dance_reactive_tutu.gif?1546988588" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/dance-reactive-tutu-sparkle-skirt">Dance-Reactive Tutu Sparkle Skirt</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/firepixie">
+        <span class="name">Erin St Blaine</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge" aria-label="Guide skill level">
+      beginner
+    </div>
+  <div class="badge favorites " title="Saved 59 times" aria-label="This guide has been saved 59 times">
+    <span>59</span>
+  </div>
+</div>
+  </div>
+</div>
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/3d-printed-starro-face-mask">
+      <div class="image-container">
+          <video class="video-preview lazy" preload="auto" muted="muted" loop="loop" playsinline tabindex="-1" poster="https://cdn-learn.adafruit.com/guides/cropped_images/000/003/417/medium640thumb/hero-loop-a.gif?1631568437" aria-hidden="true">
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/003/417/medium640mp4/hero-loop-a.mp4?1631568437"></source>
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/003/417/medium640webm/hero-loop-a.webm?1631568437" type="video/webm; codecs=vp8,vorbis"></source>
+      Your browser does not support the video tag. This links to the guide 3D Printed Starro Face Mask.
+  </video>
+<img loading="lazy" alt="A 3D-printed starro face mask with a central LCD screen animated eye design is mounted on a mannequin head. The mask features a blue and pink color scheme." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/003/417/medium640thumb/hero-loop-a.gif?1631568437" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/3d-printed-starro-face-mask">3D Printed Starro Face Mask</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/pixil3d">
+        <span class="name">Ruiz Brothers</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge" aria-label="Guide skill level">
+      beginner
+    </div>
+  <div class="badge favorites " title="Saved 21 times" aria-label="This guide has been saved 21 times">
+    <span>21</span>
+  </div>
+</div>
+  </div>
+</div>
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/perk-up-ears">
+      <div class="image-container">
+          <video class="video-preview lazy" preload="auto" muted="muted" loop="loop" playsinline tabindex="-1" poster="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/139/medium640thumb/ezgif-5-b43693ae75.gif?1534956288" aria-hidden="true">
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/139/medium640mp4/ezgif-5-b43693ae75.mp4?1534956288"></source>
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/139/medium640webm/ezgif-5-b43693ae75.webm?1534956288" type="video/webm; codecs=vp8,vorbis"></source>
+      Your browser does not support the video tag. This links to the guide Circuit Playground Express Perk-up Ears.
+  </video>
+<img loading="lazy" alt="A girl wears a headband with green and yellow moving ears, powered by a Circuit Playground Express and a battery. A dog on a couch is nearby." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/139/medium640thumb/ezgif-5-b43693ae75.gif?1534956288" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/perk-up-ears">Circuit Playground Express Perk-up Ears</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/dastels">
+        <span class="name">Dave Astels</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge" aria-label="Guide skill level">
+      beginner
+    </div>
+  <div class="badge favorites " title="Saved 51 times" aria-label="This guide has been saved 51 times">
+    <span>51</span>
+  </div>
+</div>
+  </div>
+</div>
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/customizable-reusable-pinata">
+      <div class="image-container">
+          <video class="video-preview lazy" preload="auto" muted="muted" loop="loop" playsinline tabindex="-1" poster="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/480/medium640thumb/IMG_3084.2019-03-29_11_54_01.gif?1553878384" aria-hidden="true">
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/480/medium640mp4/IMG_3084.2019-03-29_11_54_01.mp4?1553878384"></source>
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/480/medium640webm/IMG_3084.2019-03-29_11_54_01.webm?1553878384" type="video/webm; codecs=vp8,vorbis"></source>
+      Your browser does not support the video tag. This links to the guide Drama Piñata.
+  </video>
+<img loading="lazy" alt="A small purple piñata with fringe hangs from a string, featuring a small electronic component attached to its side." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/480/medium640thumb/IMG_3084.2019-03-29_11_54_01.gif?1553878384" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/customizable-reusable-pinata">Drama Piñata</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/danowall">
+        <span class="name">Dano Wall</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge" aria-label="Guide skill level">
+      beginner
+    </div>
+  <div class="badge favorites " title="Saved 11 times" aria-label="This guide has been saved 11 times">
+    <span>11</span>
+  </div>
+</div>
+  </div>
+</div>
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/cpx-cauldron">
+      <div class="image-container">
+          <video class="video-preview lazy" preload="auto" muted="muted" loop="loop" playsinline tabindex="-1" poster="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/747/medium640thumb/hold-loop.gif?1570297642" aria-hidden="true">
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/747/medium640mp4/hold-loop.mp4?1570297642"></source>
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/747/medium640webm/hold-loop.webm?1570297642" type="video/webm; codecs=vp8,vorbis"></source>
+      Your browser does not support the video tag. This links to the guide Circuit Playground Bluetooth Cauldron.
+  </video>
+<img loading="lazy" alt="A small black cauldron with a pentagram design emits mist as a hand holds it. The background features a spiderweb pattern." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/747/medium640thumb/hold-loop.gif?1570297642" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/cpx-cauldron">Circuit Playground Bluetooth Cauldron</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/pixil3d">
+        <span class="name">Ruiz Brothers</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge" aria-label="Guide skill level">
+      beginner
+    </div>
+  <div class="badge favorites " title="Saved 55 times" aria-label="This guide has been saved 55 times">
+    <span>55</span>
+  </div>
+</div>
+  </div>
+</div>
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/machine-learning-with-marshmallows-and-tiny-sorter">
+      <div class="image-container">
+          <video class="video-preview lazy" preload="auto" muted="muted" loop="loop" playsinline tabindex="-1" poster="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/857/medium640thumb/ezgif-6-870b1f6109e1.gif?1580164470" aria-hidden="true">
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/857/medium640mp4/ezgif-6-870b1f6109e1.mp4?1580164470"></source>
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/857/medium640webm/ezgif-6-870b1f6109e1.webm?1580164470" type="video/webm; codecs=vp8,vorbis"></source>
+      Your browser does not support the video tag. This links to the guide Machine Learning with Marshmallows and Tiny Sorter.
+  </video>
+<img loading="lazy" alt="An open laptop has a color sorter sensor and motor on top. As items are dropped, machine learning sorts colored items into one cop, uncolored items into another. A Circuit Playground Express communicates with the computer to decide when to sort." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/857/medium640thumb/ezgif-6-870b1f6109e1.gif?1580164470" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/machine-learning-with-marshmallows-and-tiny-sorter">Machine Learning with Marshmallows and Tiny Sorter</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/isaacwellish">
+        <span class="name">Isaac Wellish</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge" aria-label="Guide skill level">
+      beginner
+    </div>
+  <div class="badge favorites " title="Saved 38 times" aria-label="This guide has been saved 38 times">
+    <span>38</span>
+  </div>
+</div>
+  </div>
+</div>
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/creative-inspiration-activity-generator">
+      <div class="image-container">
+          <video class="video-preview lazy" preload="auto" muted="muted" loop="loop" playsinline tabindex="-1" poster="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/968/medium640thumb/ACTIVITY_GENERATOR_gif3b-850px.gif?1585865262" aria-hidden="true">
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/968/medium640mp4/ACTIVITY_GENERATOR_gif3b-850px.mp4?1585865262"></source>
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/968/medium640webm/ACTIVITY_GENERATOR_gif3b-850px.webm?1585865262" type="video/webm; codecs=vp8,vorbis"></source>
+      Your browser does not support the video tag. This links to the guide Creative Inspiration Activity Generator.
+  </video>
+<img loading="lazy" alt="A hand holds a CLUE board displaying colorful text on a small screen. The board features buttons and labeled connections. Colored text says &quot;make a VIDEO about SUCCESS BREAD&quot;." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/968/medium640thumb/ACTIVITY_GENERATOR_gif3b-850px.gif?1585865262" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/creative-inspiration-activity-generator">Creative Inspiration Activity Generator</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/collinmel">
+        <span class="name">Collin Cunningham</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge" aria-label="Guide skill level">
+      beginner
+    </div>
+  <div class="badge favorites " title="Saved 10 times" aria-label="This guide has been saved 10 times">
+    <span>10</span>
+  </div>
+</div>
+  </div>
+</div>
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/yoga-pose-chime">
+      <div class="image-container">
+        <img loading="lazy" alt="A brass singing bowl is placed next to a breadboard setup with a CLUE microcontroller. Wires connect components for a timer project." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/003/002/medium640/yoga-2217.jpg?1589813297" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/yoga-pose-chime">Yoga Pose Chime</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/johnpark">
+        <span class="name">John Park</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge" aria-label="Guide skill level">
+      beginner
+    </div>
+  <div class="badge favorites " title="Saved 20 times" aria-label="This guide has been saved 20 times">
+    <span>20</span>
+  </div>
+</div>
+  </div>
+</div>
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/steven-universe-cosplay-shirt-gem">
+      <div class="image-container">
+        <img loading="lazy" alt="Person wearing a red Steven Universe Cosplay shirt with a gold star lifts it to reveal a glowing red Gem LED beneath the fabric, simulating a power-up effect." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/485/medium640/wearables_stevenuniverse_cosplay.png?1554225614" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/steven-universe-cosplay-shirt-gem">Steven Universe Cosplay Shirt &amp; Gem</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/firepixie">
+        <span class="name">Erin St Blaine</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge" aria-label="Guide skill level">
+      beginner
+    </div>
+  <div class="badge favorites " title="Saved 4 times" aria-label="This guide has been saved 4 times">
+    <span>4</span>
+  </div>
+</div>
+  </div>
+</div>
+<div class="guide-preview content-card">
+    <a aria-hidden="true" tabindex="-1" href="/city-skyline-with-makecode-for-cpx">
+      <div class="image-container">
+          <video class="video-preview lazy" preload="auto" muted="muted" loop="loop" playsinline tabindex="-1" poster="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/333/medium640thumb/IMG_0640.2019-01-04_14_27_30.gif?1546630102" aria-hidden="true">
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/333/medium640mp4/IMG_0640.2019-01-04_14_27_30.mp4?1546630102"></source>
+      <source data-src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/333/medium640webm/IMG_0640.2019-01-04_14_27_30.webm?1546630102" type="video/webm; codecs=vp8,vorbis"></source>
+      Your browser does not support the video tag. This links to the guide Illuminated City Skyline with MakeCode.
+  </video>
+<img loading="lazy" alt="A cityscape is lit from behind with varying colored LEDs." class="image-preview" src="https://cdn-learn.adafruit.com/guides/cropped_images/000/002/333/medium640thumb/IMG_0640.2019-01-04_14_27_30.gif?1546630102" />
+      </div>
+</a>
+  <div class="bottom-section">
+    <div class="content">
+      <a class="title" aria-label="Guide title" href="/city-skyline-with-makecode-for-cpx">Illuminated City Skyline with MakeCode</a>
+          <div class="author">
+      By
+      <a aria-label="Guide author" data-turbo="false" href="/u/danowall">
+        <span class="name">Dano Wall</span>
+</a>    </div>
+    </div>
+    <div class="badges">
+    <div class="badge" aria-label="Guide skill level">
+      beginner
+    </div>
+  <div class="badge favorites " title="Saved 22 times" aria-label="This guide has been saved 22 times">
+    <span>22</span>
+  </div>
+</div>
+  </div>
+</div>
+    </div>
+  </div>
+  <a class="scroll-forward"><i class="fa fa-angle-right"></i></a>
+</section>
+</div>
+<div class="dialog-container modal"
+     id="create-wishlist-modal"
+     data-modals-target="modal"
+     aria-labelledby="dialog-title"
+     aria-hidden="true">
+  <div class="dialog-overlay" data-a11y-dialog-hide></div>
+  <div class="dialog-content">
+    <div class="dialog-header">
+      <h5 class="dialog-title">Create Wishlist</h5>
+      <a href="#" class="dialog-close" data-a11y-dialog-hide="create-wishlist-modal" aria-label="Close this dialog window">&times;</a>
+    </div>
+    <form>
+      <div class="dialog-body">
+        <div class="form-group">
+          <label for="wishlist_title">Title</label>
+          <input type="text" name="wishlist_title" id="wishlist_title" />
+        </div>
+        <div class="form-group">
+          <label for="wishlist_description">Description</label>
+          <textarea name="wishlist_description" id="wishlist_description">
+</textarea>
+        </div>
+      </div>
+      <div class="dialog-footer">
+        <input type="submit" name="commit" value="Create Wishlist" class="btn-primary" id="create-wishlist" data-disable-with="Create Wishlist" />
+        <a href="#" class="dialog-close" data-a11y-dialog-hide="create-wishlist-modal" aria-label="Close this dialog window">Close</a>
+      </div>
+    </form>
+  </div>
+</div>
+        </div>
+        <div id="search-container">
+  <div class="toolbar-primary">
+    <div class="content">
+      <div class="left-content">
+        <div class="breadcrumbs">
+          <a href="https://learn.adafruit.com" aria-label="Home page"><i class='fa fa-home'></i></a>
+          <i class="fa fa-chevron-right separator"></i> Search <i class="fa fa-chevron-right separator"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sub-header">
+    <div class="header-intro">
+      <h1 class="title">Search</h1>
+    </div>
+    <div class="header-main-content-wrapper">
+      <div class="header-main-content">
+        <div id="search-refinements" class="breakdown">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="search-content left-sidebar-layout">
+    <div>
+      <div class="facets-wrapper">
+        <h5 class="search-refinement-header">Categories</h5>
+        <div id="search-categories"></div>
+      </div>
+    </div>
+    <div>
+      <div id="search-results" class="search-content-card-group"></div>
+      <div id="search-pagination" class="pagination"></div>
+    </div>
+  </div>
+</div>
+        <div id='main-content-overlay'></div>
+      </main>
+        <footer id="adafruit-footer">
+    <div class="footer-container">
+      <div>
+        <ul>
+          <li>
+            <a href="https://www.adafruit.com/contact_us">Contact Us</a>
+          </li>
+          <li>
+            <a href="https://forums.adafruit.com/">Tech Support Forums</a>
+          </li>
+          <li>
+            <a href="https://www.adafruit.com/faq">FAQs</a>
+          </li>
+          <li>
+            <a href="https://www.adafruit.com/shippinginfo">Shipping &amp; Returns</a>
+          </li>
+          <li>
+            <a href="https://www.adafruit.com/free">Freebies</a>
+          </li>
+          <li>
+            <a href="https://www.adafruit.com/terms_of_service">Terms of Service</a>
+          </li>
+          <li>
+            <a href="https://www.adafruit.com/privacy">Privacy &amp; Legal</a>
+          </li>
+          <li>
+            <a href="https://www.adafruit.com/accessibility">Website Accessibility</a>
+          </li>
+          <li>
+            <a href="/llms.txt">LLMs.txt</a>
+          </li>
+        </ul>
+        <button type="button" class="theme-toggle "
+  data-controller="theme" data-action="theme#cycle"
+  aria-label="Change color theme (current: system)">
+  <i class="fa fa-circle-half-stroke" aria-hidden="true" data-theme-target="icon"></i>
+    <span data-theme-target="label">Theme: System</span>
+</button>
+      </div>
+      <div>
+        <ul>
+          <li>
+            <a href="https://www.adafruit.com/about">About Us</a>
+          </li>
+          <li>
+            <a href="https://www.adafruit.com/press">Press</a>
+          </li>
+          <li>
+            <a href="https://www.adafruit.com/educators">Educators</a>
+          </li>
+          <li>
+            <a href="https://www.adafruit.com/distributors">Distributors</a>
+          </li>
+          <li>
+            <a href="https://jobs.adafruit.com">Jobs</a>
+          </li>
+          <li>
+            <a href="https://www.adafruit.com/category/14">Gift Cards</a>
+          </li>
+        </ul>
+      </div>
+      <aside>
+        <div class="quote">"Think about the metric by which your life will be judged, and make a resolution to live every day so that in the end, your life will be judged a success"</div>
+        <div class="quote-attribution"><a href="https://en.wikipedia.org/wiki/Clayton_Christensen">Clayton M. Christensen</a></div>
+      </aside>
+    </div>
+    <div class="footer-container bottom">
+      <a title="About Adafruit" id="footer-logo" href="https://learn.adafruit.com">
+        <img alt="Adafruit Logo" src="/logos/adafruit_logo_small.png?3343756081246158728" />
+</a>
+      <div class="social-links">
+        <a href="https://www.instagram.com/adafruit/" target="_blank" rel="noopener noreferrer" aria-label="Adafruit on Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+        <a href="https://twitter.com/adafruit/" target="_blank" rel="noopener noreferrer" aria-label="Adafruit on Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+        <a class="mastodon-logo" href="https://fosstodon.org/@adafruit" target="_blank" rel="noopener noreferrer" aria-label="Adafruit on Mastodon"></a>
+        <a href="https://www.facebook.com/adafruitindustries" target="_blank" rel="noopener noreferrer" aria-label="Adafruit on Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+        <a href="https://www.youtube.com/adafruit" target="_blank" rel="noopener noreferrer" aria-label="Adafruit on YouTube"><i class="fa fa-youtube" aria-hidden="true"></i></a>
+        <a href="https://github.com/adafruit" target="_blank" rel="noopener noreferrer" aria-label="Adafruit on Github"><i class="fa fa-github" aria-hidden="true"></i></a>
+        <a class="tiktok-logo" aria-label="Adafruit on TikTok" href="https://www.tiktok.com/@adafruit"  target="_blank" rel="noopener noreferrer"></a>
+        <a class="tumblr-logo" aria-label="Adafruit on Tumblr" href="https://adafruit.tumblr.com/" target="_blank" rel="noopener noreferrer"><i class="fa fa-tumblr" aria-hidden="true"></i></a>
+        <a class="threads-logo" href="https://www.threads.net/@adafruit" target="_blank" rel="noopener noreferrer" aria-label="Adafruit on Threads"><span aria-hidden="true"></span></a>
+        <a class="discord-logo" aria-label="Adafruit on Discord" href="https://adafru.it/discord" target="_blank" rel="noopener noreferrer"></a>
+        <a class="bluesky-logo" aria-label="Adafruit on Bluesky" href="https://bsky.app/profile/adafruit.com" target="_blank" rel="noopener noreferrer">
+</a>
+      </div>
+      <div class="footer-messaging">
+        <a href="https://www.adafruit.com/about">A Minority and Woman-owned Business Enterprise (M/WBE)</a>
+      </div>
+    </div>
+  </footer>
+    </div>
+  </div>
+  <div id="remote-modal-wrapper"></div>
+</body>
+</html>

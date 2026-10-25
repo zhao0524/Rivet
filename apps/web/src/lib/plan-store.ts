@@ -192,7 +192,9 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
     };
   }, [cancelInFlightRequests]);
 
-  const applyValidatedBuild = useCallback((nextPlan: BuildPlan, nextCatalog: CatalogComponent[]) => {
+  const applyValidatedBuild = useCallback((nextPlan: BuildPlan, sourceCatalog: CatalogComponent[]) => {
+    // Concept models carry their own appearance-only entries; they are never in the sourced catalog.
+    const nextCatalog = nextPlan.concept_catalog?.length ? [...sourceCatalog, ...nextPlan.concept_catalog] : sourceCatalog;
     assertPlanIntegrity(nextPlan, nextCatalog);
     setCatalog(nextCatalog);
     setPlan(nextPlan);

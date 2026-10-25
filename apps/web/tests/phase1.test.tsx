@@ -8,7 +8,7 @@ import { ReviewStep, reviewBlockers } from '../src/components/steps/review/Revie
 import { WiringStep } from '../src/components/steps/wiring/WiringStep';
 import { createProjectRecord, type ProjectRecord } from '../src/lib/flow/projects';
 import { blockers, partRows } from '../src/lib/flow/derive';
-import { SOURCED_ROVER_BUILD_ID, getSourcedCatalog, getSourcedRoverPlan } from '../src/lib/fixtures';
+import { SOURCED_ROVER_BUILD_ID, getConceptExamplePlan, getSourcedCatalog, getSourcedRoverPlan } from '../src/lib/fixtures';
 import { FixtureSource } from '../src/lib/rivet';
 import { useStudioPlanStore } from '../src/lib/plan-store';
 
@@ -162,6 +162,47 @@ describe('Review', () => {
     // The card is still there with its one button.
     expect(screen.getAllByTestId('review-blocker').length).toBe(2);
     expect(within(first!).getByTestId('review-fix').textContent).toBe('Try the fix again');
+  });
+
+  it('shows a concept model as a 3D view with what it is, not as an unfixable blocker', async () => {
+    const concept = getConceptExamplePlan();
+    seedProject({ exampleId: concept.build_id, buildId: concept.build_id, prompt: 'A camera drone' });
+    render(
+      <Shell>
+        <ReviewStep />
+      </Shell>,
+    );
+    await waitFor(() => expect(screen.getByTestId('review-concept')).toBeDefined());
+    expect(screen.getByText('3D model of a quadcopter drone')).toBeDefined();
+    expect(screen.getByTestId('review-viewport')).toBeDefined();
+    expect(screen.queryAllByTestId('review-blocker')).toHaveLength(0);
+    expect(screen.queryByText(/unresolved/)).toBeNull();
+    // The example has inferred internal parts, so the X-ray toggle is offered.
+    const xray = screen.getByTestId('review-xray');
+    expect(xray.getAttribute('aria-pressed')).toBe('false');
+    fireEvent.click(xray);
+    expect(xray.getAttribute('aria-pressed')).toBe('true');
+    fireEvent.click(screen.getByTestId('review-primary'));
+    expect(nav.push).toHaveBeenCalledWith(`/p/${PROJECT_ID}/parts`);
+  });
+});
+
+describe('Concept models in later steps', () => {
+  it('Wiring lists the inferred wires and offers no simulation or firmware', async () => {
+    const concept = getConceptExamplePlan();
+    seedProject({ exampleId: concept.build_id, buildId: concept.build_id, prompt: 'A camera drone' });
+    render(
+      <Shell>
+        <WiringStep />
+      </Shell>,
+    );
+    await waitFor(() => expect(screen.getByTestId('wiring-concept')).toBeDefined());
+    const wires = concept.components.filter((c) => c.role === 'wire');
+    expect(within(screen.getByTestId('wiring-concept-list')).getAllByRole('listitem')).toHaveLength(wires.length);
+    expect(screen.getByText(/Battery → Power distribution board/)).toBeDefined();
+    expect(screen.queryByTestId('wiring-open-sim')).toBeNull();
+    fireEvent.click(screen.getByTestId('wiring-tab-firmware'));
+    expect(screen.getByTestId('firmware-concept')).toBeDefined();
   });
 });
 

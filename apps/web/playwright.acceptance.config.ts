@@ -97,6 +97,7 @@ export default defineConfig({
       env: {
         // HTTP mode: the app talks to the API above instead of the checked-in fixtures.
         NEXT_PUBLIC_RIVET_USE_FIXTURES: 'false',
+        RIVET_NEXT_DIST_DIR: '.next-acceptance',
         // next.config.mjs rewrites /api/* to this origin; the browser stays same-origin.
         NEXT_PUBLIC_RIVET_API_URL: API_URL,
         NEXT_TELEMETRY_DISABLED: '1',

@@ -79,7 +79,7 @@ describe('PartAssembly', () => {
       'caster-1': 'caster',
       'controller-1': 'esp32_devkit',
       'driver-1': 'tb6612_driver',
-      'sensor-1': 'ultrasonic_sensor',
+      'sensor-1': 'tof_sensor',
       'power-motor-1': 'battery_pack',
       'power-control-1': 'usb_power_bank',
     });

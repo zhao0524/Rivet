@@ -57,7 +57,7 @@ class GenerateRequirements(_Strict):
         return value
 
 
-InterpretationChoice = Literal["as_interpreted", "closest_supported_rover"]
+InterpretationChoice = Literal["as_interpreted", "closest_supported_rover", "concept_model"]
 
 
 class InterpretRequest(_Strict):

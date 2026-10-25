@@ -1,0 +1,2757 @@
+{
+  "schema_version": "1.0",
+  "build_id": "concept-quadcopter-example",
+  "revision": 1,
+  "project_family": "unknown",
+  "title": "Quadcopter drone concept",
+  "source_intent_id": "intent-concept-example",
+  "created_at": "2026-10-24T00:00:00Z",
+  "status": "needs_review",
+  "components": [
+    {
+      "instance_id": "centre-body-1",
+      "catalog_id": "concept.body",
+      "role": "body",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          36.0,
+          0.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2b2f36",
+        "label": "Centre body"
+      }
+    },
+    {
+      "instance_id": "top-cover-1",
+      "catalog_id": "concept.cover",
+      "role": "body",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          48.0,
+          0.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#e8e9eb",
+        "label": "Top cover"
+      }
+    },
+    {
+      "instance_id": "battery-1",
+      "catalog_id": "concept.battery",
+      "role": "battery",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          15.0,
+          -4.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#3a3d42",
+        "label": "Battery"
+      }
+    },
+    {
+      "instance_id": "camera-gimbal-1",
+      "catalog_id": "concept.camera-gimbal",
+      "role": "camera",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          22.0,
+          50.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#15171a",
+        "label": "Camera gimbal"
+      }
+    },
+    {
+      "instance_id": "camera-lens-1",
+      "catalog_id": "concept.camera-lens",
+      "role": "camera",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          22.0,
+          63.0
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#0b2a4a",
+        "label": "Camera lens"
+      }
+    },
+    {
+      "instance_id": "front-left-arm-1",
+      "catalog_id": "concept.arm",
+      "role": "arm",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -47.5,
+          36.0,
+          47.5
+        ],
+        "rotation_deg": [
+          0.0,
+          315.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2b2f36",
+        "label": "Front-left arm"
+      }
+    },
+    {
+      "instance_id": "front-left-motor-1",
+      "catalog_id": "concept.motor",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -95.0,
+          46.0,
+          95.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#9ea4ab",
+        "label": "Front-left motor"
+      }
+    },
+    {
+      "instance_id": "front-left-propeller-1",
+      "catalog_id": "concept.propeller",
+      "role": "propeller",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -95.0,
+          58.0,
+          95.0
+        ],
+        "rotation_deg": [
+          0.0,
+          315.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d9dbde",
+        "label": "Front-left propeller"
+      }
+    },
+    {
+      "instance_id": "front-left-landing-leg-1",
+      "catalog_id": "concept.landing-leg",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -77.9,
+          16.0,
+          77.9
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2b2f36",
+        "label": "Front-left landing leg"
+      }
+    },
+    {
+      "instance_id": "front-right-arm-1",
+      "catalog_id": "concept.arm",
+      "role": "arm",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          47.5,
+          36.0,
+          47.5
+        ],
+        "rotation_deg": [
+          0.0,
+          45.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2b2f36",
+        "label": "Front-right arm"
+      }
+    },
+    {
+      "instance_id": "front-right-motor-1",
+      "catalog_id": "concept.motor",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          95.0,
+          46.0,
+          95.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#9ea4ab",
+        "label": "Front-right motor"
+      }
+    },
+    {
+      "instance_id": "front-right-propeller-1",
+      "catalog_id": "concept.propeller",
+      "role": "propeller",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          95.0,
+          58.0,
+          95.0
+        ],
+        "rotation_deg": [
+          0.0,
+          45.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d9dbde",
+        "label": "Front-right propeller"
+      }
+    },
+    {
+      "instance_id": "front-right-landing-leg-1",
+      "catalog_id": "concept.landing-leg",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          77.9,
+          16.0,
+          77.9
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2b2f36",
+        "label": "Front-right landing leg"
+      }
+    },
+    {
+      "instance_id": "rear-left-arm-1",
+      "catalog_id": "concept.arm",
+      "role": "arm",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -47.5,
+          36.0,
+          -47.5
+        ],
+        "rotation_deg": [
+          0.0,
+          225.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2b2f36",
+        "label": "Rear-left arm"
+      }
+    },
+    {
+      "instance_id": "rear-left-motor-1",
+      "catalog_id": "concept.motor",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -95.0,
+          46.0,
+          -95.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#9ea4ab",
+        "label": "Rear-left motor"
+      }
+    },
+    {
+      "instance_id": "rear-left-propeller-1",
+      "catalog_id": "concept.propeller",
+      "role": "propeller",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -95.0,
+          58.0,
+          -95.0
+        ],
+        "rotation_deg": [
+          0.0,
+          45.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d9dbde",
+        "label": "Rear-left propeller"
+      }
+    },
+    {
+      "instance_id": "rear-left-landing-leg-1",
+      "catalog_id": "concept.landing-leg",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -77.9,
+          16.0,
+          -77.9
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2b2f36",
+        "label": "Rear-left landing leg"
+      }
+    },
+    {
+      "instance_id": "rear-right-arm-1",
+      "catalog_id": "concept.arm",
+      "role": "arm",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          47.5,
+          36.0,
+          -47.5
+        ],
+        "rotation_deg": [
+          0.0,
+          135.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2b2f36",
+        "label": "Rear-right arm"
+      }
+    },
+    {
+      "instance_id": "rear-right-motor-1",
+      "catalog_id": "concept.motor",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          95.0,
+          46.0,
+          -95.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#9ea4ab",
+        "label": "Rear-right motor"
+      }
+    },
+    {
+      "instance_id": "rear-right-propeller-1",
+      "catalog_id": "concept.propeller",
+      "role": "propeller",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          95.0,
+          58.0,
+          -95.0
+        ],
+        "rotation_deg": [
+          0.0,
+          315.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d9dbde",
+        "label": "Rear-right propeller"
+      }
+    },
+    {
+      "instance_id": "rear-right-landing-leg-1",
+      "catalog_id": "concept.landing-leg",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          77.9,
+          16.0,
+          -77.9
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2b2f36",
+        "label": "Rear-right landing leg"
+      }
+    },
+    {
+      "instance_id": "power-distribution-board-1",
+      "catalog_id": "concept.power-distribution-board",
+      "role": "board",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          26.0,
+          0.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#1d5c37",
+        "label": "Power distribution board",
+        "internal": true
+      }
+    },
+    {
+      "instance_id": "front-left-esc-1",
+      "catalog_id": "concept.esc",
+      "role": "board",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -22.0,
+          29.0,
+          26.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#1d5c37",
+        "label": "Front-left ESC",
+        "internal": true
+      }
+    },
+    {
+      "instance_id": "front-right-esc-1",
+      "catalog_id": "concept.esc",
+      "role": "board",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          22.0,
+          29.0,
+          26.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#1d5c37",
+        "label": "Front-right ESC",
+        "internal": true
+      }
+    },
+    {
+      "instance_id": "rear-left-esc-1",
+      "catalog_id": "concept.esc",
+      "role": "board",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -22.0,
+          29.0,
+          -26.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#1d5c37",
+        "label": "Rear-left ESC",
+        "internal": true
+      }
+    },
+    {
+      "instance_id": "rear-right-esc-1",
+      "catalog_id": "concept.esc",
+      "role": "board",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          22.0,
+          29.0,
+          -26.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#1d5c37",
+        "label": "Rear-right ESC",
+        "internal": true
+      }
+    },
+    {
+      "instance_id": "flight-controller-1",
+      "catalog_id": "concept.flight-controller",
+      "role": "board",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          34.0,
+          0.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#141414",
+        "label": "Flight controller",
+        "internal": true
+      }
+    },
+    {
+      "instance_id": "radio-receiver-1",
+      "catalog_id": "concept.radio-receiver",
+      "role": "board",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          40.0,
+          -28.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#141414",
+        "label": "Radio receiver",
+        "internal": true
+      }
+    },
+    {
+      "instance_id": "gps-module-1",
+      "catalog_id": "concept.gps-module",
+      "role": "board",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          44.0,
+          18.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#1d5c37",
+        "label": "GPS module",
+        "internal": true
+      }
+    },
+    {
+      "instance_id": "battery-to-pdb-1",
+      "catalog_id": "concept.wire-power-3-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          20.5,
+          -2.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d03030",
+        "label": "Battery to PDB",
+        "internal": true,
+        "path_mm": [
+          [
+            0.0,
+            -5.5,
+            -2.0
+          ],
+          [
+            0.0,
+            5.5,
+            2.0
+          ]
+        ],
+        "thickness_mm": 3.0,
+        "connects": [
+          "battery-1",
+          "power-distribution-board-1"
+        ],
+        "wire_kind": "power"
+      }
+    },
+    {
+      "instance_id": "pdb-to-front-left-esc-1",
+      "catalog_id": "concept.wire-power-2-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -11.0,
+          27.5,
+          13.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d03030",
+        "label": "PDB to Front-left ESC",
+        "internal": true,
+        "path_mm": [
+          [
+            11.0,
+            -1.5,
+            -13.0
+          ],
+          [
+            -11.0,
+            1.5,
+            13.0
+          ]
+        ],
+        "thickness_mm": 2.0,
+        "connects": [
+          "power-distribution-board-1",
+          "front-left-esc-1"
+        ],
+        "wire_kind": "power"
+      }
+    },
+    {
+      "instance_id": "front-left-esc-to-motor-1",
+      "catalog_id": "concept.wire-power-1-5",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -58.5,
+          37.5,
+          60.5
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#1f1f1f",
+        "label": "Front-left ESC to motor",
+        "internal": true,
+        "path_mm": [
+          [
+            36.5,
+            -8.5,
+            -34.5
+          ],
+          [
+            8.5,
+            4.5,
+            -10.5
+          ],
+          [
+            -36.5,
+            8.5,
+            34.5
+          ]
+        ],
+        "thickness_mm": 1.5,
+        "connects": [
+          "front-left-esc-1",
+          "front-left-motor-1"
+        ],
+        "wire_kind": "power"
+      }
+    },
+    {
+      "instance_id": "flight-controller-to-front-left-esc-1",
+      "catalog_id": "concept.wire-signal-1-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -11.0,
+          31.5,
+          13.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#e8c547",
+        "label": "Flight controller to Front-left ESC",
+        "internal": true,
+        "path_mm": [
+          [
+            11.0,
+            2.5,
+            -13.0
+          ],
+          [
+            -11.0,
+            -2.5,
+            13.0
+          ]
+        ],
+        "thickness_mm": 1.0,
+        "connects": [
+          "flight-controller-1",
+          "front-left-esc-1"
+        ],
+        "wire_kind": "signal"
+      }
+    },
+    {
+      "instance_id": "pdb-to-front-right-esc-1",
+      "catalog_id": "concept.wire-power-2-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          11.0,
+          27.5,
+          13.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d03030",
+        "label": "PDB to Front-right ESC",
+        "internal": true,
+        "path_mm": [
+          [
+            -11.0,
+            -1.5,
+            -13.0
+          ],
+          [
+            11.0,
+            1.5,
+            13.0
+          ]
+        ],
+        "thickness_mm": 2.0,
+        "connects": [
+          "power-distribution-board-1",
+          "front-right-esc-1"
+        ],
+        "wire_kind": "power"
+      }
+    },
+    {
+      "instance_id": "front-right-esc-to-motor-1",
+      "catalog_id": "concept.wire-power-1-5",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          58.5,
+          37.5,
+          60.5
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#1f1f1f",
+        "label": "Front-right ESC to motor",
+        "internal": true,
+        "path_mm": [
+          [
+            -36.5,
+            -8.5,
+            -34.5
+          ],
+          [
+            -8.5,
+            4.5,
+            -10.5
+          ],
+          [
+            36.5,
+            8.5,
+            34.5
+          ]
+        ],
+        "thickness_mm": 1.5,
+        "connects": [
+          "front-right-esc-1",
+          "front-right-motor-1"
+        ],
+        "wire_kind": "power"
+      }
+    },
+    {
+      "instance_id": "flight-controller-to-front-right-esc-1",
+      "catalog_id": "concept.wire-signal-1-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          11.0,
+          31.5,
+          13.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#e8c547",
+        "label": "Flight controller to Front-right ESC",
+        "internal": true,
+        "path_mm": [
+          [
+            -11.0,
+            2.5,
+            -13.0
+          ],
+          [
+            11.0,
+            -2.5,
+            13.0
+          ]
+        ],
+        "thickness_mm": 1.0,
+        "connects": [
+          "flight-controller-1",
+          "front-right-esc-1"
+        ],
+        "wire_kind": "signal"
+      }
+    },
+    {
+      "instance_id": "pdb-to-rear-left-esc-1",
+      "catalog_id": "concept.wire-power-2-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -11.0,
+          27.5,
+          -13.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d03030",
+        "label": "PDB to Rear-left ESC",
+        "internal": true,
+        "path_mm": [
+          [
+            11.0,
+            -1.5,
+            13.0
+          ],
+          [
+            -11.0,
+            1.5,
+            -13.0
+          ]
+        ],
+        "thickness_mm": 2.0,
+        "connects": [
+          "power-distribution-board-1",
+          "rear-left-esc-1"
+        ],
+        "wire_kind": "power"
+      }
+    },
+    {
+      "instance_id": "rear-left-esc-to-motor-1",
+      "catalog_id": "concept.wire-power-1-5",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -58.5,
+          37.5,
+          -60.5
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#1f1f1f",
+        "label": "Rear-left ESC to motor",
+        "internal": true,
+        "path_mm": [
+          [
+            36.5,
+            -8.5,
+            34.5
+          ],
+          [
+            8.5,
+            4.5,
+            10.5
+          ],
+          [
+            -36.5,
+            8.5,
+            -34.5
+          ]
+        ],
+        "thickness_mm": 1.5,
+        "connects": [
+          "rear-left-esc-1",
+          "rear-left-motor-1"
+        ],
+        "wire_kind": "power"
+      }
+    },
+    {
+      "instance_id": "flight-controller-to-rear-left-esc-1",
+      "catalog_id": "concept.wire-signal-1-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -11.0,
+          31.5,
+          -13.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#e8c547",
+        "label": "Flight controller to Rear-left ESC",
+        "internal": true,
+        "path_mm": [
+          [
+            11.0,
+            2.5,
+            13.0
+          ],
+          [
+            -11.0,
+            -2.5,
+            -13.0
+          ]
+        ],
+        "thickness_mm": 1.0,
+        "connects": [
+          "flight-controller-1",
+          "rear-left-esc-1"
+        ],
+        "wire_kind": "signal"
+      }
+    },
+    {
+      "instance_id": "pdb-to-rear-right-esc-1",
+      "catalog_id": "concept.wire-power-2-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          11.0,
+          27.5,
+          -13.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d03030",
+        "label": "PDB to Rear-right ESC",
+        "internal": true,
+        "path_mm": [
+          [
+            -11.0,
+            -1.5,
+            13.0
+          ],
+          [
+            11.0,
+            1.5,
+            -13.0
+          ]
+        ],
+        "thickness_mm": 2.0,
+        "connects": [
+          "power-distribution-board-1",
+          "rear-right-esc-1"
+        ],
+        "wire_kind": "power"
+      }
+    },
+    {
+      "instance_id": "rear-right-esc-to-motor-1",
+      "catalog_id": "concept.wire-power-1-5",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          58.5,
+          37.5,
+          -60.5
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#1f1f1f",
+        "label": "Rear-right ESC to motor",
+        "internal": true,
+        "path_mm": [
+          [
+            -36.5,
+            -8.5,
+            34.5
+          ],
+          [
+            -8.5,
+            4.5,
+            10.5
+          ],
+          [
+            36.5,
+            8.5,
+            -34.5
+          ]
+        ],
+        "thickness_mm": 1.5,
+        "connects": [
+          "rear-right-esc-1",
+          "rear-right-motor-1"
+        ],
+        "wire_kind": "power"
+      }
+    },
+    {
+      "instance_id": "flight-controller-to-rear-right-esc-1",
+      "catalog_id": "concept.wire-signal-1-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          11.0,
+          31.5,
+          -13.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#e8c547",
+        "label": "Flight controller to Rear-right ESC",
+        "internal": true,
+        "path_mm": [
+          [
+            -11.0,
+            2.5,
+            13.0
+          ],
+          [
+            11.0,
+            -2.5,
+            -13.0
+          ]
+        ],
+        "thickness_mm": 1.0,
+        "connects": [
+          "flight-controller-1",
+          "rear-right-esc-1"
+        ],
+        "wire_kind": "signal"
+      }
+    },
+    {
+      "instance_id": "flight-controller-to-receiver-1",
+      "catalog_id": "concept.wire-signal-1-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          37.0,
+          -14.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#f2f2f2",
+        "label": "Flight controller to receiver",
+        "internal": true,
+        "path_mm": [
+          [
+            0.0,
+            -3.0,
+            14.0
+          ],
+          [
+            0.0,
+            3.0,
+            -14.0
+          ]
+        ],
+        "thickness_mm": 1.0,
+        "connects": [
+          "flight-controller-1",
+          "radio-receiver-1"
+        ],
+        "wire_kind": "signal"
+      }
+    },
+    {
+      "instance_id": "flight-controller-to-gps-1",
+      "catalog_id": "concept.wire-data-1-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          39.0,
+          9.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#3b82f6",
+        "label": "Flight controller to GPS",
+        "internal": true,
+        "path_mm": [
+          [
+            0.0,
+            -5.0,
+            -9.0
+          ],
+          [
+            0.0,
+            5.0,
+            9.0
+          ]
+        ],
+        "thickness_mm": 1.0,
+        "connects": [
+          "flight-controller-1",
+          "gps-module-1"
+        ],
+        "wire_kind": "data"
+      }
+    },
+    {
+      "instance_id": "flight-controller-to-camera-1",
+      "catalog_id": "concept.wire-data-1-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          28.0,
+          25.0
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#3b82f6",
+        "label": "Flight controller to camera",
+        "internal": true,
+        "path_mm": [
+          [
+            0.0,
+            6.0,
+            -25.0
+          ],
+          [
+            0.0,
+            -6.0,
+            25.0
+          ]
+        ],
+        "thickness_mm": 1.0,
+        "connects": [
+          "flight-controller-1",
+          "camera-gimbal-1"
+        ],
+        "wire_kind": "data"
+      }
+    }
+  ],
+  "connections": [],
+  "verification": {
+    "overall": "needs_review",
+    "findings": [
+      {
+        "rule_id": "concept.not_engineered",
+        "result": "UNKNOWN",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "centre-body-1",
+          "top-cover-1",
+          "battery-1",
+          "camera-gimbal-1",
+          "camera-lens-1",
+          "front-left-arm-1",
+          "front-left-motor-1",
+          "front-left-propeller-1",
+          "front-left-landing-leg-1",
+          "front-right-arm-1",
+          "front-right-motor-1",
+          "front-right-propeller-1",
+          "front-right-landing-leg-1",
+          "rear-left-arm-1",
+          "rear-left-motor-1",
+          "rear-left-propeller-1",
+          "rear-left-landing-leg-1",
+          "rear-right-arm-1",
+          "rear-right-motor-1",
+          "rear-right-propeller-1",
+          "rear-right-landing-leg-1",
+          "power-distribution-board-1",
+          "front-left-esc-1",
+          "front-right-esc-1",
+          "rear-left-esc-1",
+          "rear-right-esc-1",
+          "flight-controller-1",
+          "radio-receiver-1",
+          "gps-module-1",
+          "battery-to-pdb-1",
+          "pdb-to-front-left-esc-1",
+          "front-left-esc-to-motor-1",
+          "flight-controller-to-front-left-esc-1",
+          "pdb-to-front-right-esc-1",
+          "front-right-esc-to-motor-1",
+          "flight-controller-to-front-right-esc-1",
+          "pdb-to-rear-left-esc-1",
+          "rear-left-esc-to-motor-1",
+          "flight-controller-to-rear-left-esc-1",
+          "pdb-to-rear-right-esc-1",
+          "rear-right-esc-to-motor-1",
+          "flight-controller-to-rear-right-esc-1",
+          "flight-controller-to-receiver-1",
+          "flight-controller-to-gps-1",
+          "flight-controller-to-camera-1"
+        ],
+        "message": "This is a visual concept of a quadcopter drone rebuilt from the image. Parts are shapes, not sourced products; wiring, power, fit and function were not checked",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "concept.geometry_estimated",
+        "result": "WARN",
+        "severity": "advisory",
+        "affected_instance_ids": [
+          "centre-body-1",
+          "top-cover-1",
+          "battery-1",
+          "camera-gimbal-1",
+          "camera-lens-1",
+          "front-left-arm-1",
+          "front-left-motor-1",
+          "front-left-propeller-1",
+          "front-left-landing-leg-1",
+          "front-right-arm-1",
+          "front-right-motor-1",
+          "front-right-propeller-1",
+          "front-right-landing-leg-1",
+          "rear-left-arm-1",
+          "rear-left-motor-1",
+          "rear-left-propeller-1",
+          "rear-left-landing-leg-1",
+          "rear-right-arm-1",
+          "rear-right-motor-1",
+          "rear-right-propeller-1",
+          "rear-right-landing-leg-1",
+          "power-distribution-board-1",
+          "front-left-esc-1",
+          "front-right-esc-1",
+          "rear-left-esc-1",
+          "rear-right-esc-1",
+          "flight-controller-1",
+          "radio-receiver-1",
+          "gps-module-1",
+          "battery-to-pdb-1",
+          "pdb-to-front-left-esc-1",
+          "front-left-esc-to-motor-1",
+          "flight-controller-to-front-left-esc-1",
+          "pdb-to-front-right-esc-1",
+          "front-right-esc-to-motor-1",
+          "flight-controller-to-front-right-esc-1",
+          "pdb-to-rear-left-esc-1",
+          "rear-left-esc-to-motor-1",
+          "flight-controller-to-rear-left-esc-1",
+          "pdb-to-rear-right-esc-1",
+          "rear-right-esc-to-motor-1",
+          "flight-controller-to-rear-right-esc-1",
+          "flight-controller-to-receiver-1",
+          "flight-controller-to-gps-1",
+          "flight-controller-to-camera-1"
+        ],
+        "message": "Sizes are estimated from the image (about 371 x 60 x 371 mm overall)",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "concept.internals_inferred",
+        "result": "WARN",
+        "severity": "advisory",
+        "affected_instance_ids": [
+          "power-distribution-board-1",
+          "front-left-esc-1",
+          "front-right-esc-1",
+          "rear-left-esc-1",
+          "rear-right-esc-1",
+          "flight-controller-1",
+          "radio-receiver-1",
+          "gps-module-1",
+          "battery-to-pdb-1",
+          "pdb-to-front-left-esc-1",
+          "front-left-esc-to-motor-1",
+          "flight-controller-to-front-left-esc-1",
+          "pdb-to-front-right-esc-1",
+          "front-right-esc-to-motor-1",
+          "flight-controller-to-front-right-esc-1",
+          "pdb-to-rear-left-esc-1",
+          "rear-left-esc-to-motor-1",
+          "flight-controller-to-rear-left-esc-1",
+          "pdb-to-rear-right-esc-1",
+          "rear-right-esc-to-motor-1",
+          "flight-controller-to-rear-right-esc-1",
+          "flight-controller-to-receiver-1",
+          "flight-controller-to-gps-1",
+          "flight-controller-to-camera-1"
+        ],
+        "message": "24 internal parts are typical for a quadcopter drone, inferred rather than seen in the image; their type, size and placement are guesses",
+        "evidence_urls": []
+      }
+    ]
+  },
+  "assembly_steps": [
+    {
+      "step": 1,
+      "title": "Place the internal board parts",
+      "instance_ids": [
+        "power-distribution-board-1",
+        "front-left-esc-1",
+        "front-right-esc-1",
+        "rear-left-esc-1",
+        "rear-right-esc-1",
+        "flight-controller-1",
+        "radio-receiver-1",
+        "gps-module-1"
+      ],
+      "instructions": "Visual concept only: typical internal parts, inferred (not seen in the image); shows roughly where they sit.",
+      "safety_notes": []
+    },
+    {
+      "step": 2,
+      "title": "Place the internal wire parts",
+      "instance_ids": [
+        "battery-to-pdb-1",
+        "pdb-to-front-left-esc-1",
+        "front-left-esc-to-motor-1",
+        "flight-controller-to-front-left-esc-1",
+        "pdb-to-front-right-esc-1",
+        "front-right-esc-to-motor-1",
+        "flight-controller-to-front-right-esc-1",
+        "pdb-to-rear-left-esc-1",
+        "rear-left-esc-to-motor-1",
+        "flight-controller-to-rear-left-esc-1",
+        "pdb-to-rear-right-esc-1",
+        "rear-right-esc-to-motor-1",
+        "flight-controller-to-rear-right-esc-1",
+        "flight-controller-to-receiver-1",
+        "flight-controller-to-gps-1",
+        "flight-controller-to-camera-1"
+      ],
+      "instructions": "Visual concept only: typical internal parts, inferred (not seen in the image); shows roughly where they sit.",
+      "safety_notes": []
+    },
+    {
+      "step": 3,
+      "title": "Place the body parts",
+      "instance_ids": [
+        "centre-body-1",
+        "top-cover-1"
+      ],
+      "instructions": "Visual concept only: shows where these parts sit, not how to fasten them.",
+      "safety_notes": []
+    },
+    {
+      "step": 4,
+      "title": "Place the battery parts",
+      "instance_ids": [
+        "battery-1"
+      ],
+      "instructions": "Visual concept only: shows where these parts sit, not how to fasten them.",
+      "safety_notes": []
+    },
+    {
+      "step": 5,
+      "title": "Place the camera parts",
+      "instance_ids": [
+        "camera-gimbal-1",
+        "camera-lens-1"
+      ],
+      "instructions": "Visual concept only: shows where these parts sit, not how to fasten them.",
+      "safety_notes": []
+    },
+    {
+      "step": 6,
+      "title": "Place the arm parts",
+      "instance_ids": [
+        "front-left-arm-1",
+        "front-right-arm-1",
+        "rear-left-arm-1",
+        "rear-right-arm-1"
+      ],
+      "instructions": "Visual concept only: shows where these parts sit, not how to fasten them.",
+      "safety_notes": []
+    },
+    {
+      "step": 7,
+      "title": "Place the motor parts",
+      "instance_ids": [
+        "front-left-motor-1",
+        "front-right-motor-1",
+        "rear-left-motor-1",
+        "rear-right-motor-1"
+      ],
+      "instructions": "Visual concept only: shows where these parts sit, not how to fasten them.",
+      "safety_notes": []
+    },
+    {
+      "step": 8,
+      "title": "Place the propeller parts",
+      "instance_ids": [
+        "front-left-propeller-1",
+        "front-right-propeller-1",
+        "rear-left-propeller-1",
+        "rear-right-propeller-1"
+      ],
+      "instructions": "Visual concept only: shows where these parts sit, not how to fasten them.",
+      "safety_notes": []
+    },
+    {
+      "step": 9,
+      "title": "Place the leg parts",
+      "instance_ids": [
+        "front-left-landing-leg-1",
+        "front-right-landing-leg-1",
+        "rear-left-landing-leg-1",
+        "rear-right-landing-leg-1"
+      ],
+      "instructions": "Visual concept only: shows where these parts sit, not how to fasten them.",
+      "safety_notes": []
+    }
+  ],
+  "bom": {
+    "currency": "USD",
+    "known_subtotal_amount": "461.89",
+    "total_status": "incomplete",
+    "items": [
+      {
+        "catalog_id": "concept.body",
+        "quantity": 1,
+        "instance_ids": [
+          "centre-body-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.cover",
+        "quantity": 1,
+        "instance_ids": [
+          "top-cover-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.battery",
+        "quantity": 1,
+        "instance_ids": [
+          "battery-1"
+        ],
+        "unit_price_amount": "36.49",
+        "purchase_url": "https://www.racedayquads.com/products/cnhl-1500mah-120c-4s-ministar-li-po-battery",
+        "link_status": "manufacturer_reference_only"
+      },
+      {
+        "catalog_id": "concept.camera-gimbal",
+        "quantity": 1,
+        "instance_ids": [
+          "camera-gimbal-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.camera-lens",
+        "quantity": 1,
+        "instance_ids": [
+          "camera-lens-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.arm",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-arm-1",
+          "front-right-arm-1",
+          "rear-left-arm-1",
+          "rear-right-arm-1"
+        ],
+        "unit_price_amount": "17.37",
+        "purchase_url": "https://www.racedayquads.com/products/deepspace-seeker-5-dc-frame-kit",
+        "link_status": "manufacturer_reference_only"
+      },
+      {
+        "catalog_id": "concept.motor",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-motor-1",
+          "front-right-motor-1",
+          "rear-left-motor-1",
+          "rear-right-motor-1"
+        ],
+        "unit_price_amount": "26.99",
+        "purchase_url": "https://www.racedayquads.com/products/iflight-xing2-2207-unibell-motor-2050kv",
+        "link_status": "manufacturer_reference_only"
+      },
+      {
+        "catalog_id": "concept.propeller",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-propeller-1",
+          "front-right-propeller-1",
+          "rear-left-propeller-1",
+          "rear-right-propeller-1"
+        ],
+        "unit_price_amount": "1.25",
+        "purchase_url": "https://www.racedayquads.com/products/hq-v1s-5x4-3x3-5-prop-choose-your-color",
+        "link_status": "manufacturer_reference_only"
+      },
+      {
+        "catalog_id": "concept.landing-leg",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-landing-leg-1",
+          "front-right-landing-leg-1",
+          "rear-left-landing-leg-1",
+          "rear-right-landing-leg-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.power-distribution-board",
+        "quantity": 1,
+        "instance_ids": [
+          "power-distribution-board-1"
+        ],
+        "unit_price_amount": "35.99",
+        "purchase_url": "https://www.racedayquads.com/products/draft-pdb-fchub-12s-v2-for-xclass",
+        "link_status": "manufacturer_reference_only"
+      },
+      {
+        "catalog_id": "concept.esc",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-esc-1",
+          "front-right-esc-1",
+          "rear-left-esc-1",
+          "rear-right-esc-1"
+        ],
+        "unit_price_amount": "27.00",
+        "purchase_url": "https://www.racedayquads.com/products/holybro-tekko32-f4-metal-65a-am32-4-in-1-esc",
+        "link_status": "manufacturer_reference_only"
+      },
+      {
+        "catalog_id": "concept.flight-controller",
+        "quantity": 1,
+        "instance_ids": [
+          "flight-controller-1"
+        ],
+        "unit_price_amount": "55.49",
+        "purchase_url": "https://www.racedayquads.com/products/jhemcu-gf30f745-3-6s-hd-30x30-flight-controller-mpu6000",
+        "link_status": "manufacturer_reference_only"
+      },
+      {
+        "catalog_id": "concept.radio-receiver",
+        "quantity": 1,
+        "instance_ids": [
+          "radio-receiver-1"
+        ],
+        "unit_price_amount": "24.99",
+        "purchase_url": "https://www.racedayquads.com/products/radiomaster-rp1-v2-2-4ghz-elrs-nano-receiver",
+        "link_status": "manufacturer_reference_only"
+      },
+      {
+        "catalog_id": "concept.gps-module",
+        "quantity": 1,
+        "instance_ids": [
+          "gps-module-1"
+        ],
+        "unit_price_amount": "18.49",
+        "purchase_url": "https://www.racedayquads.com/products/hglrc-m100-pro-gps-module",
+        "link_status": "manufacturer_reference_only"
+      },
+      {
+        "catalog_id": "concept.wire-power-3-0",
+        "quantity": 1,
+        "instance_ids": [
+          "battery-to-pdb-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.wire-power-2-0",
+        "quantity": 4,
+        "instance_ids": [
+          "pdb-to-front-left-esc-1",
+          "pdb-to-front-right-esc-1",
+          "pdb-to-rear-left-esc-1",
+          "pdb-to-rear-right-esc-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.wire-power-1-5",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-esc-to-motor-1",
+          "front-right-esc-to-motor-1",
+          "rear-left-esc-to-motor-1",
+          "rear-right-esc-to-motor-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.wire-signal-1-0",
+        "quantity": 5,
+        "instance_ids": [
+          "flight-controller-to-front-left-esc-1",
+          "flight-controller-to-front-right-esc-1",
+          "flight-controller-to-rear-left-esc-1",
+          "flight-controller-to-rear-right-esc-1",
+          "flight-controller-to-receiver-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.wire-data-1-0",
+        "quantity": 2,
+        "instance_ids": [
+          "flight-controller-to-gps-1",
+          "flight-controller-to-camera-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      }
+    ]
+  },
+  "behavior": null,
+  "simulation": {
+    "kind": "none",
+    "enabled": false,
+    "wheel_radius_m": null,
+    "wheel_base_m": null,
+    "max_wheel_speed_mps": null,
+    "sensor_range_m": null,
+    "sensor_fov_deg": null,
+    "limitations": [
+      "Concept model: no motion or physics is simulated"
+    ]
+  },
+  "firmware": {
+    "target": "none",
+    "profile_id": "concept.none",
+    "pin_map": {},
+    "compile_status": "not_supported"
+  },
+  "provenance": {
+    "input_mode": "image",
+    "catalog_version": "CONCEPT-1.0",
+    "generation_mode": "fixture",
+    "notes": [
+      "Concept model of a quadcopter drone (medium confidence); appearance only",
+      "Offline example: the mock provider does not read the image",
+      "About 250 mm motor-to-motor",
+      "Internal parts are typical for this kind of device, not seen in the photo"
+    ]
+  },
+  "concept_catalog": [
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.body",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Body",
+        "sku": null,
+        "category": "body"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 70.0,
+          "y": 24.0,
+          "z": 90.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:rounded_box",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.cover",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Cover",
+        "sku": null,
+        "category": "body"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 60.0,
+          "y": 18.0,
+          "z": 76.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:hemisphere",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.battery",
+      "identity": {
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Battery: CNHL MiniStar 14.8V 4S 1500mAh 120C LiPo Battery (XT60)",
+        "sku": null,
+        "category": "battery"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 34.0,
+          "y": 22.0,
+          "z": 70.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/cnhl-1500mah-120c-4s-ministar-li-po-battery",
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": "36.49",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unverified",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part for this role: CNHL MiniStar 14.8V 4S 1500mAh 120C LiPo Battery (XT60) (RaceDayQuads, SKU 9075). Hand-picked, not checked against this design's size, power or wiring."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.camera-gimbal",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Camera gimbal",
+        "sku": null,
+        "category": "camera"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 26.0,
+          "y": 26.0,
+          "z": 26.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:sphere",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.camera-lens",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Camera lens",
+        "sku": null,
+        "category": "camera"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 12.0,
+          "y": 6.0,
+          "z": 12.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "glass"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.arm",
+      "identity": {
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Arm: DeepSpace Seeker 5 DC Frame Kit (arms and plates)",
+        "sku": null,
+        "category": "arm"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 12.0,
+          "y": 10.0,
+          "z": 134.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/deepspace-seeker-5-dc-frame-kit",
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": "17.37",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unverified",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part for this role: DeepSpace Seeker 5 DC Frame Kit (arms and plates) (RaceDayQuads, SKU 23644), sold as 4 in one (69.49 USD); shared across the parts that use it. Hand-picked, not checked against this design's size, power or wiring."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.motor",
+      "identity": {
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Motor: iFlight XING2 2207 Unibell Motor 2050KV",
+        "sku": null,
+        "category": "motor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 24.0,
+          "y": 20.0,
+          "z": 24.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "aluminum"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/iflight-xing2-2207-unibell-motor-2050kv",
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": "26.99",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unverified",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part for this role: iFlight XING2 2207 Unibell Motor 2050KV (RaceDayQuads, SKU 23540). Hand-picked, not checked against this design's size, power or wiring."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.propeller",
+      "identity": {
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Propeller: HQ Prop 5x4.3x3 V1S Tri-Blade 5\" Prop (4 pack)",
+        "sku": null,
+        "category": "propeller"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 128.0,
+          "y": 4.0,
+          "z": 128.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:propeller",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/hq-v1s-5x4-3x3-5-prop-choose-your-color",
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": "1.25",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unverified",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part for this role: HQ Prop 5x4.3x3 V1S Tri-Blade 5\" Prop (4 pack) (RaceDayQuads, SKU 7292), sold as 4 in one (4.99 USD); shared across the parts that use it. Hand-picked, not checked against this design's size, power or wiring."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.landing-leg",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Landing leg",
+        "sku": null,
+        "category": "leg"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 6.0,
+          "y": 32.0,
+          "z": 6.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.power-distribution-board",
+      "identity": {
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Power distribution board: MATEKSYS FCHUB 12S V2 PDB",
+        "sku": null,
+        "category": "board"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 40.0,
+          "y": 1.6,
+          "z": 40.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "pcb"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/draft-pdb-fchub-12s-v2-for-xclass",
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": "35.99",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unverified",
+        "notes": [
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
+          "Suggested real part for this role: MATEKSYS FCHUB 12S V2 PDB (RaceDayQuads, SKU 22614). Hand-picked, not checked against this design's size, power or wiring."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.esc",
+      "identity": {
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Esc: Holybro Tekko32 F4 Metal 65A AM32 4-in-1 ESC (30x30)",
+        "sku": null,
+        "category": "board"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 12.0,
+          "y": 4.0,
+          "z": 22.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "pcb"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/holybro-tekko32-f4-metal-65a-am32-4-in-1-esc",
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": "27.00",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unverified",
+        "notes": [
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
+          "Suggested real part for this role: Holybro Tekko32 F4 Metal 65A AM32 4-in-1 ESC (30x30) (RaceDayQuads, SKU 23157), sold as 4 in one (107.99 USD); shared across the parts that use it. Hand-picked, not checked against this design's size, power or wiring."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.flight-controller",
+      "identity": {
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Flight controller: JHEMCU GF30F745 3-6S HD 30x30 Flight Controller",
+        "sku": null,
+        "category": "board"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 30.0,
+          "y": 2.0,
+          "z": 30.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "pcb"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/jhemcu-gf30f745-3-6s-hd-30x30-flight-controller-mpu6000",
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": "55.49",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unverified",
+        "notes": [
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
+          "Suggested real part for this role: JHEMCU GF30F745 3-6S HD 30x30 Flight Controller (RaceDayQuads, SKU FPVE-JHEMCU-GF30F745-FC-30x30). Hand-picked, not checked against this design's size, power or wiring."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.radio-receiver",
+      "identity": {
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Radio receiver: RadioMaster RP1 V2 2.4GHz ELRS Nano Receiver",
+        "sku": null,
+        "category": "board"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 20.0,
+          "y": 8.0,
+          "z": 14.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "pcb"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/radiomaster-rp1-v2-2-4ghz-elrs-nano-receiver",
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": "24.99",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unverified",
+        "notes": [
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
+          "Suggested real part for this role: RadioMaster RP1 V2 2.4GHz ELRS Nano Receiver (RaceDayQuads, SKU 19362). Hand-picked, not checked against this design's size, power or wiring."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.gps-module",
+      "identity": {
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Gps module: HGLRC M100 Pro GPS Module",
+        "sku": null,
+        "category": "board"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 25.0,
+          "y": 5.0,
+          "z": 25.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "pcb"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/hglrc-m100-pro-gps-module",
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": "18.49",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unverified",
+        "notes": [
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
+          "Suggested real part for this role: HGLRC M100 Pro GPS Module (RaceDayQuads, SKU 23368). Hand-picked, not checked against this design's size, power or wiring."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.wire-power-3-0",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Power wire, 3 mm",
+        "sku": null,
+        "category": "wire"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 3.0,
+          "y": 3.0,
+          "z": 3.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cable",
+        "asset_path": null,
+        "material_preset": "rubber"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.wire-power-2-0",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Power wire, 2 mm",
+        "sku": null,
+        "category": "wire"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 2.0,
+          "y": 2.0,
+          "z": 2.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cable",
+        "asset_path": null,
+        "material_preset": "rubber"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.wire-power-1-5",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Power wire, 1.5 mm",
+        "sku": null,
+        "category": "wire"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 1.5,
+          "y": 1.5,
+          "z": 1.5
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cable",
+        "asset_path": null,
+        "material_preset": "rubber"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.wire-signal-1-0",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Signal wire, 1 mm",
+        "sku": null,
+        "category": "wire"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cable",
+        "asset_path": null,
+        "material_preset": "rubber"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.wire-data-1-0",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Data wire, 1 mm",
+        "sku": null,
+        "category": "wire"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cable",
+        "asset_path": null,
+        "material_preset": "rubber"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product"
+        ]
+      }
+    }
+  ],
+  "concept": {
+    "object_type": "quadcopter drone",
+    "summary": "A four-rotor camera drone with a central body, X-frame arms and landing legs.",
+    "confidence": "medium"
+  }
+}

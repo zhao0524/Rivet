@@ -25,6 +25,15 @@ class Settings(BaseModel):
     estelle_mode: Literal["cli", "mcp"] = "cli"
     estelle_repo_root: Path | None = None
     allow_fallback: bool = True
+    # v2 geometry-first generation. RIVET_3D_MODE=live is explicit and needs credentials;
+    # otherwise the offline author runs and every result is labelled fixture.
+    design_mode: Literal["fixture", "live"] = "fixture"
+    design_model: str = ""
+    image_provider: Literal["none", "openai"] = "none"
+    image_model: str = "gpt-image-1"
+    image_size: str = "1024x1024"
+    image_quality: str = "medium"
+    renderer: Literal["raster", "chromium"] = "raster"
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -49,6 +58,13 @@ class Settings(BaseModel):
             enable_estelle=_flag("RIVET_ENABLE_ESTELLE"),
             estelle_mode=estelle_mode,
             estelle_repo_root=Path(os.environ["RIVET_ESTELLE_REPO"]) if os.environ.get("RIVET_ESTELLE_REPO") else None,
+            design_mode="live" if os.environ.get("RIVET_3D_MODE") == "live" else "fixture",
+            design_model=os.environ.get("RIVET_DESIGN_MODEL", ""),
+            image_provider="openai" if os.environ.get("RIVET_IMAGE_PROVIDER") == "openai" else "none",
+            image_model=os.environ.get("RIVET_IMAGE_MODEL", "gpt-image-1"),
+            image_size=os.environ.get("RIVET_IMAGE_SIZE", "1024x1024"),
+            image_quality=os.environ.get("RIVET_IMAGE_QUALITY", "medium"),
+            renderer="chromium" if os.environ.get("RIVET_RENDERER") == "chromium" else "raster",
         )
 
 

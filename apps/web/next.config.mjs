@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Test servers build into their own folder: a second `next dev` sharing `.next` with the
+  // developer's server overwrites its compiled client code (and its NEXT_PUBLIC_* values).
+  distDir: process.env.RIVET_NEXT_DIST_DIR || '.next',
   transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],
   eslint: {
     ignoreDuringBuilds: true,

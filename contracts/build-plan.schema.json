@@ -94,8 +94,8 @@
       "then": { "properties": { "known_subtotal_amount": { "type": "string" } } }
     },
     "behavior": {
-      "description": "BehaviorSpec, section 3.6.",
-      "type": "object",
+      "description": "BehaviorSpec, section 3.6. Null for concept models, which have no behavior.",
+      "type": ["object", "null"],
       "additionalProperties": false,
       "required": ["profile_id", "controller_catalog_id", "parameters"],
       "properties": {
@@ -157,6 +157,22 @@
             "sku_missing_count": { "type": "integer", "minimum": 0 }
           }
         }
+      }
+    },
+    "concept_catalog": {
+      "description": "Concept models only (provenance.catalog_version CONCEPT-*): the appearance-only concept.* CatalogComponents the components use. Never sourced: sku, purchase_url and prices are null.",
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "concept": {
+      "description": "Concept models only: what the image was read as.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_type", "summary", "confidence"],
+      "properties": {
+        "object_type": { "type": "string" },
+        "summary": { "type": "string" },
+        "confidence": { "enum": ["low", "medium", "high"] }
       }
     }
   },

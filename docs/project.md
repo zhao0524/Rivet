@@ -8,7 +8,9 @@
 
 Rivet is an AI-assisted hardware-building platform for software developers, makers, students, and beginners. A user uploads an inspiration image or describes an idea for a robot, RC vehicle, drone, or programmable device. Rivet interprets the requested appearance and behavior, selects **real cataloged components**, creates a **consistent interactive 3D assembly**, validates supported engineering constraints, produces a **part-level bill of materials (BOM) and purchasing links**, and exports wiring, assembly steps, starter firmware, and an honest simulation where supported.
 
-**The hackathon proof is a two-wheel indoor rover.** The architecture must be reusable; the team must **not** pretend to fully support flight, arbitrary robotics, or electrical certification in 36 hours. RC-car-style variants are a stretch built on the rover primitives. Other categories are labeled *planned* until implemented and tested.
+**Any photo can be rendered in 3D.** Every uploaded photo (or description) of a physical object becomes an interactive **3D concept model**: separate, selectable parts made of shaped primitives in the photo's colors and materials, with inferred internal boards and wiring for powered devices (visible with X-ray). Concept models are appearance-only and labeled as such: no real products, prices, engineering checks or firmware.
+
+**The engineered proof is a two-wheel indoor rover.** Only the rover gets real cataloged parts, verification, wiring, simulation and firmware; it is also the fallback when a concept model cannot be built. The team must **not** pretend to fully support flight, arbitrary robotics, or electrical certification. RC-car-style variants are a stretch built on the rover primitives. Other categories can be visualized as concepts but stay *planned* for engineering until implemented and tested.
 
 **Product promise:** From inspiration to an informed, buildable hardware starting point, without spending days researching components, wiring, mechanical fit, and code.
 
@@ -59,7 +61,18 @@ Vision models can interpret reference images; modular 3D components and inexpens
 
 ## 2. What users can do
 
-### Primary journey: image → robot
+### Default journey: any photo → 3D concept model
+
+1. **Upload** a photo of any physical object (drone, vehicle, furniture, appliance, gadget, toy) or describe one, and choose **Generate 3D model**.
+2. **Rebuild**: the vision model breaks the object into recognisable parts (body, arms, rotors, wheels, panels, lenses, ...), each a primitive shape with size, pose, color and material. Long thin parts are placed by their two ends; the server grounds and centres the model and sends floating parts back to the model once.
+3. **Infer the inside** of powered devices: typical internal parts (for a drone: flight controller, ESCs, power distribution board, receiver) placed inside the body, plus wires between named parts. These are always labeled *inside, inferred*; overlapping boards are stacked so each stays visible.
+4. **Explore** in the studio: select parts, exploded view, assembly steps, and **X-ray** to see through the shell to the boards and wiring.
+5. **Edit in words** ("make the propellers blue", "add a camera on the front"); each accepted change is a new revision. A request that changes nothing is not applied.
+6. **Limits**: works best for one clear object; scenes, several objects, very blurry photos and organic shapes give rough results. Wiring is the typical layout for that kind of device, not the exact product's.
+
+### Engineered journey: image → robot
+
+Chosen with **Check for a real-parts rover build**.
 
 1. **Upload** a JPG/PNG/WebP photo, sketch, reference render, or screenshot. Optional text clarifies intended behavior and constraints. A reference image is a *visual goal*, not an X-ray or dimensioned CAD model.
 2. **Interpret** the visible features: approximate body shape, wheel arrangement, sensors/appendages, likely project family, color/stylistic descriptors, and behavior requests. Rivet displays assumptions and missing information.
@@ -78,7 +91,8 @@ Input: “Make a compact indoor rover that can detect walls, uses an ESP32, and 
 
 ### Editing rules
 
-- Edits are declarative operations on the design intent or a typed configuration field, not arbitrary LLM mesh manipulation.
+- Engineered builds: edits are declarative operations on the design intent or a typed configuration field, not arbitrary LLM mesh manipulation.
+- Concept models: edits are plain-language requests applied by the vision model to the concept's parts and wires; the result is rebuilt and checked by code like a new concept.
 - Each accepted edit creates a new immutable revision. Preserve previous revisions and allow undo/redo.
 - Recompute and recheck **all affected** BOM, geometry, power, pin mapping, firmware configuration and simulation metadata.
 - A rejected edit leaves the last good design unchanged and explains the issue.
@@ -131,8 +145,9 @@ The design experience is Rivet's primary consumer differentiation. The designer 
 | Capability | Hackathon guarantee target | Later |
 |---|---|---|
 | Input | Image upload + text instruction | Video/multi-image dimension inference |
-| Product family | Supported differential-drive indoor rover | Robotic arms, RC cars, drones, IoT |
-| Visual design | Component-backed interactive 3D + exploded assembly + part selection | Arbitrary CAD/manufacturing |
+| Any object (concept) | Any photo or description rendered as a labeled 3D concept model: shaped parts, inferred internals and wiring, X-ray, plain-language edits | Mesh-level image-to-3D detail (e.g. an image-to-3D service as an optional reference shell) |
+| Engineered product family | Supported differential-drive indoor rover | Robotic arms, RC cars, drones, IoT |
+| Visual design | Component-backed interactive 3D (rover) or shaped-primitive concept 3D (any object) + exploded assembly + part selection | Arbitrary CAD/manufacturing |
 | Mechanical checks | Template-defined mounts, dimensions, basic AABB collision/clearance for supported parts | Full rigid-body stress/structural analysis |
 | Electrical checks | Curated controller, drivers, sensors, pin allocations, documented voltage/current checks | Circuit design, EMC, thermal modeling and electrical certification |
 | AI pipeline | Requirement extraction and constrained proposal | Broad hardware design search/autonomous CAD |
@@ -143,7 +158,13 @@ The design experience is Rivet's primary consumer differentiation. The designer 
 | Estelle | Meaningful source-grounded firmware modification/evidence when service available | Long-term project memory across users |
 | Hardware demo | Optional prepared physical rover | Manufactured user-requested devices |
 
-**Scope discipline:** Category labels must represent actual capability. *Coming soon* must not invoke a fake full generator. Do not demo a drone whose beautiful 3D mesh is unrelated to part compatibility and call it supported.
+**Scope discipline:** Category labels must represent actual capability. A drone (or any other object) may be shown as a **3D concept model**, always labeled *Concept model · appearance only*, never as a supported, buildable or verified design. *Coming soon* must not invoke a fake full generator.
+
+### Concept demonstration prompt
+
+Upload a photo of a drone and choose **Generate 3D model**, then turn on **X-ray** and ask: **“Make the propellers blue and add a camera on the front.”**
+
+Successful output: a recognisable 3D model of the photographed drone in its colors, made of selectable parts; inferred internals (flight controller, ESCs, power distribution board, receiver) and wiring visible with X-ray and labeled inferred; the edit as revision 2; the concept label everywhere and no prices, links or engineering claims.
 
 ### Canonical demonstration prompt
 
@@ -214,6 +235,8 @@ Full field names and JSON examples are in `implementation.md`.
 - “Exports starter firmware for supported hardware configurations.”
 - “Simulates a simplified rover behavior.”
 - “Identifies unverified assumptions and unsupported requests.”
+- “Renders any uploaded photo as an interactive 3D concept model of its parts.”
+- “Shows the typical internal components and wiring of a device of that kind (inferred, not seen).”
 
 ### What Rivet must not claim
 
@@ -221,13 +244,14 @@ Full field names and JSON examples are in `implementation.md`.
 - “This robot is certified safe / guaranteed buildable.”
 - “Simulation proves the physical robot will work.”
 - “All parts are in stock / current price is X” without actual evidence.
-- “All drones and hardware products are supported” because a category card exists.
+- “All drones and hardware products are supported” because a category card exists or a 3D concept was rendered.
+- “These are the exact internal parts / wiring of this product.” Concept internals are typical and inferred.
 - “Estelle validated the real-world mechanics.” Estelle is a codebase-grounding tool, not a mechanical/electrical test laboratory.
 
 ### Specific safety boundaries
 
 - No onboard human-carrying, weaponized, hazardous, or unbounded autonomous physical behaviors.
-- No flight-design verification for this MVP. Drones are a future category, not a flight-ready output.
+- No flight-design verification for this MVP. A drone can be visualized as a concept model, but drones are a future engineering category, not a flight-ready output.
 - Use premanufactured, documented consumer power solutions. Do not advise fabricating or modifying lithium-ion cells/packs.
 - Low-voltage educational electronics only. Include warnings when power ratings or polarity cannot be verified.
 - Physical movement requires supervision, an accessible motor disable mechanism, and real component-specific checks.

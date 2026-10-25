@@ -59,7 +59,7 @@ A missing model, key or `openai` package for the selected provider fails at star
 
 ### Vision providers
 
-The provider turns the request (image and/or text) into a proposed `IntentSpec`; code then sanitizes it and decides support (only `rover` is supported). **`openai` is the live provider for the demo** (decision in [`docs/context.md`](../../docs/context.md) §5, 2026-10-24).
+The provider turns the request (image and/or text) into a proposed `IntentSpec`; code then sanitizes it and decides support (only `rover` is supported for engineered builds). Every provider also builds and edits **concept models** of any object (see [Concept models](#concept-models-any-photo)); `mock` answers those with a saved quadcopter concept that does not depend on the image. **`openai` is the live provider for the demo** (decision in [`docs/context.md`](../../docs/context.md) §5, 2026-10-24).
 
 | `RIVET_VISION_PROVIDER` | Status | Needs | What the model receives |
 |---|---|---|---|
@@ -125,6 +125,46 @@ RIVET_LIVE_VISION_TEST=1 .venv/bin/python -m pytest -q tests/test_live_vision_pr
 
 Without the flag, the key or the `openai` package, the two live tests are reported as skipped with the reason, for example `needs RIVET_LIVE_VISION_TEST=1, OPENAI_API_KEY`.
 
+## Concept models (any photo)
+
+Any uploaded photo or description can be rendered as an interactive 3D model. `POST /api/projects/generate` with `"interpretation_choice": "concept_model"` (the web intake's default; no `intent_id` needed) skips the engine:
+
+1. **Exterior:** the vision provider breaks the object into parts, each a primitive shape (`box`, `rounded_box`, `cylinder`, `tube`, `sphere`, `hemisphere`, `cone`, `capsule`, `torus`, `propeller`, `wheel`) with size, pose, color and material. Long thin parts may be placed by `from_mm`/`to_mm`; the server computes their rotation.
+2. **Inside:** for powered devices the same reply adds typical internal parts (`internal: true`, e.g. flight controller, ESCs, power distribution board, receiver) and `wires` between named parts. The server draws each wire through the two part centres, drops wires to unknown parts, and stacks overlapping internal parts.
+3. **Checks in code** (`rivet_api/concept/`): strict parse with one repair round (also for floating parts), clamped sizes and positions, model grounded and centred, and `check_concept_plan` (structure against the plan's own `concept_catalog`, no SKU, price or link anywhere, status `needs_review`).
+
+The stored plan is labelled: `provenance.catalog_version` `CONCEPT-1.0`, blocking `UNKNOWN` `concept.not_engineered`, advisory `concept.geometry_estimated` and `concept.internals_inferred`, `behavior: null`, `simulation.kind: "none"`. Plain-language edits (`{"base_revision", "instruction"}`) create new revisions (`422 CONCEPT_EDIT_NEEDS_TEXT` without text; `accepted: false` with `concept.edit_no_change` when nothing changes). BOM CSV and firmware exports are refused. If the concept cannot be built, the job builds the closest supported rover and records `A 3D concept of the upload could not be built, so this is the fallback rover (<CODE>)` in `provenance.notes`. Full contract: [`contracts/api.md`](../../contracts/api.md) "Concept models".
+
+## Geometry-first generation (v2)
+
+`rivet_api/design/` runs the staged pipeline (distill, concept and extra views, three candidate DesignSpecs, compile with streamed partial GLBs, mechanical and engineering checks, repair, six-camera renders, visual review, selection, one critic-guided revision, exports, persistence). Geometry, checks and exports come from `rivet_engine.design_compiler` (install the engine's `geometry` extra); electrical and firmware verdicts come from the engine via `rivet_engine.engineering_bridge`. Results are `DesignBundle` v2 revisions stored in `RIVET_DATA_ROOT/design/` (SQLite events and jobs, content-addressed assets); v1 BuildPlans are untouched, and an engineered bundle links the v1 plan the engine produced for its electronics.
+
+| Variable | Meaning |
+|---|---|
+| `RIVET_3D_MODE` | `live` uses real providers and never falls back; anything else runs the offline rule-based author, labelled `fixture` |
+| `RIVET_DESIGN_MODEL` | Chat/vision model for distill, authoring, critique and patches (default: `RIVET_VISION_MODEL`, then `gpt-4o`); needs `OPENAI_API_KEY` |
+| `RIVET_IMAGE_PROVIDER` | `openai` enables concept art and extra views; unset skips those stages with an explicit event |
+| `RIVET_IMAGE_MODEL`, `RIVET_IMAGE_SIZE`, `RIVET_IMAGE_QUALITY` | Image model and settings (defaults `gpt-image-1`, `1024x1024`, `medium`) |
+| `RIVET_RENDERER` | `raster` (default, deterministic CPU renders of the real GLB) or `chromium` (three.js through `apps/web/scripts/render-design.mjs`) |
+
+| Route | Purpose |
+|---|---|
+| `GET /api/v2/session` | Starts or confirms the caller's session (httponly cookie); every v2 route is scoped to it |
+| `POST /api/v2/assets/images` | Reference image upload (cleaned, content-addressed, hash recorded) |
+| `GET /api/v2/assets/{asset_id}` | Owner-only asset bytes (GLB, PNG, STEP, STL, JSON) |
+| `POST /api/v2/generations` | Starts a generation (`input`, `mode`, `quality`, `candidate_count`, `review_rounds`, `allow_cached`, budget); `allow_cached` replays a stored result with `provenance.cached: true` |
+| `GET /api/v2/generations/{job_id}` | Job status |
+| `GET /api/v2/generations/{job_id}/events` | SSE with resumable ids (`Last-Event-ID` or `last_event_id`) |
+| `POST /api/v2/generations/{job_id}/cancel` | Stops a running job at the next stage boundary; artifacts so far are kept |
+| `GET /api/v2/projects` | Saved designs of this session |
+| `GET /api/v2/projects/{build_id}/design` | DesignBundle (`?revision=N`) |
+| `GET /api/v2/projects/{build_id}/candidates` | Candidate summaries with renders, claims and reviews |
+| `GET /api/v2/projects/{build_id}/revisions` | Revision lineage |
+| `POST /api/v2/projects/{build_id}/select` | Choose a candidate (bound to its generation job) as a new revision |
+| `POST /api/v2/projects/{build_id}/revise` | Plain-language targeted edit as a job; rejected edits leave the design unchanged |
+| `POST /api/v2/projects/{build_id}/restore` | Undo/redo: copy an earlier revision forward without recomputing |
+| `GET /api/v2/projects/{build_id}/export` | `kind=glb|part_glb|step|stl|assembly_step|bom|assembly_steps|manifest|trace|firmware` (`422` with the reason when an export does not apply) |
+
 ## Endpoints
 
 Errors always use `{"error": {"code", "message", "details", "retryable"}}`.
@@ -135,7 +175,7 @@ Errors always use `{"error": {"code", "message", "details", "retryable"}}`.
 | GET | `/api/catalog` | `?category=` filters by `identity.category` |
 | POST | `/api/assets/images` | multipart `file`; PNG/JPEG/WebP only, 10 MB, EXIF stripped, large images downscaled, per-session quota (`X-Rivet-Session`) |
 | GET | `/api/assets/{asset_id}/preview` | The stored (re-encoded) image |
-| POST | `/api/projects/generate` | 202 `{job_id, status: "queued", build_id: null}`; body `{input: {kind, image_asset_id?, user_text?}, requirements?}` |
+| POST | `/api/projects/generate` | 202 `{job_id, status: "queued", build_id: null}`; body `{input: {kind, image_asset_id?, user_text?}, requirements?, intent_id?, interpretation_choice?}`; `interpretation_choice: "concept_model"` renders any object as a concept model |
 | POST | `/api/intents/interpret` | Same body as generate; runs vision + sanitizer only (never the engine) and returns 200 `{intent_id, intent, supported, limitation, vision_mode}`, also for unsupported results (`limitation` = the 422 the support gate would raise). The intent is kept in memory for 1 h: generate with `intent_id` builds exactly it without calling vision again (404 `INTENT_NOT_FOUND`, 409 `INTENT_INPUT_MISMATCH`), and `interpretation_choice: "closest_supported_rover"` is the only way to build from an unsupported one (recorded in `provenance.notes` and a job event) |
 | GET | `/api/jobs/{job_id}` | `{status, stage, progress, build_id?, revision?, error?}`; `progress` is null unless real stages were planned |
 | GET | `/api/jobs/{job_id}/events` | Server-sent events with `id:` lines; reconnect with `Last-Event-ID` or `?last_event_id=` |
@@ -145,11 +185,14 @@ Errors always use `{"error": {"code", "message", "details", "retryable"}}`.
 | GET | `/api/parts/{catalog_id}/offers` | `OfferSet` for the part's catalog SKU; `?sort=&vendor_tier=&in_stock=&min_rating=&max_price=&currency=`. 404 `PART_NOT_FOUND`; 422 `EXPORT_REFUSED_SYNTHETIC` for `demo.*` parts (no provider call); 202 `{job_id, status, offer_set_id: null}` only when the `live` provider has no cached answer |
 | POST | `/api/offers/search` | `{sku?, mpn?, gtin?, manufacturer?}` (at least one of `sku`/`mpn`/`gtin`) plus the same sort/filter fields. 200 `OfferSet` from `stub`, `recorded` or the cache; 202 job for a live miss (poll `GET /api/jobs/{job_id}` until it carries `offer_set_id`). 400 `INVALID_IDENTIFIER` for an empty identifier or a GTIN with a bad check digit |
 | GET | `/api/offers/{offer_set_id}` | The stored, unfiltered `OfferSet` (default `reliability` order). 404 `OFFER_SET_NOT_FOUND` |
+| GET | `/api/showcase/products` | `ShowcaseIndex` for the gallery; `?category=` filters (`rover`, `robot`, `drone`, `wearable`, `iot`, `audio`, `display`, `tool`, `other`) |
+| GET | `/api/showcase/products/{product_id}` | The full `ShowcaseProduct`. 404 `SHOWCASE_NOT_FOUND` |
+| GET | `/api/showcase/products/{product_id}/parts/{part_id}/offers` | `OfferSet` for the part's `sku`/`mpn`/`manufacturer` with the offers sort/filter params: the pre-collected set when one exists (`provider_mode: "recorded"`), else the configured provider (stub set, or 202 job when `live`). With the `live` provider the pre-collected set is returned at once with a "more vendors may be available" notice; `?refresh=true` starts the live job instead. 404 `SHOWCASE_NOT_FOUND` / `PART_NOT_FOUND`; never 422, showcase parts are real |
 | GET | `/api/projects/examples` | The saved build, labeled `fixture` |
 | GET | `/api/projects/{build_id}` | `?revision=` optional |
 | GET | `/api/projects/{build_id}/revisions` | Revision summaries |
-| POST | `/api/projects/{build_id}/edits` | `{base_revision, operation, instruction?}`; 409 on a stale `base_revision`; 422 `UNSUPPORTED_EDIT` for anything but the five allowed operations |
-| GET | `/api/projects/{build_id}/exports/bom.csv` | Null prices stay empty cells; the subtotal is the engine's, never computed here. Trailing `sku`, `vendor`, `offer_url` columns come from the catalog entry (empty when unknown; `offer_url` only when the purchase link is verified). 422 `EXPORT_REFUSED_SYNTHETIC` for a plan built from synthetic demo parts |
+| POST | `/api/projects/{build_id}/edits` | `{base_revision, operation, instruction?}`; 409 on a stale `base_revision`; 422 `UNSUPPORTED_EDIT` for anything but the five allowed operations; concept models take a plain-language `instruction` instead |
+| GET | `/api/projects/{build_id}/exports/bom.csv` | Null prices stay empty cells; the subtotal is the engine's, never computed here. Trailing `sku`, `vendor`, `offer_url` columns come from the catalog entry (empty when unknown; `offer_url` only when the purchase link is verified). 422 `EXPORT_REFUSED_SYNTHETIC` for a plan built from synthetic demo parts, `EXPORT_REFUSED_CONCEPT` for a concept model |
 | GET | `/api/projects/{build_id}/exports/build.json` | The stored revision; every export carries `X-Rivet-Synthetic: true\|false` |
 | GET | `/api/projects/{build_id}/exports/firmware.zip` | `?revision=`, `?compile=true`; header `X-Rivet-Compile-Status`. 422 `FIRMWARE_REFUSED` for synthetic or unbuildable plans |
 | GET | `/api/estelle/status` | Enabled/available, plus the output of `estelle doctor` when reachable |
@@ -168,6 +211,8 @@ curl -s -X POST localhost:8000/api/projects/<build_id>/edits -H 'content-type: a
 ## What has and has not been run
 
 Verified by the automated tests (offline, fake backends): the whole API contract above, storage and revisions, SSE replay, upload hardening, sanitizing of model output, exports, firmware generation, engine error mapping.
+
+**Run for real against OpenAI `gpt-4o` (2026-10-24, by hand):** concept models from a drone photo (quadcopter with arms, motors, rotors, guards, inferred flight controller, ESC, power distribution board, receiver and wiring), a text-only office chair, and a plain-language edit ("make all four propellers blue and add a small camera") creating revision 2; 8 of 8 interpretations of the drone photo parsed after the out-of-range image-trait fix.
 
 **Has not been run for real (needs a human with the right setup):**
 
@@ -219,6 +264,14 @@ Tests: `tests/test_offers_*.py` run offline against the stub and fake providers.
 ```bash
 RIVET_LIVE_OFFERS_TEST=1 .venv/bin/python -m pytest -q tests/test_live_offers_provider.py -rs
 ```
+
+## Showcase catalogue
+
+`docs/e-commerce-layer/plan-showcase.md` 3.4: real, buildable products whose maker publishes a parts list, collected ahead of time by the engine and served read-only. Bodies are `ShowcaseProduct` / `ShowcaseIndex` from `contracts/showcase-product.schema.json` (pydantic mirror in `rivet_api/showcase/models.py`; `synthetic` is pinned to `false`, a synthetic showcase product does not validate). The runtime data is the packaged mirror `rivet_api/data/fixtures/showcase/{index.json,products/*.json,offers/*.json}` of `fixtures/showcase/`, loaded and validated at startup by `rivet_api/showcase/store.py`; `tests/test_showcase_api.py` drift-tests every shared file that exists and skips when `fixtures/showcase/` has none yet.
+
+Until the engine's ingestion run lands, the mirror holds one hand-made sample, `sample-sparkfun-inventors-kit`: five linked parts of the SparkFun Inventor's Kit read from the recorded pages in `packages/engineering/tests/support/recorded/` (source page `sparkfun.com/products/21301`; SKUs, prices, quotes, `fetched_at` and hashes are the recorded ones), plus one pre-collected `OfferSet` for the gearmotor pair (`offers/sample-rob-13302.json`, generated by `rivet_engine.ecommerce.find_offers` in recorded mode from the same page). Its summary says it is a sample; it is not a catalogue entry and the integrator replaces it with the ingested files.
+
+Part offers (`GET /api/showcase/products/{id}/parts/{part_id}/offers`, `rivet_api/showcase/service.py`): the query is `sku`, `mpn` and `manufacturer` of the part. A pre-collected set whose `normalized_key` matches is served as `provider_mode: "recorded"` (never `live`) with a notice that it was fetched ahead of time; otherwise the normal offers service answers (stub set, or a 202 job with the `live` provider). With the `live` provider a pre-collected set is still returned immediately, with a "more vendors may be available; search again with refresh=true" notice, and `?refresh=true` starts the live discovery job (the 15 minute cache still applies). Sorting and filtering are `rivet_api/offers/ranking.py`, as everywhere else. Codes: `SHOWCASE_NOT_FOUND` 404, `PART_NOT_FOUND` 404; there is no 422 here because every showcase part has a real SKU quoted by a fetched page.
 
 ## Real products only
 

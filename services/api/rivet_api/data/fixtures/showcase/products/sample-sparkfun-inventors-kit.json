@@ -1,0 +1,157 @@
+{
+  "schema_version": "1.0",
+  "product_id": "sample-sparkfun-inventors-kit",
+  "name": "SparkFun Inventor's Kit - v4.1.2 (sample)",
+  "category": "robot",
+  "summary": "Hand-made sample for route tests, not an ingested catalogue entry: five of the kit's linked parts (the controller, motor driver, gearmotors, wheels and distance sensor of its autonomous robot circuits), read from recorded SparkFun pages. The kit page lists more parts than shown here.",
+  "image": {
+    "url": "https://www.sparkfun.com/media/catalog/product/cache/f8158826193ba5faa8b862a9bd1eb9e9/1/5/15267-SparkFun_Inventor_s_Kit_-_v4.1-01a_1.jpg",
+    "credit": "SparkFun Electronics",
+    "license": "not stated on the page"
+  },
+  "source": {
+    "url": "https://www.sparkfun.com/products/21301",
+    "host_tier": "distributor",
+    "title": "SparkFun Inventor's Kit - v4.1.2",
+    "fetched_at": "2026-10-24T19:02:53Z",
+    "content_sha256": "74becb0949f13aed27ac3387df81a160d6024efcfb94b22ce83eaecb9e5f80e0"
+  },
+  "parts": [
+    {
+      "part_id": "redboard-qwiic",
+      "name": "SparkFun RedBoard Qwiic",
+      "quantity": 1,
+      "sku": "DEV-15123",
+      "mpn": "DEV-15123",
+      "manufacturer": "SparkFun",
+      "vendor": {
+        "id": "sparkfun",
+        "name": "SparkFun Electronics",
+        "tier": "manufacturer",
+        "domain": "sparkfun.com"
+      },
+      "url": "https://www.sparkfun.com/sparkfun-redboard-qwiic.html",
+      "price_amount": "21.95",
+      "currency": "USD",
+      "availability": "unknown",
+      "fetched_at": "2026-10-24T18:51:57Z",
+      "source_sha256": "cba54db176cd6a70489dcd7687ac6b698824795d0d09af4df68c5ac569a10429",
+      "evidence_level": "verified",
+      "evidence_quote": "\"sku\":\"DEV-15123\"",
+      "bom_quote": "SparkFun RedBoard Qwiic"
+    },
+    {
+      "part_id": "motor-driver-tb6612fng",
+      "name": "SparkFun Motor Driver - Dual TB6612FNG (with Headers)",
+      "quantity": 1,
+      "sku": "ROB-14450",
+      "mpn": "ROB-14450",
+      "manufacturer": "SparkFun",
+      "vendor": {
+        "id": "sparkfun",
+        "name": "SparkFun Electronics",
+        "tier": "manufacturer",
+        "domain": "sparkfun.com"
+      },
+      "url": "https://www.sparkfun.com/sparkfun-motor-driver-dual-tb6612fng-with-headers.html",
+      "price_amount": "14.50",
+      "currency": "USD",
+      "availability": "unknown",
+      "fetched_at": "2026-10-24T18:52:12Z",
+      "source_sha256": "ae02b8557b92fd20140a089bd7aba66b4e3406a1188aad9b9b14f0e9378d783e",
+      "evidence_level": "verified",
+      "evidence_quote": "\"sku\":\"ROB-14450\"",
+      "bom_quote": "SparkFun Motor Driver (with Headers)"
+    },
+    {
+      "part_id": "hobby-gearmotor-pair",
+      "name": "Hobby Gearmotor - 140 RPM (Pair)",
+      "quantity": 1,
+      "sku": "ROB-13302",
+      "mpn": "ROB-13302",
+      "manufacturer": "SparkFun",
+      "vendor": {
+        "id": "sparkfun",
+        "name": "SparkFun Electronics",
+        "tier": "manufacturer",
+        "domain": "sparkfun.com"
+      },
+      "url": "https://www.sparkfun.com/hobby-gearmotor-140-rpm-pair.html",
+      "price_amount": "7.50",
+      "currency": "USD",
+      "availability": "unknown",
+      "fetched_at": "2026-10-24T18:52:15Z",
+      "source_sha256": "b2f6360cfaae487561608a7b196f8f707cce541c74eb045d0b59bb42faaf09de",
+      "evidence_level": "verified",
+      "evidence_quote": "\"sku\":\"ROB-13302\"",
+      "bom_quote": "Pair of Hobby Gearmotors"
+    },
+    {
+      "part_id": "wheel-65mm-pair",
+      "name": "Wheel - 65mm (Rubber Tire, Pair)",
+      "quantity": 1,
+      "sku": "ROB-13259",
+      "mpn": "ROB-13259",
+      "manufacturer": "SparkFun",
+      "vendor": {
+        "id": "sparkfun",
+        "name": "SparkFun Electronics",
+        "tier": "manufacturer",
+        "domain": "sparkfun.com"
+      },
+      "url": "https://www.sparkfun.com/wheel-65mm-rubber-tire-pair.html",
+      "price_amount": "4.50",
+      "currency": "USD",
+      "availability": "unknown",
+      "fetched_at": "2026-10-24T18:52:14Z",
+      "source_sha256": "acbf6d9d14751d73b46b9ea89612b504d67e33339593501855029cb276ef3f18",
+      "evidence_level": "verified",
+      "evidence_quote": "\"sku\":\"ROB-13259\"",
+      "bom_quote": "Pair of Rubber Wheels"
+    },
+    {
+      "part_id": "ultrasonic-hc-sr04",
+      "name": "Ultrasonic Distance Sensor - 5V (HC-SR04)",
+      "quantity": 1,
+      "sku": "SEN-15569",
+      "mpn": "SEN-15569",
+      "manufacturer": "SparkFun",
+      "vendor": {
+        "id": "sparkfun",
+        "name": "SparkFun Electronics",
+        "tier": "manufacturer",
+        "domain": "sparkfun.com"
+      },
+      "url": "https://www.sparkfun.com/ultrasonic-distance-sensor-hc-sr04.html",
+      "price_amount": "5.25",
+      "currency": "USD",
+      "availability": "unknown",
+      "fetched_at": "2026-10-24T18:52:20Z",
+      "source_sha256": "a2159853365d05548e5cc3b1030849754ccfc0d839fc96483839de6046bf4f58",
+      "evidence_level": "verified",
+      "evidence_quote": "\"sku\":\"SEN-15569\"",
+      "bom_quote": "Ultrasonic Distance Sensor"
+    }
+  ],
+  "unsourced_parts": [
+    {
+      "name": "Binder Clip",
+      "quantity": null,
+      "note": "Named in the kit page's \"includes\" list without a product link"
+    },
+    {
+      "name": "Dual-Lock Fastener",
+      "quantity": null,
+      "note": "Named in the kit page's \"includes\" list without a product link"
+    }
+  ],
+  "totals": {
+    "parts_total": 5,
+    "parts_verified": 5,
+    "price_total_amount": "53.70",
+    "currency": "USD"
+  },
+  "status": "partial",
+  "generated_at": "2026-10-24T23:00:00Z",
+  "synthetic": false
+}

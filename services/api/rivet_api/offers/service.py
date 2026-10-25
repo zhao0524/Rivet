@@ -94,6 +94,26 @@ def fetch_and_store(query: OfferQuery, provider: OffersProvider, store: OfferSet
     return store.put(offer_set), offer_set
 
 
+def run_as_job(deps: Any, label: str, work: Any) -> tuple[int, dict[str, Any]]:
+    """Run `work() -> (offer_set_id, OfferSet)` as an offers job; 202 with the job id."""
+    job = deps.jobs.create("offers", planned_stages=OFFER_STAGES)
+
+    def run(snapshot: JobSnapshot) -> None:
+        deps.jobs.emit(snapshot.job_id, "catalog_selection", "system", "running", f"Looking for offers for {label}")
+        offer_set_id, offer_set = work()
+        deps.jobs.emit(
+            snapshot.job_id,
+            "catalog_selection",
+            "system",
+            "ok" if offer_set.outcome in ("found", "partial") else "warning",
+            f"{len(offer_set.offers)} verified offers, outcome {offer_set.outcome}",
+        )
+        deps.jobs.complete_offer_set(snapshot.job_id, offer_set_id)
+
+    deps.jobs.run(job.job_id, run)
+    return 202, {"job_id": job.job_id, "status": "queued", "offer_set_id": None}
+
+
 def render(offer_set: OfferSet, params: OfferListParams | None = None) -> dict[str, Any]:
     if params is None:
         return offer_set.model_dump(mode="json")
@@ -112,19 +132,4 @@ def lookup(query: OfferQuery, params: OfferListParams, deps: Any) -> tuple[int, 
     if provider.mode != "live":
         _, offer_set = fetch_and_store(query, provider, store)
         return 200, render(offer_set, params)
-    job = deps.jobs.create("offers", planned_stages=OFFER_STAGES)
-
-    def run(snapshot: JobSnapshot) -> None:
-        deps.jobs.emit(snapshot.job_id, "catalog_selection", "system", "running", f"Looking for offers for {query.normalized_key}")
-        offer_set_id, offer_set = fetch_and_store(query, provider, store)
-        deps.jobs.emit(
-            snapshot.job_id,
-            "catalog_selection",
-            "system",
-            "ok" if offer_set.outcome in ("found", "partial") else "warning",
-            f"{len(offer_set.offers)} verified offers, outcome {offer_set.outcome}",
-        )
-        deps.jobs.complete_offer_set(snapshot.job_id, offer_set_id)
-
-    deps.jobs.run(job.job_id, run)
-    return 202, {"job_id": job.job_id, "status": "queued", "offer_set_id": None}
+    return run_as_job(deps, query.normalized_key, lambda: fetch_and_store(query, provider, store))

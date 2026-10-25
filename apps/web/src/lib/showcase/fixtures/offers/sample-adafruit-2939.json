@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "query": {
+    "sku": "2939",
+    "mpn": null,
+    "gtin": null,
+    "manufacturer": "Adafruit",
+    "catalog_id": null,
+    "normalized_key": "2939|||adafruit"
+  },
+  "outcome": "found",
+  "provider_mode": "recorded",
+  "synthetic": false,
+  "generated_at": "2026-10-24T18:49:04Z",
+  "offers": [
+    {
+      "offer_id": "adafruit:81aa68a9493c1fcd",
+      "sku": "2939",
+      "mpn": null,
+      "gtin": null,
+      "vendor": {
+        "id": "adafruit",
+        "name": "Adafruit Industries",
+        "tier": "manufacturer",
+        "domain": "adafruit.com"
+      },
+      "url": "https://www.adafruit.com/product/2939",
+      "price_amount": "24.95",
+      "currency": "USD",
+      "availability": "out_of_stock",
+      "min_order_qty": 1,
+      "pack": {
+        "quantity": 1,
+        "unit_price_basis": "per_unit"
+      },
+      "shipping": null,
+      "rating": null,
+      "match": {
+        "kind": "exact_sku",
+        "confidence": 1,
+        "evidence_quote": "\"sku\":2939"
+      },
+      "fetched_at": "2026-10-24T18:49:04Z",
+      "evidence_level": "verified",
+      "link_status": "pass",
+      "reliability": {
+        "score": 0.95,
+        "factors": [
+          {
+            "key": "vendor_tier",
+            "weight": 0.3,
+            "value": 1,
+            "note": ""
+          },
+          {
+            "key": "match_exactness",
+            "weight": 0.25,
+            "value": 1,
+            "note": ""
+          },
+          {
+            "key": "freshness",
+            "weight": 0.15,
+            "value": 1,
+            "note": ""
+          },
+          {
+            "key": "link_status",
+            "weight": 0.15,
+            "value": 1,
+            "note": ""
+          },
+          {
+            "key": "rating",
+            "weight": 0.05,
+            "value": 0,
+            "note": "no aggregateRating on page"
+          },
+          {
+            "key": "price_outlier",
+            "weight": 0.1,
+            "value": 1,
+            "note": ""
+          }
+        ]
+      },
+      "status": "ok",
+      "source_sha256": "81aa68a9493c1fcdac595033765c383f2aced46db415b029c8360a70a12b5db3"
+    }
+  ],
+  "possible_matches": [],
+  "alternatives": [],
+  "ledger": [
+    {
+      "source": "adafruit",
+      "url": "https://www.adafruit.com/product/2939",
+      "status": "offer",
+      "reason": "JSON-LD Product sku 2939, Offer price 24.9500 USD OutOfStock",
+      "checked_at": "2026-10-24T18:49:04Z"
+    },
+    {
+      "source": "mouser-api",
+      "url": null,
+      "status": "needs_api_key",
+      "reason": "MOUSER_API_KEY not set",
+      "checked_at": null
+    },
+    {
+      "source": "digikey-api",
+      "url": null,
+      "status": "needs_api_key",
+      "reason": "DIGIKEY_CLIENT_ID not set",
+      "checked_at": null
+    },
+    {
+      "source": "brave-search",
+      "url": null,
+      "status": "skipped",
+      "reason": "recorded mode: no web search",
+      "checked_at": null
+    }
+  ],
+  "notices": [
+    "Prices and stock are as of the check time and may have changed. Rivet does not sell parts."
+  ]
+}

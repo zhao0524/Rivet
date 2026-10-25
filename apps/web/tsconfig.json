@@ -28,7 +28,9 @@
     "src/**/*.tsx",
     "tests/**/*.ts",
     "tests/**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    ".next-e2e/types/**/*.ts",
+    ".next-acceptance/types/**/*.ts"
   ],
-  "exclude": ["node_modules", ".next"]
+  "exclude": ["node_modules", ".next", ".next-e2e", ".next-acceptance"]
 }

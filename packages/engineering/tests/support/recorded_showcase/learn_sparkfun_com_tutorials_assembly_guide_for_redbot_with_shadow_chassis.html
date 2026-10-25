@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <title>Assembly Guide for RedBot with Shadow Chassis - SparkFun Learn</title>
+          <link rel="canonical" href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/all">
+                  <link rel="next" href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/1-wheel-encoders-sik">
+    <link href="/css/bootstrap.min.css?rev=1792686932" rel="stylesheet">
+    <link rel="stylesheet" href="/css/theme.github.css?rev=1792686932" type="text/css" media="screen" />    <link rel="alternate" type="application/atom+xml" title="Education Blog" href="https://learn.sparkfun.com/feeds/blog" />
+    <link rel="alternate" type="application/atom+xml" title="Tutorials" href="https://learn.sparkfun.com/feeds/tutorials" />
+    <link rel="alternate" type="application/atom+xml" title="Education Blog Comments" href="https://learn.sparkfun.com/feeds/blog_comments" />
+    <link rel="alternate" type="application/atom+xml" title="Tutorial Comments" href="https://learn.sparkfun.com/feeds/tutorial_comments" />
+  </head>
+  <body id=learn class="layout-default no-type tutorials-view" ontouchstart="">
+    <div class="wrapper" itemscope itemtype="http://schema.org/WebSite">
+      <meta itemprop="url" content="https://learn.sparkfun.com/">
+      <div class=wrapper-inner>
+    <header>
+  <div class="support-nav-container container-fluid hidden-xs">
+    <div class="container">
+      <div class="support-nav">
+        <div aria-hidden="true">&nbsp;</div>
+        <div>
+          <ul class="professional-links">
+            <li><a href="https://www.sparkfun.com/professional">Professional</a></li>
+            <li><a href="https://www.sparkfun.com/education">EDU</a>            <li><a href="https://www.sparkfun.com/become-a-distributor">Distributor</a>          </ul>
+        </div>
+        <div class="cs">
+          <a href="https://www.sparkfun.com/support">Customer Support</a>        </div>
+      </div>
+    </div>
+  </div>
+  <div class="top-nav-buttons container-fluid hidden-xs">
+    <div class="container">
+      <div class="tab-bar">
+        <ul class="tab-navigation" aria-label="sparkfun.com navigation">
+  <li><a href="https://www.sparkfun.com/">Shop</a></li>
+  <li class="active"><a href="https://learn.sparkfun.com/">Documentation</a></li>
+  <li class=""><a href="https://news.sparkfun.com/">News</a></li>
+</ul>
+<ul class="sale-links" aria-label="Deals and special interests">
+  <li><a href="https://www.sparkfun.com/todays-deals"><span class="icon-header icon-header-sale" aria-hidden="true"></span>Today's Deals</a></li>
+  <li><a href="https://community.sparkfun.com/" target="_blank"><span class=" icon-header icon-header-community" aria-hidden="true"></span>Community</a></li>
+  <li><a class="sparkx" href="https://www.sparkpnt.com"><span class="logo-spark-pnt-primary"><span class="sr-only">SparkPNT (Position, Navigation & Timing)</span></span></a></li>
+</ul>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="header-content">
+      <div class="logo-container">
+        <button id="mobile-nav-menu-trigger" class="mobile-menu-button btn-unstyled hidden-sm hidden-md hidden-lg" type="button" aria-label="Open navigation menu">
+          <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+        </button>
+        <a class="logo" href="https://www.sparkfun.com/">
+          <span class="logo-sfe-primary"><span class="visuallyhidden">SparkFun Electronics - sparkfun.com</span></span>
+        </a>
+      </div>
+      <div class="search-block">
+                  <form id="search_form" class="search-block-form" action="https://learn.sparkfun.com/search/results" method="get">
+            <label for="global-search" class="sr-only">search documentation</label>
+            <input name="term" id="global-search" class="form-control" type="text" value="" placeholder="search documentation" autocomplete="off">
+            <button type="submit" class="glyphicon glyphicon-search global-search-icon" aria-label="Search"></button>
+          </form>
+        <a href="https://www.sparkfun.com/" class="hidden-xs">Back to Webstore<span class="icon-header icon-header-undo" aria-hidden="true"></span></a>
+      </div>
+        <a class="account-link" href="https://www.sparkfun.com/customer/account">
+          <span class="img-account-silhouette visible-xs-inline-block"><span class="sr-only">My Account</span></span>
+          <span class="hidden-xs">My Account</span>
+        </a>
+    </div>
+  </div>
+  <div class="header-nav container-fluid hidden-xs">
+    <div class="container">
+      <ul class="nav-product-categories" aria-label="Featured product categories">
+  <li><a href="https://www.sparkfun.com/featured">Featured <span class="sr-only">Products</span></a></li>
+  <li><a href="https://www.sparkfun.com/gnss">GPS/GNSS</a></li>
+  <li><a href="https://www.sparkfun.com/sensors">Sensors</a></li>
+  <li><a href="https://www.sparkfun.com/development-boards">Development Boards</a></li>
+  <li class="header-nav-iot"><a href="https://www.sparkfun.com/iot-wireless">IoT & Wireless</a></li>
+  <li class="header-nav-components"><a href="https://www.sparkfun.com/components">Components</a></li>
+  <li class="header-nav-kits"><a href="https://www.sparkfun.com/kits">Kits</a></li>
+  <li class="all-cat"><a href="https://www.sparkfun.com/all-categories"><span class="visible-xs-inline">Shop </span>All <span class="sr-only">Product</span> Categories</a></li>
+</ul>
+    </div>
+  </div>
+  <div id="nav-mobile-menu" class="nav-mobile-menu" aria-labelledby="nav-mobile-menu-heading" aria-role="dialog" aria-modal="true">
+    <h2 id="nav-mobile-menu-heading" class="sr-only">Navigation menu</h2>
+    <ul class="mobile-menu-tabs">
+      <li class="active"><a>Menu</a></li>
+      <li><a href="https://www.sparkfun.com/customer/account">Account</a></li>
+    </ul>
+    <ul class="nav-product-categories" aria-label="Featured product categories">
+  <li><a href="https://www.sparkfun.com/featured">Featured <span class="sr-only">Products</span></a></li>
+  <li><a href="https://www.sparkfun.com/gnss">GPS/GNSS</a></li>
+  <li><a href="https://www.sparkfun.com/sensors">Sensors</a></li>
+  <li><a href="https://www.sparkfun.com/development-boards">Development Boards</a></li>
+  <li class="header-nav-iot"><a href="https://www.sparkfun.com/iot-wireless">IoT & Wireless</a></li>
+  <li class="header-nav-components"><a href="https://www.sparkfun.com/components">Components</a></li>
+  <li class="header-nav-kits"><a href="https://www.sparkfun.com/kits">Kits</a></li>
+  <li class="all-cat"><a href="https://www.sparkfun.com/all-categories"><span class="visible-xs-inline">Shop </span>All <span class="sr-only">Product</span> Categories</a></li>
+</ul>
+    <ul class="tab-navigation" aria-label="sparkfun.com navigation">
+  <li><a href="https://www.sparkfun.com/">Shop</a></li>
+  <li class="active"><a href="https://learn.sparkfun.com/">Documentation</a></li>
+  <li class=""><a href="https://news.sparkfun.com/">News</a></li>
+</ul>
+<ul class="sale-links" aria-label="Deals and special interests">
+  <li><a href="https://www.sparkfun.com/todays-deals"><span class="icon-header icon-header-sale" aria-hidden="true"></span>Today's Deals</a></li>
+  <li><a href="https://community.sparkfun.com/" target="_blank"><span class=" icon-header icon-header-community" aria-hidden="true"></span>Community</a></li>
+  <li><a class="sparkx" href="https://www.sparkpnt.com"><span class="logo-spark-pnt-primary"><span class="sr-only">SparkPNT (Position, Navigation & Timing)</span></span></a></li>
+</ul>
+  </div>
+</header>
+    <div class=content>
+      <div class=container id=airlock>
+<div class=main-title>
+  <ul class="breadcrumb">
+    <li><a href="https://learn.sparkfun.com/">Home</a></li>
+    <li><a href="https://learn.sparkfun.com/tutorials">Tutorials</a></li>
+    <li>Assembly Guide for RedBot with Shadow Chassis</li>
+      </ul>
+  <h1>
+    Assembly Guide for RedBot with Shadow Chassis  </h1>
+</div>
+<a id=nav_toggle_pages class="nav_toggle nav-toggle-trigger" href="#"><span>&#8801;</span> Pages</a>
+<div id="tutorial" class="row">
+  <div id="sections" class="col-sm-8 tutorial-page">
+    <div class="contributors">
+                      Contributors:
+                <span class="contributor-alias"><img src="https://cdn.sparkfun.com/avatar/c221e70aedb663ceb99faf8afd2734d3?d=retro&s=20&r=pg" /> HelloTechie</span>, <span class="contributor-alias"><img src="https://cdn.sparkfun.com/avatar/f4e195a7becacb6d86238db8c87e90f0?d=retro&s=20&r=pg" /> SFUptownMaker</span>, <span class="contributor-alias"><img src="https://cdn.sparkfun.com/avatar/4f445d9df43505cdae80a4d6f18cfe89?d=retro&s=20&r=pg" /> Shawn Hymel</span>          </div>
+    <div class="share-link-inline">
+  <a class="share-link-toggle" href="#">
+    <span class="share-title">
+      <span class="sfe-icon-share"></span>
+      Share    </span>
+  </a>
+  <div class="share-link-inner dialog">
+    Use this URL to share:<br>
+    <input class="form-control input-sm" type="text" value="http://sfe.io/t337" onclick="$(this).trigger('select');">
+    <div class="share-social">
+      <a rel=nofollow onclick="return $(this).sfeutil('track_link',this,'Share','clicked','tumblr');" href="https://www.tumblr.com/share/link?url=http%3A%2F%2Fsfe.io%2Ft337&name=Assembly+Guide+for+RedBot+with+Shadow+Chassis" title="Share on Tumblr"><span class="sfe-icon-tumblr hidetext"><span>Share on Tumblr</span></span></a>
+      <a rel=nofollow onclick="return $(this).sfeutil('track_link',this,'Share','clicked','reddit');" href="https://www.reddit.com/submit?url=http%3A%2F%2Fsfe.io%2Ft337" title="Submit to reddit"><span class="sfe-icon-reddit hidetext"><span>Submit to reddi</span></span></a>
+    </div>
+    </div>
+  <div class="share-social">
+    <a rel=nofollow onclick="return $(this).sfeutil('track_link',this,'Share','clicked','twitter');" href="https://twitter.com/intent/tweet?text=Assembly+Guide+for+RedBot+with+Shadow+Chassis&url=http%3A%2F%2Fsfe.io%2Ft337&via=sparkfun" title="Share on Twitter"><span class="sfe-icon-twitter hidetext"><span>Share on Twitter</span></span></a>
+    <a rel=nofollow onclick="return $(this).sfeutil('track_link',this,'Share','clicked','facebook');" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fsfe.io%2Ft337&t=Assembly+Guide+for+RedBot+with+Shadow+Chassis" title="Share on Facebook"><span class="sfe-icon-facebook-nobox hidetext"><span>Share on Facebook</span></span></a>
+          <a rel=nofollow onclick="return $(this).sfeutil('track_link',this,'Share','clicked','pinterest');" href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fsfe.io%2Ft337&media=https%3A%2F%2Fcdn.sparkfun.com%2F%2Fr%2F500-1000%2Fassets%2Flearn_tutorials%2F3%2F3%2F7%2FRedbot_Kit_Brian_Revisions-02.jpg&description=Assembly+Guide+for+RedBot+with+Shadow+Chassis" title="Pin It"><span class="sfe-icon-pinterest hidetext"><span>Pin It</span></span></a>
+  </div>
+</div>
+    <h2>Introduction</h2>
+    <p>The SparkFun RedBot is a platform for teaching basic robotics and sensor integration! It is based on the SparkFun RedBoard and fully programmable using <a href="https://www.arduino.cc">Arduino</a>. This guide describes the assembly of the new <a href="https://www.sparkfun.com/products/13301">Shadow Chassis</a> for the RedBot. If you want to learn how to program your robot, see the <a href="https://learn.sparkfun.com/tutorials/experiment-guide-for-redbot-with-shadow-chassis">Experiment Guide for RedBot</a>.</p>
+<p><div class="center-block text-center"> <a href="https://cdn.sparkfun.com/assets/learn_tutorials/3/3/7/Redbot_Kit_Brian_Revisions-03.jpg"><img src="https://cdn.sparkfun.com/r/600-600/assets/learn_tutorials/3/3/7/Redbot_Kit_Brian_Revisions-03.jpg" alt="Completed RedBot" /></a> </div></p>
+<p><strong>NOTE:</strong> We recommend that you read <strong>all</strong> of the directions first, before building your RedBot.</p>
+<h3>RedBot Basic Kit vs. SIK for RedBot</h3>
+<p>This tutorial will cover how to install all the parts in the <a href="https://www.sparkfun.com/products/13166">SparkFun RedBot Basic Kit</a> and the <a href="https://www.sparkfun.com/products/12649">SparkFun Inventor's Kit for RedBot</a> (SIK for RedBot).</p>
+<div class="alert alert-warning">The SIK for RedBot contains additional parts to the RedBot Basic Kit. If you have the RedBot Basic Kit, please ignore sections pertaining to these extra parts. These sections are marked with the label <b>(SIK)</b>.</div>
+<h4>SparkFun RedBot Basic Kit</h4>
+<p>We have two flavors of the RedBot available - the Basic kit and the SparkFun Inventor's Kit for RedBot. If you have the <a href="https://www.sparkfun.com/products/13166">SparkFun RedBot Basic Kit</a>, you can <strong>skip</strong> the sections marked with <strong>(SIK)</strong>.</p>
+<p><div class="center-block text-center"> <a href="https://cdn.sparkfun.com/assets/learn_tutorials/3/3/7/Redbot_Kit-93.jpg"><img src="https://cdn.sparkfun.com/r/600-600/assets/learn_tutorials/3/3/7/Redbot_Kit-93.jpg" alt="SparkFun RedBot Basic Kit" /></a> </div></p>
+<p>Alternatively, you can pick up additional sensors to install on your RedBot. These parts include the <a href="https://www.sparkfun.com/products/12629">Wheel Encoder Kit</a>, <a href="https://www.sparkfun.com/products/12567">RedBot Buzzer</a>, and <strong>two</strong> <a href="https://www.sparkfun.com/products/11999">RedBot Mechanical Bumpers</a>. Follow the sections in this guide that covers any of the extra sensors you might have.</p>
+<h4>SIK for RedBot</h4>
+<p>The SIK for RedBot has a few extra parts that you won't see in the Basic Kit. These include the mechanical bump sensors (whiskers), the buzzer, and wheel encoders. If you have the <a href="https://www.sparkfun.com/products/12649">SIK for RedBot</a>, you can follow all the sections in this guide, including those marked with <strong>(SIK)</strong>.</p>
+<p><div class="center-block text-center"> <a href="https://cdn.sparkfun.com/assets/learn_tutorials/3/3/7/Redbot_Kit_Brian_Revisions-02.jpg"><img src="https://cdn.sparkfun.com/r/600-600/assets/learn_tutorials/3/3/7/Redbot_Kit_Brian_Revisions-02.jpg" alt="Completed RedBot SIK" /></a> </div></p>
+<h3>Materials</h3>
+<p>The SparkFun RedBot Basic Kit contains the following pieces. SIK-only parts are noted with an asterisk (*). Note that several of the parts need to be snapped out of the main chassis boards.</p>
+<p><div class="center-block text-center"> <a href="https://cdn.sparkfun.com/assets/learn_tutorials/3/3/7/Redbot_Kit-00_annotated_updated.jpg"><img src="https://cdn.sparkfun.com/r/600-600/assets/learn_tutorials/3/3/7/Redbot_Kit-00_annotated_updated.jpg" alt="RedBot Kit parts" /></a> </div></p>
+<table class="table table-bordered">
+<tr>
+<th class="text-center"></th>
+<th class="text-center">Part</th>
+<th class="text-center">Qty</th>
+</tr>
+<tr align="center">
+<td class="active">A</td>
+<td class="active">Bottom Chassis Plate</td>
+<td class="active">1</td>
+</tr>
+<tr align="center">
+<td class="active">B</td>
+<td class="active">Top Chassis Plate</td>
+<td class="active">1</td>
+</tr>
+<tr align="center">
+<td class="active">C</td>
+<td class="active">Front Motor Mount</td>
+<td class="active">2</td>
+</tr>
+<tr align="center">
+<td class="active">D</td>
+<td class="active">Rear Motor Mount</td>
+<td class="active">2</td>
+</tr>
+<tr align="center">
+<td class="active">E</td>
+<td class="active">Side Strut</td>
+<td class="active">4</td>
+</tr>
+<tr align="center">
+<td class="active">F</td>
+<td class="active">Encoder Mount</td>
+<td class="active">2</td>
+</tr>
+<tr align="center">
+<td class="active">G</td>
+<td class="active">Mainboard Mount</td>
+<td class="active">2</td>
+</tr>
+<tr align="center">
+<td class="active">H</td>
+<td class="active">Battery Pack Clip</td>
+<td class="active">1</td>
+</tr>
+<tr align="center">
+<td class="active">I</td>
+<td class="active">Line Follower Mount</td>
+<td class="active">1</td>
+</tr>
+<tr align="center">
+<td class="active">J</td>
+<td class="active">Line Follower Mount Plate</td>
+<td class="active">1</td>
+</tr>
+<tr align="center">
+<td class="active">K</td>
+<td class="active"><a href="https://www.sparkfun.com/products/13302">Motor</a></td>
+<td class="active">2</td>
+</tr>
+<tr align="center">
+<td class="active">L</td>
+<td class="active"><a href="https://www.sparkfun.com/products/13259">Wheel</a></td>
+<td class="active">2</td>
+</tr>
+<tr align="center">
+<td class="active">M</td>
+<td class="active">Nub Caster</td>
+<td class="active">1</td>
+</tr>
+<tr align="center">
+<td class="active">N*</td>
+<td class="active"><a href="https://www.sparkfun.com/products/12629">Encoder Magnet Plate (SIK)</a></td>
+<td class="active">2</td>
+</tr>
+<tr align="center">
+<td class="active">O*</td>
+<td class="active"><a href="https://www.sparkfun.com/products/12629">Encoder Hall Effect Sensor (SIK)</a></td>
+<td class="active">2</td>
+</tr>
+<tr align="center">
+<td class="active">P</td>
+<td class="active"><a href="https://www.sparkfun.com/products/12097">RedBot Mainboard</a></td>
+<td class="active">1</td>
+</tr>
+<tr align="center">
+<td class="active">Q</td>
+<td class="active"><a href="https://www.sparkfun.com/products/11769">Line Follower Board</a></td>
+<td class="active">3</td>
+</tr>
+<tr align="center">
+<td class="active">R</td>
+<td class="active"><a href="https://www.sparkfun.com/products/12589">Accelerometer Board</a></td>
+<td class="active">1</td>
+</tr>
+<tr align="center">
+<td class="active">S*</td>
+<td class="active"><a href="https://www.sparkfun.com/products/12567">Buzzer Board (SIK)</a></td>
+<td class="active">1</td>
+</tr>
+<tr align="center">
+<td class="active">T*</td>
+<td class="active"><a href="https://www.sparkfun.com/products/11999">Bumper Board (SIK)</a></td>
+<td class="active">2</td>
+</tr>
+<tr align="center">
+<td class="active">U*</td>
+<td class="active"><a href="https://www.sparkfun.com/products/11999">Bumper Whisker (SIK)</a></td>
+<td class="active">2</td>
+</tr>
+<tr align="center">
+<td class="active">V*</td>
+<td class="active"><a href="https://www.sparkfun.com/products/11999">#4-40 x 3/8" Screw (SIK)</a></td>
+<td class="active">6</td>
+</tr>
+<tr align="center">
+<td class="active">W*</td>
+<td class="active"><a href="https://www.sparkfun.com/products/11999">#4-40 Nylon Standoff (SIK)</a></td>
+<td class="active">2</td>
+</tr>
+<tr align="center">
+<td class="active">X*</td>
+<td class="active"><a href="https://www.sparkfun.com/products/11999">#4-40 Hex Nut (SIK)</a></td>
+<td class="active">2</td>
+</tr>
+<tr align="center">
+<td class="active">Y</td>
+<td class="active"><a href="https://www.sparkfun.com/products/13164">3-Wire Jumper Cable (SIK)</a></td>
+<td class="active">3 (5*)</td>
+</tr>
+<tr align="center">
+<td class="active">Z</td>
+<td class="active">Battery Holder</td>
+<td class="active">1</td>
+</tr>
+<tr align="center">
+<td class="active">AA*</td>
+<td class="active"><a href="https://www.sparkfun.com/products/9100">AA Batteries (SIK)</a></td>
+<td class="active">4</td>
+</tr>
+<tr align="center">
+<td class="active">AB*</td>
+<td class="active"><a href="https://www.sparkfun.com/products/9146">Screwdriver (SIK)</a> (Not Shown)</td>
+<td class="active">1</td>
+</tr>
+<tr align="center">
+<td class="active">AC*</td>
+<td class="active"><a href="https://www.sparkfun.com/products/11301">USB Mini-B Cable (SIK)</a> (Not Shown)</td>
+<td class="active">1</td>
+</tr>
+<tr align="center">
+<td colspan="3">* Indicates parts included in the SIK for RedBot</td>
+</tr>
+</table>
+<p><strong>IMPORTANT:</strong> If you have the RedBot Basic Kit, you will need 4x AA batteries.</p>
+<h3>Recommended Tools</h3>
+<p>None! The RedBot Basic Kit does not require any additional tools. The SIK for RedBot comes with a screwdriver, which you will need to mount the Bumper Boards. If you bought the Bumper Boards separately, you will need a <a href="https://www.sparkfun.com/products/9146">Phillips screwdriver</a>.</p>
+<p><strong>WARNING:</strong> Do <strong>not</strong> attempt to remove chassis parts by squeezing them with pliers. You will break them, and the robot will be sad.</p>
+<p><div class="center-block text-center"> <a href="https://cdn.sparkfun.com/assets/learn_tutorials/3/3/7/Redbot_Kit-31_do_not.jpg"><img src="https://cdn.sparkfun.com/r/600-600/assets/learn_tutorials/3/3/7/Redbot_Kit-31_do_not.jpg" alt="You're going to have a bad time" /></a> </div></p>
+<h3>A Note About Directions</h3>
+<p>When we talk about the "front," "left," "right," and "back" of the RedBot, we are referring to specific sides of the robot when viewed from above.</p>
+<p><div class="center-block text-center"> <a href="https://cdn.sparkfun.com/assets/learn_tutorials/3/3/7/Redbot_re-wired_shots-01.jpg"><img src="https://cdn.sparkfun.com/r/600-600/assets/learn_tutorials/3/3/7/Redbot_re-wired_shots-01.jpg" alt="Directions on the RedBot" /></a> </div></p>
+<p>Notice that we consider the Mainboard to be on the "back" of the RedBot and the Bumper Whiskers and Line Follower Boards to be in the "front."</p>
+        <div class="share-link-inline">
+  <a class="share-link-toggle" href="#">
+    <span class="share-title">
+      <span class="sfe-icon-share"></span>
+      Share    </span>
+  </a>
+  <div class="share-link-inner dialog">
+    Use this URL to share:<br>
+    <input class="form-control input-sm" type="text" value="http://sfe.io/t337" onclick="$(this).trigger('select');">
+    <div class="share-social">
+      <a rel=nofollow onclick="return $(this).sfeutil('track_link',this,'Share','clicked','tumblr');" href="https://www.tumblr.com/share/link?url=http%3A%2F%2Fsfe.io%2Ft337&name=Assembly+Guide+for+RedBot+with+Shadow+Chassis" title="Share on Tumblr"><span class="sfe-icon-tumblr hidetext"><span>Share on Tumblr</span></span></a>
+      <a rel=nofollow onclick="return $(this).sfeutil('track_link',this,'Share','clicked','reddit');" href="https://www.reddit.com/submit?url=http%3A%2F%2Fsfe.io%2Ft337" title="Submit to reddit"><span class="sfe-icon-reddit hidetext"><span>Submit to reddi</span></span></a>
+    </div>
+    </div>
+  <div class="share-social">
+    <a rel=nofollow onclick="return $(this).sfeutil('track_link',this,'Share','clicked','twitter');" href="https://twitter.com/intent/tweet?text=Assembly+Guide+for+RedBot+with+Shadow+Chassis&url=http%3A%2F%2Fsfe.io%2Ft337&via=sparkfun" title="Share on Twitter"><span class="sfe-icon-twitter hidetext"><span>Share on Twitter</span></span></a>
+    <a rel=nofollow onclick="return $(this).sfeutil('track_link',this,'Share','clicked','facebook');" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fsfe.io%2Ft337&t=Assembly+Guide+for+RedBot+with+Shadow+Chassis" title="Share on Facebook"><span class="sfe-icon-facebook-nobox hidetext"><span>Share on Facebook</span></span></a>
+          <a rel=nofollow onclick="return $(this).sfeutil('track_link',this,'Share','clicked','pinterest');" href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fsfe.io%2Ft337&media=https%3A%2F%2Fcdn.sparkfun.com%2F%2Fr%2F500-1000%2Fassets%2Flearn_tutorials%2F3%2F3%2F7%2FRedbot_Kit_Brian_Revisions-02.jpg&description=Assembly+Guide+for+RedBot+with+Shadow+Chassis" title="Pin It"><span class="sfe-icon-pinterest hidetext"><span>Pin It</span></span></a>
+  </div>
+</div>
+    <hr>
+    <div class="page-nav clearfix">
+      <div class="pull-right">
+        <a href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/all" class="btn">
+          View as a single page
+        </a>
+                  <a href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/1-wheel-encoders-sik" class="btn btn-primary">
+            Next Page &rarr;<br>
+            <small>1. Wheel Encoders (SIK)</small>
+          </a>
+              </div>
+              <button class="btn btn-disabled" disabled>
+          &larr; Previous Page
+        </button>
+    </div>
+  </div>
+  <div class="col-sm-4 nav-menu" id="nav-pages">
+    <div id="sidebar_affix">
+      <div id="tutorial-pages" class="list-group">
+        <a class="list-group-item"><b>Pages</b></a>
+                  <a data-pageid="2763" class="list-group-item active" href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/introduction">
+            Introduction          </a>
+                  <a data-pageid="2764" class="list-group-item " href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/1-wheel-encoders-sik">
+            1. Wheel Encoders (SIK)          </a>
+                  <a data-pageid="2765" class="list-group-item " href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/2-motors-and-wheels">
+            2. Motors and Wheels          </a>
+                  <a data-pageid="2769" class="list-group-item " href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/3-line-follower">
+            3. Line Follower          </a>
+                  <a data-pageid="2772" class="list-group-item " href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/4-mechanical-bumpers-sik">
+            4. Mechanical Bumpers (SIK)          </a>
+                  <a data-pageid="2775" class="list-group-item " href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/5-chassis">
+            5. Chassis          </a>
+                  <a data-pageid="2776" class="list-group-item " href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/6-mainboard">
+            6. Mainboard          </a>
+                  <a data-pageid="2781" class="list-group-item " href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/7-accelerometer">
+            7. Accelerometer          </a>
+                  <a data-pageid="2782" class="list-group-item " href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/8-buzzer-sik">
+            8. Buzzer (SIK)          </a>
+                  <a data-pageid="2783" class="list-group-item " href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/9-batteries">
+            9. Batteries          </a>
+                  <a data-pageid="3058" class="list-group-item " href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/10-run-it">
+            10. Run It!          </a>
+                  <a data-pageid="2784" class="list-group-item " href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/resources-and-going-further">
+            Resources and Going Further          </a>
+              </div>
+      <div class="list-group">
+        <a class="list-group-item" href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/discuss">
+          Comments
+          <span class="badge">1</span>
+        </a>
+        <a class="list-group-item" href="https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis/all">
+          Single Page
+        </a>
+        <a class="list-group-item" hhref="#" onclick="window.print(); return false;">
+          Print
+        </a>
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item"><b>Tags</b></li>
+        <li class="list-group-item"><ul class="tags-list">
+  <li>
+    <a class="tag" href="https://learn.sparkfun.com/tutorials/tags/actobotics">Actobotics</a>  </li>
+  <li>
+    <a class="tag" href="https://learn.sparkfun.com/tutorials/tags/arduino">Arduino</a>  </li>
+  <li>
+    <a class="tag" href="https://learn.sparkfun.com/tutorials/tags/hookup">Hookup</a>  </li>
+  <li>
+    <a class="tag" href="https://learn.sparkfun.com/tutorials/tags/robotics">Robotics</a>  </li>
+</ul>
+</li>
+      </ul>
+      <ul class="list-group">
+        <li class="list-group-item"><b>License</b></li>
+        <li class="list-group-item">
+          <span class="sfe-icon-cc">
+            <span class="visuallyhidden">Creative Commons</span>
+          </span>
+          <small>tutorials are <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="new">CC BY-SA 4.0</a></small>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+      </div> 
+    </div> 
+    <footer>
+  <div class="container">
+  <div class="row">
+      <div class="col-sm-6 col-md-4">
+        <div class="footer-col-inner">
+          <h3>About SparkFun</h3>
+          <ul>
+            <li><a href="https://www.sparkfun.com/about-sparkfun">Read Our Story</a></li>
+            <li><a href="https://www.sparkfun.com/press-and-media">Press &amp; Media</a></li>
+            <li><a href="http://www.sparkfuneducation.com" target="_blank">SparkFun Education <span class="glyphicon glyphicon-new-window"></span></a></li>
+            <li><a href="https://www.sparkfun.com/jobs">Job Openings</a></li>
+          </ul>
+          <h3>Partner With Us</h3>
+          <ul>
+            <li><a href="https://www.sparkfun.com/partner">See Our Partners</a></li>
+            <li><a href="https://www.sparkfun.com/services">View Our Services</a></li>
+            <li><a href="https://www.sparkfun.com/become-a-distributor">Become a Distributor/Reseller</a></li>
+            <li><a href="https://www.sparkfun.com/volume-sales">Receive Volume Discounts</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <div class="footer-col-inner">
+          <h3>Support</h3>
+          <ul>
+            <li><a href="https://www.sparkfun.com/support">Customer Support</a></li>
+            <li><a href="https://www.sparkfun.com/payments">Purchase Order &amp; Payment Terms</a></li>
+            <li><a href="https://www.sparkfun.com/technical-assistance">Technical Assistance</a></li>
+            <li><a href="https://www.sparkfun.com/faq">FAQs</a></li>
+          </ul>
+          <h3>Site Information</h3>
+          <ul>
+            <li><a href="https://www.sparkfun.com/terms">Terms Of Service</a></li>
+            <li><a href="https://www.sparkfun.com/privacy">Privacy Policy</a></li>
+            <li><a href="https://www.sparkfun.com/compliance">Compliance</a></li>
+            <li><a href="https://www.sparkfun.com/sitemap">Site Map</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <div class="footer-col-inner">
+          <h3>Subscribe</h3>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <div class="footer-col-inner">
+          <h3>View Our Social Channels</h3>
+          <ul class="spew">
+            <li><a href="https://www.youtube.com/sparkfun" target="_blank" class="icon-social-youtube"><span class="sr-only">YouTube</span></a></li>
+            <li><a href="https://www.instagram.com/sparkfun/" target="_blank" class="icon-social-instagram"><span class="sr-only">Instagram</span></a></li>
+            <li><a href="https://www.github.com/sparkfun" target="_blank" class="icon-social-github"><span class="sr-only">GitHub</span></a></li>
+            <li><a href="https://www.facebook.com/SparkFun" target="_blank" class="icon-social-facebook"><span class="sr-only">Facebook</span></a></li>
+            <li><a href="https://twitter.com/sparkfun" target="_blank" class="icon-social-twitter"><span class="sr-only">Twitter</span></a></li>
+            <li><a href="https://www.sparkfun.com/feeds" class="icon-social-rss"><span class="sr-only">RSS</span></a></li>
+            <li><a href="https://www.tiktok.com/@sparkfun.electronics?lang=en" target="_blank" class="icon-social-tiktok"><span class="sr-only">TikTok</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 text-center">
+        <p class="copyleft">
+          <strong>SparkFun Electronics&nbsp;&reg;</strong>
+          <span class="hidden-xs hidden-sm">/</span>
+          <br class="visible-xs-inline visible-sm-inline"/>
+          6333 Dry Creek Parkway,
+          <br class="visible-xs-inline"/>
+          Niwot, CO 80503
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+      </div>
+    </div>
+      </body>
+</html>

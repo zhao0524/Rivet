@@ -29,11 +29,33 @@ const startGeneration = vi.fn();
 /** When set, replaces the store's startGeneration (e.g. to simulate an engine failure). */
 let startOverride: (() => Promise<never>) | null = null;
 
+/** When set, the data source reads every prompt as this unsupported family. */
+let unsupportedFamily: string | null = null;
+
 /** A real store whose startGeneration is spied on, injected through FlowProvider. */
 function SpiedFlow({ children }: { children: React.ReactNode }) {
   const store = useStudioPlanStore();
   startGeneration.mockImplementation(startOverride ?? store.startGeneration);
-  return <FlowProvider store={{ ...store, startGeneration }}>{children}</FlowProvider>;
+  const base = store.dataSource;
+  const dataSource =
+    unsupportedFamily && base.interpret
+      ? Object.assign(Object.create(base) as typeof base, {
+          interpret: async (...args: Parameters<NonNullable<typeof base.interpret>>) => {
+            const res = await base.interpret!(...args);
+            return {
+              ...res,
+              intent: { ...res.intent, project_family: unsupportedFamily! },
+              supported: false,
+              limitation: {
+                code: 'UNSUPPORTED_PROJECT_FAMILY',
+                message: `Projects of family '${unsupportedFamily}' are not supported in this version`,
+                details: {},
+              },
+            };
+          },
+        })
+      : base;
+  return <FlowProvider store={{ ...store, dataSource, startGeneration }}>{children}</FlowProvider>;
 }
 
 beforeEach(() => {
@@ -44,6 +66,7 @@ beforeEach(() => {
   nav.search = '';
   startGeneration.mockReset();
   startOverride = null;
+  unsupportedFamily = null;
 });
 afterEach(cleanup);
 
@@ -149,6 +172,48 @@ describe('A2 Clarify', () => {
     fireEvent.change(screen.getByTestId('clarify-budget-amount'), { target: { value: '75' } });
     fireEvent.click(screen.getByTestId('clarify-next'));
     expect(getProject('p_cl3')?.clarify.max_budget).toBe(75);
+  });
+
+  it('an unsupported reading builds a 3D model of the photo by default, or the closest rover on request', async () => {
+    unsupportedFamily = 'drone';
+    seed('p_cl4');
+    await renderIn(
+      <ProjectShell id="p_cl4">
+        <ClarifyScreen />
+      </ProjectShell>,
+    );
+    await screen.findByTestId('clarify-limitation');
+    expect(screen.getByTestId('clarify-unsupported-concept_model').getAttribute('aria-checked')).toBe('true');
+    fireEvent.click(screen.getByTestId('clarify-skip'));
+    expect(getProject('p_cl4')?.clarify.interpretation_choice).toBe('concept_model');
+
+    seed('p_cl5');
+    cleanup();
+    await renderIn(
+      <ProjectShell id="p_cl5">
+        <ClarifyScreen />
+      </ProjectShell>,
+    );
+    await screen.findByTestId('clarify-limitation');
+    fireEvent.click(screen.getByTestId('clarify-unsupported-closest_supported_rover'));
+    fireEvent.click(screen.getByTestId('clarify-skip'));
+    expect(getProject('p_cl5')?.clarify.interpretation_choice).toBe('closest_supported_rover');
+  });
+
+  it('a toy car reading defaults to the engineered rover', async () => {
+    unsupportedFamily = 'rc_car';
+    seed('p_cl6');
+    await renderIn(
+      <ProjectShell id="p_cl6">
+        <ClarifyScreen />
+      </ProjectShell>,
+    );
+    await screen.findByTestId('clarify-limitation');
+    await waitFor(() =>
+      expect(screen.getByTestId('clarify-unsupported-closest_supported_rover').getAttribute('aria-checked')).toBe('true'),
+    );
+    fireEvent.click(screen.getByTestId('clarify-skip'));
+    expect(getProject('p_cl6')?.clarify.interpretation_choice).toBe('closest_supported_rover');
   });
 });
 

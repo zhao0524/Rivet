@@ -1,0 +1,173 @@
+{
+  "$defs": {
+    "VisualIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "body_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Body Id"
+        },
+        "observed": {
+          "title": "Observed",
+          "type": "string"
+        },
+        "patch": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Patch"
+        },
+        "proposed_change": {
+          "title": "Proposed Change",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "minor",
+            "major",
+            "critical"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        },
+        "view": {
+          "title": "View",
+          "type": "string"
+        }
+      },
+      "required": [
+        "body_id",
+        "view",
+        "severity",
+        "observed",
+        "target",
+        "proposed_change"
+      ],
+      "title": "VisualIssue",
+      "type": "object"
+    },
+    "VisualScores": {
+      "additionalProperties": false,
+      "properties": {
+        "colour_and_surface": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Colour And Surface",
+          "type": "number"
+        },
+        "pose_and_orientation": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Pose And Orientation",
+          "type": "number"
+        },
+        "proportions": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Proportions",
+          "type": "number"
+        },
+        "reference_consistency": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Reference Consistency",
+          "type": "number"
+        },
+        "signature_features": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Signature Features",
+          "type": "number"
+        },
+        "silhouette": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Silhouette",
+          "type": "number"
+        }
+      },
+      "required": [
+        "silhouette",
+        "proportions",
+        "signature_features",
+        "pose_and_orientation",
+        "colour_and_surface",
+        "reference_consistency"
+      ],
+      "title": "VisualScores",
+      "type": "object"
+    }
+  },
+  "$id": "https://rivet.dev/contracts/visual-review.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/VisualIssue"
+      },
+      "title": "Issues",
+      "type": "array"
+    },
+    "judge_model": {
+      "title": "Judge Model",
+      "type": "string"
+    },
+    "metrics": {
+      "additionalProperties": true,
+      "title": "Metrics",
+      "type": "object"
+    },
+    "overall": {
+      "maximum": 10,
+      "minimum": 0,
+      "title": "Overall",
+      "type": "number"
+    },
+    "render_digest": {
+      "title": "Render Digest",
+      "type": "string"
+    },
+    "scores": {
+      "$ref": "#/$defs/VisualScores"
+    },
+    "subjective": {
+      "const": true,
+      "default": true,
+      "title": "Subjective",
+      "type": "boolean"
+    },
+    "summary": {
+      "title": "Summary",
+      "type": "string"
+    }
+  },
+  "required": [
+    "scores",
+    "overall",
+    "issues",
+    "summary",
+    "judge_model",
+    "render_digest"
+  ],
+  "title": "Rivet VisualReview v2 (subjective)",
+  "type": "object"
+}

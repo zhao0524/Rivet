@@ -109,6 +109,8 @@ class PoliteFetcher:
         self._last_hit: dict[str, float] = {}
         self._robots: dict[str, robotparser.RobotFileParser | None] = {}
         self._non_public: set[str] = set()
+        # Hosts whose robots.txt just answered 429/5xx, with that status; read once by `fetch`.
+        self._robots_unavailable: dict[str, int] = {}
         self._opener = urllib.request.build_opener(_SafeRedirectHandler())
 
     def _cache_path(self, url: str) -> Path:
@@ -145,10 +147,16 @@ class PoliteFetcher:
                 self._robots[base] = rp
                 return False
             try:
+                self._throttle(parsed.netloc)
                 req = urllib.request.Request(base + "/robots.txt", headers={"User-Agent": self.user_agent})
                 with self._opener.open(req, timeout=self.timeout_s) as resp:
                     rp.parse(resp.read().decode("utf-8", "replace").splitlines())
             except urllib.error.HTTPError as exc:
+                if exc.code == 429 or exc.code >= 500:
+                    # Rate limited or down right now: refuse this fetch, but ask again next time
+                    # instead of treating the whole host as disallowed for the process lifetime.
+                    self._robots_unavailable[base] = exc.code
+                    return False
                 # No robots file means everything is allowed; other HTTP errors mean "do not assume".
                 rp.parse([] if exc.code == 404 else ["User-agent: *", "Disallow: /"])
             except (urllib.error.URLError, TimeoutError, OSError):
@@ -173,7 +181,12 @@ class PoliteFetcher:
             return cached
         parsed = urlparse(url)
         if not self._allowed_by_robots(url):
-            if f"{parsed.scheme}://{parsed.netloc}" in self._non_public:
+            base = f"{parsed.scheme}://{parsed.netloc}"
+            status = self._robots_unavailable.pop(base, None)
+            if status is not None:
+                # Not a robots refusal: report the status so callers that retry 429s do so.
+                return FetchResult.failure(url, f"robots.txt answered HTTP {status}; not fetched this time", status=status)
+            if base in self._non_public:
                 return FetchResult.failure(url, "host does not resolve to a public address", blocked=True)
             return FetchResult.failure(url, "disallowed by robots.txt", blocked=True)
         # Checked again here: DNS may have changed since robots.txt was read.

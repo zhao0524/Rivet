@@ -11,7 +11,7 @@ import type {
   RivetDataSource,
 } from "./data-source";
 import { RivetError } from "./errors";
-import { SAVED_SYNTHETIC_EXAMPLE_LABEL } from "./honesty";
+import { SAVED_SYNTHETIC_EXAMPLE_LABEL, isConceptPlan } from "./honesty";
 import { assertPlanIntegrity } from "./integrity";
 import type {
   BuildPlan,
@@ -82,7 +82,7 @@ export class FixtureSource implements RivetDataSource {
     const catalog = parseCatalogComponents(this.options.catalog ?? syntheticCatalog);
     const plans = (this.options.plans ?? [syntheticRoverPlan]).map((raw) => {
       const plan = parseBuildPlan(raw);
-      assertPlanIntegrity(plan, catalog);
+      assertPlanIntegrity(plan, plan.concept_catalog ? [...catalog, ...plan.concept_catalog] : catalog);
       return plan;
     });
     if (plans.length === 0) {
@@ -105,9 +105,18 @@ export class FixtureSource implements RivetDataSource {
     return `${SAVED_JOB_PREFIX}${plan.build_id}@${plan.revision}`;
   }
 
+  /** A concept request is served by the saved concept example when there is one. */
+  private planFor(input: GenerateRequest): BuildPlan {
+    const { plans, defaultPlan } = this.load();
+    if (input.interpretation_choice !== "concept_model") return defaultPlan;
+    const concept = plans.find(isConceptPlan);
+    return concept ? (this.latest(plans, concept.build_id) ?? defaultPlan) : defaultPlan;
+  }
+
   private savedJob(jobId: string): JobResponse {
-    const { defaultPlan } = this.load();
-    if (jobId !== this.savedJobId(defaultPlan)) {
+    const { plans } = this.load();
+    const savedPlan = plans.find((p) => jobId === this.savedJobId(p) && this.latest(plans, p.build_id) === p);
+    if (!savedPlan) {
       throw new RivetError({
         kind: "not_found",
         code: "JOB_NOT_FOUND",
@@ -121,8 +130,8 @@ export class FixtureSource implements RivetDataSource {
       stage: "complete",
       progress: null,
       error: null,
-      build_id: defaultPlan.build_id,
-      revision: defaultPlan.revision,
+      build_id: savedPlan.build_id,
+      revision: savedPlan.revision,
     };
   }
 
@@ -168,8 +177,8 @@ export class FixtureSource implements RivetDataSource {
   async generate(input: GenerateRequest, options?: RequestOptions): Promise<GenerateResponse> {
     throwIfAborted(options);
     assertValidRequest(generateRequestCheck, input, "GenerateRequest");
-    const { defaultPlan } = this.load();
-    return { job_id: this.savedJobId(defaultPlan), status: "complete", build_id: defaultPlan.build_id };
+    const plan = this.planFor(input);
+    return { job_id: this.savedJobId(plan), status: "complete", build_id: plan.build_id };
   }
 
   async getJob(jobId: string, options?: RequestOptions): Promise<JobResponse> {

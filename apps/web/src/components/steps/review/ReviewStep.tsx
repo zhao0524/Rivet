@@ -3,11 +3,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { blockers, isSafety, partNicknames, partRows } from '../../../lib/flow/derive';
 import { projectPath } from '../../../lib/flow/steps';
+import { CONCEPT_MODEL_LABEL, isConceptPlan } from '../../../lib/rivet/honesty';
 import type { BuildPlan, CatalogComponent, VerificationFinding } from '../../../lib/rivet/types';
 import { useProjectContext } from '../../flow/ProjectShell';
 import { Icon } from '../../system/Icon';
 import { StepLayout } from '../../flow/StepLayout';
-import { usePartSelection } from '../../three/interactions';
+import { usePartSelection, type PartSelectionApi } from '../../three/interactions';
 import { BuildError, SceneSkeleton, SceneViewport, SkeletonRows, useStepOverflow } from '../phase1/shared';
 import { BlockerCard, type Blocker, type FixAttempt } from './BlockerCard';
 
@@ -46,7 +47,9 @@ export function ReviewStep() {
   const catalog = store.catalog;
   const { items: overflow, toast } = useStepOverflow();
 
-  const list = useMemo(() => (ready ? reviewBlockers(plan, catalog) : []), [ready, plan, catalog]);
+  // Concept models were never engineered, so there is nothing to fix here: they get their own view.
+  const concept = ready && isConceptPlan(plan);
+  const list = useMemo(() => (ready && !concept ? reviewBlockers(plan, catalog) : []), [ready, concept, plan, catalog]);
   const partNames = useMemo(() => {
     const names = new Map<string, string>();
     if (ready) for (const row of partRows(plan, catalog)) names.set(row.instanceId, row.name);
@@ -149,6 +152,8 @@ export function ReviewStep() {
           <SkeletonRows count={3} testId="review-skeleton" />
           <SceneSkeleton small />
         </div>
+      ) : concept ? (
+        <ConceptReview plan={plan} catalog={catalog} selection={selection} pending={Boolean(pending)} onChange={openIterate} />
       ) : n === 0 && !pending ? (
         <div className="ui-card p1-empty" data-testid="review-empty">
           <h2 className="ui-h2">Nothing is in the way. Every safety and fit check passed.</h2>
@@ -217,6 +222,78 @@ export function ReviewStep() {
       )}
       {toast}
     </StepLayout>
+  );
+}
+
+/** A concept model rebuilt from the photo: the 3D model first, with what it is and is not. */
+function ConceptReview({
+  plan,
+  catalog,
+  selection,
+  pending,
+  onChange,
+}: {
+  plan: BuildPlan;
+  catalog: readonly CatalogComponent[];
+  selection: PartSelectionApi;
+  pending: boolean;
+  onChange: () => void;
+}) {
+  const [xray, setXray] = useState(false);
+  const hasInternals = plan.components.some((c) => c.render_overrides?.internal === true);
+  const visible = plan.components.filter((c) => c.render_overrides?.visible !== false).length;
+  const objectType = plan.concept?.object_type ?? 'object';
+  return (
+    <div className="split" data-testid="review-concept">
+      <div className="p1-stack">
+        <div className="ui-card ui-card--pad p1-stack">
+          <span className="ui-badge">{CONCEPT_MODEL_LABEL}</span>
+          <h2 className="ui-h2" style={{ margin: 0 }}>
+            3D model of {/^[aeiou]/i.test(objectType) ? 'an' : 'a'} {objectType}
+          </h2>
+          {plan.concept?.summary ? (
+            <p className="ui-muted" style={{ margin: 0 }}>
+              {plan.concept.summary}
+            </p>
+          ) : null}
+          <p className="ui-small ui-subtle" style={{ margin: 0 }}>
+            {visible} shaped parts, sizes estimated from your photo or description. Parts with a known role (boards, motors,
+            battery…) come with a suggested real product in Parts and Buy; wiring, power and fit were not checked.
+          </p>
+          {pending ? (
+            <div className="ui-island p1-pending" role="status" aria-live="polite" data-testid="review-pending">
+              <span className="ui-spinner" aria-hidden="true" />
+              <span className="ui-muted">Applying your change…</span>
+            </div>
+          ) : null}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            <button type="button" className="ui-btn ui-btn--secondary ui-btn--sm" onClick={onChange} disabled={pending}>
+              Change something
+            </button>
+            {hasInternals ? (
+              <button
+                type="button"
+                className="ui-btn ui-btn--secondary ui-btn--sm"
+                aria-pressed={xray}
+                onClick={() => setXray((x) => !x)}
+                data-testid="review-xray"
+              >
+                {xray ? 'Hide inside parts' : 'Show inside parts'}
+              </button>
+            ) : null}
+          </div>
+        </div>
+      </div>
+      <SceneViewport
+        plan={plan}
+        catalog={catalog}
+        selection={selection}
+        assemblyMode="assembled"
+        xray={xray}
+        label={CONCEPT_MODEL_LABEL}
+        testId="review-viewport"
+      />
+    </div>
   );
 }
 

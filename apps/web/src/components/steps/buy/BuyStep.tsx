@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import '../../../styles/phase2.css';
 import { buyLines, formatCheckedAt, formatMoney, type BuyLine } from '../../../lib/flow/derive';
 import { buildBomCsvClientSide } from '../../../lib/plan-store';
+import { isConceptPlan } from '../../../lib/rivet/honesty';
 import { useProjectContext } from '../../flow/ProjectShell';
 import { StepLayout } from '../../flow/StepLayout';
 import { Icon } from '../../system/Icon';
@@ -20,14 +21,19 @@ export function BuyStep() {
   const { plan, catalog } = build.store;
   const [cartOpen, setCartOpen] = useState(false);
 
-  const lines = useMemo(() => (build.ready ? buyLines(plan, catalog) : []), [build.ready, plan, catalog]);
+  const concept = build.ready && isConceptPlan(plan);
+  const allLines = useMemo(() => (build.ready ? buyLines(plan, catalog) : []), [build.ready, plan, catalog]);
+  // A concept's body shapes and wires are part of the 3D model, not things to buy.
+  const lines = useMemo(() => (concept ? allLines.filter((l) => l.url) : allLines), [concept, allLines]);
+  const shapes = concept ? allLines.filter((l) => !l.url) : [];
   const owned = project.ownedCatalogIds;
   const currency = plan.bom.currency || 'USD';
   const totals = useMemo(() => buyTotals(lines, owned), [lines, owned]);
   const groups = useMemo(() => groupByVendor(lines, owned), [lines, owned]);
   const fabricated = lines.filter((l) => l.fabricated);
   const outOfStock = lines.filter((l) => l.inStock === 'out_of_stock' && !isOwned(l, owned));
-  const everythingOwned = build.ready && totals.toBuy === 0;
+  const everythingOwned = build.ready && totals.toBuy === 0 && lines.length > 0;
+  const nothingToBuy = concept && lines.length === 0;
 
   function toggleOwned(catalogId: string, next: boolean) {
     const set = new Set(owned);
@@ -97,7 +103,7 @@ export function BuyStep() {
       title="Buy"
       purpose={PURPOSE}
       primary={
-        everythingOwned
+        everythingOwned || nothingToBuy
           ? { label: 'Start building', onClick: () => goTo('build'), testId: 'buy-primary' }
           : { label: 'Open cart', onClick: () => setCartOpen(true), testId: 'buy-primary' }
       }
@@ -106,6 +112,26 @@ export function BuyStep() {
     >
       <div className="p2-grid">
         <div className="p2-stack">
+          {nothingToBuy ? (
+            <p className="ui-notice" style={{ margin: 0 }} data-testid="buy-concept-empty">
+              <Icon name="info" style={{ flex: 'none', marginTop: 3 }} aria-hidden="true" />
+              <span>
+                None of this model&apos;s parts matches a role Rivet has a suggested product for (boards, motors, batteries,
+                sensors…), so there is nothing to buy here. Its {shapes.length} {shapes.length === 1 ? 'item is a shape' : 'items are shapes'} in the 3D model.
+              </span>
+            </p>
+          ) : concept ? (
+            <p className="ui-notice" style={{ margin: 0 }} data-testid="buy-suggested-notice">
+              <Icon name="alert" style={{ flex: 'none', marginTop: 3 }} aria-hidden="true" />
+              <span>
+                These are suggested real parts, hand-picked for each role in the 3D model. They were not checked against its
+                size, power or wiring, so confirm they fit before you order.
+                {shapes.length > 0
+                  ? ` ${shapes.length} more ${shapes.length === 1 ? 'item is a shape' : 'items are shapes'} in the model (body, covers, wires) with nothing to buy.`
+                  : ''}
+              </span>
+            </p>
+          ) : null}
           <ul className="list" data-testid="buy-vendors">
             {groups.map((group) => (
               <VendorRow key={group.vendor} group={group} currency={currency} owned={owned} onToggleOwned={toggleOwned} />
@@ -162,7 +188,9 @@ export function BuyStep() {
               {everythingOwned ? formatMoney(0, currency) : formatMoney(totals.total, currency)}
             </p>
             <p className="p2-note" aria-live="polite">
-              {everythingOwned
+              {nothingToBuy
+                ? 'No suggested parts for this model.'
+                : everythingOwned
                 ? 'You own everything on the list. Nothing to buy.'
                 : `${totals.toBuy} ${totals.toBuy === 1 ? 'part' : 'parts'} to buy${totals.owned > 0 ? `, ${totals.owned} owned` : ''}.`}
               {unknownNote ? (
@@ -267,7 +295,20 @@ function BuyLineRow({
   return (
     <li className="buy-line" data-owned={owned} data-testid={`buy-line-${line.catalogId}`}>
       <div className="list__main">
-        <span className="buy-line__name">{line.name}</span>
+        <span className="buy-line__name">
+          {line.url ? (
+            <a href={line.url} target="_blank" rel="noopener noreferrer" data-testid={`buy-line-link-${line.catalogId}`}>
+              {line.name}
+            </a>
+          ) : (
+            line.name
+          )}
+          {line.suggested ? (
+            <span className="ui-badge" style={{ marginLeft: 8 }} data-testid={`buy-suggested-${line.catalogId}`}>
+              Suggested part
+            </span>
+          ) : null}
+        </span>
         <span className="buy-line__meta">
           <span>Qty {line.quantity}</span>
           <span className="buy-line__stock">

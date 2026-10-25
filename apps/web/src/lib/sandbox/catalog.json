@@ -1,0 +1,8749 @@
+{
+ "schema_version": "1.0",
+ "synthetic": true,
+ "note": "SYNTHETIC DEMO ONLY: hand-placed shapes for the sandbox viewer. Not real products, SKUs or prices.",
+ "products": [
+  {
+   "product_id": "demo-pocket-rover-2wd",
+   "name": "Pocket Rover 2WD",
+   "category": "rover",
+   "summary": "A small wheeled base with a controller, driver and sensor.",
+   "parts": [
+    {
+     "part_id": "chassis",
+     "name": "Chassis plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      110,
+      5,
+      150
+     ],
+     "position_mm": [
+      0,
+      40,
+      0
+     ],
+     "color": "#2f8f5b",
+     "note": "Flat plate that every other part bolts to."
+    },
+    {
+     "part_id": "wheel-L0",
+     "name": "Wheel L1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      -69.0,
+      33,
+      -30.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-L0",
+     "name": "Gear motor L1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      -44.0,
+      35,
+      -30.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "wheel-R0",
+     "name": "Wheel R1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      69.0,
+      33,
+      -30.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-R0",
+     "name": "Gear motor R1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      44.0,
+      35,
+      -30.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "caster",
+     "name": "Caster ball",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "sphere",
+     "size_mm": [
+      20,
+      20,
+      20
+     ],
+     "position_mm": [
+      0,
+      10,
+      57.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Free-rolling ball that holds the front up."
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery pack",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      60.5,
+      18,
+      52
+     ],
+     "position_mm": [
+      0,
+      52,
+      -22.5
+     ],
+     "color": "#3b6fd4",
+     "note": "Rechargeable cells that power the motors and board."
+    },
+    {
+     "part_id": "driver",
+     "name": "Motor driver",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      4,
+      30
+     ],
+     "position_mm": [
+      -22.0,
+      45,
+      7.5
+     ],
+     "color": "#d1495b",
+     "note": "Turns logic signals into motor current."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Controller board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      28,
+      4,
+      55
+     ],
+     "position_mm": [
+      16.5,
+      45,
+      7.5
+     ],
+     "color": "#1d6b5b",
+     "note": "Microcontroller that runs the drive program."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Distance sensor",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      44,
+      18,
+      16
+     ],
+     "position_mm": [
+      0,
+      51,
+      67.0
+     ],
+     "color": "#e9e9ee",
+     "note": "Ultrasonic sensor that sees obstacles ahead."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-trail-rover-4wd",
+   "name": "Trail Rover 4WD",
+   "category": "rover",
+   "summary": "A small wheeled base with a controller, driver and sensor.",
+   "parts": [
+    {
+     "part_id": "chassis",
+     "name": "Chassis plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      150,
+      5,
+      220
+     ],
+     "position_mm": [
+      0,
+      40,
+      0
+     ],
+     "color": "#e8a33d",
+     "note": "Flat plate that every other part bolts to."
+    },
+    {
+     "part_id": "wheel-L0",
+     "name": "Wheel L1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      -89.0,
+      33,
+      -66.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-L0",
+     "name": "Gear motor L1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      -64.0,
+      35,
+      -66.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "wheel-R0",
+     "name": "Wheel R1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      89.0,
+      33,
+      -66.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-R0",
+     "name": "Gear motor R1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      64.0,
+      35,
+      -66.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "wheel-L1",
+     "name": "Wheel L2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      -89.0,
+      33,
+      66.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-L1",
+     "name": "Gear motor L2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      -64.0,
+      35,
+      66.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "wheel-R1",
+     "name": "Wheel R2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      89.0,
+      33,
+      66.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-R1",
+     "name": "Gear motor R2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      64.0,
+      35,
+      66.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery pack",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      82.5,
+      18,
+      52
+     ],
+     "position_mm": [
+      0,
+      52,
+      -33.0
+     ],
+     "color": "#3b6fd4",
+     "note": "Rechargeable cells that power the motors and board."
+    },
+    {
+     "part_id": "driver",
+     "name": "Motor driver",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      4,
+      30
+     ],
+     "position_mm": [
+      -30.0,
+      45,
+      11.0
+     ],
+     "color": "#d1495b",
+     "note": "Turns logic signals into motor current."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Controller board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      28,
+      4,
+      55
+     ],
+     "position_mm": [
+      22.5,
+      45,
+      11.0
+     ],
+     "color": "#1d6b5b",
+     "note": "Microcontroller that runs the drive program."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Distance sensor",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      44,
+      18,
+      16
+     ],
+     "position_mm": [
+      0,
+      51,
+      102.0
+     ],
+     "color": "#e9e9ee",
+     "note": "Ultrasonic sensor that sees obstacles ahead."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-line-follower",
+   "name": "Line Follower",
+   "category": "rover",
+   "summary": "A small wheeled base with a controller, driver and sensor.",
+   "parts": [
+    {
+     "part_id": "chassis",
+     "name": "Chassis plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      90,
+      5,
+      120
+     ],
+     "position_mm": [
+      0,
+      40,
+      0
+     ],
+     "color": "#d1495b",
+     "note": "Flat plate that every other part bolts to."
+    },
+    {
+     "part_id": "wheel-L0",
+     "name": "Wheel L1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      -59.0,
+      33,
+      -24.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-L0",
+     "name": "Gear motor L1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      -34.0,
+      35,
+      -24.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "wheel-R0",
+     "name": "Wheel R1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      59.0,
+      33,
+      -24.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-R0",
+     "name": "Gear motor R1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      34.0,
+      35,
+      -24.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "caster",
+     "name": "Caster ball",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "sphere",
+     "size_mm": [
+      20,
+      20,
+      20
+     ],
+     "position_mm": [
+      0,
+      10,
+      45.6
+     ],
+     "color": "#9aa3b2",
+     "note": "Free-rolling ball that holds the front up."
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery pack",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      49.5,
+      18,
+      52
+     ],
+     "position_mm": [
+      0,
+      52,
+      -18.0
+     ],
+     "color": "#3b6fd4",
+     "note": "Rechargeable cells that power the motors and board."
+    },
+    {
+     "part_id": "driver",
+     "name": "Motor driver",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      4,
+      30
+     ],
+     "position_mm": [
+      -18.0,
+      45,
+      6.0
+     ],
+     "color": "#d1495b",
+     "note": "Turns logic signals into motor current."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Controller board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      28,
+      4,
+      55
+     ],
+     "position_mm": [
+      13.5,
+      45,
+      6.0
+     ],
+     "color": "#1d6b5b",
+     "note": "Microcontroller that runs the drive program."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Distance sensor",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      44,
+      18,
+      16
+     ],
+     "position_mm": [
+      0,
+      51,
+      52.0
+     ],
+     "color": "#e9e9ee",
+     "note": "Ultrasonic sensor that sees obstacles ahead."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-obstacle-rover",
+   "name": "Obstacle Rover",
+   "category": "rover",
+   "summary": "A small wheeled base with a controller, driver and sensor.",
+   "parts": [
+    {
+     "part_id": "chassis",
+     "name": "Chassis plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      120,
+      5,
+      170
+     ],
+     "position_mm": [
+      0,
+      40,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Flat plate that every other part bolts to."
+    },
+    {
+     "part_id": "wheel-L0",
+     "name": "Wheel L1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      -74.0,
+      33,
+      -34.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-L0",
+     "name": "Gear motor L1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      -49.0,
+      35,
+      -34.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "wheel-R0",
+     "name": "Wheel R1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      74.0,
+      33,
+      -34.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-R0",
+     "name": "Gear motor R1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      49.0,
+      35,
+      -34.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "caster",
+     "name": "Caster ball",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "sphere",
+     "size_mm": [
+      20,
+      20,
+      20
+     ],
+     "position_mm": [
+      0,
+      10,
+      64.6
+     ],
+     "color": "#9aa3b2",
+     "note": "Free-rolling ball that holds the front up."
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery pack",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      66.0,
+      18,
+      52
+     ],
+     "position_mm": [
+      0,
+      52,
+      -25.5
+     ],
+     "color": "#3b6fd4",
+     "note": "Rechargeable cells that power the motors and board."
+    },
+    {
+     "part_id": "driver",
+     "name": "Motor driver",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      4,
+      30
+     ],
+     "position_mm": [
+      -24.0,
+      45,
+      8.5
+     ],
+     "color": "#d1495b",
+     "note": "Turns logic signals into motor current."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Controller board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      28,
+      4,
+      55
+     ],
+     "position_mm": [
+      18.0,
+      45,
+      8.5
+     ],
+     "color": "#1d6b5b",
+     "note": "Microcontroller that runs the drive program."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Distance sensor",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      44,
+      18,
+      16
+     ],
+     "position_mm": [
+      0,
+      51,
+      77.0
+     ],
+     "color": "#e9e9ee",
+     "note": "Ultrasonic sensor that sees obstacles ahead."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-mini-rover-kit",
+   "name": "Mini Rover Kit",
+   "category": "rover",
+   "summary": "A small wheeled base with a controller, driver and sensor.",
+   "parts": [
+    {
+     "part_id": "chassis",
+     "name": "Chassis plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      100,
+      5,
+      140
+     ],
+     "position_mm": [
+      0,
+      40,
+      0
+     ],
+     "color": "#2f8f5b",
+     "note": "Flat plate that every other part bolts to."
+    },
+    {
+     "part_id": "wheel-L0",
+     "name": "Wheel L1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      -64.0,
+      33,
+      -42.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-L0",
+     "name": "Gear motor L1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      -39.0,
+      35,
+      -42.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "wheel-R0",
+     "name": "Wheel R1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      64.0,
+      33,
+      -42.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-R0",
+     "name": "Gear motor R1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      39.0,
+      35,
+      -42.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "wheel-L1",
+     "name": "Wheel L2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      -64.0,
+      33,
+      42.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-L1",
+     "name": "Gear motor L2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      -39.0,
+      35,
+      42.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "wheel-R1",
+     "name": "Wheel R2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      64.0,
+      33,
+      42.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-R1",
+     "name": "Gear motor R2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      39.0,
+      35,
+      42.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery pack",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      55.0,
+      18,
+      52
+     ],
+     "position_mm": [
+      0,
+      52,
+      -21.0
+     ],
+     "color": "#3b6fd4",
+     "note": "Rechargeable cells that power the motors and board."
+    },
+    {
+     "part_id": "driver",
+     "name": "Motor driver",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      4,
+      30
+     ],
+     "position_mm": [
+      -20.0,
+      45,
+      7.0
+     ],
+     "color": "#d1495b",
+     "note": "Turns logic signals into motor current."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Controller board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      28,
+      4,
+      55
+     ],
+     "position_mm": [
+      15.0,
+      45,
+      7.0
+     ],
+     "color": "#1d6b5b",
+     "note": "Microcontroller that runs the drive program."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Distance sensor",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      44,
+      18,
+      16
+     ],
+     "position_mm": [
+      0,
+      51,
+      62.0
+     ],
+     "color": "#e9e9ee",
+     "note": "Ultrasonic sensor that sees obstacles ahead."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-warehouse-rover",
+   "name": "Warehouse Rover",
+   "category": "rover",
+   "summary": "A small wheeled base with a controller, driver and sensor.",
+   "parts": [
+    {
+     "part_id": "chassis",
+     "name": "Chassis plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      180,
+      5,
+      260
+     ],
+     "position_mm": [
+      0,
+      40,
+      0
+     ],
+     "color": "#9aa3b2",
+     "note": "Flat plate that every other part bolts to."
+    },
+    {
+     "part_id": "wheel-L0",
+     "name": "Wheel L1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      -104.0,
+      33,
+      -78.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-L0",
+     "name": "Gear motor L1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      -79.0,
+      35,
+      -78.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "wheel-R0",
+     "name": "Wheel R1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      104.0,
+      33,
+      -78.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-R0",
+     "name": "Gear motor R1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      79.0,
+      35,
+      -78.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "wheel-L1",
+     "name": "Wheel L2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      -104.0,
+      33,
+      78.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-L1",
+     "name": "Gear motor L2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      -79.0,
+      35,
+      78.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "wheel-R1",
+     "name": "Wheel R2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      66,
+      26,
+      66
+     ],
+     "position_mm": [
+      104.0,
+      33,
+      78.0
+     ],
+     "color": "#555b68",
+     "note": "Rubber wheel on the motor shaft.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "motor-R1",
+     "name": "Gear motor R2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22,
+      19,
+      65
+     ],
+     "position_mm": [
+      79.0,
+      35,
+      78.0
+     ],
+     "color": "#d9b44a",
+     "note": "Geared DC motor that turns one wheel."
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery pack",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      99.0,
+      18,
+      52
+     ],
+     "position_mm": [
+      0,
+      52,
+      -39.0
+     ],
+     "color": "#3b6fd4",
+     "note": "Rechargeable cells that power the motors and board."
+    },
+    {
+     "part_id": "driver",
+     "name": "Motor driver",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      4,
+      30
+     ],
+     "position_mm": [
+      -36.0,
+      45,
+      13.0
+     ],
+     "color": "#d1495b",
+     "note": "Turns logic signals into motor current."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Controller board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      28,
+      4,
+      55
+     ],
+     "position_mm": [
+      27.0,
+      45,
+      13.0
+     ],
+     "color": "#1d6b5b",
+     "note": "Microcontroller that runs the drive program."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Distance sensor",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      44,
+      18,
+      16
+     ],
+     "position_mm": [
+      0,
+      51,
+      122.0
+     ],
+     "color": "#e9e9ee",
+     "note": "Ultrasonic sensor that sees obstacles ahead."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-desk-arm-3-axis",
+   "name": "Desk Arm 3-axis",
+   "category": "robot",
+   "summary": "A servo-driven arm on a weighted base.",
+   "parts": [
+    {
+     "part_id": "base",
+     "name": "Base disc",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      120,
+      14,
+      120
+     ],
+     "position_mm": [
+      0,
+      7,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Heavy disc that keeps the arm from tipping."
+    },
+    {
+     "part_id": "turntable",
+     "name": "Turntable servo",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      46,
+      30,
+      46
+     ],
+     "position_mm": [
+      0,
+      29,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Rotates the whole arm left and right."
+    },
+    {
+     "part_id": "link0",
+     "name": "Link 1",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      90,
+      18
+     ],
+     "position_mm": [
+      0,
+      89.0,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Rigid aluminium segment."
+    },
+    {
+     "part_id": "joint0",
+     "name": "Joint servo 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30,
+      34,
+      30
+     ],
+     "position_mm": [
+      0,
+      136.0,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Servo that bends this joint.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "link1",
+     "name": "Link 2",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      90,
+      18
+     ],
+     "position_mm": [
+      0,
+      189.0,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Rigid aluminium segment."
+    },
+    {
+     "part_id": "joint1",
+     "name": "Joint servo 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30,
+      34,
+      30
+     ],
+     "position_mm": [
+      0,
+      236.0,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Servo that bends this joint.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "gripper",
+     "name": "Gripper",
+     "group": "Hardware",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      44,
+      36,
+      20
+     ],
+     "position_mm": [
+      0,
+      262.0,
+      0
+     ],
+     "color": "#d1495b",
+     "note": "Two-finger gripper that picks things up."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Servo controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      50,
+      8,
+      32
+     ],
+     "position_mm": [
+      58,
+      12,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Drives every servo from one board."
+    },
+    {
+     "part_id": "supply",
+     "name": "Power supply",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      40,
+      24,
+      60
+     ],
+     "position_mm": [
+      -58,
+      12,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "5 V supply for the servos."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-desk-arm-4-axis",
+   "name": "Desk Arm 4-axis",
+   "category": "robot",
+   "summary": "A servo-driven arm on a weighted base.",
+   "parts": [
+    {
+     "part_id": "base",
+     "name": "Base disc",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      120,
+      14,
+      120
+     ],
+     "position_mm": [
+      0,
+      7,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Heavy disc that keeps the arm from tipping."
+    },
+    {
+     "part_id": "turntable",
+     "name": "Turntable servo",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      46,
+      30,
+      46
+     ],
+     "position_mm": [
+      0,
+      29,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Rotates the whole arm left and right."
+    },
+    {
+     "part_id": "link0",
+     "name": "Link 1",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      80,
+      18
+     ],
+     "position_mm": [
+      0,
+      84.0,
+      0
+     ],
+     "color": "#2f8f5b",
+     "note": "Rigid aluminium segment."
+    },
+    {
+     "part_id": "joint0",
+     "name": "Joint servo 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30,
+      34,
+      30
+     ],
+     "position_mm": [
+      0,
+      126.0,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Servo that bends this joint.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "link1",
+     "name": "Link 2",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      80,
+      18
+     ],
+     "position_mm": [
+      0,
+      174.0,
+      0
+     ],
+     "color": "#2f8f5b",
+     "note": "Rigid aluminium segment."
+    },
+    {
+     "part_id": "joint1",
+     "name": "Joint servo 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30,
+      34,
+      30
+     ],
+     "position_mm": [
+      0,
+      216.0,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Servo that bends this joint.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "link2",
+     "name": "Link 3",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      80,
+      18
+     ],
+     "position_mm": [
+      0,
+      264.0,
+      0
+     ],
+     "color": "#2f8f5b",
+     "note": "Rigid aluminium segment."
+    },
+    {
+     "part_id": "joint2",
+     "name": "Joint servo 3",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30,
+      34,
+      30
+     ],
+     "position_mm": [
+      0,
+      306.0,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Servo that bends this joint.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "gripper",
+     "name": "Gripper",
+     "group": "Hardware",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      44,
+      36,
+      20
+     ],
+     "position_mm": [
+      0,
+      332.0,
+      0
+     ],
+     "color": "#d1495b",
+     "note": "Two-finger gripper that picks things up."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Servo controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      50,
+      8,
+      32
+     ],
+     "position_mm": [
+      58,
+      12,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Drives every servo from one board."
+    },
+    {
+     "part_id": "supply",
+     "name": "Power supply",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      40,
+      24,
+      60
+     ],
+     "position_mm": [
+      -58,
+      12,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "5 V supply for the servos."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-pick-and-place-arm",
+   "name": "Pick-and-Place Arm",
+   "category": "robot",
+   "summary": "A servo-driven arm on a weighted base.",
+   "parts": [
+    {
+     "part_id": "base",
+     "name": "Base disc",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      120,
+      14,
+      120
+     ],
+     "position_mm": [
+      0,
+      7,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Heavy disc that keeps the arm from tipping."
+    },
+    {
+     "part_id": "turntable",
+     "name": "Turntable servo",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      46,
+      30,
+      46
+     ],
+     "position_mm": [
+      0,
+      29,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Rotates the whole arm left and right."
+    },
+    {
+     "part_id": "link0",
+     "name": "Link 1",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      110,
+      18
+     ],
+     "position_mm": [
+      0,
+      99.0,
+      0
+     ],
+     "color": "#e8a33d",
+     "note": "Rigid aluminium segment."
+    },
+    {
+     "part_id": "joint0",
+     "name": "Joint servo 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30,
+      34,
+      30
+     ],
+     "position_mm": [
+      0,
+      156.0,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Servo that bends this joint.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "link1",
+     "name": "Link 2",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      110,
+      18
+     ],
+     "position_mm": [
+      0,
+      219.0,
+      0
+     ],
+     "color": "#e8a33d",
+     "note": "Rigid aluminium segment."
+    },
+    {
+     "part_id": "joint1",
+     "name": "Joint servo 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30,
+      34,
+      30
+     ],
+     "position_mm": [
+      0,
+      276.0,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Servo that bends this joint.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "link2",
+     "name": "Link 3",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      110,
+      18
+     ],
+     "position_mm": [
+      0,
+      339.0,
+      0
+     ],
+     "color": "#e8a33d",
+     "note": "Rigid aluminium segment."
+    },
+    {
+     "part_id": "joint2",
+     "name": "Joint servo 3",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30,
+      34,
+      30
+     ],
+     "position_mm": [
+      0,
+      396.0,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Servo that bends this joint.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "gripper",
+     "name": "Gripper",
+     "group": "Hardware",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      44,
+      36,
+      20
+     ],
+     "position_mm": [
+      0,
+      422.0,
+      0
+     ],
+     "color": "#d1495b",
+     "note": "Two-finger gripper that picks things up."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Servo controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      50,
+      8,
+      32
+     ],
+     "position_mm": [
+      58,
+      12,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Drives every servo from one board."
+    },
+    {
+     "part_id": "supply",
+     "name": "Power supply",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      40,
+      24,
+      60
+     ],
+     "position_mm": [
+      -58,
+      12,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "5 V supply for the servos."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-calligraphy-arm",
+   "name": "Calligraphy Arm",
+   "category": "robot",
+   "summary": "A servo-driven arm on a weighted base.",
+   "parts": [
+    {
+     "part_id": "base",
+     "name": "Base disc",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      120,
+      14,
+      120
+     ],
+     "position_mm": [
+      0,
+      7,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Heavy disc that keeps the arm from tipping."
+    },
+    {
+     "part_id": "turntable",
+     "name": "Turntable servo",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      46,
+      30,
+      46
+     ],
+     "position_mm": [
+      0,
+      29,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Rotates the whole arm left and right."
+    },
+    {
+     "part_id": "link0",
+     "name": "Link 1",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      120,
+      18
+     ],
+     "position_mm": [
+      0,
+      104.0,
+      0
+     ],
+     "color": "#d1495b",
+     "note": "Rigid aluminium segment."
+    },
+    {
+     "part_id": "joint0",
+     "name": "Joint servo 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30,
+      34,
+      30
+     ],
+     "position_mm": [
+      0,
+      166.0,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Servo that bends this joint.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "link1",
+     "name": "Link 2",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      120,
+      18
+     ],
+     "position_mm": [
+      0,
+      234.0,
+      0
+     ],
+     "color": "#d1495b",
+     "note": "Rigid aluminium segment."
+    },
+    {
+     "part_id": "joint1",
+     "name": "Joint servo 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30,
+      34,
+      30
+     ],
+     "position_mm": [
+      0,
+      296.0,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Servo that bends this joint.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "gripper",
+     "name": "Gripper",
+     "group": "Hardware",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      44,
+      36,
+      20
+     ],
+     "position_mm": [
+      0,
+      322.0,
+      0
+     ],
+     "color": "#d1495b",
+     "note": "Two-finger gripper that picks things up."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Servo controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      50,
+      8,
+      32
+     ],
+     "position_mm": [
+      58,
+      12,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Drives every servo from one board."
+    },
+    {
+     "part_id": "supply",
+     "name": "Power supply",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      40,
+      24,
+      60
+     ],
+     "position_mm": [
+      -58,
+      12,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "5 V supply for the servos."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-camera-arm",
+   "name": "Camera Arm",
+   "category": "robot",
+   "summary": "A servo-driven arm on a weighted base.",
+   "parts": [
+    {
+     "part_id": "base",
+     "name": "Base disc",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      120,
+      14,
+      120
+     ],
+     "position_mm": [
+      0,
+      7,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Heavy disc that keeps the arm from tipping."
+    },
+    {
+     "part_id": "turntable",
+     "name": "Turntable servo",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      46,
+      30,
+      46
+     ],
+     "position_mm": [
+      0,
+      29,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Rotates the whole arm left and right."
+    },
+    {
+     "part_id": "link0",
+     "name": "Link 1",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      100,
+      18
+     ],
+     "position_mm": [
+      0,
+      94.0,
+      0
+     ],
+     "color": "#9aa3b2",
+     "note": "Rigid aluminium segment."
+    },
+    {
+     "part_id": "joint0",
+     "name": "Joint servo 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30,
+      34,
+      30
+     ],
+     "position_mm": [
+      0,
+      146.0,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Servo that bends this joint.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "link1",
+     "name": "Link 2",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      100,
+      18
+     ],
+     "position_mm": [
+      0,
+      204.0,
+      0
+     ],
+     "color": "#9aa3b2",
+     "note": "Rigid aluminium segment."
+    },
+    {
+     "part_id": "joint1",
+     "name": "Joint servo 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30,
+      34,
+      30
+     ],
+     "position_mm": [
+      0,
+      256.0,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Servo that bends this joint.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "gripper",
+     "name": "Gripper",
+     "group": "Hardware",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      44,
+      36,
+      20
+     ],
+     "position_mm": [
+      0,
+      282.0,
+      0
+     ],
+     "color": "#d1495b",
+     "note": "Two-finger gripper that picks things up."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Servo controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      50,
+      8,
+      32
+     ],
+     "position_mm": [
+      58,
+      12,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Drives every servo from one board."
+    },
+    {
+     "part_id": "supply",
+     "name": "Power supply",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      40,
+      24,
+      60
+     ],
+     "position_mm": [
+      -58,
+      12,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "5 V supply for the servos."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-mini-gripper-arm",
+   "name": "Mini Gripper Arm",
+   "category": "robot",
+   "summary": "A servo-driven arm on a weighted base.",
+   "parts": [
+    {
+     "part_id": "base",
+     "name": "Base disc",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      120,
+      14,
+      120
+     ],
+     "position_mm": [
+      0,
+      7,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Heavy disc that keeps the arm from tipping."
+    },
+    {
+     "part_id": "turntable",
+     "name": "Turntable servo",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      46,
+      30,
+      46
+     ],
+     "position_mm": [
+      0,
+      29,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Rotates the whole arm left and right."
+    },
+    {
+     "part_id": "link0",
+     "name": "Link 1",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      70,
+      18
+     ],
+     "position_mm": [
+      0,
+      79.0,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Rigid aluminium segment."
+    },
+    {
+     "part_id": "joint0",
+     "name": "Joint servo 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30,
+      34,
+      30
+     ],
+     "position_mm": [
+      0,
+      116.0,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Servo that bends this joint.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "link1",
+     "name": "Link 2",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      70,
+      18
+     ],
+     "position_mm": [
+      0,
+      159.0,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Rigid aluminium segment."
+    },
+    {
+     "part_id": "joint1",
+     "name": "Joint servo 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30,
+      34,
+      30
+     ],
+     "position_mm": [
+      0,
+      196.0,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Servo that bends this joint.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "link2",
+     "name": "Link 3",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26,
+      70,
+      18
+     ],
+     "position_mm": [
+      0,
+      239.0,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Rigid aluminium segment."
+    },
+    {
+     "part_id": "joint2",
+     "name": "Joint servo 3",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30,
+      34,
+      30
+     ],
+     "position_mm": [
+      0,
+      276.0,
+      0
+     ],
+     "color": "#d9b44a",
+     "note": "Servo that bends this joint.",
+     "rotation_deg": [
+      0,
+      0,
+      90
+     ]
+    },
+    {
+     "part_id": "gripper",
+     "name": "Gripper",
+     "group": "Hardware",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      44,
+      36,
+      20
+     ],
+     "position_mm": [
+      0,
+      302.0,
+      0
+     ],
+     "color": "#d1495b",
+     "note": "Two-finger gripper that picks things up."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Servo controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      50,
+      8,
+      32
+     ],
+     "position_mm": [
+      58,
+      12,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Drives every servo from one board."
+    },
+    {
+     "part_id": "supply",
+     "name": "Power supply",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      40,
+      24,
+      60
+     ],
+     "position_mm": [
+      -58,
+      12,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "5 V supply for the servos."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-quadcopter-3-inch",
+   "name": "Quadcopter 3-inch",
+   "category": "drone",
+   "summary": "A four-motor multirotor frame.",
+   "parts": [
+    {
+     "part_id": "plate",
+     "name": "Center plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      44.8,
+      4,
+      44.8
+     ],
+     "position_mm": [
+      0,
+      30,
+      0
+     ],
+     "color": "#d1495b",
+     "note": "Carbon plate that the arms and electronics clamp to."
+    },
+    {
+     "part_id": "arm0",
+     "name": "Arm 1",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      56.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      -38.5,
+      30,
+      -38.5
+     ],
+     "color": "#d1495b",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor0",
+     "name": "Motor 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      22.8,
+      14,
+      22.8
+     ],
+     "position_mm": [
+      -70.0,
+      36,
+      -70.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop0",
+     "name": "Propeller 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      76,
+      2,
+      76
+     ],
+     "position_mm": [
+      -70.0,
+      46,
+      -70.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm1",
+     "name": "Arm 2",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      56.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      38.5,
+      30,
+      -38.5
+     ],
+     "color": "#d1495b",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      -45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor1",
+     "name": "Motor 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      22.8,
+      14,
+      22.8
+     ],
+     "position_mm": [
+      70.0,
+      36,
+      -70.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop1",
+     "name": "Propeller 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      76,
+      2,
+      76
+     ],
+     "position_mm": [
+      70.0,
+      46,
+      -70.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm2",
+     "name": "Arm 3",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      56.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      -38.5,
+      30,
+      38.5
+     ],
+     "color": "#d1495b",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      -45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor2",
+     "name": "Motor 3",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      22.8,
+      14,
+      22.8
+     ],
+     "position_mm": [
+      -70.0,
+      36,
+      70.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop2",
+     "name": "Propeller 3",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      76,
+      2,
+      76
+     ],
+     "position_mm": [
+      -70.0,
+      46,
+      70.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm3",
+     "name": "Arm 4",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      56.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      38.5,
+      30,
+      38.5
+     ],
+     "color": "#d1495b",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor3",
+     "name": "Motor 4",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      22.8,
+      14,
+      22.8
+     ],
+     "position_mm": [
+      70.0,
+      36,
+      70.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop3",
+     "name": "Propeller 4",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      76,
+      2,
+      76
+     ],
+     "position_mm": [
+      70.0,
+      46,
+      70.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "battery",
+     "name": "LiPo battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      42.0,
+      16,
+      30
+     ],
+     "position_mm": [
+      0,
+      18,
+      0
+     ],
+     "color": "#e8a33d",
+     "note": "Lithium polymer pack under the plate."
+    },
+    {
+     "part_id": "fc",
+     "name": "Flight controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      30,
+      5,
+      30
+     ],
+     "position_mm": [
+      0,
+      38,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Board with gyro that keeps it level."
+    },
+    {
+     "part_id": "camera",
+     "name": "Camera",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      18,
+      18,
+      18
+     ],
+     "position_mm": [
+      0,
+      36,
+      28.0
+     ],
+     "color": "#555b68",
+     "note": "Front-facing video camera."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-quadcopter-5-inch",
+   "name": "Quadcopter 5-inch",
+   "category": "drone",
+   "summary": "A four-motor multirotor frame.",
+   "parts": [
+    {
+     "part_id": "plate",
+     "name": "Center plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      70.4,
+      4,
+      70.4
+     ],
+     "position_mm": [
+      0,
+      30,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Carbon plate that the arms and electronics clamp to."
+    },
+    {
+     "part_id": "arm0",
+     "name": "Arm 1",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      88.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      -60.5,
+      30,
+      -60.5
+     ],
+     "color": "#3b6fd4",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor0",
+     "name": "Motor 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      38.1,
+      14,
+      38.1
+     ],
+     "position_mm": [
+      -110.0,
+      36,
+      -110.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop0",
+     "name": "Propeller 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      127,
+      2,
+      127
+     ],
+     "position_mm": [
+      -110.0,
+      46,
+      -110.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm1",
+     "name": "Arm 2",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      88.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      60.5,
+      30,
+      -60.5
+     ],
+     "color": "#3b6fd4",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      -45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor1",
+     "name": "Motor 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      38.1,
+      14,
+      38.1
+     ],
+     "position_mm": [
+      110.0,
+      36,
+      -110.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop1",
+     "name": "Propeller 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      127,
+      2,
+      127
+     ],
+     "position_mm": [
+      110.0,
+      46,
+      -110.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm2",
+     "name": "Arm 3",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      88.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      -60.5,
+      30,
+      60.5
+     ],
+     "color": "#3b6fd4",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      -45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor2",
+     "name": "Motor 3",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      38.1,
+      14,
+      38.1
+     ],
+     "position_mm": [
+      -110.0,
+      36,
+      110.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop2",
+     "name": "Propeller 3",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      127,
+      2,
+      127
+     ],
+     "position_mm": [
+      -110.0,
+      46,
+      110.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm3",
+     "name": "Arm 4",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      88.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      60.5,
+      30,
+      60.5
+     ],
+     "color": "#3b6fd4",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor3",
+     "name": "Motor 4",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      38.1,
+      14,
+      38.1
+     ],
+     "position_mm": [
+      110.0,
+      36,
+      110.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop3",
+     "name": "Propeller 4",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      127,
+      2,
+      127
+     ],
+     "position_mm": [
+      110.0,
+      46,
+      110.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "battery",
+     "name": "LiPo battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      66.0,
+      16,
+      30
+     ],
+     "position_mm": [
+      0,
+      18,
+      0
+     ],
+     "color": "#e8a33d",
+     "note": "Lithium polymer pack under the plate."
+    },
+    {
+     "part_id": "fc",
+     "name": "Flight controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      30,
+      5,
+      30
+     ],
+     "position_mm": [
+      0,
+      38,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Board with gyro that keeps it level."
+    },
+    {
+     "part_id": "camera",
+     "name": "Camera",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      18,
+      18,
+      18
+     ],
+     "position_mm": [
+      0,
+      36,
+      44.0
+     ],
+     "color": "#555b68",
+     "note": "Front-facing video camera."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-tiny-whoop",
+   "name": "Tiny Whoop",
+   "category": "drone",
+   "summary": "A four-motor multirotor frame.",
+   "parts": [
+    {
+     "part_id": "plate",
+     "name": "Center plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      19.2,
+      4,
+      19.2
+     ],
+     "position_mm": [
+      0,
+      30,
+      0
+     ],
+     "color": "#e8a33d",
+     "note": "Carbon plate that the arms and electronics clamp to."
+    },
+    {
+     "part_id": "arm0",
+     "name": "Arm 1",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      24.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      -16.5,
+      30,
+      -16.5
+     ],
+     "color": "#e8a33d",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor0",
+     "name": "Motor 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      9.3,
+      14,
+      9.3
+     ],
+     "position_mm": [
+      -30.0,
+      36,
+      -30.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop0",
+     "name": "Propeller 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      31,
+      2,
+      31
+     ],
+     "position_mm": [
+      -30.0,
+      46,
+      -30.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm1",
+     "name": "Arm 2",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      24.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      16.5,
+      30,
+      -16.5
+     ],
+     "color": "#e8a33d",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      -45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor1",
+     "name": "Motor 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      9.3,
+      14,
+      9.3
+     ],
+     "position_mm": [
+      30.0,
+      36,
+      -30.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop1",
+     "name": "Propeller 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      31,
+      2,
+      31
+     ],
+     "position_mm": [
+      30.0,
+      46,
+      -30.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm2",
+     "name": "Arm 3",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      24.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      -16.5,
+      30,
+      16.5
+     ],
+     "color": "#e8a33d",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      -45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor2",
+     "name": "Motor 3",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      9.3,
+      14,
+      9.3
+     ],
+     "position_mm": [
+      -30.0,
+      36,
+      30.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop2",
+     "name": "Propeller 3",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      31,
+      2,
+      31
+     ],
+     "position_mm": [
+      -30.0,
+      46,
+      30.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm3",
+     "name": "Arm 4",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      24.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      16.5,
+      30,
+      16.5
+     ],
+     "color": "#e8a33d",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor3",
+     "name": "Motor 4",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      9.3,
+      14,
+      9.3
+     ],
+     "position_mm": [
+      30.0,
+      36,
+      30.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop3",
+     "name": "Propeller 4",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      31,
+      2,
+      31
+     ],
+     "position_mm": [
+      30.0,
+      46,
+      30.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "battery",
+     "name": "LiPo battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      18.0,
+      16,
+      30
+     ],
+     "position_mm": [
+      0,
+      18,
+      0
+     ],
+     "color": "#e8a33d",
+     "note": "Lithium polymer pack under the plate."
+    },
+    {
+     "part_id": "fc",
+     "name": "Flight controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      30,
+      5,
+      30
+     ],
+     "position_mm": [
+      0,
+      38,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Board with gyro that keeps it level."
+    },
+    {
+     "part_id": "camera",
+     "name": "Camera",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      18,
+      18,
+      18
+     ],
+     "position_mm": [
+      0,
+      36,
+      12.0
+     ],
+     "color": "#555b68",
+     "note": "Front-facing video camera."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-camera-drone",
+   "name": "Camera Drone",
+   "category": "drone",
+   "summary": "A four-motor multirotor frame.",
+   "parts": [
+    {
+     "part_id": "plate",
+     "name": "Center plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      83.2,
+      4,
+      83.2
+     ],
+     "position_mm": [
+      0,
+      30,
+      0
+     ],
+     "color": "#9aa3b2",
+     "note": "Carbon plate that the arms and electronics clamp to."
+    },
+    {
+     "part_id": "arm0",
+     "name": "Arm 1",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      104.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      -71.5,
+      30,
+      -71.5
+     ],
+     "color": "#9aa3b2",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor0",
+     "name": "Motor 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      39.0,
+      14,
+      39.0
+     ],
+     "position_mm": [
+      -130.0,
+      36,
+      -130.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop0",
+     "name": "Propeller 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      130,
+      2,
+      130
+     ],
+     "position_mm": [
+      -130.0,
+      46,
+      -130.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm1",
+     "name": "Arm 2",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      104.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      71.5,
+      30,
+      -71.5
+     ],
+     "color": "#9aa3b2",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      -45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor1",
+     "name": "Motor 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      39.0,
+      14,
+      39.0
+     ],
+     "position_mm": [
+      130.0,
+      36,
+      -130.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop1",
+     "name": "Propeller 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      130,
+      2,
+      130
+     ],
+     "position_mm": [
+      130.0,
+      46,
+      -130.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm2",
+     "name": "Arm 3",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      104.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      -71.5,
+      30,
+      71.5
+     ],
+     "color": "#9aa3b2",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      -45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor2",
+     "name": "Motor 3",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      39.0,
+      14,
+      39.0
+     ],
+     "position_mm": [
+      -130.0,
+      36,
+      130.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop2",
+     "name": "Propeller 3",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      130,
+      2,
+      130
+     ],
+     "position_mm": [
+      -130.0,
+      46,
+      130.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm3",
+     "name": "Arm 4",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      104.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      71.5,
+      30,
+      71.5
+     ],
+     "color": "#9aa3b2",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor3",
+     "name": "Motor 4",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      39.0,
+      14,
+      39.0
+     ],
+     "position_mm": [
+      130.0,
+      36,
+      130.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop3",
+     "name": "Propeller 4",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      130,
+      2,
+      130
+     ],
+     "position_mm": [
+      130.0,
+      46,
+      130.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "battery",
+     "name": "LiPo battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      78.0,
+      16,
+      30
+     ],
+     "position_mm": [
+      0,
+      18,
+      0
+     ],
+     "color": "#e8a33d",
+     "note": "Lithium polymer pack under the plate."
+    },
+    {
+     "part_id": "fc",
+     "name": "Flight controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      30,
+      5,
+      30
+     ],
+     "position_mm": [
+      0,
+      38,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Board with gyro that keeps it level."
+    },
+    {
+     "part_id": "camera",
+     "name": "Camera",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      18,
+      18,
+      18
+     ],
+     "position_mm": [
+      0,
+      36,
+      52.0
+     ],
+     "color": "#555b68",
+     "note": "Front-facing video camera."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-racing-drone",
+   "name": "Racing Drone",
+   "category": "drone",
+   "summary": "A four-motor multirotor frame.",
+   "parts": [
+    {
+     "part_id": "plate",
+     "name": "Center plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      64.0,
+      4,
+      64.0
+     ],
+     "position_mm": [
+      0,
+      30,
+      0
+     ],
+     "color": "#2f8f5b",
+     "note": "Carbon plate that the arms and electronics clamp to."
+    },
+    {
+     "part_id": "arm0",
+     "name": "Arm 1",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      80.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      -55.0,
+      30,
+      -55.0
+     ],
+     "color": "#2f8f5b",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor0",
+     "name": "Motor 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      38.1,
+      14,
+      38.1
+     ],
+     "position_mm": [
+      -100.0,
+      36,
+      -100.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop0",
+     "name": "Propeller 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      127,
+      2,
+      127
+     ],
+     "position_mm": [
+      -100.0,
+      46,
+      -100.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm1",
+     "name": "Arm 2",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      80.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      55.0,
+      30,
+      -55.0
+     ],
+     "color": "#2f8f5b",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      -45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor1",
+     "name": "Motor 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      38.1,
+      14,
+      38.1
+     ],
+     "position_mm": [
+      100.0,
+      36,
+      -100.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop1",
+     "name": "Propeller 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      127,
+      2,
+      127
+     ],
+     "position_mm": [
+      100.0,
+      46,
+      -100.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm2",
+     "name": "Arm 3",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      80.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      -55.0,
+      30,
+      55.0
+     ],
+     "color": "#2f8f5b",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      -45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor2",
+     "name": "Motor 3",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      38.1,
+      14,
+      38.1
+     ],
+     "position_mm": [
+      -100.0,
+      36,
+      100.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop2",
+     "name": "Propeller 3",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      127,
+      2,
+      127
+     ],
+     "position_mm": [
+      -100.0,
+      46,
+      100.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm3",
+     "name": "Arm 4",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      80.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      55.0,
+      30,
+      55.0
+     ],
+     "color": "#2f8f5b",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor3",
+     "name": "Motor 4",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      38.1,
+      14,
+      38.1
+     ],
+     "position_mm": [
+      100.0,
+      36,
+      100.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop3",
+     "name": "Propeller 4",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      127,
+      2,
+      127
+     ],
+     "position_mm": [
+      100.0,
+      46,
+      100.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "battery",
+     "name": "LiPo battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      60.0,
+      16,
+      30
+     ],
+     "position_mm": [
+      0,
+      18,
+      0
+     ],
+     "color": "#e8a33d",
+     "note": "Lithium polymer pack under the plate."
+    },
+    {
+     "part_id": "fc",
+     "name": "Flight controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      30,
+      5,
+      30
+     ],
+     "position_mm": [
+      0,
+      38,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Board with gyro that keeps it level."
+    },
+    {
+     "part_id": "camera",
+     "name": "Camera",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      18,
+      18,
+      18
+     ],
+     "position_mm": [
+      0,
+      36,
+      40.0
+     ],
+     "color": "#555b68",
+     "note": "Front-facing video camera."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-x-frame-quad",
+   "name": "X-frame Quad",
+   "category": "drone",
+   "summary": "A four-motor multirotor frame.",
+   "parts": [
+    {
+     "part_id": "plate",
+     "name": "Center plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      57.6,
+      4,
+      57.6
+     ],
+     "position_mm": [
+      0,
+      30,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Carbon plate that the arms and electronics clamp to."
+    },
+    {
+     "part_id": "arm0",
+     "name": "Arm 1",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      72.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      -49.5,
+      30,
+      -49.5
+     ],
+     "color": "#3b3f47",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor0",
+     "name": "Motor 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30.3,
+      14,
+      30.3
+     ],
+     "position_mm": [
+      -90.0,
+      36,
+      -90.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop0",
+     "name": "Propeller 1",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      101,
+      2,
+      101
+     ],
+     "position_mm": [
+      -90.0,
+      46,
+      -90.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm1",
+     "name": "Arm 2",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      72.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      49.5,
+      30,
+      -49.5
+     ],
+     "color": "#3b3f47",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      -45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor1",
+     "name": "Motor 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30.3,
+      14,
+      30.3
+     ],
+     "position_mm": [
+      90.0,
+      36,
+      -90.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop1",
+     "name": "Propeller 2",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      101,
+      2,
+      101
+     ],
+     "position_mm": [
+      90.0,
+      46,
+      -90.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm2",
+     "name": "Arm 3",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      72.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      -49.5,
+      30,
+      49.5
+     ],
+     "color": "#3b3f47",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      -45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor2",
+     "name": "Motor 3",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30.3,
+      14,
+      30.3
+     ],
+     "position_mm": [
+      -90.0,
+      36,
+      90.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop2",
+     "name": "Propeller 3",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      101,
+      2,
+      101
+     ],
+     "position_mm": [
+      -90.0,
+      46,
+      90.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "arm3",
+     "name": "Arm 4",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      72.0,
+      4,
+      12
+     ],
+     "position_mm": [
+      49.5,
+      30,
+      49.5
+     ],
+     "color": "#3b3f47",
+     "note": "Carbon arm.",
+     "rotation_deg": [
+      0,
+      45,
+      0
+     ]
+    },
+    {
+     "part_id": "motor3",
+     "name": "Motor 4",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30.3,
+      14,
+      30.3
+     ],
+     "position_mm": [
+      90.0,
+      36,
+      90.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Brushless motor."
+    },
+    {
+     "part_id": "prop3",
+     "name": "Propeller 4",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      101,
+      2,
+      101
+     ],
+     "position_mm": [
+      90.0,
+      46,
+      90.0
+     ],
+     "color": "#cfd5e3",
+     "note": "Two-blade propeller (shown as a disc)."
+    },
+    {
+     "part_id": "battery",
+     "name": "LiPo battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      54.0,
+      16,
+      30
+     ],
+     "position_mm": [
+      0,
+      18,
+      0
+     ],
+     "color": "#e8a33d",
+     "note": "Lithium polymer pack under the plate."
+    },
+    {
+     "part_id": "fc",
+     "name": "Flight controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      30,
+      5,
+      30
+     ],
+     "position_mm": [
+      0,
+      38,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Board with gyro that keeps it level."
+    },
+    {
+     "part_id": "camera",
+     "name": "Camera",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      18,
+      18,
+      18
+     ],
+     "position_mm": [
+      0,
+      36,
+      36.0
+     ],
+     "color": "#555b68",
+     "note": "Front-facing video camera."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-heart-rate-band",
+   "name": "Heart-rate Band",
+   "category": "wearable",
+   "summary": "A small body-worn module.",
+   "parts": [
+    {
+     "part_id": "strap",
+     "name": "Strap",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      133.0,
+      3,
+      22
+     ],
+     "position_mm": [
+      0,
+      5.5,
+      0
+     ],
+     "color": "#d1495b",
+     "note": "Soft strap that holds the module on the body."
+    },
+    {
+     "part_id": "shell",
+     "name": "Case",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      49.0,
+      12,
+      38.5
+     ],
+     "position_mm": [
+      0,
+      13,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Sealed case around the electronics."
+    },
+    {
+     "part_id": "screen",
+     "name": "Display",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      38.5,
+      1.5,
+      26.6
+     ],
+     "position_mm": [
+      0,
+      19.8,
+      0
+     ],
+     "color": "#555b68",
+     "note": "Small screen on top of the case."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Optical sensor",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      14,
+      3,
+      14
+     ],
+     "position_mm": [
+      0,
+      2.5,
+      0
+     ],
+     "color": "#2f8f5b",
+     "note": "Reads pulse or motion through the skin side."
+    },
+    {
+     "part_id": "battery",
+     "name": "Coin battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      24.5,
+      4,
+      21.0
+     ],
+     "position_mm": [
+      0,
+      8,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Thin rechargeable cell."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Low-power MCU",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      12,
+      2,
+      12
+     ],
+     "position_mm": [
+      14.0,
+      11.5,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Wakes up, reads the sensor, sleeps again."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-smart-badge",
+   "name": "Smart Badge",
+   "category": "wearable",
+   "summary": "A small body-worn module.",
+   "parts": [
+    {
+     "part_id": "strap",
+     "name": "Strap",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      161.5,
+      3,
+      22
+     ],
+     "position_mm": [
+      0,
+      5.5,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Soft strap that holds the module on the body."
+    },
+    {
+     "part_id": "shell",
+     "name": "Case",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      59.5,
+      12,
+      46.8
+     ],
+     "position_mm": [
+      0,
+      13,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Sealed case around the electronics."
+    },
+    {
+     "part_id": "screen",
+     "name": "Display",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      46.8,
+      1.5,
+      32.3
+     ],
+     "position_mm": [
+      0,
+      19.8,
+      0
+     ],
+     "color": "#555b68",
+     "note": "Small screen on top of the case."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Optical sensor",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      14,
+      3,
+      14
+     ],
+     "position_mm": [
+      0,
+      2.5,
+      0
+     ],
+     "color": "#2f8f5b",
+     "note": "Reads pulse or motion through the skin side."
+    },
+    {
+     "part_id": "battery",
+     "name": "Coin battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      29.7,
+      4,
+      25.5
+     ],
+     "position_mm": [
+      0,
+      8,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Thin rechargeable cell."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Low-power MCU",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      12,
+      2,
+      12
+     ],
+     "position_mm": [
+      17.0,
+      11.5,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Wakes up, reads the sensor, sleeps again."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-posture-clip",
+   "name": "Posture Clip",
+   "category": "wearable",
+   "summary": "A small body-worn module.",
+   "parts": [
+    {
+     "part_id": "strap",
+     "name": "Strap",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      95.0,
+      3,
+      22
+     ],
+     "position_mm": [
+      0,
+      5.5,
+      0
+     ],
+     "color": "#2f8f5b",
+     "note": "Soft strap that holds the module on the body."
+    },
+    {
+     "part_id": "shell",
+     "name": "Case",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      35.0,
+      12,
+      27.5
+     ],
+     "position_mm": [
+      0,
+      13,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Sealed case around the electronics."
+    },
+    {
+     "part_id": "screen",
+     "name": "Display",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      27.5,
+      1.5,
+      19.0
+     ],
+     "position_mm": [
+      0,
+      19.8,
+      0
+     ],
+     "color": "#555b68",
+     "note": "Small screen on top of the case."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Optical sensor",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      14,
+      3,
+      14
+     ],
+     "position_mm": [
+      0,
+      2.5,
+      0
+     ],
+     "color": "#2f8f5b",
+     "note": "Reads pulse or motion through the skin side."
+    },
+    {
+     "part_id": "battery",
+     "name": "Coin battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      17.5,
+      4,
+      15.0
+     ],
+     "position_mm": [
+      0,
+      8,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Thin rechargeable cell."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Low-power MCU",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      12,
+      2,
+      12
+     ],
+     "position_mm": [
+      10.0,
+      11.5,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Wakes up, reads the sensor, sleeps again."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-step-counter",
+   "name": "Step Counter",
+   "category": "wearable",
+   "summary": "A small body-worn module.",
+   "parts": [
+    {
+     "part_id": "strap",
+     "name": "Strap",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      114.0,
+      3,
+      22
+     ],
+     "position_mm": [
+      0,
+      5.5,
+      0
+     ],
+     "color": "#e8a33d",
+     "note": "Soft strap that holds the module on the body."
+    },
+    {
+     "part_id": "shell",
+     "name": "Case",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      42.0,
+      12,
+      33.0
+     ],
+     "position_mm": [
+      0,
+      13,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Sealed case around the electronics."
+    },
+    {
+     "part_id": "screen",
+     "name": "Display",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      33.0,
+      1.5,
+      22.8
+     ],
+     "position_mm": [
+      0,
+      19.8,
+      0
+     ],
+     "color": "#555b68",
+     "note": "Small screen on top of the case."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Optical sensor",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      14,
+      3,
+      14
+     ],
+     "position_mm": [
+      0,
+      2.5,
+      0
+     ],
+     "color": "#2f8f5b",
+     "note": "Reads pulse or motion through the skin side."
+    },
+    {
+     "part_id": "battery",
+     "name": "Coin battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      21.0,
+      4,
+      18.0
+     ],
+     "position_mm": [
+      0,
+      8,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Thin rechargeable cell."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Low-power MCU",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      12,
+      2,
+      12
+     ],
+     "position_mm": [
+      12.0,
+      11.5,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Wakes up, reads the sensor, sleeps again."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-glow-bracelet",
+   "name": "Glow Bracelet",
+   "category": "wearable",
+   "summary": "A small body-worn module.",
+   "parts": [
+    {
+     "part_id": "strap",
+     "name": "Strap",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      142.5,
+      3,
+      22
+     ],
+     "position_mm": [
+      0,
+      5.5,
+      0
+     ],
+     "color": "#a56bd8",
+     "note": "Soft strap that holds the module on the body."
+    },
+    {
+     "part_id": "shell",
+     "name": "Case",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      52.5,
+      12,
+      41.2
+     ],
+     "position_mm": [
+      0,
+      13,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Sealed case around the electronics."
+    },
+    {
+     "part_id": "screen",
+     "name": "Display",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      41.2,
+      1.5,
+      28.5
+     ],
+     "position_mm": [
+      0,
+      19.8,
+      0
+     ],
+     "color": "#555b68",
+     "note": "Small screen on top of the case."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Optical sensor",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      14,
+      3,
+      14
+     ],
+     "position_mm": [
+      0,
+      2.5,
+      0
+     ],
+     "color": "#2f8f5b",
+     "note": "Reads pulse or motion through the skin side."
+    },
+    {
+     "part_id": "battery",
+     "name": "Coin battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26.2,
+      4,
+      22.5
+     ],
+     "position_mm": [
+      0,
+      8,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Thin rechargeable cell."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Low-power MCU",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      12,
+      2,
+      12
+     ],
+     "position_mm": [
+      15.0,
+      11.5,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Wakes up, reads the sensor, sleeps again."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-sleep-tracker",
+   "name": "Sleep Tracker",
+   "category": "wearable",
+   "summary": "A small body-worn module.",
+   "parts": [
+    {
+     "part_id": "strap",
+     "name": "Strap",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      123.5,
+      3,
+      22
+     ],
+     "position_mm": [
+      0,
+      5.5,
+      0
+     ],
+     "color": "#9aa3b2",
+     "note": "Soft strap that holds the module on the body."
+    },
+    {
+     "part_id": "shell",
+     "name": "Case",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      45.5,
+      12,
+      35.8
+     ],
+     "position_mm": [
+      0,
+      13,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Sealed case around the electronics."
+    },
+    {
+     "part_id": "screen",
+     "name": "Display",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      35.8,
+      1.5,
+      24.7
+     ],
+     "position_mm": [
+      0,
+      19.8,
+      0
+     ],
+     "color": "#555b68",
+     "note": "Small screen on top of the case."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Optical sensor",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      14,
+      3,
+      14
+     ],
+     "position_mm": [
+      0,
+      2.5,
+      0
+     ],
+     "color": "#2f8f5b",
+     "note": "Reads pulse or motion through the skin side."
+    },
+    {
+     "part_id": "battery",
+     "name": "Coin battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22.8,
+      4,
+      19.5
+     ],
+     "position_mm": [
+      0,
+      8,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Thin rechargeable cell."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Low-power MCU",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      12,
+      2,
+      12
+     ],
+     "position_mm": [
+      13.0,
+      11.5,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Wakes up, reads the sensor, sleeps again."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-weather-station",
+   "name": "Weather Station",
+   "category": "iot",
+   "summary": "A small sensor node with a Wi-Fi board.",
+   "parts": [
+    {
+     "part_id": "enclosure",
+     "name": "Enclosure",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      90,
+      40,
+      67.5
+     ],
+     "position_mm": [
+      0,
+      20,
+      0
+     ],
+     "color": "#e9e9ee",
+     "note": "Plastic box with a removable lid."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Wi-Fi board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      54.0,
+      3,
+      31.5
+     ],
+     "position_mm": [
+      0,
+      6,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Connects the node to the network."
+    },
+    {
+     "part_id": "antenna",
+     "name": "Antenna",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      6,
+      45,
+      6
+     ],
+     "position_mm": [
+      34.2,
+      62,
+      0
+     ],
+     "color": "#555b68",
+     "note": "Whip antenna on the side."
+    },
+    {
+     "part_id": "led",
+     "name": "Status LED",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "sphere",
+     "size_mm": [
+      8,
+      8,
+      8
+     ],
+     "position_mm": [
+      -27.0,
+      41,
+      18.0
+     ],
+     "color": "#d1495b",
+     "note": "Shows connection state."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Sensor module",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      25.2,
+      8,
+      25.2
+     ],
+     "position_mm": [
+      -22.5,
+      44,
+      -9.0
+     ],
+     "color": "#3b6fd4",
+     "note": "Takes the measurement this node exists for."
+    },
+    {
+     "part_id": "power",
+     "name": "Power module",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      27.0,
+      14,
+      18.0
+     ],
+     "position_mm": [
+      22.5,
+      10,
+      -16.2
+     ],
+     "color": "#e8a33d",
+     "note": "Steps USB power down to the board."
+    },
+    {
+     "part_id": "port",
+     "name": "USB port",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      9,
+      6,
+      9
+     ],
+     "position_mm": [
+      0,
+      8,
+      -34.2
+     ],
+     "color": "#9aa3b2",
+     "note": "Power and programming input.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "product_id": "demo-plant-monitor",
+   "name": "Plant Monitor",
+   "category": "iot",
+   "summary": "A small sensor node with a Wi-Fi board.",
+   "parts": [
+    {
+     "part_id": "enclosure",
+     "name": "Enclosure",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      70,
+      40,
+      52.5
+     ],
+     "position_mm": [
+      0,
+      20,
+      0
+     ],
+     "color": "#2f8f5b",
+     "note": "Plastic box with a removable lid."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Wi-Fi board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      42.0,
+      3,
+      24.5
+     ],
+     "position_mm": [
+      0,
+      6,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Connects the node to the network."
+    },
+    {
+     "part_id": "antenna",
+     "name": "Antenna",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      6,
+      45,
+      6
+     ],
+     "position_mm": [
+      26.6,
+      62,
+      0
+     ],
+     "color": "#555b68",
+     "note": "Whip antenna on the side."
+    },
+    {
+     "part_id": "led",
+     "name": "Status LED",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "sphere",
+     "size_mm": [
+      8,
+      8,
+      8
+     ],
+     "position_mm": [
+      -21.0,
+      41,
+      14.0
+     ],
+     "color": "#d1495b",
+     "note": "Shows connection state."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Sensor module",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      19.6,
+      8,
+      19.6
+     ],
+     "position_mm": [
+      -17.5,
+      44,
+      -7.0
+     ],
+     "color": "#3b6fd4",
+     "note": "Takes the measurement this node exists for."
+    },
+    {
+     "part_id": "power",
+     "name": "Power module",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      21.0,
+      14,
+      14.0
+     ],
+     "position_mm": [
+      17.5,
+      10,
+      -12.6
+     ],
+     "color": "#e8a33d",
+     "note": "Steps USB power down to the board."
+    },
+    {
+     "part_id": "port",
+     "name": "USB port",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      9,
+      6,
+      9
+     ],
+     "position_mm": [
+      0,
+      8,
+      -26.6
+     ],
+     "color": "#9aa3b2",
+     "note": "Power and programming input.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "product_id": "demo-door-sensor",
+   "name": "Door Sensor",
+   "category": "iot",
+   "summary": "A small sensor node with a Wi-Fi board.",
+   "parts": [
+    {
+     "part_id": "enclosure",
+     "name": "Enclosure",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      60,
+      40,
+      45.0
+     ],
+     "position_mm": [
+      0,
+      20,
+      0
+     ],
+     "color": "#9aa3b2",
+     "note": "Plastic box with a removable lid."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Wi-Fi board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      36.0,
+      3,
+      21.0
+     ],
+     "position_mm": [
+      0,
+      6,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Connects the node to the network."
+    },
+    {
+     "part_id": "antenna",
+     "name": "Antenna",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      6,
+      45,
+      6
+     ],
+     "position_mm": [
+      22.8,
+      62,
+      0
+     ],
+     "color": "#555b68",
+     "note": "Whip antenna on the side."
+    },
+    {
+     "part_id": "led",
+     "name": "Status LED",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "sphere",
+     "size_mm": [
+      8,
+      8,
+      8
+     ],
+     "position_mm": [
+      -18.0,
+      41,
+      12.0
+     ],
+     "color": "#d1495b",
+     "note": "Shows connection state."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Sensor module",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      16.8,
+      8,
+      16.8
+     ],
+     "position_mm": [
+      -15.0,
+      44,
+      -6.0
+     ],
+     "color": "#3b6fd4",
+     "note": "Takes the measurement this node exists for."
+    },
+    {
+     "part_id": "power",
+     "name": "Power module",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      18.0,
+      14,
+      12.0
+     ],
+     "position_mm": [
+      15.0,
+      10,
+      -10.8
+     ],
+     "color": "#e8a33d",
+     "note": "Steps USB power down to the board."
+    },
+    {
+     "part_id": "port",
+     "name": "USB port",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      9,
+      6,
+      9
+     ],
+     "position_mm": [
+      0,
+      8,
+      -22.8
+     ],
+     "color": "#9aa3b2",
+     "note": "Power and programming input.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "product_id": "demo-air-quality-node",
+   "name": "Air Quality Node",
+   "category": "iot",
+   "summary": "A small sensor node with a Wi-Fi board.",
+   "parts": [
+    {
+     "part_id": "enclosure",
+     "name": "Enclosure",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      80,
+      40,
+      60.0
+     ],
+     "position_mm": [
+      0,
+      20,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Plastic box with a removable lid."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Wi-Fi board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      48.0,
+      3,
+      28.0
+     ],
+     "position_mm": [
+      0,
+      6,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Connects the node to the network."
+    },
+    {
+     "part_id": "antenna",
+     "name": "Antenna",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      6,
+      45,
+      6
+     ],
+     "position_mm": [
+      30.4,
+      62,
+      0
+     ],
+     "color": "#555b68",
+     "note": "Whip antenna on the side."
+    },
+    {
+     "part_id": "led",
+     "name": "Status LED",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "sphere",
+     "size_mm": [
+      8,
+      8,
+      8
+     ],
+     "position_mm": [
+      -24.0,
+      41,
+      16.0
+     ],
+     "color": "#d1495b",
+     "note": "Shows connection state."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Sensor module",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22.4,
+      8,
+      22.4
+     ],
+     "position_mm": [
+      -20.0,
+      44,
+      -8.0
+     ],
+     "color": "#3b6fd4",
+     "note": "Takes the measurement this node exists for."
+    },
+    {
+     "part_id": "power",
+     "name": "Power module",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      24.0,
+      14,
+      16.0
+     ],
+     "position_mm": [
+      20.0,
+      10,
+      -14.4
+     ],
+     "color": "#e8a33d",
+     "note": "Steps USB power down to the board."
+    },
+    {
+     "part_id": "port",
+     "name": "USB port",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      9,
+      6,
+      9
+     ],
+     "position_mm": [
+      0,
+      8,
+      -30.4
+     ],
+     "color": "#9aa3b2",
+     "note": "Power and programming input.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "product_id": "demo-smart-plug-node",
+   "name": "Smart Plug Node",
+   "category": "iot",
+   "summary": "A small sensor node with a Wi-Fi board.",
+   "parts": [
+    {
+     "part_id": "enclosure",
+     "name": "Enclosure",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      75,
+      40,
+      56.2
+     ],
+     "position_mm": [
+      0,
+      20,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Plastic box with a removable lid."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Wi-Fi board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      45.0,
+      3,
+      26.2
+     ],
+     "position_mm": [
+      0,
+      6,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Connects the node to the network."
+    },
+    {
+     "part_id": "antenna",
+     "name": "Antenna",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      6,
+      45,
+      6
+     ],
+     "position_mm": [
+      28.5,
+      62,
+      0
+     ],
+     "color": "#555b68",
+     "note": "Whip antenna on the side."
+    },
+    {
+     "part_id": "led",
+     "name": "Status LED",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "sphere",
+     "size_mm": [
+      8,
+      8,
+      8
+     ],
+     "position_mm": [
+      -22.5,
+      41,
+      15.0
+     ],
+     "color": "#d1495b",
+     "note": "Shows connection state."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Sensor module",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      21.0,
+      8,
+      21.0
+     ],
+     "position_mm": [
+      -18.8,
+      44,
+      -7.5
+     ],
+     "color": "#3b6fd4",
+     "note": "Takes the measurement this node exists for."
+    },
+    {
+     "part_id": "power",
+     "name": "Power module",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22.5,
+      14,
+      15.0
+     ],
+     "position_mm": [
+      18.8,
+      10,
+      -13.5
+     ],
+     "color": "#e8a33d",
+     "note": "Steps USB power down to the board."
+    },
+    {
+     "part_id": "port",
+     "name": "USB port",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      9,
+      6,
+      9
+     ],
+     "position_mm": [
+      0,
+      8,
+      -28.5
+     ],
+     "color": "#9aa3b2",
+     "note": "Power and programming input.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "product_id": "demo-water-leak-sensor",
+   "name": "Water Leak Sensor",
+   "category": "iot",
+   "summary": "A small sensor node with a Wi-Fi board.",
+   "parts": [
+    {
+     "part_id": "enclosure",
+     "name": "Enclosure",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      55,
+      40,
+      41.2
+     ],
+     "position_mm": [
+      0,
+      20,
+      0
+     ],
+     "color": "#e8a33d",
+     "note": "Plastic box with a removable lid."
+    },
+    {
+     "part_id": "mcu",
+     "name": "Wi-Fi board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      33.0,
+      3,
+      19.2
+     ],
+     "position_mm": [
+      0,
+      6,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Connects the node to the network."
+    },
+    {
+     "part_id": "antenna",
+     "name": "Antenna",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      6,
+      45,
+      6
+     ],
+     "position_mm": [
+      20.9,
+      62,
+      0
+     ],
+     "color": "#555b68",
+     "note": "Whip antenna on the side."
+    },
+    {
+     "part_id": "led",
+     "name": "Status LED",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "sphere",
+     "size_mm": [
+      8,
+      8,
+      8
+     ],
+     "position_mm": [
+      -16.5,
+      41,
+      11.0
+     ],
+     "color": "#d1495b",
+     "note": "Shows connection state."
+    },
+    {
+     "part_id": "sensor",
+     "name": "Sensor module",
+     "group": "Sensing",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      15.4,
+      8,
+      15.4
+     ],
+     "position_mm": [
+      -13.8,
+      44,
+      -5.5
+     ],
+     "color": "#3b6fd4",
+     "note": "Takes the measurement this node exists for."
+    },
+    {
+     "part_id": "power",
+     "name": "Power module",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      16.5,
+      14,
+      11.0
+     ],
+     "position_mm": [
+      13.8,
+      10,
+      -9.9
+     ],
+     "color": "#e8a33d",
+     "note": "Steps USB power down to the board."
+    },
+    {
+     "part_id": "port",
+     "name": "USB port",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      9,
+      6,
+      9
+     ],
+     "position_mm": [
+      0,
+      8,
+      -20.9
+     ],
+     "color": "#9aa3b2",
+     "note": "Power and programming input.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "product_id": "demo-bluetooth-speaker",
+   "name": "Bluetooth Speaker",
+   "category": "audio",
+   "summary": "A self-contained audio unit.",
+   "parts": [
+    {
+     "part_id": "cabinet",
+     "name": "Cabinet",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      160,
+      90,
+      70
+     ],
+     "position_mm": [
+      0,
+      45.0,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Wood or plastic housing."
+    },
+    {
+     "part_id": "driver",
+     "name": "Speaker driver",
+     "group": "Output",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      54.0,
+      8,
+      54.0
+     ],
+     "position_mm": [
+      -24.0,
+      45.0,
+      36
+     ],
+     "color": "#555b68",
+     "note": "Cone that makes the sound.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "amp",
+     "name": "Amplifier board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      64.0,
+      4,
+      40
+     ],
+     "position_mm": [
+      32.0,
+      8,
+      -10
+     ],
+     "color": "#1d6b5b",
+     "note": "Boosts the signal to drive the speaker."
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      48.0,
+      14,
+      34
+     ],
+     "position_mm": [
+      32.0,
+      18,
+      12
+     ],
+     "color": "#3b6fd4",
+     "note": "Lets it run without a cable."
+    },
+    {
+     "part_id": "knob",
+     "name": "Volume knob",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      16,
+      12,
+      16
+     ],
+     "position_mm": [
+      51.2,
+      51.0,
+      37
+     ],
+     "color": "#9aa3b2",
+     "note": "Sets the loudness.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "button",
+     "name": "Power button",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "sphere",
+     "size_mm": [
+      12,
+      12,
+      12
+     ],
+     "position_mm": [
+      51.2,
+      18.0,
+      36
+     ],
+     "color": "#d1495b",
+     "note": "Turns it on and off."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-desk-speaker",
+   "name": "Desk Speaker",
+   "category": "audio",
+   "summary": "A self-contained audio unit.",
+   "parts": [
+    {
+     "part_id": "cabinet",
+     "name": "Cabinet",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      120,
+      130,
+      70
+     ],
+     "position_mm": [
+      0,
+      65.0,
+      0
+     ],
+     "color": "#e9e9ee",
+     "note": "Wood or plastic housing."
+    },
+    {
+     "part_id": "driver",
+     "name": "Speaker driver",
+     "group": "Output",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      72.0,
+      8,
+      72.0
+     ],
+     "position_mm": [
+      -18.0,
+      65.0,
+      36
+     ],
+     "color": "#555b68",
+     "note": "Cone that makes the sound.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "amp",
+     "name": "Amplifier board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      48.0,
+      4,
+      40
+     ],
+     "position_mm": [
+      24.0,
+      8,
+      -10
+     ],
+     "color": "#1d6b5b",
+     "note": "Boosts the signal to drive the speaker."
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      36.0,
+      14,
+      34
+     ],
+     "position_mm": [
+      24.0,
+      18,
+      12
+     ],
+     "color": "#3b6fd4",
+     "note": "Lets it run without a cable."
+    },
+    {
+     "part_id": "knob",
+     "name": "Volume knob",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      16,
+      12,
+      16
+     ],
+     "position_mm": [
+      38.4,
+      71.0,
+      37
+     ],
+     "color": "#9aa3b2",
+     "note": "Sets the loudness.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "button",
+     "name": "Power button",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "sphere",
+     "size_mm": [
+      12,
+      12,
+      12
+     ],
+     "position_mm": [
+      38.4,
+      26.0,
+      36
+     ],
+     "color": "#d1495b",
+     "note": "Turns it on and off."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-guitar-pedal",
+   "name": "Guitar Pedal",
+   "category": "audio",
+   "summary": "A self-contained audio unit.",
+   "parts": [
+    {
+     "part_id": "cabinet",
+     "name": "Cabinet",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      120,
+      50,
+      70
+     ],
+     "position_mm": [
+      0,
+      25.0,
+      0
+     ],
+     "color": "#d1495b",
+     "note": "Wood or plastic housing."
+    },
+    {
+     "part_id": "driver",
+     "name": "Speaker driver",
+     "group": "Output",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30.0,
+      8,
+      30.0
+     ],
+     "position_mm": [
+      -18.0,
+      25.0,
+      36
+     ],
+     "color": "#555b68",
+     "note": "Cone that makes the sound.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "amp",
+     "name": "Amplifier board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      48.0,
+      4,
+      40
+     ],
+     "position_mm": [
+      24.0,
+      8,
+      -10
+     ],
+     "color": "#1d6b5b",
+     "note": "Boosts the signal to drive the speaker."
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      36.0,
+      14,
+      34
+     ],
+     "position_mm": [
+      24.0,
+      18,
+      12
+     ],
+     "color": "#3b6fd4",
+     "note": "Lets it run without a cable."
+    },
+    {
+     "part_id": "knob",
+     "name": "Volume knob",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      16,
+      12,
+      16
+     ],
+     "position_mm": [
+      38.4,
+      31.0,
+      37
+     ],
+     "color": "#9aa3b2",
+     "note": "Sets the loudness.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "button",
+     "name": "Power button",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "sphere",
+     "size_mm": [
+      12,
+      12,
+      12
+     ],
+     "position_mm": [
+      38.4,
+      10.0,
+      36
+     ],
+     "color": "#d1495b",
+     "note": "Turns it on and off."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-mini-amp",
+   "name": "Mini Amp",
+   "category": "audio",
+   "summary": "A self-contained audio unit.",
+   "parts": [
+    {
+     "part_id": "cabinet",
+     "name": "Cabinet",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      140,
+      80,
+      70
+     ],
+     "position_mm": [
+      0,
+      40.0,
+      0
+     ],
+     "color": "#2f8f5b",
+     "note": "Wood or plastic housing."
+    },
+    {
+     "part_id": "driver",
+     "name": "Speaker driver",
+     "group": "Output",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      48.0,
+      8,
+      48.0
+     ],
+     "position_mm": [
+      -21.0,
+      40.0,
+      36
+     ],
+     "color": "#555b68",
+     "note": "Cone that makes the sound.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "amp",
+     "name": "Amplifier board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      56.0,
+      4,
+      40
+     ],
+     "position_mm": [
+      28.0,
+      8,
+      -10
+     ],
+     "color": "#1d6b5b",
+     "note": "Boosts the signal to drive the speaker."
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      42.0,
+      14,
+      34
+     ],
+     "position_mm": [
+      28.0,
+      18,
+      12
+     ],
+     "color": "#3b6fd4",
+     "note": "Lets it run without a cable."
+    },
+    {
+     "part_id": "knob",
+     "name": "Volume knob",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      16,
+      12,
+      16
+     ],
+     "position_mm": [
+      44.8,
+      46.0,
+      37
+     ],
+     "color": "#9aa3b2",
+     "note": "Sets the loudness.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "button",
+     "name": "Power button",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "sphere",
+     "size_mm": [
+      12,
+      12,
+      12
+     ],
+     "position_mm": [
+      44.8,
+      16.0,
+      36
+     ],
+     "color": "#d1495b",
+     "note": "Turns it on and off."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-synth-module",
+   "name": "Synth Module",
+   "category": "audio",
+   "summary": "A self-contained audio unit.",
+   "parts": [
+    {
+     "part_id": "cabinet",
+     "name": "Cabinet",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      180,
+      50,
+      70
+     ],
+     "position_mm": [
+      0,
+      25.0,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Wood or plastic housing."
+    },
+    {
+     "part_id": "driver",
+     "name": "Speaker driver",
+     "group": "Output",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30.0,
+      8,
+      30.0
+     ],
+     "position_mm": [
+      -27.0,
+      25.0,
+      36
+     ],
+     "color": "#555b68",
+     "note": "Cone that makes the sound.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "amp",
+     "name": "Amplifier board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      72.0,
+      4,
+      40
+     ],
+     "position_mm": [
+      36.0,
+      8,
+      -10
+     ],
+     "color": "#1d6b5b",
+     "note": "Boosts the signal to drive the speaker."
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      54.0,
+      14,
+      34
+     ],
+     "position_mm": [
+      36.0,
+      18,
+      12
+     ],
+     "color": "#3b6fd4",
+     "note": "Lets it run without a cable."
+    },
+    {
+     "part_id": "knob",
+     "name": "Volume knob",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      16,
+      12,
+      16
+     ],
+     "position_mm": [
+      57.6,
+      31.0,
+      37
+     ],
+     "color": "#9aa3b2",
+     "note": "Sets the loudness.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "button",
+     "name": "Power button",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "sphere",
+     "size_mm": [
+      12,
+      12,
+      12
+     ],
+     "position_mm": [
+      57.6,
+      10.0,
+      36
+     ],
+     "color": "#d1495b",
+     "note": "Turns it on and off."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-radio-receiver",
+   "name": "Radio Receiver",
+   "category": "audio",
+   "summary": "A self-contained audio unit.",
+   "parts": [
+    {
+     "part_id": "cabinet",
+     "name": "Cabinet",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      170,
+      70,
+      70
+     ],
+     "position_mm": [
+      0,
+      35.0,
+      0
+     ],
+     "color": "#e8a33d",
+     "note": "Wood or plastic housing."
+    },
+    {
+     "part_id": "driver",
+     "name": "Speaker driver",
+     "group": "Output",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      42.0,
+      8,
+      42.0
+     ],
+     "position_mm": [
+      -25.5,
+      35.0,
+      36
+     ],
+     "color": "#555b68",
+     "note": "Cone that makes the sound.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "amp",
+     "name": "Amplifier board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      68.0,
+      4,
+      40
+     ],
+     "position_mm": [
+      34.0,
+      8,
+      -10
+     ],
+     "color": "#1d6b5b",
+     "note": "Boosts the signal to drive the speaker."
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      51.0,
+      14,
+      34
+     ],
+     "position_mm": [
+      34.0,
+      18,
+      12
+     ],
+     "color": "#3b6fd4",
+     "note": "Lets it run without a cable."
+    },
+    {
+     "part_id": "knob",
+     "name": "Volume knob",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      16,
+      12,
+      16
+     ],
+     "position_mm": [
+      54.4,
+      41.0,
+      37
+     ],
+     "color": "#9aa3b2",
+     "note": "Sets the loudness.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "button",
+     "name": "Power button",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "sphere",
+     "size_mm": [
+      12,
+      12,
+      12
+     ],
+     "position_mm": [
+      54.4,
+      14.0,
+      36
+     ],
+     "color": "#d1495b",
+     "note": "Turns it on and off."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-desk-clock-display",
+   "name": "Desk Clock Display",
+   "category": "display",
+   "summary": "A mounted display with its driver board.",
+   "parts": [
+    {
+     "part_id": "stand",
+     "name": "Stand post",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      14,
+      60,
+      14
+     ],
+     "position_mm": [
+      0,
+      30,
+      0
+     ],
+     "color": "#9aa3b2",
+     "note": "Holds the panel at an angle."
+    },
+    {
+     "part_id": "base",
+     "name": "Base",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      90,
+      8,
+      90
+     ],
+     "position_mm": [
+      0,
+      4,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Weighted foot."
+    },
+    {
+     "part_id": "panel",
+     "name": "Display panel",
+     "group": "Output",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      140,
+      60,
+      6
+     ],
+     "position_mm": [
+      0,
+      90.0,
+      0
+     ],
+     "color": "#555b68",
+     "note": "The visible screen."
+    },
+    {
+     "part_id": "back",
+     "name": "Back plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      140,
+      60,
+      3
+     ],
+     "position_mm": [
+      0,
+      90.0,
+      -4.5
+     ],
+     "color": "#9aa3b2",
+     "note": "Covers the electronics."
+    },
+    {
+     "part_id": "driver",
+     "name": "Driver board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      70.0,
+      18.0,
+      3
+     ],
+     "position_mm": [
+      0,
+      84.0,
+      -8
+     ],
+     "color": "#1d6b5b",
+     "note": "Pushes pixel data to the panel."
+    },
+    {
+     "part_id": "power",
+     "name": "Power input",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      18,
+      8,
+      12
+     ],
+     "position_mm": [
+      53.2,
+      62,
+      -9
+     ],
+     "color": "#3b6fd4",
+     "note": "USB-C power input."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-info-panel",
+   "name": "Info Panel",
+   "category": "display",
+   "summary": "A mounted display with its driver board.",
+   "parts": [
+    {
+     "part_id": "stand",
+     "name": "Stand post",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      14,
+      60,
+      14
+     ],
+     "position_mm": [
+      0,
+      30,
+      0
+     ],
+     "color": "#9aa3b2",
+     "note": "Holds the panel at an angle."
+    },
+    {
+     "part_id": "base",
+     "name": "Base",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      90,
+      8,
+      90
+     ],
+     "position_mm": [
+      0,
+      4,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Weighted foot."
+    },
+    {
+     "part_id": "panel",
+     "name": "Display panel",
+     "group": "Output",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      200,
+      120,
+      6
+     ],
+     "position_mm": [
+      0,
+      120.0,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "The visible screen."
+    },
+    {
+     "part_id": "back",
+     "name": "Back plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      200,
+      120,
+      3
+     ],
+     "position_mm": [
+      0,
+      120.0,
+      -4.5
+     ],
+     "color": "#9aa3b2",
+     "note": "Covers the electronics."
+    },
+    {
+     "part_id": "driver",
+     "name": "Driver board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      100.0,
+      36.0,
+      3
+     ],
+     "position_mm": [
+      0,
+      108.0,
+      -8
+     ],
+     "color": "#1d6b5b",
+     "note": "Pushes pixel data to the panel."
+    },
+    {
+     "part_id": "power",
+     "name": "Power input",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      18,
+      8,
+      12
+     ],
+     "position_mm": [
+      76.0,
+      62,
+      -9
+     ],
+     "color": "#3b6fd4",
+     "note": "USB-C power input."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-pixel-matrix",
+   "name": "Pixel Matrix",
+   "category": "display",
+   "summary": "A mounted display with its driver board.",
+   "parts": [
+    {
+     "part_id": "stand",
+     "name": "Stand post",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      14,
+      60,
+      14
+     ],
+     "position_mm": [
+      0,
+      30,
+      0
+     ],
+     "color": "#9aa3b2",
+     "note": "Holds the panel at an angle."
+    },
+    {
+     "part_id": "base",
+     "name": "Base",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      90,
+      8,
+      90
+     ],
+     "position_mm": [
+      0,
+      4,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Weighted foot."
+    },
+    {
+     "part_id": "panel",
+     "name": "Display panel",
+     "group": "Output",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      160,
+      160,
+      6
+     ],
+     "position_mm": [
+      0,
+      140.0,
+      0
+     ],
+     "color": "#555b68",
+     "note": "The visible screen."
+    },
+    {
+     "part_id": "back",
+     "name": "Back plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      160,
+      160,
+      3
+     ],
+     "position_mm": [
+      0,
+      140.0,
+      -4.5
+     ],
+     "color": "#9aa3b2",
+     "note": "Covers the electronics."
+    },
+    {
+     "part_id": "driver",
+     "name": "Driver board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      80.0,
+      48.0,
+      3
+     ],
+     "position_mm": [
+      0,
+      124.0,
+      -8
+     ],
+     "color": "#1d6b5b",
+     "note": "Pushes pixel data to the panel."
+    },
+    {
+     "part_id": "power",
+     "name": "Power input",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      18,
+      8,
+      12
+     ],
+     "position_mm": [
+      60.8,
+      62,
+      -9
+     ],
+     "color": "#3b6fd4",
+     "note": "USB-C power input."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-retro-gauge",
+   "name": "Retro Gauge",
+   "category": "display",
+   "summary": "A mounted display with its driver board.",
+   "parts": [
+    {
+     "part_id": "stand",
+     "name": "Stand post",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      14,
+      60,
+      14
+     ],
+     "position_mm": [
+      0,
+      30,
+      0
+     ],
+     "color": "#9aa3b2",
+     "note": "Holds the panel at an angle."
+    },
+    {
+     "part_id": "base",
+     "name": "Base",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      90,
+      8,
+      90
+     ],
+     "position_mm": [
+      0,
+      4,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Weighted foot."
+    },
+    {
+     "part_id": "panel",
+     "name": "Display panel",
+     "group": "Output",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      110,
+      110,
+      6
+     ],
+     "position_mm": [
+      0,
+      115.0,
+      0
+     ],
+     "color": "#e8a33d",
+     "note": "The visible screen."
+    },
+    {
+     "part_id": "back",
+     "name": "Back plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      110,
+      110,
+      3
+     ],
+     "position_mm": [
+      0,
+      115.0,
+      -4.5
+     ],
+     "color": "#9aa3b2",
+     "note": "Covers the electronics."
+    },
+    {
+     "part_id": "driver",
+     "name": "Driver board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      55.0,
+      33.0,
+      3
+     ],
+     "position_mm": [
+      0,
+      104.0,
+      -8
+     ],
+     "color": "#1d6b5b",
+     "note": "Pushes pixel data to the panel."
+    },
+    {
+     "part_id": "power",
+     "name": "Power input",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      18,
+      8,
+      12
+     ],
+     "position_mm": [
+      41.8,
+      62,
+      -9
+     ],
+     "color": "#3b6fd4",
+     "note": "USB-C power input."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-status-board",
+   "name": "Status Board",
+   "category": "display",
+   "summary": "A mounted display with its driver board.",
+   "parts": [
+    {
+     "part_id": "stand",
+     "name": "Stand post",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      14,
+      60,
+      14
+     ],
+     "position_mm": [
+      0,
+      30,
+      0
+     ],
+     "color": "#9aa3b2",
+     "note": "Holds the panel at an angle."
+    },
+    {
+     "part_id": "base",
+     "name": "Base",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      90,
+      8,
+      90
+     ],
+     "position_mm": [
+      0,
+      4,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Weighted foot."
+    },
+    {
+     "part_id": "panel",
+     "name": "Display panel",
+     "group": "Output",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      240,
+      90,
+      6
+     ],
+     "position_mm": [
+      0,
+      105.0,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "The visible screen."
+    },
+    {
+     "part_id": "back",
+     "name": "Back plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      240,
+      90,
+      3
+     ],
+     "position_mm": [
+      0,
+      105.0,
+      -4.5
+     ],
+     "color": "#9aa3b2",
+     "note": "Covers the electronics."
+    },
+    {
+     "part_id": "driver",
+     "name": "Driver board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      120.0,
+      27.0,
+      3
+     ],
+     "position_mm": [
+      0,
+      96.0,
+      -8
+     ],
+     "color": "#1d6b5b",
+     "note": "Pushes pixel data to the panel."
+    },
+    {
+     "part_id": "power",
+     "name": "Power input",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      18,
+      8,
+      12
+     ],
+     "position_mm": [
+      91.2,
+      62,
+      -9
+     ],
+     "color": "#3b6fd4",
+     "note": "USB-C power input."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-e-ink-frame",
+   "name": "E-ink Frame",
+   "category": "display",
+   "summary": "A mounted display with its driver board.",
+   "parts": [
+    {
+     "part_id": "stand",
+     "name": "Stand post",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      14,
+      60,
+      14
+     ],
+     "position_mm": [
+      0,
+      30,
+      0
+     ],
+     "color": "#9aa3b2",
+     "note": "Holds the panel at an angle."
+    },
+    {
+     "part_id": "base",
+     "name": "Base",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      90,
+      8,
+      90
+     ],
+     "position_mm": [
+      0,
+      4,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Weighted foot."
+    },
+    {
+     "part_id": "panel",
+     "name": "Display panel",
+     "group": "Output",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      180,
+      130,
+      6
+     ],
+     "position_mm": [
+      0,
+      125.0,
+      0
+     ],
+     "color": "#e9e9ee",
+     "note": "The visible screen."
+    },
+    {
+     "part_id": "back",
+     "name": "Back plate",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      180,
+      130,
+      3
+     ],
+     "position_mm": [
+      0,
+      125.0,
+      -4.5
+     ],
+     "color": "#9aa3b2",
+     "note": "Covers the electronics."
+    },
+    {
+     "part_id": "driver",
+     "name": "Driver board",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      90.0,
+      39.0,
+      3
+     ],
+     "position_mm": [
+      0,
+      112.0,
+      -8
+     ],
+     "color": "#1d6b5b",
+     "note": "Pushes pixel data to the panel."
+    },
+    {
+     "part_id": "power",
+     "name": "Power input",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      18,
+      8,
+      12
+     ],
+     "position_mm": [
+      68.4,
+      62,
+      -9
+     ],
+     "color": "#3b6fd4",
+     "note": "USB-C power input."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-cordless-drill",
+   "name": "Cordless Drill",
+   "category": "tool",
+   "summary": "A handheld powered tool.",
+   "parts": [
+    {
+     "part_id": "handle",
+     "name": "Handle",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      34.0,
+      100.0,
+      34.0
+     ],
+     "position_mm": [
+      0,
+      50.0,
+      0
+     ],
+     "color": "#e8a33d",
+     "note": "Grip with the trigger on the front."
+    },
+    {
+     "part_id": "body",
+     "name": "Motor housing",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      40.0,
+      44.0,
+      110.0
+     ],
+     "position_mm": [
+      0,
+      122.0,
+      30.0
+     ],
+     "color": "#e8a33d",
+     "note": "Holds the motor and gearbox."
+    },
+    {
+     "part_id": "motor",
+     "name": "Motor",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30.0,
+      60.0,
+      30.0
+     ],
+     "position_mm": [
+      0,
+      122.0,
+      20.0
+     ],
+     "color": "#d9b44a",
+     "note": "Spins the output shaft.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "chuck",
+     "name": "Chuck",
+     "group": "Hardware",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      20.0,
+      26.0,
+      20.0
+     ],
+     "position_mm": [
+      0,
+      122.0,
+      98.0
+     ],
+     "color": "#9aa3b2",
+     "note": "Grips the bit or accessory.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery pack",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      38.0,
+      26.0,
+      58.0
+     ],
+     "position_mm": [
+      0,
+      10.0,
+      6.0
+     ],
+     "color": "#3b3f47",
+     "note": "Slides in under the handle."
+    },
+    {
+     "part_id": "trigger",
+     "name": "Trigger",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      10.0,
+      30.0,
+      12.0
+     ],
+     "position_mm": [
+      0,
+      80.0,
+      24.0
+     ],
+     "color": "#d1495b",
+     "note": "Squeeze to run."
+    },
+    {
+     "part_id": "board",
+     "name": "Speed controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      28.0,
+      4.0,
+      40.0
+     ],
+     "position_mm": [
+      0,
+      100.0,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Varies motor speed with trigger travel."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-soldering-station",
+   "name": "Soldering Station",
+   "category": "tool",
+   "summary": "A handheld powered tool.",
+   "parts": [
+    {
+     "part_id": "handle",
+     "name": "Handle",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      30.6,
+      90.0,
+      30.6
+     ],
+     "position_mm": [
+      0,
+      45.0,
+      0
+     ],
+     "color": "#d1495b",
+     "note": "Grip with the trigger on the front."
+    },
+    {
+     "part_id": "body",
+     "name": "Motor housing",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      36.0,
+      39.6,
+      99.0
+     ],
+     "position_mm": [
+      0,
+      109.8,
+      27.0
+     ],
+     "color": "#d1495b",
+     "note": "Holds the motor and gearbox."
+    },
+    {
+     "part_id": "motor",
+     "name": "Motor",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      27.0,
+      54.0,
+      27.0
+     ],
+     "position_mm": [
+      0,
+      109.8,
+      18.0
+     ],
+     "color": "#d9b44a",
+     "note": "Spins the output shaft.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "chuck",
+     "name": "Chuck",
+     "group": "Hardware",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      18.0,
+      23.4,
+      18.0
+     ],
+     "position_mm": [
+      0,
+      109.8,
+      88.2
+     ],
+     "color": "#9aa3b2",
+     "note": "Grips the bit or accessory.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery pack",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      34.2,
+      23.4,
+      52.2
+     ],
+     "position_mm": [
+      0,
+      9.0,
+      5.4
+     ],
+     "color": "#3b3f47",
+     "note": "Slides in under the handle."
+    },
+    {
+     "part_id": "trigger",
+     "name": "Trigger",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      9.0,
+      27.0,
+      10.8
+     ],
+     "position_mm": [
+      0,
+      72.0,
+      21.6
+     ],
+     "color": "#d1495b",
+     "note": "Squeeze to run."
+    },
+    {
+     "part_id": "board",
+     "name": "Speed controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      25.2,
+      3.6,
+      36.0
+     ],
+     "position_mm": [
+      0,
+      90.0,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Varies motor speed with trigger travel."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-handheld-fan",
+   "name": "Handheld Fan",
+   "category": "tool",
+   "summary": "A handheld powered tool.",
+   "parts": [
+    {
+     "part_id": "handle",
+     "name": "Handle",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      27.2,
+      80.0,
+      27.2
+     ],
+     "position_mm": [
+      0,
+      40.0,
+      0
+     ],
+     "color": "#3b6fd4",
+     "note": "Grip with the trigger on the front."
+    },
+    {
+     "part_id": "body",
+     "name": "Motor housing",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      32.0,
+      35.2,
+      88.0
+     ],
+     "position_mm": [
+      0,
+      97.6,
+      24.0
+     ],
+     "color": "#3b6fd4",
+     "note": "Holds the motor and gearbox."
+    },
+    {
+     "part_id": "motor",
+     "name": "Motor",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      24.0,
+      48.0,
+      24.0
+     ],
+     "position_mm": [
+      0,
+      97.6,
+      16.0
+     ],
+     "color": "#d9b44a",
+     "note": "Spins the output shaft.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "chuck",
+     "name": "Chuck",
+     "group": "Hardware",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      16.0,
+      20.8,
+      16.0
+     ],
+     "position_mm": [
+      0,
+      97.6,
+      78.4
+     ],
+     "color": "#9aa3b2",
+     "note": "Grips the bit or accessory.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery pack",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      30.4,
+      20.8,
+      46.4
+     ],
+     "position_mm": [
+      0,
+      8.0,
+      4.8
+     ],
+     "color": "#3b3f47",
+     "note": "Slides in under the handle."
+    },
+    {
+     "part_id": "trigger",
+     "name": "Trigger",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      8.0,
+      24.0,
+      9.6
+     ],
+     "position_mm": [
+      0,
+      64.0,
+      19.2
+     ],
+     "color": "#d1495b",
+     "note": "Squeeze to run."
+    },
+    {
+     "part_id": "board",
+     "name": "Speed controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      22.4,
+      3.2,
+      32.0
+     ],
+     "position_mm": [
+      0,
+      80.0,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Varies motor speed with trigger travel."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-label-printer",
+   "name": "Label Printer",
+   "category": "tool",
+   "summary": "A handheld powered tool.",
+   "parts": [
+    {
+     "part_id": "handle",
+     "name": "Handle",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      37.4,
+      110.0,
+      37.4
+     ],
+     "position_mm": [
+      0,
+      55.0,
+      0
+     ],
+     "color": "#3b3f47",
+     "note": "Grip with the trigger on the front."
+    },
+    {
+     "part_id": "body",
+     "name": "Motor housing",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      44.0,
+      48.4,
+      121.0
+     ],
+     "position_mm": [
+      0,
+      134.2,
+      33.0
+     ],
+     "color": "#3b3f47",
+     "note": "Holds the motor and gearbox."
+    },
+    {
+     "part_id": "motor",
+     "name": "Motor",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      33.0,
+      66.0,
+      33.0
+     ],
+     "position_mm": [
+      0,
+      134.2,
+      22.0
+     ],
+     "color": "#d9b44a",
+     "note": "Spins the output shaft.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "chuck",
+     "name": "Chuck",
+     "group": "Hardware",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      22.0,
+      28.6,
+      22.0
+     ],
+     "position_mm": [
+      0,
+      134.2,
+      107.8
+     ],
+     "color": "#9aa3b2",
+     "note": "Grips the bit or accessory.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery pack",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      41.8,
+      28.6,
+      63.8
+     ],
+     "position_mm": [
+      0,
+      11.0,
+      6.6
+     ],
+     "color": "#3b3f47",
+     "note": "Slides in under the handle."
+    },
+    {
+     "part_id": "trigger",
+     "name": "Trigger",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      11.0,
+      33.0,
+      13.2
+     ],
+     "position_mm": [
+      0,
+      88.0,
+      26.4
+     ],
+     "color": "#d1495b",
+     "note": "Squeeze to run."
+    },
+    {
+     "part_id": "board",
+     "name": "Speed controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      30.8,
+      4.4,
+      44.0
+     ],
+     "position_mm": [
+      0,
+      110.0,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Varies motor speed with trigger travel."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-mini-heat-gun",
+   "name": "Mini Heat Gun",
+   "category": "tool",
+   "summary": "A handheld powered tool.",
+   "parts": [
+    {
+     "part_id": "handle",
+     "name": "Handle",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      32.3,
+      95.0,
+      32.3
+     ],
+     "position_mm": [
+      0,
+      47.5,
+      0
+     ],
+     "color": "#2f8f5b",
+     "note": "Grip with the trigger on the front."
+    },
+    {
+     "part_id": "body",
+     "name": "Motor housing",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      38.0,
+      41.8,
+      104.5
+     ],
+     "position_mm": [
+      0,
+      115.9,
+      28.5
+     ],
+     "color": "#2f8f5b",
+     "note": "Holds the motor and gearbox."
+    },
+    {
+     "part_id": "motor",
+     "name": "Motor",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      28.5,
+      57.0,
+      28.5
+     ],
+     "position_mm": [
+      0,
+      115.9,
+      19.0
+     ],
+     "color": "#d9b44a",
+     "note": "Spins the output shaft.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "chuck",
+     "name": "Chuck",
+     "group": "Hardware",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      19.0,
+      24.7,
+      19.0
+     ],
+     "position_mm": [
+      0,
+      115.9,
+      93.1
+     ],
+     "color": "#9aa3b2",
+     "note": "Grips the bit or accessory.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery pack",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      36.1,
+      24.7,
+      55.1
+     ],
+     "position_mm": [
+      0,
+      9.5,
+      5.7
+     ],
+     "color": "#3b3f47",
+     "note": "Slides in under the handle."
+    },
+    {
+     "part_id": "trigger",
+     "name": "Trigger",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      9.5,
+      28.5,
+      11.4
+     ],
+     "position_mm": [
+      0,
+      76.0,
+      22.8
+     ],
+     "color": "#d1495b",
+     "note": "Squeeze to run."
+    },
+    {
+     "part_id": "board",
+     "name": "Speed controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      26.6,
+      3.8,
+      38.0
+     ],
+     "position_mm": [
+      0,
+      95.0,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Varies motor speed with trigger travel."
+    }
+   ]
+  },
+  {
+   "product_id": "demo-rotary-tool",
+   "name": "Rotary Tool",
+   "category": "tool",
+   "summary": "A handheld powered tool.",
+   "parts": [
+    {
+     "part_id": "handle",
+     "name": "Handle",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      28.9,
+      85.0,
+      28.9
+     ],
+     "position_mm": [
+      0,
+      42.5,
+      0
+     ],
+     "color": "#9aa3b2",
+     "note": "Grip with the trigger on the front."
+    },
+    {
+     "part_id": "body",
+     "name": "Motor housing",
+     "group": "Structure",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      34.0,
+      37.4,
+      93.5
+     ],
+     "position_mm": [
+      0,
+      103.7,
+      25.5
+     ],
+     "color": "#9aa3b2",
+     "note": "Holds the motor and gearbox."
+    },
+    {
+     "part_id": "motor",
+     "name": "Motor",
+     "group": "Drive",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      25.5,
+      51.0,
+      25.5
+     ],
+     "position_mm": [
+      0,
+      103.7,
+      17.0
+     ],
+     "color": "#d9b44a",
+     "note": "Spins the output shaft.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "chuck",
+     "name": "Chuck",
+     "group": "Hardware",
+     "quantity": 1,
+     "shape": "cylinder",
+     "size_mm": [
+      17.0,
+      22.1,
+      17.0
+     ],
+     "position_mm": [
+      0,
+      103.7,
+      83.3
+     ],
+     "color": "#9aa3b2",
+     "note": "Grips the bit or accessory.",
+     "rotation_deg": [
+      90,
+      0,
+      0
+     ]
+    },
+    {
+     "part_id": "battery",
+     "name": "Battery pack",
+     "group": "Power",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      32.3,
+      22.1,
+      49.3
+     ],
+     "position_mm": [
+      0,
+      8.5,
+      5.1
+     ],
+     "color": "#3b3f47",
+     "note": "Slides in under the handle."
+    },
+    {
+     "part_id": "trigger",
+     "name": "Trigger",
+     "group": "Interface",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      8.5,
+      25.5,
+      10.2
+     ],
+     "position_mm": [
+      0,
+      68.0,
+      20.4
+     ],
+     "color": "#d1495b",
+     "note": "Squeeze to run."
+    },
+    {
+     "part_id": "board",
+     "name": "Speed controller",
+     "group": "Control",
+     "quantity": 1,
+     "shape": "box",
+     "size_mm": [
+      23.8,
+      3.4,
+      34.0
+     ],
+     "position_mm": [
+      0,
+      85.0,
+      0
+     ],
+     "color": "#1d6b5b",
+     "note": "Varies motor speed with trigger travel."
+    }
+   ]
+  }
+ ]
+}

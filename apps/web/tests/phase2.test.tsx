@@ -8,7 +8,7 @@ import { firmwareStep, needsSafetyAck, stepParts } from '../src/components/steps
 import { BuyStep } from '../src/components/steps/buy/BuyStep';
 import { buyTotals, groupByVendor, NO_VENDOR } from '../src/components/steps/buy/buy-model';
 import { DoneStep } from '../src/components/steps/done/DoneStep';
-import { getSourcedCatalog, getSourcedRoverPlan, SOURCED_ROVER_BUILD_ID } from '../src/lib/fixtures';
+import { getConceptExamplePlan, getSourcedCatalog, getSourcedRoverPlan, SOURCED_ROVER_BUILD_ID } from '../src/lib/fixtures';
 import { buyLines, type BuyLine } from '../src/lib/flow/derive';
 import { createProjectRecord, getProject, type ProjectRecord } from '../src/lib/flow/projects';
 import { FixtureSource } from '../src/lib/rivet';
@@ -146,6 +146,21 @@ describe('Step 4 Buy', () => {
     const oos = await screen.findByTestId('buy-out-of-stock', {}, { timeout: 8000 });
     expect(oos.textContent).toContain('ESP32-DevKitC');
     expect(oos.textContent).toContain('No in-stock alternative found yet');
+  });
+});
+
+describe('Step 4 Buy for a concept model', () => {
+  it('lists the suggested real parts with a badge and leaves body shapes out', async () => {
+    const concept = getConceptExamplePlan();
+    seed({ exampleId: concept.build_id, buildId: concept.build_id });
+    await renderStep('buy', <BuyStep />);
+    await screen.findByTestId('buy-suggested-notice', {}, { timeout: 8000 });
+    const group = screen.getByTestId('buy-vendor-RaceDayQuads');
+    fireEvent.click(group.querySelector('button')!);
+    expect(within(group).getByTestId('buy-suggested-concept.flight-controller')).toBeDefined();
+    expect(within(group).getByTestId('buy-line-link-concept.flight-controller').getAttribute('href')).toMatch(/^https:\/\/www\.racedayquads\.com\//);
+    expect(screen.queryByTestId('buy-line-concept.body')).toBeNull();
+    expect(screen.queryByTestId(`buy-vendor-${NO_VENDOR}`)).toBeNull();
   });
 });
 

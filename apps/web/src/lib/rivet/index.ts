@@ -36,6 +36,8 @@ export {
   SAVED_SYNTHETIC_EXAMPLE_LABEL,
   SAVED_BUILD_LABEL,
   describeBuildTrust,
+  isConceptPlan,
+  CONCEPT_MODEL_LABEL,
   isSyntheticPlan,
   summarizeBom,
   bomLinkFor,

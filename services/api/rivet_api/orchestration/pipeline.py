@@ -5,6 +5,7 @@ checks the result is structurally coherent (contract guard), stamps provenance
 honestly, and stores whatever the engine said, status and findings untouched.
 """
 
+import re
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -12,7 +13,10 @@ from pydantic import ValidationError
 
 from rivet_api.agents.editor import EditSelector, parse_edit
 from rivet_api.agents.intent_sanitizer import sanitize_intent
-from rivet_api.agents.vision import VisionPort, ensure_supported, support_limitation
+from rivet_api.agents.vision import MockVisionProvider, VisionPort, ensure_supported, support_limitation
+from rivet_api.concept import CONCEPT_PREFIX, build_concept_plan, concept_from_plan, fixture_concept, is_concept_plan
+from rivet_api.concept.model import ConceptModel
+from rivet_api.concept.reference_parts import REFERENCE_URLS
 from rivet_api.adapters.engineering import EngineeringPort
 from rivet_api.config import Settings
 from rivet_api.contract import ContractViolation, assert_build_plan_contract
@@ -49,6 +53,7 @@ class Deps:
     resolutions: Any = None  # ResolutionStore
     offers_provider: Any = None  # OffersProvider (offers/provider.py)
     offer_sets: Any = None  # OfferSetStore
+    showcase: Any = None  # ShowcaseStore (showcase/store.py)
 
 
 _VALIDATE_STATUS = {
@@ -61,6 +66,8 @@ _VALIDATE_STATUS = {
 
 def planned_stages(deps: Deps, req: GenerateRequest) -> list[str]:
     stages = ["upload"] if req.input.image_asset_id else []
+    if req.interpretation_choice == "concept_model":
+        return stages + ["understand", "assembly", "validate", "complete"]
     stages += ["understand", "catalog_selection"]
     if getattr(deps.engine, "generation_mode", None) is None:
         stages += ["assembly", "validate"]
@@ -104,6 +111,100 @@ def check_plan(plan: Any, engine: EngineeringPort) -> BuildPlan:
     return model
 
 
+CONCEPT_FALLBACK_NOTE = "A 3D concept of the upload could not be built, so this is the fallback rover"
+
+
+def check_concept_plan(plan: Any) -> BuildPlan:
+    """Concept plans skip the engine: check structure against their own concept catalog and
+    that nothing in them claims to be a verified product. The only links allowed are hand-picked
+    suggestions from `reference_parts`, labelled `manufacturer_reference_only`."""
+    try:
+        model = BuildPlan.model_validate(plan)
+    except ValidationError as exc:
+        errors = [f"{'.'.join(str(p) for p in e['loc'])}: {e['msg']}" for e in exc.errors()]
+        raise ApiError("CONCEPT_CONTRACT_VIOLATION", "Concept builder returned a malformed BuildPlan", 500, {"errors": errors}) from exc
+    catalog = plan.get("concept_catalog") or []
+    errors = [f"{c['catalog_id']}: not a concept entry" for c in catalog if not c["catalog_id"].startswith(CONCEPT_PREFIX)]
+    errors += [f"{c['catalog_id']}: carries sourcing" for c in catalog if c["identity"]["sku"] or c["sourcing"]["purchase_url"]]
+    errors += [
+        f"{c['catalog_id']}: reference URL is not a curated suggestion"
+        for c in catalog
+        if c["sourcing"]["manufacturer_reference_url"] not in (None, *REFERENCE_URLS)
+    ]
+    for item in plan["bom"]["items"]:
+        url, status = item["purchase_url"], item["link_status"]
+        if status == "verified_product":
+            errors.append(f"bom {item['catalog_id']}: claims verified_product")
+        elif status == "manufacturer_reference_only" and url not in REFERENCE_URLS:
+            errors.append(f"bom {item['catalog_id']}: link is not a curated suggestion")
+        elif status == "not_available" and url is not None:
+            errors.append(f"bom {item['catalog_id']}: has a link but link_status not_available")
+    if plan["status"] != "needs_review":
+        errors.append(f"status {plan['status']!r} is not needs_review")
+    try:
+        assert_build_plan_contract(model, catalog)
+    except ContractViolation as exc:
+        errors += exc.errors
+    if errors:
+        raise ApiError("CONCEPT_CONTRACT_VIOLATION", "Concept builder returned an inconsistent BuildPlan", 500, {"errors": errors})
+    return model
+
+
+DRONE_FALLBACK_NOTE = "The vision model could not rebuild the upload, so this is the saved example quadcopter"
+_DRONE_WORDS = re.compile(r"\b(drone|quad-?copter|multi-?rotor|fpv)s?\b", re.I)
+
+
+def wants_drone(req: GenerateRequest, stored: StoredIntent | None) -> bool:
+    """Whether the request is for a drone, from the user's words or the confirmed interpretation."""
+    return bool(_DRONE_WORDS.search(req.input.user_text or "")) or (stored is not None and stored.intent.project_family == "drone")
+
+
+def generate_concept(
+    req: GenerateRequest,
+    deps: Deps,
+    job_id: str,
+    image: tuple[bytes, str] | None,
+    saved: ConceptModel | None = None,
+) -> tuple[str, int]:
+    """Any image (or description) rebuilt as shaped parts. Appearance only; no engine run.
+
+    `saved` replaces the vision call with a saved concept (the drone fallback), labelled `fallback`."""
+    jobs = deps.jobs
+    jobs.emit(job_id, "understand", "vision", "running", "Breaking the image into parts")
+    if saved is None:
+        concept, vision_mode = deps.vision.concept(req, image), deps.vision.mode
+    else:
+        concept, vision_mode = saved, "fallback"
+    jobs.emit(
+        job_id,
+        "understand",
+        "vision",
+        "ok" if vision_mode == "live" else "warning",
+        f"Recognised a {concept.object_type} ({concept.confidence} confidence, {vision_mode} vision)",
+    )
+    mode = "live" if vision_mode == "live" else "fixture" if vision_mode == "fixture" else "fallback"
+    plan = build_concept_plan(concept, f"concept-{job_id}"[:80], req.input.kind, mode)
+    if saved is not None:
+        plan["provenance"]["notes"].append(DRONE_FALLBACK_NOTE)
+    elif vision_mode != "live":
+        plan["provenance"]["notes"].append(f"Concept came from the {vision_mode} vision provider, not a live model")
+    check_concept_plan(plan)
+    jobs.emit(job_id, "assembly", "engineer", "ok", f"Placed {len(plan['components'])} concept parts")
+    suggested = sum(1 for i in plan["bom"]["items"] if i["link_status"] == "manufacturer_reference_only")
+    jobs.emit(
+        job_id,
+        "validate",
+        "validator",
+        "warning",
+        f"Concept model: not engineered; {suggested} parts have a suggested real product, not checked against this design"
+        if suggested
+        else "Concept model: appearance only, nothing engineered or sourced",
+    )
+    saved = deps.store.create(plan)
+    jobs.complete(job_id, saved["build_id"], saved["revision"])
+    return saved["build_id"], saved["revision"]
+
+
 def _label_provenance(plan: dict[str, Any], vision_mode: str) -> None:
     prov = plan["provenance"]
     if prov["generation_mode"] == "live" and vision_mode != "live":
@@ -130,7 +231,7 @@ def _carry_choice_notes(previous: dict[str, Any], plan: dict[str, Any]) -> None:
     if plan["provenance"].get("generation_mode") == "live" and previous_prov.get("generation_mode") in {"fixture", "fallback", "manual_template"}:
         plan["provenance"]["generation_mode"] = previous_prov["generation_mode"]
     for note in previous_prov.get("notes", []):
-        if isinstance(note, str) and note.startswith((CLOSEST_ROVER_NOTE, "Intent came from the ")):
+        if isinstance(note, str) and note.startswith((CLOSEST_ROVER_NOTE, CONCEPT_FALLBACK_NOTE, "Intent came from the ")):
             _record_choice(plan, note)
 
 
@@ -172,10 +273,34 @@ def generate_project(
         image = deps.assets.read_bytes(req.input.image_asset_id)
         jobs.emit(job_id, "upload", "system", "ok", f"Image received ({len(image[0])} bytes, {image[1]})")
 
+    fallback_from: ApiError | None = None
+    if req.interpretation_choice == "concept_model":
+        try:
+            return generate_concept(req, deps, job_id, image)
+        except ApiError as err:
+            if wants_drone(req, stored):
+                # A drone is nothing like the rover: the saved quadcopter is the closer fallback.
+                jobs.emit(job_id, "understand", "system", "warning", f"Could not build a 3D concept ({err.code}); using the saved quadcopter")
+                return generate_concept(req, deps, job_id, image, saved=fixture_concept())
+            # The rover template is the fallback: always buildable, and labelled as such.
+            fallback_from = err
+            jobs.emit(
+                job_id,
+                "understand",
+                "system",
+                "warning",
+                f"Could not build a 3D concept ({err.code}); building the fallback rover instead",
+            )
+
     if stored is None:
         jobs.emit(job_id, "understand", "vision", "running", "Reading the request")
-        raw: IntentSpec = deps.vision.interpret(req, image)
-        vision_mode: str = deps.vision.mode
+        try:
+            raw: IntentSpec = deps.vision.interpret(req, image)
+            vision_mode: str = deps.vision.mode
+        except ApiError:
+            if fallback_from is None:
+                raise
+            raw, vision_mode = MockVisionProvider().interpret(req, image), "fallback"
     else:
         raw, vision_mode = stored.intent, stored.vision_mode
         jobs.emit(
@@ -192,8 +317,10 @@ def generate_project(
         deps.intents.put(intent, vision_mode)  # a refused job can still be built as the closest rover
 
     choice_note = None
-    if req.interpretation_choice == "closest_supported_rover":
+    if req.interpretation_choice == "closest_supported_rover" or fallback_from is not None:
         intent, choice_note = closest_supported_rover(intent, vision_mode)
+        if fallback_from is not None:
+            choice_note = f"{CONCEPT_FALLBACK_NOTE} ({fallback_from.code})" + (f"; {choice_note}" if choice_note else "")
         if choice_note is not None:
             intent = sanitize_intent(intent, catalog_ids, req)  # support status stays decided by code
             jobs.emit(job_id, "understand", "system", "warning", choice_note)
@@ -205,6 +332,8 @@ def generate_project(
         "ok",
         f"Interpreted as a {intent.project_family} ({intent.confidence} confidence, {vision_mode} vision)"
         if choice_note is None
+        else "Building the fallback rover"
+        if fallback_from is not None
         else "Building the closest supported rover, as the user chose",
     )
 
@@ -250,6 +379,40 @@ def generate_project(
     return saved["build_id"], saved["revision"]
 
 
+def apply_concept_edit(build_id: str, current: dict[str, Any], req: EditRequest, deps: Deps) -> dict[str, Any]:
+    """Concept models are edited in plain language by the vision model; every accepted
+    change is a new immutable revision, like engine edits."""
+    instruction = (req.instruction or "").strip()
+    entry: dict[str, Any] = {"base_revision": req.base_revision, "instruction": instruction, "operation": None}
+    if not instruction:
+        raise ApiError("CONCEPT_EDIT_NEEDS_TEXT", "Describe the change in words for a concept model", 422)
+    before = concept_from_plan(current)
+    try:
+        after = deps.vision.edit_concept(before, instruction)
+        plan = build_concept_plan(
+            after, current["source_intent_id"], current["provenance"]["input_mode"], current["provenance"]["generation_mode"]
+        )
+        plan["provenance"]["notes"] = [*plan["provenance"]["notes"], f"Edited: {instruction[:200]}"]
+        check_concept_plan(plan)
+    except ApiError as err:
+        deps.store.log_edit(build_id, {**entry, "accepted": False, "error": err.envelope()["error"]})
+        raise
+    if concept_from_plan(plan) == before:
+        finding = {
+            "rule_id": "concept.edit_no_change",
+            "result": "UNKNOWN",
+            "severity": "advisory",
+            "affected_instance_ids": [],
+            "message": "The change request did not change the model; try describing it differently",
+            "evidence_urls": [],
+        }
+        deps.store.log_edit(build_id, {**entry, "accepted": False, "finding": finding})
+        return {"accepted": False, "build_id": build_id, "finding": finding}
+    revision = deps.store.append_revision(build_id, req.base_revision, plan)
+    deps.store.log_edit(build_id, {**entry, "accepted": True, "revision": revision})
+    return {"accepted": True, "build_id": build_id, "revision": revision}
+
+
 def apply_edit_request(build_id: str, req: EditRequest, deps: Deps) -> dict[str, Any]:
     current = deps.store.get(build_id)
     if req.base_revision != current["revision"]:
@@ -259,6 +422,8 @@ def apply_edit_request(build_id: str, req: EditRequest, deps: Deps) -> dict[str,
             409,
             {"latest_revision": current["revision"]},
         )
+    if is_concept_plan(current):
+        return apply_concept_edit(build_id, current, req, deps)
     op = parse_edit(req.instruction, req.operation, deps.edit_selector)
     operation = op.model_dump(exclude_none=True)
     if operation["op"] == "replace_optional_sensor":
