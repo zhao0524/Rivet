@@ -15,6 +15,7 @@ export function ProjectCard({
   index,
   menu,
   testPrefix = 'projects',
+  meta,
 }: {
   project: ProjectRecord;
   now: number;
@@ -22,11 +23,13 @@ export function ProjectCard({
   menu?: ReactNode;
   /** Screen name for test ids: `<prefix>-card-<id>`. */
   testPrefix?: string;
+  /** Replaces where the project is (e.g. "Published by you" in a gallery). */
+  meta?: string;
 }) {
   return (
     <EdgeLightCard
       title={project.title}
-      meta={whereIs(project)}
+      meta={meta ?? whereIs(project)}
       time={relativeTime(project.updatedAt, now)}
       image={thumbnailFor(project)}
       tag={project.publishedAt ? 'Published' : undefined}

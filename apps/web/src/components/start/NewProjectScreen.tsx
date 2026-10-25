@@ -237,7 +237,7 @@ export function NewProjectScreen() {
               <ul className="gal-grid" data-testid="new-community-list">
                 {community.map((p, i) => (
                   <li key={p.id} data-kind="community">
-                    <ProjectCard project={p} now={now} index={i + 1} testPrefix="community" />
+                    <ProjectCard project={p} now={now} index={i + 1} testPrefix="community" meta="Published by you" />
                   </li>
                 ))}
               </ul>

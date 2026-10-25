@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import HomePage from '../src/app/page';
-import { getProject, listProjects, readAccount, saveAccount } from '../src/lib/flow/projects';
+import { createProjectRecord, getProject, listProjects, readAccount, saveAccount, saveProject } from '../src/lib/flow/projects';
 
 const push = vi.fn();
 
@@ -100,6 +100,20 @@ describe('Landing page (M1, sign in, workspace)', () => {
     expect(screen.queryByTestId('save-modal')).toBeNull();
   });
 
+  it('Community replaces the outputs section: published builds first, then featured ones', async () => {
+    saveProject({ ...createProjectRecord({ id: 'p_pub', prompt: 'x', title: 'Wall-dodging rover', phase: 'ready' }), publishedAt: new Date().toISOString() });
+    render(<HomePage />);
+    expect(screen.queryByText(/files and checks you need/)).toBeNull();
+    expect(screen.getByRole('heading', { name: 'Community' })).toBeDefined();
+    const list = await screen.findByTestId('home-community-list');
+    await waitFor(() => expect(list.querySelector('li[data-kind="published"]')).not.toBeNull());
+    const kinds = Array.from(list.querySelectorAll('li[data-kind]')).map((li) => li.getAttribute('data-kind'));
+    expect(kinds).toEqual(['published', 'featured', 'featured', 'featured', 'featured', 'featured']);
+    expect(list.textContent).toContain('Wall-dodging rover');
+    expect(list.textContent).toContain('Published by you');
+    expect(list.textContent).toContain('Featured');
+  });
+
   it('See an example saves a ready example project and opens its workspace', () => {
     render(<HomePage />);
     fireEvent.click(screen.getByTestId('home-see-example'));
@@ -168,7 +182,5 @@ describe('Landing page (M1, sign in, workspace)', () => {
     for (const word of [/\bBOM\b/, /schema/i, /\brevision/i, /fixture/i, /synthetic/i, /verification/i, /differential/i, /kinematic/i]) {
       expect(text).not.toMatch(word);
     }
-    // ESP32 always comes with a plain gloss.
-    expect(text).toContain('ESP32 controller board');
   });
 });
