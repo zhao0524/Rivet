@@ -52,7 +52,7 @@ export function PartsPanel({
     setPicked(comp.catalog_id);
     const raf = requestAnimationFrame(() => {
       document
-        .querySelector(`[data-testid="workspace-component-${comp.catalog_id.replace(/["\\]/g, "")}"]`)
+        .querySelector(`[data-testid="workspace-component-${comp.catalog_id.replace(/["\\]/g, '')}"]`)
         ?.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' });
     });
     return () => cancelAnimationFrame(raf);
