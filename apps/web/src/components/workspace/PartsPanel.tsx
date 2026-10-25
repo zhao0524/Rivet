@@ -9,7 +9,7 @@ import { downloadBlob } from '../three/enclosure/export';
 import { usePrintFiles } from '../three/enclosure/usePrintFiles';
 import type { PartSelectionApi } from '../three/interactions';
 import { rolePlain } from '../start/shared';
-import { PrintButton, PrintMenu, usePrintable } from './PrintPart';
+import { PrintButton, PrintMenu, printLabel, usePrintable } from './PrintPart';
 
 /** The printed body is not a catalog part: it is made from the plan, so it gets its own row. */
 const BODY_ID = 'printed-body';
@@ -147,7 +147,7 @@ export function PartsPanel({
                         {l.quantity > 1 ? `${l.quantity} × ` : ''}
                         {l.name}
                       </strong>
-                      <span className="ws-guide__sub">Custom part</span>
+                      <span className="ws-guide__sub">{printLabel(part)}</span>
                     </span>
                   </button>
                   <PrintButton
@@ -160,8 +160,10 @@ export function PartsPanel({
                   {picked === l.catalogId ? (
                     <div className="ws-proj__detail" data-testid="workspace-component-detail">
                       <p className="ws-guide__sub">
-                        {roleOf(plan, l.catalogId) ? `${rolePlain(roleOf(plan, l.catalogId)!)}. ` : ''}A custom plastic piece, printed from the
-                        model. Use the print icon for its .stl or .obj file.
+                        {roleOf(plan, l.catalogId) ? `${rolePlain(roleOf(plan, l.catalogId)!)}. ` : ''}{part.standIn
+                          ? 'No store sells this yet. Print a same-size stand-in from the model to hold its place; it won\'t work like the real part.'
+                          : 'A custom plastic piece, printed from the model.'}{' '}
+                        Use the print icon for its .stl or .obj file.
                       </p>
                     </div>
                   ) : null}

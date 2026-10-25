@@ -15,15 +15,28 @@ function triangles(stl: ArrayBuffer): number {
 }
 
 describe('3D print files', () => {
-  it('picks concept shapes without a link or price, never boards, batteries or wires', () => {
+  it('offers every part without a link or price, never wires, and marks electronics as stand-ins', () => {
     const plan = getConceptExamplePlan();
     const catalog = plan.concept_catalog ?? [];
-    const ids = printableLines(buyLines(plan, catalog), catalog).map((p) => p.line.catalogId);
+    const lines = buyLines(plan, catalog);
+    const printable = printableLines(lines, catalog);
+    const ids = printable.map((p) => p.line.catalogId);
     expect(ids).toEqual(expect.arrayContaining(['concept.body', 'concept.cover', 'concept.landing-leg']));
-    expect(ids.some((id) => /battery|flight-controller|esc|wire|motor/.test(id))).toBe(false);
+    // Everything unbuyable is offered, apart from wiring and kit contents.
+    const unbuyable = lines.filter((l) => !l.url && l.unitPrice === null && !l.included && !l.fabricated);
+    const byId = new Map(catalog.map((c) => [c.catalog_id, c]));
+    const wiring = (id: string) => byId.get(id)?.identity.category === 'cable' || byId.get(id)?.identity.category === 'wire' || byId.get(id)?.physical.geometry_kind === 'concept:cable';
+    expect(ids.sort()).toEqual(unbuyable.map((l) => l.catalogId).filter((id) => !wiring(id)).sort());
+    expect(ids.some(wiring)).toBe(false);
+    for (const p of printable) {
+      const cat = byId.get(p.line.catalogId)!;
+      const electronic = cat.physical.material_preset === 'pcb' || ['board', 'battery'].includes(cat.identity.category);
+      if (electronic) expect(p.standIn).toBe(true);
+    }
+    expect(printable.find((p) => p.line.catalogId === 'concept.body')?.standIn).toBe(false);
   });
 
-  it('prints the plastic around electronics (a dome, a ring, a panel) but never the sensor itself', () => {
+  it('prints the plastic around electronics (a dome, a ring, a panel) as the part, the sensor itself as a stand-in', () => {
     const plan = getConceptExamplePlan();
     const base = (plan.concept_catalog ?? []).find((c) => c.catalog_id === 'concept.cover')!;
     const as = (id: string, model: string) => ({ ...base, catalog_id: id, identity: { ...base.identity, model, category: 'sensor' } });
@@ -31,11 +44,27 @@ describe('3D print files', () => {
     const line = (catalogId: string, name: string) => ({
       catalogId, name, quantity: 1, unitPrice: null, url: null, vendor: '', inStock: 'unknown' as const, checkedAt: null, fabricated: false, suggested: false,
     });
-    const ids = printableLines(
+    const parts = printableLines(
       [line('concept.lidar-dome', 'Lidar dome'), line('concept.face-sensor', 'Face sensor'), line('concept.face-ring', 'Face sensor ring')],
       catalog,
-    ).map((p) => p.line.catalogId);
-    expect(ids).toEqual(['concept.lidar-dome', 'concept.face-ring']);
+    ).map((p) => [p.line.catalogId, p.standIn]);
+    expect(parts).toEqual([
+      ['concept.lidar-dome', false],
+      ['concept.face-sensor', true],
+      ['concept.face-ring', false],
+    ]);
+  });
+
+  it('prints a part with no concept shape as its bounding box', () => {
+    const plan = getConceptExamplePlan();
+    const base = (plan.concept_catalog ?? []).find((c) => c.catalog_id === 'concept.cover')!;
+    const catalog = [{ ...base, catalog_id: 'mount.custom', physical: { ...base.physical, geometry_kind: 'bracket' } }];
+    const line = { catalogId: 'mount.custom', name: 'Motor mount', quantity: 2, unitPrice: null, url: null, vendor: '', inStock: 'unknown' as const, checkedAt: null, fabricated: false, suggested: false };
+    const [part] = printableLines([line], catalog);
+    expect(part).toMatchObject({ shape: 'box', standIn: false, size: base.physical.dimensions_mm });
+    // A priced or linked part is bought, not printed.
+    expect(printableLines([{ ...line, unitPrice: 4 }], catalog)).toEqual([]);
+    expect(printableLines([{ ...line, url: 'https://example.com/mount' }], catalog)).toEqual([]);
   });
 
   it('writes the same plate as OBJ text with vertices and faces', () => {

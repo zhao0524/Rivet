@@ -7,20 +7,29 @@ export interface PrintLine {
   line: BuyLine;
   shape: string;
   size: Size3;
+  /**
+   * The part is electronics (a board, a battery, a sensor): the print is a same-size stand-in that
+   * holds its place in the build until a real one is found. It does nothing electrically.
+   */
+  standIn: boolean;
 }
 
-/** Circuit boards, cells and wiring have to be bought even without a listing; a printed copy does nothing. */
-const NOT_PRINTABLE_CATEGORIES = new Set(['board', 'battery', 'sensor', 'antenna', 'cable', 'wire']);
+/** Wiring has no solid shape worth printing. */
+const NOT_PRINTABLE_CATEGORIES = new Set(['cable', 'wire']);
+
+/** Electronics: printable only as a stand-in. */
+const ELECTRONIC_CATEGORIES = new Set(['board', 'battery', 'sensor', 'antenna']);
 
 /**
- * Within those groups, the plastic around the electronics still prints: a sensor's face panel, ring,
- * dome, base or ribs are housings, not the sensor.
+ * Within electronics, the plastic around them is a real part, not a stand-in: a sensor's face panel,
+ * ring, dome, base or ribs are housings, not the sensor.
  */
 const HOUSING_NAME = /\b(panel|ring|dome|base|ribs?|cover|shell|cap|bezel|housing|case|enclosure|bracket|mount|plate|frame|trim|hood|guard|lid)\b/i;
 
 /**
- * Concept parts with no store link and no price that can stand in as a 3D print: the part's
- * own shape at its estimated size. Kit contents and parts already marked as printed are left out.
+ * Parts nobody sells (no store link and no price) offered as a 3D print instead: the part's own
+ * concept shape at its size, or its bounding box when it has no concept shape. Electronics print
+ * as stand-ins (`standIn`). Wires, kit contents and parts already marked as printed are left out.
  */
 export function printableLines(lines: readonly BuyLine[], catalog: readonly CatalogComponent[]): PrintLine[] {
   const byId = new Map(catalog.map((c) => [c.catalog_id, c]));
@@ -28,13 +37,13 @@ export function printableLines(lines: readonly BuyLine[], catalog: readonly Cata
   for (const line of lines) {
     if (line.url || line.unitPrice !== null || line.included || line.fabricated) continue;
     const cat = byId.get(line.catalogId);
-    const shape = conceptShape(cat?.physical.geometry_kind);
-    if (!cat || !shape || shape === 'cable') continue;
-    if (cat.physical.material_preset === 'pcb') continue;
-    if (NOT_PRINTABLE_CATEGORIES.has(cat.identity.category) && !HOUSING_NAME.test(line.name)) continue;
+    if (!cat) continue;
+    const shape = conceptShape(cat.physical.geometry_kind) ?? 'box';
+    if (shape === 'cable' || NOT_PRINTABLE_CATEGORIES.has(cat.identity.category)) continue;
     const { x, y, z } = cat.physical.dimensions_mm;
     if (![x, y, z].every((v) => Number.isFinite(v) && v > 0)) continue;
-    out.push({ line, shape, size: { x, y, z } });
+    const electronic = cat.physical.material_preset === 'pcb' || ELECTRONIC_CATEGORIES.has(cat.identity.category);
+    out.push({ line, shape, size: { x, y, z }, standIn: electronic && !HOUSING_NAME.test(line.name) });
   }
   return out;
 }

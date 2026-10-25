@@ -28,8 +28,8 @@ export function BuyStep() {
   const lines = useMemo(() => allLines.filter((l) => !l.included && (!concept || l.url)), [concept, allLines]);
   const included = allLines.filter((l) => l.included);
   const shapes = concept ? allLines.filter((l) => !l.url) : [];
-  // Shapes with no store link and no price can be printed from the model instead.
-  const printable = concept ? printableLines(shapes, catalog) : [];
+  // Parts with no store link and no price can be printed from the model instead.
+  const printable = build.ready ? printableLines(concept ? shapes : lines, catalog) : [];
   const owned = project.ownedCatalogIds;
   const currency = plan.bom.currency || 'USD';
   const totals = useMemo(() => buyTotals(lines, owned), [lines, owned]);
@@ -388,7 +388,8 @@ function PrintSection({ buildId, parts }: { buildId: string; parts: readonly Pri
       </div>
       <p className="p2-note">
         These parts have no store listing or price. You can print them from the model: each file is the part&apos;s shape at
-        its estimated size, in millimetres. Sizes were read from the photo, so check them against the real object first.
+        its estimated size, in millimetres. Sizes are estimates, so check them against the real object first. Electronics
+        marked &ldquo;stand-in&rdquo; print as a same-size placeholder that holds their place but won&apos;t work.
         &ldquo;All parts&rdquo; puts every copy on one plate.
       </p>
       {error ? (
@@ -403,6 +404,7 @@ function PrintSection({ buildId, parts }: { buildId: string; parts: readonly Pri
             <span className="build__part-name">{part.line.name}</span>
             <span className="ui-small ui-muted">
               ×{part.line.quantity} · {sizeLabel(part.size)}
+              {part.standIn ? ' · stand-in' : ''}
             </span>
             <button
               type="button"

@@ -9,7 +9,7 @@ import { STEPS, advance, projectPath, type StepId } from '../../lib/flow/steps';
 import type { BuildPlan, CatalogComponent } from '../../lib/rivet/types';
 import { Icon } from '../system/Icon';
 import { usePrintFiles } from '../three/enclosure/usePrintFiles';
-import { PrintButton, PrintMenu, usePrintable } from './PrintPart';
+import { PrintButton, PrintMenu, printLabel, usePrintable } from './PrintPart';
 
 /**
  * The guide's steps: buy, then build. Parts have their own tab, wiring shows on the model (the Wires
@@ -232,7 +232,7 @@ function BuyBody({
               </strong>
               <span className="ws-guide__sub">
                 {print
-                  ? 'Custom part'
+                  ? printLabel(print)
                   : `${l.unitPrice !== null ? formatMoney(l.unitPrice * l.quantity, plan.bom.currency) : 'No price yet'}${l.url ? ` · ${l.vendor}` : ''}`}
               </span>
             </span>
