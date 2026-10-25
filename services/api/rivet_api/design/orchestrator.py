@@ -21,8 +21,8 @@ from pydantic import BaseModel
 
 from rivet_engine import engineering_bridge
 from rivet_engine.design_compiler import DesignValidationError, compile_design, kernel_versions
-from rivet_engine.design_ir import apply_patch, changed_bodies, spec_digest, topology_signature
-from rivet_engine.geometry.repair import issue_score, repair
+from rivet_engine.design_ir import apply_patch, changed_bodies, normalize_spec_shapes, spec_digest, topology_signature
+from rivet_engine.geometry.repair import issue_score, repair, slender_structures
 
 from rivet_api.errors import ApiError
 
@@ -288,7 +288,11 @@ class Run:
             spec = self.author(intent, strategy, index * 101 + attempt, feedback)
             spec.update(mode=self.request["mode"], strategy=strategy)
             try:
-                return DesignSpec.model_validate(prune_to_schema(DesignSpec, spec)).model_dump(mode="json")
+                # A shape parameter written just outside its legal range (e.g. a rounded_box
+                # radius at half the smallest side) is clamped to the legal side first, so a
+                # near-miss never discards an otherwise sound candidate.
+                pruned = normalize_spec_shapes(prune_to_schema(DesignSpec, spec))
+                return DesignSpec.model_validate(pruned).model_dump(mode="json")
             except Exception as exc:  # noqa: BLE001 - structured feedback for one repair round
                 errors = getattr(exc, "errors", lambda: [])()
                 feedback = [f"{'.'.join(str(p) for p in e.get('loc', []))}: {e.get('msg')}" for e in errors][:20] or [str(exc)[:300]]
@@ -297,7 +301,9 @@ class Run:
     def evaluate(self, cid: str, strategy: str, spec: dict, intent: dict, refs: list[tuple[str, bytes]], tag: str, stream: bool) -> dict:
         result = self.compile(spec, cid, tag, stream)
         iterations = []
-        if result["geometry_report"]["status"] != "valid":
+        # Repair runs when the geometry is invalid, and also when it is valid but still built from
+        # stick-thin structural parts: valid geometry is not the same as a readable object.
+        if result["geometry_report"]["status"] != "valid" or slender_structures(result):
             with KERNEL_LOCK:
                 fixed = repair(spec, self.svc.catalog, output_dir=self.dir / cid / f"{tag}-repair", initial=result)
             iterations.append({"kind": "deterministic_repair", "accepted": fixed["changed"], "actions": fixed["actions"], "score_before": issue_score(result), "score_after": issue_score(fixed["result"])})

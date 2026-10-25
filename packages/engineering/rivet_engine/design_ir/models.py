@@ -69,6 +69,59 @@ def canonical_anchor_name(name: str) -> str:
     return "_".join(words)
 
 
+def _clamp_shape_dict(shape: dict) -> dict:
+    """Pull shape parameters just inside their legal range; never invent geometry."""
+    if not isinstance(shape, dict):
+        return shape
+    out = dict(shape)
+    t = out.get("type")
+    dims = out.get("dimensions_mm")
+    if isinstance(dims, (list, tuple)) and len(dims) == 3 and all(isinstance(v, (int, float)) for v in dims):
+        out["dimensions_mm"] = [float(v) if v > 0.5 else 0.5 for v in dims]
+        dims = out["dimensions_mm"]
+    for key in ("radius_mm", "minor_radius_mm", "height_mm", "wall_mm"):
+        value = out.get(key)
+        if isinstance(value, (int, float)) and value <= 0:
+            out[key] = 0.5
+    r = out.get("radius_mm")
+    if t == "rounded_box" and isinstance(dims, (list, tuple)) and len(dims) == 3 and isinstance(r, (int, float)):
+        if r * 2 >= min(dims):
+            out["radius_mm"] = round(max(0.1, 0.45 * min(dims)), 4)
+    if t in ("tube", "wheel") and isinstance(r, (int, float)) and isinstance(out.get("wall_mm"), (int, float)):
+        if out["wall_mm"] >= r:
+            out["wall_mm"] = round(max(0.1, r * 0.9), 4)
+    if t == "torus" and isinstance(r, (int, float)) and isinstance(out.get("minor_radius_mm"), (int, float)):
+        if out["minor_radius_mm"] >= r:
+            out["minor_radius_mm"] = round(max(0.1, r * 0.9), 4)
+    if t == "occupancy" and out.get("hollow"):
+        pitch, wall = out.get("pitch_mm"), out.get("wall_mm")
+        if isinstance(pitch, (int, float)) and isinstance(wall, (int, float)) and wall < pitch:
+            out["wall_mm"] = pitch
+    if isinstance(out.get("children"), list):
+        out["children"] = [_clamp_shape_dict(c) for c in out["children"]]
+    return out
+
+
+def normalize_spec_shapes(spec: dict) -> dict:
+    """Clamp shape parameters a model wrote trivially out of range, on a raw spec dict.
+
+    A rounded_box radius at exactly half its smallest side, a wheel wall as thick as its radius,
+    a hollow shell thinner than one voxel: each is a near-miss that fails strict validation and
+    would otherwise discard the whole candidate. The legal side is always the smaller value, so
+    clamping never invents geometry; it keeps the shape the model described.
+    """
+    if not isinstance(spec, dict):
+        return spec
+    out = dict(spec)
+    bodies = out.get("bodies")
+    if isinstance(bodies, list):
+        out["bodies"] = [
+            {**b, "shape": _clamp_shape_dict(b["shape"])} if isinstance(b, dict) and isinstance(b.get("shape"), dict) else b
+            for b in bodies
+        ]
+    return out
+
+
 class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False, validate_default=True)
 

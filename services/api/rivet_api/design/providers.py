@@ -83,6 +83,13 @@ Features (fabricated bodies, local coordinates): {"id","type":"fillet"|"chamfer"
 Purchased bodies need an exact catalog_id from the provided catalog and no shape or features (Rivet supplies their geometry).
 Prefer 8-30 bodies with recognisable, well-proportioned parts and real colours; make the silhouette and signature features unmistakable.
 
+SOLID, RECOGNISABLE VOLUMES. Every part must read as the thing it is named, in real proportions, not as a stick or a flat disc.
+- Structural parts (arms, booms, legs, struts, posts) are chunky: their smallest cross-section is at least 8 mm, and at least one tenth of their length. A 40 mm arm is a 6-10 mm beam, never a 3 mm wire.
+- Main bodies are volumetric. A compact object's body is roughly as deep as it is wide, and its height is about a quarter to a third of its length - not a thin slab.
+- A propeller, rotor or fan is a hub with 2-4 flattened blades, never a plain cylinder or disc. Build it as boolean union of a small hub cylinder and 2-3 thin blade boxes (or an extrude_profile), each blade about as long as the propeller radius and only 1-2 mm thick. Give the whole propeller the object's real diameter.
+- Wheels use the wheel shape (real tyre wall and width), never a flat cylinder. Landing gear, feet and stands are legs with a footprint, never a single thin bar.
+- If a part would be a featureless cylinder or box, either give it the proportions of the real part or compose it (boolean/extrude_profile) so its silhouette matches.
+
 STANDING ON THE FLOOR. The engine drops the whole assembly so its lowest point becomes y = 0, then checks static stability and rejects a design that cannot stand.
 - Only the parts you mean as wheels, feet or a base may be the lowest ones. Work out, in millimetres, how far below its parent each contact part reaches, and make every contact part reach the SAME lowest level.
 - Give it either one wide flat base, or at least three contact patches that are not in one straight line (two side wheels plus a rear caster or tail counts).

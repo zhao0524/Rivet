@@ -12,12 +12,12 @@ pytest.importorskip("OCP", reason="install the engine's geometry extra: pip inst
 
 from rivet_engine import engineering_bridge, get_catalog  # noqa: E402
 from rivet_engine.design_compiler import DesignValidationError, compile_design  # noqa: E402
-from rivet_engine.design_ir import DesignSpec, apply_patch, changed_bodies, json_schema, topology_signature  # noqa: E402
+from rivet_engine.design_ir import DesignSpec, apply_patch, changed_bodies, json_schema, normalize_spec_shapes, topology_signature  # noqa: E402
 from rivet_engine.design_ir.models import Shape, implicit_anchor_axes  # noqa: E402
 from rivet_engine.geometry import freeform, occ, parametric  # noqa: E402
 from rivet_engine.geometry.catalog_geometry import catalog_regions  # noqa: E402
 from rivet_engine.geometry.meshing import decode_glb, edge_manifold_report, encode_stl, weld  # noqa: E402
-from rivet_engine.geometry.repair import repair  # noqa: E402
+from rivet_engine.geometry.repair import repair, slender_structures  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[3]
 FIXTURES = ROOT / "fixtures" / "design"
@@ -282,6 +282,42 @@ def test_anchor_names_tolerate_redundant_centre_words():
     assert implicit_anchor_axes("top_middle") == (0, 1, 0)
     assert implicit_anchor_axes("left_centre") == (-1, 0, 0)
     assert implicit_anchor_axes("nonsense_face") is None  # still rejects unknown words
+
+
+def test_near_miss_shape_parameters_are_clamped_not_rejected():
+    # A rounded_box radius at exactly half its smallest side, a wheel wall as thick as its radius
+    # and a shell thinner than one voxel each fail strict validation; clamping keeps the shape.
+    spec = {"bodies": [
+        {"shape": {"type": "rounded_box", "dimensions_mm": [20, 10, 40], "radius_mm": 5}},
+        {"shape": {"type": "wheel", "radius_mm": 30, "height_mm": 10, "wall_mm": 30}},
+        {"shape": {"type": "occupancy", "hollow": True, "pitch_mm": 2, "wall_mm": 1, "children": [{"type": "sphere", "radius_mm": 5}]}},
+    ]}
+    fixed = normalize_spec_shapes(spec)
+    shapes = [b["shape"] for b in fixed["bodies"]]
+    assert shapes[0]["radius_mm"] < 5 and shapes[0]["radius_mm"] > 0
+    assert shapes[1]["wall_mm"] < 30 and shapes[1]["wall_mm"] > 0
+    assert shapes[2]["wall_mm"] >= shapes[2]["pitch_mm"]
+    # The clamped shapes now validate; the originals would not.
+    for shape in shapes:
+        Shape.model_validate(shape)
+    with pytest.raises(ValueError):
+        Shape.model_validate(spec["bodies"][0]["shape"])
+
+
+def test_stick_thin_arm_is_thickened_by_deterministic_repair(tmp_path):
+    spec = load("custom-sensor-housing")
+    spec["bodies"].append({"id": "thin_arm", "name": "Thin arm", "role": "arm", "kind": "fabricated", "manufacturing": "3d_print",
+                           "parent_id": "housing", "material": {"name": "PLA"}, "shape": {"type": "cylinder", "radius_mm": 1.5, "height_mm": 60, "axis": "X"},
+                           "attachment": {"parent_anchor": "back", "child_anchor": "front"}})
+    before = compile_design(spec, CATALOG, output_dir=tmp_path / "before", write_exports=False)
+    assert before["geometry_report"]["status"] == "valid"  # thin is not invalid, just unreadable
+    assert [s["body_id"] for s in slender_structures(before)] == ["thin_arm"]
+    fixed = repair(spec, CATALOG, output_dir=tmp_path / "after", initial=before)
+    arm = next(b for b in fixed["spec"]["bodies"] if b["id"] == "thin_arm")["shape"]
+    assert arm["radius_mm"] >= 4.0  # widened toward the 8 mm minimum cross-section
+    assert any(a["accepted"] and a["body_id"] == "thin_arm" and "solid member" in a["reason"] for a in fixed["actions"])
+    assert slender_structures(fixed["result"]) == []
+    assert fixed["result"]["geometry_report"]["status"] == "valid"
 
 
 def test_contract_schema_matches_the_model():

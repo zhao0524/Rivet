@@ -21,12 +21,43 @@ from .stability import CONTACT_TOLERANCE_MM
 DEFAULT_ALLOWANCE = {"fabricated": 8.0, "concept_visual": 8.0, "purchased": 4.0}
 # Parts whose job is to touch the floor, so they may be lowered onto it.
 GROUND_PART = re.compile(r"wheel|caster|castor|foot|feet|leg|skid|tyre|tire|track|roller|outrigger")
+# Structural members that must read as solid beams, not wires.
+STRUCTURAL_PART = re.compile(r"arm|boom|strut|leg|post|beam|rod|mast|pole|spar|brace|bar|spine")
+MIN_STRUCTURE_CROSS_MM = 8.0
+MIN_STRUCTURE_RATIO = 0.1
+THICKENABLE_SHAPES = {"box", "rounded_box", "cylinder", "capsule", "cone"}
 
 
 def is_ground_part(body: DesignBody) -> bool:
     if body.shape is not None and body.shape.type == "wheel":
         return True
     return bool(GROUND_PART.search(" ".join([body.role, body.name, *body.tags]).lower()))
+
+
+def slender_structures(result: dict) -> list[dict]:
+    """Fabricated structural parts (arms, legs, struts) whose cross-section is too thin to read
+    as a solid member: below MIN_STRUCTURE_CROSS_MM, or below a tenth of their own length.
+
+    Prompt rules alone are not reliable here; a stick-thin arm still compiles as valid geometry,
+    so this is what makes the difference measurable rather than cosmetic.
+    """
+    out: list[dict] = []
+    for entry in result.get("part_manifest") or []:
+        if entry.get("status") != "placed" or entry.get("kind") != "fabricated":
+            continue
+        words = " ".join([entry.get("role") or "", entry.get("name") or "", *(entry.get("tags") or [])]).lower()
+        if not STRUCTURAL_PART.search(words):
+            continue
+        bounds = entry.get("local_bounds_mm")
+        if not bounds:
+            continue
+        ext = sorted(float(hi) - float(lo) for lo, hi in zip(bounds["min"], bounds["max"]))
+        if ext[0] <= 1e-6:
+            continue
+        target = max(MIN_STRUCTURE_CROSS_MM, ext[2] * MIN_STRUCTURE_RATIO)
+        if ext[0] < target - 1e-9:
+            out.append({"body_id": entry["body_id"], "cross_mm": ext[0], "length_mm": ext[2], "target_mm": target})
+    return out
 
 
 SWEEP_SAMPLES = 9
@@ -145,6 +176,7 @@ def issue_score(result: dict) -> float:
         100 * c["hard_collisions"] + 50 * c["sweep_collisions"] + 100 * c["unresolved_required_mounts"] + 100 * c["failed_required_bodies"]
         + 5 * c["clearance_violations"] + 20 * c["blocking_manufacturing_issues"] + (30 if stab == "unstable" else 0)
         + (1 if not result["geometry_report"]["within_max_bounds"] else 0) * 40
+        + 5 * len(slender_structures(result))
     )
 
 
@@ -308,6 +340,68 @@ def plan_fixes(spec: DesignSpec, result: dict) -> list[dict]:
     return fixes
 
 
+def _thicken_set(shape, target: float) -> dict:
+    """The patch fields that widen a shape's narrow cross-section to `target`, or {} if it is
+    already thick enough or its type cannot be widened in place (booleans, profiles, meshes)."""
+    if shape is None or shape.type not in THICKENABLE_SHAPES:
+        return {}
+    if shape.type in ("box", "rounded_box"):
+        dims = list(shape.dimensions_mm)
+        i = int(np.argmin(dims))
+        if dims[i] >= target - 1e-9:
+            return {}
+        dims[i] = round(target, 3)
+        setter = {"shape.dimensions_mm": dims}
+        # A rounded_box corner radius must stay under half its smallest side.
+        if shape.type == "rounded_box" and shape.radius_mm * 2 >= min(dims):
+            setter["shape.radius_mm"] = round(max(0.1, 0.45 * min(dims)), 4)
+        return setter
+    if shape.type in ("cylinder", "capsule", "cone"):
+        radius = max(float(shape.radius_mm), target / 2.0)
+        if radius <= float(shape.radius_mm) + 1e-9:
+            return {}
+        return {"shape.radius_mm": round(radius, 4)}
+    return {}
+
+
+def _solidify_structures(current: DesignSpec, result: dict, compile_design, catalog, output_dir: Path, cache, log: list[dict], max_rounds: int = 2):
+    """Thicken slender structural parts one at a time, keeping only the changes that help.
+
+    A stick-thin arm or leg still compiles as valid geometry, so no collision check catches it; it
+    is only unreadable. Widening all four arms of a quadcopter at once can make them clash, and a
+    batched change would then veto every one of them together. Tested one at a time, each part that
+    helps is kept and the parts that would hurt are left as the author drew them.
+    """
+    for round_no in range(1, max_rounds + 1):
+        items = slender_structures(result)
+        if not items:
+            break
+        progressed = False
+        for item in items:
+            body = next((b for b in current.bodies if b.id == item["body_id"]), None)
+            setter = _thicken_set(body.shape if body else None, item["target_mm"])
+            if not setter:
+                continue
+            reason = f"thicken {item['body_id']} from {item['cross_mm']:.1f} mm to {item['target_mm']:g} mm so it reads as a solid member"
+            try:
+                candidate = apply_patch(current, {"reason": f"solidify structures round {round_no}",
+                                                  "operations": [{"operation": "update", "body_id": item["body_id"], "set": setter}]})
+            except ValueError as exc:
+                log.append({"round": round_no, "body_id": item["body_id"], "set": setter, "accepted": False, "reason": reason, "rejected": str(exc)})
+                continue
+            trial = compile_design(candidate, catalog, output_dir=output_dir / f"solidify-{round_no}-{item['body_id']}", cache=cache, write_exports=False)
+            before, after = issue_score(result), issue_score(trial)
+            accepted = after < before
+            log.append({"round": round_no, "body_id": item["body_id"], "set": setter, "before": {"shape": body.shape.model_dump(mode="json")} if body and body.shape else {},
+                        "accepted": accepted, "score_before": before, "score_after": after, "reason": reason})
+            if accepted:
+                current, result = candidate, trial
+                progressed = True
+        if not progressed:
+            break
+    return current, result
+
+
 def _fit_envelope(current: DesignSpec, result: dict, compile_design, catalog, output_dir: Path, cache, log: list[dict]) -> tuple[DesignSpec, dict]:
     """Scale a design that overflows its own declared envelope, keeping every proportion.
 
@@ -370,6 +464,9 @@ def repair(spec: dict | DesignSpec, catalog: list[dict], *, output_dir: str | Pa
         if not accepted:
             break
         current, result = candidate, trial
-        if after == 0:
+        if after == 0 and not slender_structures(result):
             break
+    # Structural solidity is separate from collision repair: a valid design can still be built from
+    # stick-thin arms. Widening them one at a time keeps every part that helps.
+    current, result = _solidify_structures(current, result, compile_design, catalog, Path(output_dir), cache, log)
     return {"spec": current.model_dump(mode="json"), "result": result, "actions": log, "changed": any(a["accepted"] for a in log)}

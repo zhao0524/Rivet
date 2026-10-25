@@ -54,3 +54,5 @@ temp/
 # Generated artifacts
 *.zip
 /exports/
+# Runtime data when the API is started from the repo root; canonical root is services/api/data.
+/data/

@@ -89,6 +89,24 @@ A live provider is needed for concept models of your own photos. For live image 
 `OPENAI_API_KEY` in root `.env.local`. See [provider verification](services/api/README.md)
 for the opt-in tests. Backboard image input remains unsupported for the demo.
 
+### v2 geometry-first design workspace (`/design`)
+
+`http://localhost:3000/design` is the newer, geometry-first path (linked from `/new`). You give a
+prompt and/or a reference photo, Rivet authors three different designs, builds real B-rep geometry
+for each, runs the engineering engine over it, and renders six camera views per candidate so you can
+compare them and pick one. Concept-only checks appearance; **Engineered** also sources real catalog
+parts and runs the engine's checks.
+
+It is offline by default and labelled as such: every result reports `generation_mode: "fixture"` from
+the deterministic rule-based author. For real authoring, set `RIVET_3D_MODE=live` and
+`OPENAI_API_KEY` in root `.env.local`; live mode is explicit and **hard-fails** if the key is missing
+rather than silently falling back. `RIVET_DESIGN_MODEL` overrides the author model (default:
+`RIVET_VISION_MODEL`, else `gpt-4o`). Optional extras: `RIVET_IMAGE_PROVIDER=openai` for image
+previews, and `RIVET_RENDERER=chromium` for headless three.js renders instead of the deterministic
+CPU renderer. See `.env.example` for the full list and defaults.
+
+Live authoring costs real money per run (roughly $0.30–0.60 for three candidates on `gpt-4o`).
+
 ```bash
 pnpm test:web
 pnpm test:api

@@ -10,11 +10,12 @@ from .models import (
     changed_bodies,
     implicit_anchor_axes,
     json_schema,
+    normalize_spec_shapes,
     spec_digest,
     topology_signature,
 )
 
 __all__ = [
     "BodyPatch", "DesignBody", "DesignPatch", "DesignSpec", "Shape", "apply_patch", "changed_bodies",
-    "implicit_anchor_axes", "json_schema", "spec_digest", "topology_signature",
+    "implicit_anchor_axes", "json_schema", "normalize_spec_shapes", "spec_digest", "topology_signature",
 ]
