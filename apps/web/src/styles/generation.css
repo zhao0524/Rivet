@@ -63,7 +63,9 @@
   border-radius: 8px;
   font: inherit;
 }
-.design-start input[type='file'] { max-width: 100%; }
+.design-start__attach { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.design-start__attach .rv-btn { max-width: 100%; text-align: left; overflow-wrap: anywhere; }
+.design-start .rv-btn--ghost { border-color: transparent; background: transparent; color: var(--ui-muted); }
 .design-workspace .rv-details { border: 1px solid var(--ui-border); border-radius: 10px; background: var(--ui-surface); }
 .design-workspace .rv-badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 0.75rem; background: var(--ui-raised); }
 .design-workspace .rv-badge--ok { background: var(--ui-ok-bg); color: var(--ui-ok); }

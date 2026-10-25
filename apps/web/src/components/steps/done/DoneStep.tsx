@@ -120,13 +120,24 @@ export function DoneStep() {
                 <span className="p2-stat__l">version</span>
               </div>
             </div>
-            <p className="p2-note" style={{ marginTop: 14 }}>
-              Want it cheaper, taller, or different?{' '}
-              <button type="button" className="ui-btn ui-btn--link" onClick={openIterate} data-testid="done-change">
-                Change something
-              </button>{' '}
-              and Rivet checks the whole design again.
-            </p>
+            {dataSource.mode === 'fixture' ? (
+              // A saved example cannot take edits; the same button explains that and offers a new project.
+              <p className="p2-note" style={{ marginTop: 14 }}>
+                Want one that is cheaper, taller, or different?{' '}
+                <button type="button" className="ui-btn ui-btn--link" onClick={openIterate} data-testid="done-change">
+                  Start your own build
+                </button>{' '}
+                and Rivet designs and checks it for you.
+              </p>
+            ) : (
+              <p className="p2-note" style={{ marginTop: 14 }}>
+                Want it cheaper, taller, or different?{' '}
+                <button type="button" className="ui-btn ui-btn--link" onClick={openIterate} data-testid="done-change">
+                  Change something
+                </button>{' '}
+                and Rivet checks the whole design again.
+              </p>
+            )}
           </section>
         </div>
 

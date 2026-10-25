@@ -221,8 +221,14 @@ describe('Parts', () => {
     expect(screen.getByTestId('parts-group-drive')).toBeDefined();
     expect(screen.getByTestId('parts-group-control')).toBeDefined();
     // Hidden accessories (jumper wires, batteries) are not placed parts, so they do not get rows.
-    const visible = partRows(getSourcedRoverPlan(), getSourcedCatalog());
+    const plan = getSourcedRoverPlan();
+    const visible = partRows(plan, getSourcedCatalog());
     expect(screen.getAllByTestId(/^parts-row-/).length).toBe(visible.length);
+    // The count says where those accessories went, so Parts, Buy and Done do not look like they disagree.
+    const hidden = plan.components.length - visible.length;
+    expect(hidden).toBeGreaterThan(0);
+    expect(screen.getByTestId('parts-hidden-note').textContent).toContain(`plus ${hidden} small items`);
+    expect(screen.getByTestId('parts-hidden-note').textContent).toContain('listed in Buy');
     // Every sourced part is a procedural shape, so every row says so.
     expect(screen.getAllByText(/Simple 3D shape/).length).toBe(visible.length);
     // Plain group names, and the source-tag legend.
@@ -303,7 +309,10 @@ describe('Wiring & code', () => {
     const modal = await screen.findByTestId('sim-modal');
     expect(within(modal).getByTestId('sim-approximate')).toBeDefined();
     expect(within(modal).getByTestId('sim-limits')).toBeDefined();
+    // Before the first Run the stage says what it is waiting for instead of sitting empty.
+    expect(within(modal).getByTestId('sim-idle').textContent).toMatch(/Press Run/);
     fireEvent.click(within(modal).getByTestId('sim-run'));
     expect(await within(modal).findByTestId('sim-view-container')).toBeDefined();
+    expect(within(modal).queryByTestId('sim-idle')).toBeNull();
   });
 });

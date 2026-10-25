@@ -249,6 +249,9 @@ describe('Done', () => {
     expect(screen.getByTestId('done-blockers').textContent).toContain('The left motor may not fit the frame');
     expect(screen.getByTestId('done-blockers').textContent).toContain('Not confirmed');
     expect(screen.getByTestId('done-primary').textContent).toBe('Export build');
+    // The saved example cannot be edited, so it does not promise a re-check it would then refuse.
+    expect(screen.getByTestId('done-change').textContent).toBe('Start your own build');
+    expect(screen.getByTestId('done-summary').textContent).not.toContain('checks the whole design again');
   });
 });
 

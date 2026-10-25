@@ -12,6 +12,7 @@ import { createProjectRecord, getProject, saveProject, writeDraft } from '../src
 import { STEPS } from '../src/lib/flow/steps';
 import { useStudioPlanStore } from '../src/lib/plan-store';
 import { RivetError } from '../src/lib/rivet/errors';
+import { markNavigating, NavigationWatch } from '../src/components/system/Navigation';
 
 const nav = { push: vi.fn(), replace: vi.fn(), pathname: '/', search: '' };
 
@@ -113,6 +114,32 @@ describe('A2 Clarify', () => {
     saveProject(createProjectRecord({ id, prompt: 'Build a small rover that avoids obstacles', phase: 'clarify' }));
     nav.pathname = `/p/${id}/clarify`;
   }
+
+  it('preserves the current screen when a slow project navigation times out', async () => {
+    seed('p_nav_timeout');
+    await renderIn(
+      <>
+        <NavigationWatch />
+        <ProjectShell id="p_nav_timeout">
+          <input aria-label="Current answer" defaultValue="" />
+        </ProjectShell>
+      </>,
+    );
+    const answer = screen.getByRole('textbox', { name: 'Current answer' }) as HTMLInputElement;
+    fireEvent.change(answer, { target: { value: 'Keep my answer' } });
+    vi.useFakeTimers();
+    try {
+      act(() => markNavigating('/p/p_nav_timeout/generate'));
+      act(() => vi.advanceTimersByTime(150));
+      expect(screen.queryByRole('textbox', { name: 'Current answer' })).toBeNull();
+      expect(answer.isConnected).toBe(true);
+      act(() => vi.advanceTimersByTime(10_000));
+      expect(screen.getByRole('textbox', { name: 'Current answer' })).toBe(answer);
+      expect(answer.value).toBe('Keep my answer');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 
   it('asks three questions, maps the budget choice and ends on Generate', async () => {
     seed('p_cl1');

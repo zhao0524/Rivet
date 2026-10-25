@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import { PHASES, STEPS, isUnlocked, projectPath, stepIndex, type StepId } from '../../lib/flow/steps';
 import { Icon } from '../system/Icon';
 
@@ -13,9 +13,20 @@ export interface StepperProps {
 
 /** Persistent two-phase, five-step stepper shown once generation finishes. */
 export function Stepper({ projectId, current, furthest }: StepperProps) {
+  const nav = useRef<HTMLElement>(null);
+
+  // On narrow screens the stepper scrolls sideways; keep the current step on screen, otherwise
+  // Buy and Build open with their own marker scrolled out of view.
+  useEffect(() => {
+    const el = nav.current;
+    const step = el?.querySelector<HTMLElement>('[aria-current="step"]');
+    if (!el || !step || el.scrollWidth <= el.clientWidth) return;
+    el.scrollLeft = Math.max(0, step.offsetLeft - (el.clientWidth - step.offsetWidth) / 2);
+  }, [current]);
+
   return (
     // tabIndex: on narrow screens the stepper scrolls sideways, so keyboard users need to reach it.
-    <nav className="stepper" aria-label="Build steps" tabIndex={0} data-testid="stepper">
+    <nav ref={nav} className="stepper" aria-label="Build steps" tabIndex={0} data-testid="stepper">
       {PHASES.map((phase) => (
         <div key={phase.n} className="stepper__phase" data-phase={phase.n}>
           <span className="stepper__phase-label">

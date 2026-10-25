@@ -148,13 +148,6 @@ function GuestPreview({
           </span>
         </div>
 
-        <div className="mk-preview__scene mk-mock__scene" aria-hidden="true">
-          <span className="mk-mock__chassis" />
-          <span className="mk-mock__wheel mk-mock__wheel--l" />
-          <span className="mk-mock__wheel mk-mock__wheel--r" />
-          <span className="mk-mock__board" />
-        </div>
-
         <ul className="mk-preview__list" aria-label="What you get">
           {DELIVERABLES.map((d) => (
             <li key={d.title}>

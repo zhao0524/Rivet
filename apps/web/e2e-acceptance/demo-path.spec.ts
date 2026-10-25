@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { expect, test, type Locator, type Page, type Response } from '@playwright/test';
 import { firmwareStep, needsSafetyAck, orderedSteps, stepParts } from '../src/components/steps/build/build-model';
 import { NO_VENDOR, groupByVendor } from '../src/components/steps/buy/buy-model';
-import { blockers, buyLines, formatMoney, partNicknames, partRows, plainInstructions, specRows } from '../src/lib/flow/derive';
+import { blockers, buyLines, formatMoney, isIncludedKitPart, partNicknames, partRows, plainInstructions, specRows } from '../src/lib/flow/derive';
 import type { BomItem, BuildPlan, CatalogComponent, EditResponse, InterpretResponse, JobResponse } from '../src/lib/rivet/types';
 import { API_URL, REFERENCE_IMAGE } from './env';
 import { apiGet, expectSceneFitsViewport, isPost, patchProject, readProject, readZip, watchPageErrors } from './helpers';
@@ -272,7 +272,7 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
       await expect(el).toContainText(row.name);
       const price = row.catalog?.sourcing.price_amount;
       await expect(el).toContainText(
-        price === null || price === undefined ? 'No price' : formatMoney(Number(price), row.catalog?.sourcing.price_currency ?? plan.bom.currency),
+        isIncludedKitPart(row.catalog) ? 'Included in kit' : price === null || price === undefined ? 'No price' : formatMoney(Number(price), row.catalog?.sourcing.price_currency ?? plan.bom.currency),
       );
     }
     const scene = page.getByTestId('parts-viewport').getByTestId('rover-scene');
@@ -350,6 +350,7 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
   });
 
   const lines = buyLines(plan, catalog);
+  const shoppingLines = lines.filter((line) => !line.included);
   await test.step('Buy: every BOM line with its price and link status; the cart links only verified product pages', async () => {
     await expect(page.getByTestId('buy-step')).toBeVisible();
     await expect(page.getByTestId('buy-vendors')).toBeVisible();
@@ -362,6 +363,14 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
       const id = item.catalog_id;
       const line = lines.find((l) => l.catalogId === id)!;
       const el = page.getByTestId(`buy-line-${id}`);
+      if (line.included) {
+        await expect(page.getByTestId('buy-included')).toContainText(line.name);
+        await expect(page.getByTestId('buy-included')).toContainText(`Qty ${item.quantity}`);
+        await expect(el).toHaveCount(0);
+        expect(Number(item.unit_price_amount)).toBe(0);
+        expect(line.url).toBeNull();
+        continue;
+      }
       await expect(el).toBeVisible();
       await expect(el).toContainText(catalogById.get(id)!.identity.model);
       await expect(el).toContainText(`Qty ${item.quantity}`);
@@ -386,7 +395,7 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
       }
     }
     await expect(page.getByTestId('buy-total-amount')).toHaveText(formatMoney(known, currency));
-    await expect(page.getByTestId('buy-total')).toContainText(`${plan.bom.items.length} parts to buy`);
+    await expect(page.getByTestId('buy-total')).toContainText(`${shoppingLines.length} parts to buy`);
     if (unknown > 0) await expect(page.getByTestId('buy-unknown-prices')).toContainText(`${unknown} part`);
     else await expect(page.getByTestId('buy-unknown-prices')).toHaveCount(0);
     if (plan.bom.total_status === 'complete' && plan.bom.known_subtotal_amount !== null) {
@@ -415,7 +424,7 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
     await page.getByTestId('buy-primary').click();
     const cart = page.getByTestId('buy-cart');
     await expect(cart).toBeVisible();
-    for (const group of groupByVendor(lines, [])) {
+    for (const group of groupByVendor(shoppingLines, [])) {
       if (group.vendor === NO_VENDOR) {
         for (const line of group.lines) {
           await expect(cart.getByTestId('buy-cart-no-vendor')).toContainText(line.name);

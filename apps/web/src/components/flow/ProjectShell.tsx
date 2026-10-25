@@ -94,6 +94,7 @@ export function ProjectShell({ id, children }: { id: string; children: ReactNode
   }
 
   const showStepper = project.phase === 'ready' && isStepId(segment);
+  const navigating = pendingStep(pendingNav?.path, project.id, segment);
 
   return (
     <ProjectContext.Provider value={value}>
@@ -110,7 +111,13 @@ export function ProjectShell({ id, children }: { id: string; children: ReactNode
               <Link href="/projects" className="ui-btn ui-btn--secondary">Back to projects</Link>
             </div>
           </section>
-        ) : pendingStep(pendingNav?.path, project.id, segment) ? <StepSkeleton /> : children}
+        ) : (
+          <>
+            {navigating ? <StepSkeleton /> : null}
+            {/* Keep effects and form state alive if a slow navigation times out or is cancelled. */}
+            <div style={{ display: navigating ? 'none' : 'contents' }}>{children}</div>
+          </>
+        )}
       </main>
       <IterateModal open={iterateOpen} onClose={() => setIterateOpen(false)} />
     </ProjectContext.Provider>

@@ -119,4 +119,19 @@ describe('design start', () => {
     expect((screen.getByTestId('design-allow-cached') as HTMLInputElement).checked).toBe(false);
     expect(screen.getByTestId('design-mode-select').querySelectorAll('option')).toHaveLength(2);
   });
+
+  it('picks the reference image through a styled button that drives the real file input', () => {
+    render(<DesignStart />);
+    const file = screen.getByTestId('design-file') as HTMLInputElement;
+    expect(file.className).toContain('ui-sr-only');
+    const open = vi.spyOn(file, 'click');
+    fireEvent.click(screen.getByTestId('design-upload'));
+    expect(open).toHaveBeenCalledTimes(1);
+    expect(screen.getByTestId('design-upload').textContent).toContain('reference picture');
+    fireEvent.change(file, { target: { files: [new File(['x'], 'lamp.png', { type: 'image/png' })] } });
+    expect(screen.getByTestId('design-upload').textContent).toContain('lamp.png');
+    expect((screen.getByTestId('generate-design-v2') as HTMLButtonElement).disabled).toBe(false);
+    fireEvent.click(screen.getByRole('button', { name: 'Remove' }));
+    expect(screen.getByTestId('design-upload').textContent).toContain('reference picture');
+  });
 });

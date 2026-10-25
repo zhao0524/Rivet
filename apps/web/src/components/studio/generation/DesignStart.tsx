@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DesignStudio } from './DesignStudio';
 import type { DesignStartRequest } from './useDesignJob';
 import { AppHeader } from '../../flow/AppHeader';
+import { Icon } from '../../system/Icon';
 import '../../../styles/generation.css';
 
 /**
@@ -18,6 +19,7 @@ export function DesignStart({ initialText = '', initialImageAssetId = null }: { 
   const [allowCached, setAllowCached] = useState(false);
   const [request, setRequest] = useState<DesignStartRequest | null>(null);
   const [hydrated, setHydrated] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
   useEffect(() => setHydrated(true), []);
   useEffect(() => {
     if (!initialImageAssetId) return;
@@ -48,7 +50,35 @@ export function DesignStart({ initialText = '', initialImageAssetId = null }: { 
       <p className="rv-hint">Rivet authors three different designs, builds real geometry, checks it and renders it. Engineered mode also checks real parts with the engineering engine.</p>
       <form data-testid="design-start-form" onSubmit={(e) => { e.preventDefault(); if (ready) setRequest({ text: text.trim(), image, mode, allowCached }); }} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <textarea className="rv-input" rows={3} value={text} onChange={(e) => setText(e.target.value)} placeholder="Describe the object, e.g. a small orange rover that avoids obstacles" aria-label="Describe the design" />
-        <input type="file" accept="image/png,image/jpeg,image/webp" aria-label="Reference image (optional)" onChange={(e) => setImage(e.target.files?.[0] ?? null)} />
+        {/* Same picker as the build flow's PromptBox: the native control stays for tests and assistive tech, a styled button drives it. */}
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/png,image/jpeg,image/webp"
+          className="ui-sr-only"
+          tabIndex={-1}
+          aria-label="Reference image (optional)"
+          onChange={(e) => setImage(e.target.files?.[0] ?? null)}
+          data-testid="design-file"
+        />
+        <div className="design-start__attach">
+          <button type="button" className="rv-btn" onClick={() => fileRef.current?.click()} data-testid="design-upload">
+            <Icon name="image" />
+            {image ? image.name : 'Add a reference picture (optional)'}
+          </button>
+          {image ? (
+            <button
+              type="button"
+              className="rv-btn rv-btn--ghost"
+              onClick={() => {
+                setImage(null);
+                if (fileRef.current) fileRef.current.value = '';
+              }}
+            >
+              Remove
+            </button>
+          ) : null}
+        </div>
         {image && initialImageAssetId ? <p className="rv-hint" data-testid="design-carried-image">Using the photo from your project.</p> : null}
         <label className="rv-hint">
           Mode{' '}

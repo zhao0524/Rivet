@@ -157,6 +157,10 @@
   opacity: 1; -webkit-mask-position: 0 0; mask-position: 0 0;
   transition: mask-position 420ms ease, -webkit-mask-position 420ms ease, opacity 420ms ease;
 }
+/* The headline is hidden until the script runs the beats. If that is slow or never happens
+   (blocked script, a struggling device), show it anyway after the sequence should have ended. */
+@keyframes mk-bp-fallback { to { opacity: 1; -webkit-mask-position: 0 0; mask-position: 0 0; } }
+.mk-bp:is([data-beat="rest"], [data-beat="plan"]) .mk-bp__text { animation: mk-bp-fallback 1ms linear 2.5s forwards; }
 @media (prefers-reduced-motion: reduce) {
   .mk-bp * { transition-duration: 160ms !important; }
 }
@@ -211,7 +215,6 @@ html:has(.mk) { overflow-anchor: none; }
 }
 .mk-preview__echo span { display: block; margin-bottom: 2px; font: 500 11px/1.4 var(--ui-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ui-subtle); }
 .mk-preview__frame { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-.mk-preview__scene { height: 150px; border-radius: var(--ui-r); overflow: hidden; }
 .mk-preview__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .mk-preview__list li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; font-size: 14px; }
 .mk-preview__list li strong { display: block; font-weight: 600; color: var(--ui-text); }
