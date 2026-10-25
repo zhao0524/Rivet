@@ -139,14 +139,11 @@ export function WorkspaceScreen() {
         </aside>
         <section className="ws-col ws-col--stage" aria-label="3D model">
           <Stage
-            prompt={project.prompt}
             plan={plan}
             catalog={store.catalog}
             status={session.status}
             stageText={session.stageText}
             errorMessage={session.errorMessage}
-            events={events}
-            live={session.liveRun !== null && session.status === 'generating'}
             selection={selection}
             view={view}
             onView={setView}

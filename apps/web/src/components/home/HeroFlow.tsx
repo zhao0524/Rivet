@@ -12,6 +12,7 @@ import {
   type Draft,
   type LocalAccount,
 } from '../../lib/flow/projects';
+import { matchDemoFile } from '../../lib/flow/demo-match';
 import { setPendingImage } from '../../lib/flow/pending-image';
 import { projectPath } from '../../lib/flow/steps';
 import { PromptBox } from '../flow/PromptBox';
@@ -69,11 +70,17 @@ const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export function HeroFlow() {
   const router = useAppRouter();
   const [draft, setDraft] = useState<Draft | null>(null);
+  const [picture, setPicture] = useState<File | null>(null);
+  const [demoKey, setDemoKey] = useState<string | null>(null);
   const [signIn, setSignIn] = useState(false);
 
-  function openWorkspace(next: Draft) {
+  function openWorkspace(next: Draft, image: File | null, key: string | null) {
     // The picture, if any, waits in memory (pending-image) and is uploaded by the workspace.
-    submitDraftProject({ id: next.id, prompt: next.text, image: { assetId: null, previewUrl: null } });
+    submitDraftProject({
+      id: next.id,
+      prompt: next.text,
+      image: { assetId: null, previewUrl: null, name: image?.name ?? null, demoKey: key },
+    });
     writeDraft(null);
     router.push(projectPath(next.id, 'workspace'));
   }
@@ -81,7 +88,7 @@ export function HeroFlow() {
   function signedIn(account: LocalAccount) {
     saveAccount(account);
     setSignIn(false);
-    if (draft) openWorkspace(draft);
+    if (draft) openWorkspace(draft, picture, demoKey);
   }
 
   return (
@@ -92,10 +99,13 @@ export function HeroFlow() {
         placeholder="Describe a hardware project in a sentence or two…"
         examples={EXAMPLE_PROMPTS}
         allowImage
-        onSubmit={({ draft: next, image }) => {
+        onSubmit={async ({ draft: next, image }) => {
           setPendingImage(next.id, image);
+          const key = image ? await matchDemoFile(image).catch(() => null) : null;
+          setPicture(image);
+          setDemoKey(key);
           setDraft(next);
-          if (readAccount()) openWorkspace(next);
+          if (readAccount()) openWorkspace(next, image, key);
           else setSignIn(true);
         }}
       />

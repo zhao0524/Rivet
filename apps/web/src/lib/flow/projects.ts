@@ -82,6 +82,10 @@ export interface ProjectRecord {
   imagePreviewUrl: string | null;
   /** The picked picture, shrunk to a data URL for the gallery card. Missing on older projects. */
   imageThumbnail?: string | null;
+  /** Original file name, so the loading view can show the matching hand-built model. */
+  imageName?: string | null;
+  /** Demo photo key (`robot_dog`, `arm`, …) recognised before the build starts. */
+  demoKey?: string | null;
   createdAt: string;
   updatedAt: string;
   phase: ProjectPhase;
@@ -210,6 +214,9 @@ export function createProjectRecord(input: Partial<ProjectRecord> & { prompt: st
     prompt: input.prompt,
     imageAssetId: input.imageAssetId ?? null,
     imagePreviewUrl: input.imagePreviewUrl ?? null,
+    imageThumbnail: input.imageThumbnail ?? null,
+    imageName: input.imageName ?? null,
+    demoKey: input.demoKey ?? null,
     createdAt: now,
     updatedAt: now,
     phase: input.phase ?? 'draft',
@@ -258,7 +265,7 @@ export function updateProject(id: string, patch: Partial<ProjectRecord>): Projec
 export function submitDraftProject(input: {
   id: string;
   prompt: string;
-  image: 'keep' | { assetId: string | null; previewUrl: string | null; thumbnail?: string | null };
+  image: 'keep' | { assetId: string | null; previewUrl: string | null; thumbnail?: string | null; name?: string | null; demoKey?: string | null };
 }): ProjectRecord {
   const prompt = input.prompt.trim();
   const title = prompt ? titleFromPrompt(prompt) : 'Robot from a picture';
@@ -273,6 +280,8 @@ export function submitDraftProject(input: {
         imageAssetId: image?.assetId ?? null,
         imagePreviewUrl: image?.previewUrl ?? null,
         imageThumbnail: image?.thumbnail ?? null,
+        imageName: image?.name ?? null,
+        demoKey: image?.demoKey ?? null,
         phase: 'clarify',
       }),
     );
@@ -285,6 +294,8 @@ export function submitDraftProject(input: {
     imageAssetId: image ? image.assetId : existing.imageAssetId,
     imagePreviewUrl: image ? image.previewUrl : existing.imagePreviewUrl,
     imageThumbnail: image ? (image.thumbnail ?? null) : existing.imageThumbnail,
+    imageName: image ? image.name ?? null : existing.imageName,
+    demoKey: image ? image.demoKey ?? null : existing.demoKey,
     phase: 'clarify',
     intentId: null,
     assumptions: [],

@@ -18,6 +18,7 @@ import { SAMPLE_PROJECTS, type SampleProject } from '../../lib/flow/samples';
 import { projectPath } from '../../lib/flow/steps';
 import { AppHeader } from '../flow/AppHeader';
 import { useFlowStore } from '../flow/FlowProvider';
+import { matchDemoFile } from '../../lib/flow/demo-match';
 import { takePendingImage } from '../../lib/flow/pending-image';
 import { pictureThumbnail } from '../../lib/flow/picture-thumbnail';
 import { PromptBox, type PromptBoxSubmit } from '../flow/PromptBox';
@@ -125,8 +126,10 @@ export function NewProjectScreen() {
     let imageAssetId: string | null = null;
     let imagePreviewUrl: string | null = null;
     let thumbnail: string | null = null;
+    let demoKey: string | null = null;
     if (image) {
       try {
+        demoKey = await matchDemoFile(image).catch(() => null);
         const asset = await store.uploadImage(image);
         imageAssetId = asset.asset_id;
         imagePreviewUrl = asset.preview_url || null;
@@ -141,7 +144,7 @@ export function NewProjectScreen() {
     submitDraftProject({
       id: draft.id,
       prompt: draft.text,
-      image: image ? { assetId: imageAssetId, previewUrl: imagePreviewUrl, thumbnail } : 'keep',
+      image: image ? { assetId: imageAssetId, previewUrl: imagePreviewUrl, thumbnail, name: image.name, demoKey } : 'keep',
     });
     writeDraft(null);
     // Straight into the workspace: Rivet reads the idea, builds it and asks its questions in the chat.
