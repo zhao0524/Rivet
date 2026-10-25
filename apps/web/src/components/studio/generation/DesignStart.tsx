@@ -4,8 +4,12 @@ import { useEffect, useState } from 'react';
 import { DesignStudio } from './DesignStudio';
 import type { DesignStartRequest } from './useDesignJob';
 
-/** Entry for v2 geometry-first generation: prompt and/or reference image, mode, explicit cache opt-in. */
-export function DesignStart({ initialText = '' }: { initialText?: string }) {
+/**
+ * Entry for v2 geometry-first generation: prompt and/or reference image, mode, explicit cache opt-in.
+ * `initialImageAssetId` is a v1 upload (from the build flow's Clarify screen); its bytes are fetched
+ * once and re-uploaded to the v2 session when the user generates.
+ */
+export function DesignStart({ initialText = '', initialImageAssetId = null }: { initialText?: string; initialImageAssetId?: string | null }) {
   const [text, setText] = useState(initialText);
   const [image, setImage] = useState<File | null>(null);
   const [mode, setMode] = useState<DesignStartRequest['mode']>('concept_only');
@@ -13,6 +17,25 @@ export function DesignStart({ initialText = '' }: { initialText?: string }) {
   const [request, setRequest] = useState<DesignStartRequest | null>(null);
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => setHydrated(true), []);
+  useEffect(() => {
+    if (!initialImageAssetId) return;
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch(`/api/assets/${encodeURIComponent(initialImageAssetId)}/preview`);
+        if (!res.ok) return;
+        const blob = await res.blob();
+        if (!cancelled && blob.type.startsWith('image/')) {
+          setImage((current) => current ?? new File([blob], 'reference', { type: blob.type }));
+        }
+      } catch {
+        // The photo is optional; the user can pick it again.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [initialImageAssetId]);
   if (request) return <DesignStudio request={request} onExit={() => setRequest(null)} />;
   const ready = text.trim().length > 0 || image !== null;
   return (
@@ -22,6 +45,7 @@ export function DesignStart({ initialText = '' }: { initialText?: string }) {
       <form data-testid="design-start-form" onSubmit={(e) => { e.preventDefault(); if (ready) setRequest({ text: text.trim(), image, mode, allowCached }); }} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <textarea className="rv-input" rows={3} value={text} onChange={(e) => setText(e.target.value)} placeholder="Describe the object, e.g. a small orange rover that avoids obstacles" aria-label="Describe the design" />
         <input type="file" accept="image/png,image/jpeg,image/webp" aria-label="Reference image (optional)" onChange={(e) => setImage(e.target.files?.[0] ?? null)} />
+        {image && initialImageAssetId ? <p className="rv-hint" data-testid="design-carried-image">Using the photo from your project.</p> : null}
         <label className="rv-hint">
           Mode{' '}
           <select value={mode} onChange={(e) => setMode(e.target.value as DesignStartRequest['mode'])} data-testid="design-mode-select">

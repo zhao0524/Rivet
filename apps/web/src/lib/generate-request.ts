@@ -13,7 +13,7 @@ export interface GenerateRequirements {
 /** `POST /api/projects/generate` request body. */
 export interface GenerateRequest {
   intent_id?: string;
-  interpretation_choice?: "as_interpreted" | "closest_supported_rover";
+  interpretation_choice?: "as_interpreted" | "closest_supported_rover" | "concept_model";
   input: {
     kind: GenerateInputKind;
     image_asset_id: string | null;

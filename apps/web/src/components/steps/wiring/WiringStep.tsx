@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { partRows } from '../../../lib/flow/derive';
+import { isConceptPlan } from '../../../lib/rivet/honesty';
 import { useProjectContext } from '../../flow/ProjectShell';
 import { StepLayout } from '../../flow/StepLayout';
 import {
@@ -31,6 +32,7 @@ export function WiringStep() {
   const [pinned, setPinned] = useState<string | null>(null);
   const [simOpen, setSimOpen] = useState(false);
   const activeConnectionId = hovered ?? pinned;
+  const concept = ready && isConceptPlan(plan);
 
   const partNames = useMemo(() => {
     const names = new Map<string, string>();
@@ -58,6 +60,24 @@ export function WiringStep() {
     };
     return buildWiringLayout(input, catalog as unknown as readonly WiringCatalogComponent[]);
   }, [ready, plan, catalog]);
+
+  // A concept has no engineered connections: its wires are drawn parts that say what they join.
+  const conceptWires = useMemo(() => {
+    if (!concept) return [];
+    const labels = new Map(plan.components.map((c) => [c.instance_id, String(c.render_overrides?.label ?? c.instance_id)]));
+    return plan.components
+      .filter((c) => c.role === 'wire')
+      .map((c) => {
+        const ends = (c.render_overrides?.connects ?? []) as string[];
+        return {
+          id: c.instance_id,
+          label: String(c.render_overrides?.label ?? c.instance_id),
+          kind: (c.render_overrides?.wire_kind as string | undefined) ?? 'wire',
+          from: labels.get(ends[0] ?? '') ?? '?',
+          to: labels.get(ends[1] ?? '') ?? '?',
+        };
+      });
+  }, [concept, plan]);
 
   const downloadUrl = ready ? store.dataSource.getExportUrl?.(plan.build_id, 'firmware.zip', plan.revision) ?? null : null;
 
@@ -107,18 +127,59 @@ export function WiringStep() {
             Firmware
           </button>
         </div>
-        <button
-          type="button"
-          className="ui-btn ui-btn--link"
-          onClick={() => setSimOpen(true)}
-          disabled={!ready}
-          data-testid="wiring-open-sim"
-        >
-          Try it in simulation
-        </button>
+        {concept ? null : (
+          <button
+            type="button"
+            className="ui-btn ui-btn--link"
+            onClick={() => setSimOpen(true)}
+            disabled={!ready}
+            data-testid="wiring-open-sim"
+          >
+            Try it in simulation
+          </button>
+        )}
       </div>
 
-      {tab === 'wiring' ? (
+      {concept && tab === 'wiring' ? (
+        <div id="panel-wiring" role="tabpanel" aria-labelledby="tab-wiring" className="split" data-testid="wiring-concept">
+          <div className="p1-stack">
+            <p className="ui-small ui-muted" style={{ margin: 0 }}>
+              Typical wiring for this kind of device, inferred from the 3D model. Routes are approximate and nothing was
+              checked electrically: use the suggested parts&apos; own wiring guides when you build it.
+            </p>
+            {conceptWires.length === 0 ? (
+              <p className="ui-small" style={{ margin: 0 }} data-testid="wiring-concept-empty">
+                The model has no wires to show.
+              </p>
+            ) : (
+              <ul className="list" data-testid="wiring-concept-list">
+                {conceptWires.map((w) => (
+                  <li key={w.id} className="list__row" data-testid={`wiring-concept-${w.id}`}>
+                    <span className="list__main">
+                      <span className="list__title">
+                        {w.from} → {w.to}
+                      </span>
+                      <span className="list__meta">
+                        {w.kind} · {w.label}
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div className="p1-sticky">
+            <SceneViewport plan={plan} catalog={catalog} xray label="Concept model · inferred wiring" testId="wiring-viewport" />
+          </div>
+        </div>
+      ) : concept ? (
+        <div id="panel-firmware" role="tabpanel" aria-labelledby="tab-firmware" data-testid="firmware-panel">
+          <p className="ui-notice" style={{ margin: 0 }} data-testid="firmware-concept">
+            No firmware for a concept model: Rivet only writes and compiles code for builds it engineered. A suggested
+            flight controller or board ships with its vendor&apos;s firmware tools.
+          </p>
+        </div>
+      ) : tab === 'wiring' ? (
         <div id="panel-wiring" role="tabpanel" aria-labelledby="tab-wiring" className="split" data-testid="wiring-panel">
           <div className="p1-stack">
             {!ready || !layout ? (
@@ -163,7 +224,7 @@ export function WiringStep() {
         </div>
       )}
 
-      {ready ? <SimulationModal plan={plan} open={simOpen} onClose={() => setSimOpen(false)} /> : null}
+      {ready && !concept ? <SimulationModal plan={plan} open={simOpen} onClose={() => setSimOpen(false)} /> : null}
       {toast}
     </StepLayout>
   );

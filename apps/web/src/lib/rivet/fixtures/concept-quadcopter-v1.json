@@ -1689,8 +1689,8 @@
   ],
   "bom": {
     "currency": "USD",
-    "known_subtotal_amount": null,
-    "total_status": "not_available",
+    "known_subtotal_amount": "461.89",
+    "total_status": "incomplete",
     "items": [
       {
         "catalog_id": "concept.body",
@@ -1718,9 +1718,9 @@
         "instance_ids": [
           "battery-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "36.49",
+        "purchase_url": "https://www.racedayquads.com/products/cnhl-1500mah-120c-4s-ministar-li-po-battery",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.camera-gimbal",
@@ -1751,9 +1751,9 @@
           "rear-left-arm-1",
           "rear-right-arm-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "17.37",
+        "purchase_url": "https://www.racedayquads.com/products/deepspace-seeker-5-dc-frame-kit",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.motor",
@@ -1764,9 +1764,9 @@
           "rear-left-motor-1",
           "rear-right-motor-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "26.99",
+        "purchase_url": "https://www.racedayquads.com/products/iflight-xing2-2207-unibell-motor-2050kv",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.propeller",
@@ -1777,9 +1777,9 @@
           "rear-left-propeller-1",
           "rear-right-propeller-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "1.25",
+        "purchase_url": "https://www.racedayquads.com/products/hq-v1s-5x4-3x3-5-prop-choose-your-color",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.landing-leg",
@@ -1800,9 +1800,9 @@
         "instance_ids": [
           "power-distribution-board-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "35.99",
+        "purchase_url": "https://www.racedayquads.com/products/draft-pdb-fchub-12s-v2-for-xclass",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.esc",
@@ -1813,9 +1813,9 @@
           "rear-left-esc-1",
           "rear-right-esc-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "27.00",
+        "purchase_url": "https://www.racedayquads.com/products/holybro-tekko32-f4-metal-65a-am32-4-in-1-esc",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.flight-controller",
@@ -1823,9 +1823,9 @@
         "instance_ids": [
           "flight-controller-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "55.49",
+        "purchase_url": "https://www.racedayquads.com/products/jhemcu-gf30f745-3-6s-hd-30x30-flight-controller-mpu6000",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.radio-receiver",
@@ -1833,9 +1833,9 @@
         "instance_ids": [
           "radio-receiver-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "24.99",
+        "purchase_url": "https://www.racedayquads.com/products/radiomaster-rp1-v2-2-4ghz-elrs-nano-receiver",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.gps-module",
@@ -1843,9 +1843,9 @@
         "instance_ids": [
           "gps-module-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "18.49",
+        "purchase_url": "https://www.racedayquads.com/products/hglrc-m100-pro-gps-module",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.wire-power-3-0",
@@ -2029,8 +2029,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.battery",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Battery",
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Battery: CNHL MiniStar 14.8V 4S 1500mAh 120C LiPo Battery (XT60)",
         "sku": null,
         "category": "battery"
       },
@@ -2049,21 +2049,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/cnhl-1500mah-120c-4s-ministar-li-po-battery",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "36.49",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part for this role: CNHL MiniStar 14.8V 4S 1500mAh 120C LiPo Battery (XT60) (RaceDayQuads, SKU 9075). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -2155,8 +2156,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.arm",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Arm",
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Arm: DeepSpace Seeker 5 DC Frame Kit (arms and plates)",
         "sku": null,
         "category": "arm"
       },
@@ -2175,21 +2176,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/deepspace-seeker-5-dc-frame-kit",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "17.37",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part for this role: DeepSpace Seeker 5 DC Frame Kit (arms and plates) (RaceDayQuads, SKU 23644), sold as 4 in one (69.49 USD); shared across the parts that use it. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -2197,8 +2199,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.motor",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Motor",
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Motor: iFlight XING2 2207 Unibell Motor 2050KV",
         "sku": null,
         "category": "motor"
       },
@@ -2217,21 +2219,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/iflight-xing2-2207-unibell-motor-2050kv",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "26.99",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part for this role: iFlight XING2 2207 Unibell Motor 2050KV (RaceDayQuads, SKU 23540). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -2239,8 +2242,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.propeller",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Propeller",
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Propeller: HQ Prop 5x4.3x3 V1S Tri-Blade 5\" Prop (4 pack)",
         "sku": null,
         "category": "propeller"
       },
@@ -2259,21 +2262,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/hq-v1s-5x4-3x3-5-prop-choose-your-color",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "1.25",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part for this role: HQ Prop 5x4.3x3 V1S Tri-Blade 5\" Prop (4 pack) (RaceDayQuads, SKU 7292), sold as 4 in one (4.99 USD); shared across the parts that use it. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -2323,8 +2327,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.power-distribution-board",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Power distribution board",
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Power distribution board: MATEKSYS FCHUB 12S V2 PDB",
         "sku": null,
         "category": "board"
       },
@@ -2343,21 +2347,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/draft-pdb-fchub-12s-v2-for-xclass",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "35.99",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "unknown",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product"
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
+          "Suggested real part for this role: MATEKSYS FCHUB 12S V2 PDB (RaceDayQuads, SKU 22614). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -2365,8 +2370,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.esc",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Esc",
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Esc: Holybro Tekko32 F4 Metal 65A AM32 4-in-1 ESC (30x30)",
         "sku": null,
         "category": "board"
       },
@@ -2385,21 +2390,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/holybro-tekko32-f4-metal-65a-am32-4-in-1-esc",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "27.00",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "unknown",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product"
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
+          "Suggested real part for this role: Holybro Tekko32 F4 Metal 65A AM32 4-in-1 ESC (30x30) (RaceDayQuads, SKU 23157), sold as 4 in one (107.99 USD); shared across the parts that use it. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -2407,8 +2413,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.flight-controller",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Flight controller",
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Flight controller: JHEMCU GF30F745 3-6S HD 30x30 Flight Controller",
         "sku": null,
         "category": "board"
       },
@@ -2427,21 +2433,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/jhemcu-gf30f745-3-6s-hd-30x30-flight-controller-mpu6000",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "55.49",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "unknown",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product"
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
+          "Suggested real part for this role: JHEMCU GF30F745 3-6S HD 30x30 Flight Controller (RaceDayQuads, SKU FPVE-JHEMCU-GF30F745-FC-30x30). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -2449,8 +2456,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.radio-receiver",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Radio receiver",
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Radio receiver: RadioMaster RP1 V2 2.4GHz ELRS Nano Receiver",
         "sku": null,
         "category": "board"
       },
@@ -2469,21 +2476,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/radiomaster-rp1-v2-2-4ghz-elrs-nano-receiver",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "24.99",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "unknown",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product"
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
+          "Suggested real part for this role: RadioMaster RP1 V2 2.4GHz ELRS Nano Receiver (RaceDayQuads, SKU 19362). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -2491,8 +2499,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.gps-module",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Gps module",
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Gps module: HGLRC M100 Pro GPS Module",
         "sku": null,
         "category": "board"
       },
@@ -2511,21 +2519,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/hglrc-m100-pro-gps-module",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "18.49",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "unknown",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product"
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
+          "Suggested real part for this role: HGLRC M100 Pro GPS Module (RaceDayQuads, SKU 23368). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },

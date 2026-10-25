@@ -1,6 +1,17 @@
 import { DesignStart } from '../../../components/studio/generation/DesignStart';
 
-export default function DesignPage({ searchParams }: { searchParams?: Record<string, string | string[] | undefined> }) {
-  const prompt = searchParams?.prompt;
-  return <DesignStart initialText={(Array.isArray(prompt) ? prompt[0] : prompt)?.slice(0, 2000) ?? ''} />;
+type Params = Record<string, string | string[] | undefined>;
+
+function first(params: Params | undefined, key: string): string | undefined {
+  const value = params?.[key];
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default function DesignPage({ searchParams }: { searchParams?: Params }) {
+  return (
+    <DesignStart
+      initialText={first(searchParams, 'prompt')?.slice(0, 2000) ?? ''}
+      initialImageAssetId={first(searchParams, 'ref') ?? null}
+    />
+  );
 }

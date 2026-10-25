@@ -16,8 +16,11 @@ export interface ClarifyAnswers {
   max_budget: number | null;
   /** Longest side in mm; null = no limit. */
   max_length_mm: number | null;
-  /** Set when the interpretation was not a supported family and the user chose the closest rover. */
-  interpretation_choice?: 'as_interpreted' | 'closest_supported_rover';
+  /**
+   * How to build an interpretation that is not a supported family: a 3D concept model of what the
+   * photo or text shows (default), or the closest supported rover.
+   */
+  interpretation_choice?: 'as_interpreted' | 'closest_supported_rover' | 'concept_model';
 }
 
 export interface ProjectRecord {

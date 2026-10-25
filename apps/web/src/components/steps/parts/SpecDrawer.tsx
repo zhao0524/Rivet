@@ -1,6 +1,7 @@
 'use client';
 
 import { formatCheckedAt, formatMoney, safeHttpUrl, specRows, type PartRow, type SpecSource } from '../../../lib/flow/derive';
+import { isConceptPlan } from '../../../lib/rivet/honesty';
 import type { BuildPlan } from '../../../lib/rivet/types';
 import { Icon } from '../../system/Icon';
 import { Modal } from '../../system/Modal';
@@ -38,6 +39,10 @@ export function SpecDrawer({ row, plan, open, onClose }: SpecDrawerProps) {
   const bomItem = plan.bom.items.find((i) => i.catalog_id === row.catalogId);
   const quantity = bomItem?.quantity ?? plan.components.filter((c) => c.catalog_id === row.catalogId).length;
   const datasheet = safeHttpUrl(cat?.sourcing.datasheet_url ?? null);
+  // A concept part's hand-picked product: a real listing for the role, not checked against the design.
+  const suggestion =
+    bomItem?.link_status === 'manufacturer_reference_only' && isConceptPlan(plan) ? safeHttpUrl(bomItem.purchase_url) : null;
+  const suggestionNote = cat?.evidence.notes.find((n) => n.startsWith('Suggested real part')) ?? null;
   const price =
     cat?.sourcing.price_amount !== null && cat?.sourcing.price_amount !== undefined
       ? formatMoney(Number(cat.sourcing.price_amount), cat.sourcing.price_currency ?? plan.bom.currency)
@@ -78,6 +83,22 @@ export function SpecDrawer({ row, plan, open, onClose }: SpecDrawerProps) {
             <dd>{row.standIn ? 'Stand-in shape, not the real part' : 'Modelled from the catalog asset'}</dd>
           </div>
         </dl>
+
+        {suggestion ? (
+          <section className="ui-island" data-testid="spec-suggested">
+            <h3 className="ui-h3" style={{ margin: 0 }}>
+              Suggested real part
+            </h3>
+            {suggestionNote ? (
+              <p className="ui-small ui-muted" style={{ margin: '6px 0' }}>
+                {suggestionNote}
+              </p>
+            ) : null}
+            <a className="ui-btn ui-btn--secondary ui-btn--sm" href={suggestion} target="_blank" rel="noopener noreferrer" data-testid="spec-suggested-link">
+              Open the product page
+            </a>
+          </section>
+        ) : null}
 
         <table className="p1-spec__table" data-testid="spec-table">
           <caption className="ui-sr-only">Specifications with their source</caption>

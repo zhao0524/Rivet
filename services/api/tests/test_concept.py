@@ -4,6 +4,7 @@ import pytest
 
 from rivet_api.agents.vision import LiveVisionProvider
 from rivet_api.concept import build_concept_plan, fixture_concept
+from rivet_api.concept.reference_parts import REFERENCE_URLS
 from rivet_api.concept.model import MAX_PARTS, ConceptModel, clean_concept, floating_parts, part_bounds
 from rivet_api.errors import ApiError
 from rivet_api.models.requests import GenerateRequest
@@ -43,10 +44,49 @@ def test_fixture_concept_builds_a_consistent_appearance_only_plan():
     assert plan["provenance"]["catalog_version"].startswith("CONCEPT")
     # Four rotors share one catalog entry; the BOM counts them.
     props = next(i for i in plan["bom"]["items"] if i["catalog_id"] == "concept.propeller")
-    assert props["quantity"] == 4 and props["link_status"] == "not_available"
+    assert props["quantity"] == 4
     assert all(e["identity"]["sku"] is None and e["sourcing"]["purchase_url"] is None for e in plan["concept_catalog"])
     finding = plan["verification"]["findings"][0]
     assert finding["rule_id"] == "concept.not_engineered" and finding["severity"] == "blocking"
+
+
+def test_drone_internals_get_curated_suggestions_never_verified_links():
+    plan = build_concept_plan(fixture_concept(), "intent-1", "image", "fixture")
+    items = {i["catalog_id"]: i for i in plan["bom"]["items"]}
+    suggested = {cid for cid, i in items.items() if i["link_status"] == "manufacturer_reference_only"}
+    assert {"concept.flight-controller", "concept.esc", "concept.motor", "concept.propeller", "concept.battery",
+            "concept.radio-receiver", "concept.gps-module", "concept.power-distribution-board"} <= suggested
+    assert all(items[cid]["purchase_url"] in REFERENCE_URLS and items[cid]["unit_price_amount"] for cid in suggested)
+    # Shapes that are not products on their own, and wires, stay unsourced.
+    for cid in ("concept.body", "concept.landing-leg", "concept.camera-lens"):
+        assert items[cid]["link_status"] == "not_available" and items[cid]["purchase_url"] is None
+    assert not any(i["link_status"] == "verified_product" for i in items.values())
+    # A 4-in-1 ESC is split across the four ESC parts.
+    esc = next(e for e in plan["concept_catalog"] if e["catalog_id"] == "concept.esc")
+    assert items["concept.esc"]["unit_price_amount"] == "27.00" and "shared across" in esc["evidence"]["notes"][-1]
+    assert plan["bom"]["total_status"] == "incomplete" and plan["bom"]["known_subtotal_amount"] is not None
+
+
+def test_check_concept_plan_rejects_links_that_are_not_curated():
+    plan = build_concept_plan(fixture_concept(), "intent-1", "image", "fixture")
+    item = next(i for i in plan["bom"]["items"] if i["link_status"] == "manufacturer_reference_only")
+    item["purchase_url"] = "https://attacker.example/buy"
+    with pytest.raises(ApiError) as exc:
+        check_concept_plan(plan)
+    assert "not a curated suggestion" in str(exc.value.details)
+    item["purchase_url"], item["link_status"] = next(iter(REFERENCE_URLS)), "verified_product"
+    with pytest.raises(ApiError):
+        check_concept_plan(plan)
+
+
+def test_gadget_parts_use_the_hobby_table():
+    from rivet_api.concept.reference_parts import suggest
+
+    assert suggest("desk lamp", "Controller board", "controller").sku == "3405"
+    assert suggest("robot", "Motor driver", "motor_driver").sku == "ROB-14450"
+    assert suggest("quadcopter drone", "Motor", "motor").sku == "23540"
+    assert suggest("robot", "Motor", "motor").sku == "ROB-13302"
+    assert suggest("drone", "Top cover", "chassis") is None and suggest("robot", "Signal wire", "wire") is None
 
 
 def test_plan_is_grounded_and_centred():
@@ -137,7 +177,8 @@ def test_failed_concept_falls_back_to_the_labelled_rover(generate):
         def concept(self, request, image):
             raise ApiError("CONCEPT_PARSE_FAILED", "no usable concept", 502, retryable=True)
 
-    client, _, job = generate(CONCEPT_BODY, vision=BrokenConcept())
+    body = {"input": {"kind": "text", "user_text": "a desk lamp"}, "interpretation_choice": "concept_model"}
+    client, _, job = generate(body, vision=BrokenConcept())
     assert job["status"] == "complete", job
     plan = client.get(f"/api/projects/{job['build_id']}").json()
     assert plan["project_family"] == "rover" and "concept_catalog" not in plan
@@ -287,3 +328,37 @@ def test_overlapping_internal_boards_are_stacked_and_wires_follow():
     fc_comp = next(c for c in plan["components"] if c["render_overrides"]["label"] == "Flight controller")
     end = [wire["render_overrides"]["path_mm"][-1][i] + wire["pose"]["position_mm"][i] for i in range(3)]
     assert end == pytest.approx(fc_comp["pose"]["position_mm"], abs=0.02)
+
+
+class FailingConceptVision:
+    """Vision that reads intents like the mock but cannot rebuild a concept (a live model outage)."""
+
+    mode = "live"
+
+    def __init__(self):
+        from rivet_api.agents.vision import MockVisionProvider
+
+        self._mock = MockVisionProvider()
+
+    def interpret(self, request, image):
+        return self._mock.interpret(request, image)
+
+    def concept(self, request, image):
+        raise ApiError("VISION_UNAVAILABLE", "model down", 503)
+
+
+def test_a_drone_whose_concept_fails_falls_back_to_the_saved_quadcopter(generate):
+    client, _, job = generate(CONCEPT_BODY, vision=FailingConceptVision())
+    assert job["status"] == "complete", job
+    plan = client.get(f"/api/projects/{job['build_id']}").json()
+    assert plan["concept_catalog"] and plan["provenance"]["generation_mode"] == "fallback"
+    assert any("saved example quadcopter" in n for n in plan["provenance"]["notes"])
+    assert any(i["link_status"] == "manufacturer_reference_only" for i in plan["bom"]["items"])
+
+
+
+def test_a_single_four_in_one_esc_costs_the_whole_board():
+    from rivet_api.concept.reference_parts import suggest
+
+    esc = suggest("drone", "4-in-1 esc", "controller")
+    assert esc.pack_size == 4 and esc.unit_price(1) == esc.price and esc.unit_price(4) == "27.00"
