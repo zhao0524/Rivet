@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { handleFromAccount } from '../../lib/flow/community';
 import { formatMoney } from '../../lib/flow/derive';
 import { readAccount } from '../../lib/flow/projects';
@@ -30,10 +30,18 @@ export function WorkspaceScreen() {
   const session = useWorkspaceSession();
   const store = build.store;
   const plan = build.ready ? store.plan : null;
-  const selection = usePartSelection(plan, { escapeToClear: true });
   const [view, setView] = useState<StageView>(DEFAULT_VIEW);
   const [pane, setPane] = useState<Pane>('model');
   const [tab, setTab] = useState<LeftTab>('build');
+  const viewRef = useRef(view);
+  viewRef.current = view;
+  // In the exploded view, clicking a part opens it in the Parts tab (which picks and scrolls to it).
+  const selection = usePartSelection(plan, {
+    escapeToClear: true,
+    onSelectionChange: (e) => {
+      if (e.reason === 'pointer' && e.instance_id && viewRef.current.mode === 'exploded') setTab('parts');
+    },
+  });
   const fixture = store.dataSource.mode === 'fixture';
   const events = session.liveRun !== null ? store.jobEvents : [];
   const concept = plan ? isConceptPlan(plan) : false;

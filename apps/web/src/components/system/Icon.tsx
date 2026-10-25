@@ -30,6 +30,8 @@ const PATHS = {
   spinner: 'M8 2a6 6 0 1 0 6 6',
   replay: 'M2.5 3v3.5H6M2.9 9.5A5.25 5.25 0 1 0 3.6 5L2.5 6.5',
   minus: 'M3.5 8h9',
+  /** A 3D printer: frame, gantry, nozzle and the part on the bed. */
+  print: 'M2.5 2.5h11v11h-11ZM2.5 5h11M7 5v1.5h2V5M8 6.5v1M6 11.5h4v-2H6ZM2.5 11.5h1M12.5 11.5h1',
 } as const;
 
 export type IconName = keyof typeof PATHS;

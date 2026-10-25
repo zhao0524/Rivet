@@ -260,6 +260,28 @@ describe('Workspace', () => {
     expect(startGeneration.mock.calls[1][0]).not.toHaveProperty('intent_id');
   }, 20_000);
 
+  it('offers custom plastic parts of a concept as 3D prints, in Buy and in Parts', async () => {
+    seed('p_print', { phase: 'ready', exampleId: 'concept-quadcopter-example', buildId: 'concept-quadcopter-example' });
+    await open('p_print');
+    await screen.findByTestId('workspace-chat-built', {}, { timeout: 8000 });
+    fireEvent.click(await screen.findByTestId('workspace-guide-buy-toggle', {}, { timeout: 8000 }));
+    const buy = screen.getByTestId('workspace-guide-buy');
+    expect(buy.textContent).toContain('Custom part');
+    const icons = buy.querySelectorAll('[data-testid^="workspace-print-concept."]');
+    expect(icons.length).toBeGreaterThan(0);
+    fireEvent.click(icons[0]!);
+    const menu = screen.getByTestId('workspace-print-menu');
+    expect(menu.textContent).toMatch(/\d+ × \d+ × \d+ mm/);
+    expect(screen.getByTestId('workspace-print-stl')).toBeTruthy();
+    expect(screen.getByTestId('workspace-print-obj')).toBeTruthy();
+
+    fireEvent.click(screen.getByTestId('workspace-tab-left-parts'));
+    const parts = screen.getByTestId('workspace-parts');
+    expect(parts.textContent).toContain('To make');
+    expect(parts.textContent).toContain('Custom part');
+    expect(parts.querySelectorAll('[data-testid^="workspace-print-concept."]').length).toBe(icons.length);
+  }, 20_000);
+
   it('opens a ready project without generating, and picking a part shows it', async () => {
     seed('p_ws6', { phase: 'ready', exampleId: 'rivet-intent-rover-001', buildId: 'rivet-intent-rover-001' });
     await open('p_ws6');

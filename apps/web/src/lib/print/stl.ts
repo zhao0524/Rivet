@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
+import { OBJExporter } from 'three/examples/jsm/exporters/OBJExporter.js';
 import { STLExporter } from 'three/examples/jsm/exporters/STLExporter.js';
 import type { Size3 } from '../../components/three/parts/types';
 
@@ -91,11 +92,8 @@ function printable(shape: string, size: Size3): THREE.Group {
   return group;
 }
 
-/**
- * Binary STL with `count` copies of each part laid out in rows on one plate, so a whole set
- * prints in one job. Sizes are the concept model's estimates, in millimetres.
- */
-export function printPlateStl(parts: readonly PrintPart[]): ArrayBuffer {
+/** `count` copies of each part laid out in rows on one plate, so a whole set prints in one job. */
+function layoutPlate(parts: readonly PrintPart[]): THREE.Group {
   const plate = new THREE.Group();
   let cx = 0;
   let cy = 0;
@@ -119,7 +117,24 @@ export function printPlateStl(parts: readonly PrintPart[]): ArrayBuffer {
     }
   }
   plate.updateMatrixWorld(true);
+  return plate;
+}
+
+/**
+ * Binary STL with `count` copies of each part laid out in rows on one plate, so a whole set
+ * prints in one job. Sizes are the concept model's estimates, in millimetres.
+ */
+export function printPlateStl(parts: readonly PrintPart[]): ArrayBuffer {
+  const plate = layoutPlate(parts);
   const view = new STLExporter().parse(plate, { binary: true }) as DataView;
   plate.traverse((o) => (o as THREE.Mesh).geometry?.dispose());
   return view.buffer.slice(view.byteOffset, view.byteOffset + view.byteLength) as ArrayBuffer;
+}
+
+/** The same plate as Wavefront OBJ text (millimetres, Z up), for slicers and editors that prefer it. */
+export function printPlateObj(parts: readonly PrintPart[]): string {
+  const plate = layoutPlate(parts);
+  const text = new OBJExporter().parse(plate);
+  plate.traverse((o) => (o as THREE.Mesh).geometry?.dispose());
+  return `# Rivet custom part, millimetres, Z up\n${text}`;
 }
