@@ -51,7 +51,7 @@ describe('/new recent projects gallery', () => {
     expect(kinds.slice(2).every((k) => k === 'sample')).toBe(true);
     const items = within(list).getAllByRole('listitem');
     expect(items[0]!.textContent).toContain('Newer rover');
-    expect(items[0]!.textContent).toContain('Step 2 of 3');
+    expect(items[0]!.textContent).toContain('Step 1 of 2');
     expect(items[1]!.textContent).toContain('Older rover');
   });
 

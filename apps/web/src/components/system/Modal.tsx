@@ -18,6 +18,11 @@ export interface ModalProps {
   testId?: string;
   /** CSS selector of the control to focus on open (default: first control in the body). */
   initialFocus?: string;
+  /**
+   * The body lays out its own heading (e.g. beside an image): the title stays as the dialog's
+   * accessible name only, and the close button floats in the corner.
+   */
+  hideHeader?: boolean;
 }
 
 const FOCUSABLE =
@@ -37,6 +42,7 @@ export function Modal({
   variant = 'modal',
   testId,
   initialFocus,
+  hideHeader = false,
 }: ModalProps) {
   const titleId = useId();
   const descId = useId();
@@ -100,8 +106,8 @@ export function Modal({
         data-testid={testId}
         className={drawer ? 'ui-drawer' : variant === 'wide' ? 'ui-modal ui-modal--wide' : 'ui-modal'}
       >
-        <div className="ui-modal__head">
-          <div>
+        <div className={hideHeader ? 'ui-modal__head ui-modal__head--float' : 'ui-modal__head'}>
+          <div className={hideHeader ? 'ui-sr-only' : undefined}>
             <h2 id={titleId} className="ui-h2">
               {title}
             </h2>

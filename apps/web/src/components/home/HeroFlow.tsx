@@ -99,13 +99,13 @@ export function HeroFlow() {
           else setSignIn(true);
         }}
       />
-      <SaveModal open={signIn} onClose={() => setSignIn(false)} onSave={signedIn} />
+      <SignInModal open={signIn} onClose={() => setSignIn(false)} onSave={signedIn} />
     </div>
   );
 }
 
 /** M2 Sign in before the first build. Hackathon scope: both paths store a local account; nothing is sent. */
-function SaveModal({
+export function SignInModal({
   open,
   onClose,
   onSave,

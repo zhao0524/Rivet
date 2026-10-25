@@ -200,7 +200,7 @@ function Entry({
         <Rivet testId="workspace-chat-wrap">
           <p>That&apos;s everything I need. Turn the model around, or tell me what to change below.</p>
           <p className="ws-msg__quiet">
-            When it looks right, follow the Build tab on the left from review to a finished robot. The Project tab lists every
+            When it looks right, follow the Build tab on the left from buying the parts to a finished robot. The Project tab lists every
             part, with where to buy it or the file to print it.
           </p>
         </Rivet>

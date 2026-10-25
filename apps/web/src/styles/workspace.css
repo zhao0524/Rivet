@@ -251,15 +251,28 @@ html:has(.ws), html:has(.ws) body { overflow: hidden; background: #0a0a0b; }
 .ws-proj__facts dd { margin: 0; color: var(--ui-text); text-align: right; }
 .ws-proj__csv { margin: 10px 4px 0; }
 
-/* Review: one card per risk, stacked. */
-.ws-risks { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.ws-risk {
-  display: grid; gap: 6px; padding: 11px 12px; border-radius: 10px; background: var(--ui-sunken); border: 1px solid var(--ui-border);
+/* Axis rulers in the 3D view (drawn by StageAxes as DOM labels over the canvas). */
+.rivet-axis-tick {
+  display: block; padding: 0 3px; font: 500 10px/1 var(--ui-mono); white-space: nowrap; opacity: 0.85;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8); pointer-events: none; user-select: none;
 }
-.ws-risk__head { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; line-height: 1.4; }
-.ws-risk__head svg { flex: none; margin-top: 2px; color: var(--ui-subtle); }
-.ws-risk[data-level='blocking'] .ws-risk__head svg { color: var(--ui-warn); }
-.ws-risk__head strong { font-weight: 600; }
+.rivet-axis-label {
+  display: block; font: 700 12px/1 var(--ui-font); white-space: nowrap; pointer-events: none; user-select: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+}
+.rivet-axis-label small { font-weight: 500; font-size: 10px; opacity: 0.75; }
+
+/* "Start here" hint beside the first step, until it is opened. */
+.ws-hint {
+  position: fixed; z-index: 40; width: 280px; translate: 0 -50%; padding: 10px 12px; border-radius: 10px;
+  background: #ece9ff; color: #1b1630; font-size: 12.5px; font-weight: 500; line-height: 1.4; pointer-events: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(182, 169, 255, 0.6); animation: ws-nudge 1.4s ease-in-out infinite;
+}
+.ws-hint::before {
+  content: ''; position: absolute; left: -6px; top: 50%; width: 12px; height: 12px; translate: 0 -50%; rotate: 45deg;
+  background: #ece9ff; border-radius: 2px;
+}
+@keyframes ws-nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(7px); } }
 .ws-risk__tag {
   justify-self: start; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--ui-border); font-size: 10.5px; color: var(--ui-subtle);
 }
@@ -352,35 +365,15 @@ html:has(.ws), html:has(.ws) body { overflow: hidden; background: #0a0a0b; }
 .ws-stage__empty-title { margin: 4px 0 0; font-size: 15px; font-weight: 600; color: var(--ui-text); }
 .ws-stage__empty-text { margin: 0 0 8px; max-width: 46ch; color: var(--ui-subtle); }
 
-/* Loading: a drafting table. A blueprint grid, a scan line, a chassis drawing itself, the real phases. */
-.ws-draft { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; }
-.ws-draft__grid {
-  position: absolute; inset: -40px;
-  background-image:
-    linear-gradient(to right, rgba(138, 120, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(138, 120, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(to right, rgba(138, 120, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(138, 120, 255, 0.035) 1px, transparent 1px);
-  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
-  mask: radial-gradient(60% 60% at 50% 45%, #000 30%, transparent 100%);
-  animation: ws-drift 18s linear infinite;
+/* Loading: an example build putting itself together under the job's real progress. */
+.ws-draft { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; animation: ws-fade 400ms ease; }
+.ws-preview { position: absolute; inset: 0; opacity: 0.92; }
+.ws-preview > div:first-child { width: 100%; height: 100%; }
+.ws-preview__caption {
+  position: absolute; left: 50%; top: 14px; translate: -50% 0; font-size: 11px; color: #6b6b74; white-space: nowrap;
 }
-.ws-draft__scan {
-  position: absolute; left: 0; right: 0; height: 90px; top: -90px;
-  background: linear-gradient(to bottom, transparent, rgba(138, 120, 255, 0.05) 80%, rgba(182, 169, 255, 0.22) 100%);
-  mask: linear-gradient(to right, transparent, #000 25%, #000 75%, transparent);
-  animation: ws-scan 2.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-}
-.ws-draft__model { position: relative; width: min(340px, 60%); height: auto; margin-top: -90px; overflow: visible; }
-.ws-draft__line {
-  fill: none; stroke: #6b6b78; stroke-width: 1.2; stroke-linejoin: round; stroke-linecap: round;
-  stroke-dasharray: 400; stroke-dashoffset: 400;
-  animation: ws-draw 3.2s var(--d, 0s) var(--ui-ease) infinite;
-}
-.ws-draft__line--accent { stroke: var(--ui-lavender-text); }
-.ws-draft__line--wire { stroke: var(--ui-accent-text); stroke-dasharray: 4 5; animation-name: ws-draw-dash; }
 .ws-draft__panel {
-  position: absolute; left: 50%; bottom: 12%; translate: -50% 0; display: grid; gap: 12px; width: min(300px, calc(100% - 32px));
+  position: absolute; left: 50%; bottom: 7%; translate: -50% 0; display: grid; gap: 12px; width: min(300px, calc(100% - 32px));
   padding: 14px 16px; border-radius: 14px; background: var(--ws-glass); border: 1px solid var(--ui-border); backdrop-filter: blur(12px);
 }
 .ws-draft__status { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 13.5px; font-weight: 500; }
@@ -543,26 +536,12 @@ html:has(.ws), html:has(.ws) body { overflow: hidden; background: #0a0a0b; }
 }
 
 @keyframes ws-rise { from { opacity: 0; translate: 0 6px; } }
+@keyframes ws-fade { from { opacity: 0; } }
 @keyframes ws-pulse { 50% { opacity: 0.45; } }
 @keyframes ws-turn { to { rotate: 360deg; } }
 @keyframes ws-shimmer { to { background-position: -200% 0; } }
-@keyframes ws-drift { to { background-position: 80px 80px, 80px 80px, 16px 16px, 16px 16px; } }
-@keyframes ws-scan { 0% { top: -90px; } 100% { top: 100%; } }
-@keyframes ws-draw {
-  0% { stroke-dashoffset: 400; opacity: 0; }
-  12% { opacity: 1; }
-  55%, 82% { stroke-dashoffset: 0; opacity: 1; }
-  100% { stroke-dashoffset: 0; opacity: 0; }
-}
-@keyframes ws-draw-dash {
-  0%, 30% { opacity: 0; stroke-dashoffset: 0; }
-  50%, 82% { opacity: 1; stroke-dashoffset: -36; }
-  100% { opacity: 0; stroke-dashoffset: -54; }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .ws-draft__grid, .ws-draft__scan, .ws-skel, .ws-pill__dot, .ws-chat__state::before { animation: none; }
-  .ws-draft__line { animation: none; stroke-dashoffset: 0; opacity: 1; }
+  .ws-draft, .ws-skel, .ws-pill__dot, .ws-chat__state::before, .ws-hint { animation: none; }
   .ws-msg, .ws-picked { animation: none; }
   .ws-spin { animation-duration: 2s; }
 }

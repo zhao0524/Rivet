@@ -17,6 +17,7 @@ import {
 import { Box3, NeutralToneMapping, type Group } from 'three';
 import { boundsEqual, STAGE_FOV_DEG, type CameraView } from './cameraFit';
 import { StageCameraRig, useStageFit } from './StageCameraRig';
+import { StageAxes } from './StageAxes';
 import { StageGround } from './StageGround';
 import { StageLighting } from './StageLighting';
 import { resolveStageTheme, type StageTheme } from './theme';
@@ -37,6 +38,8 @@ export interface RivetStageProps {
   active?: boolean;
   /** Millimeter floor grid. Defaults to true. */
   showGrid?: boolean;
+  /** X/Y/Z millimetre rulers from a corner of the model. Defaults to false. */
+  showAxes?: boolean;
   /** Pointer click that did not hit any interactive object. */
   onBackgroundClick?: (event: MouseEvent) => void;
   /** Optional pointer-down hook (e.g. for a drag click-guard). */
@@ -126,6 +129,7 @@ interface StageSceneProps {
   explicitBounds: Bounds3 | null;
   resetSignal?: unknown;
   showGrid: boolean;
+  showAxes: boolean;
   active: boolean;
   theme: StageTheme;
   view?: CameraView;
@@ -135,7 +139,7 @@ interface StageSceneProps {
   onContextLost: (lost: boolean) => void;
 }
 
-function StageScene({ children, explicitBounds, resetSignal, showGrid, active, theme, view, padding, orbitOnly, autoRotate, onContextLost }: StageSceneProps) {
+function StageScene({ children, explicitBounds, resetSignal, showGrid, showAxes, active, theme, view, padding, orbitOnly, autoRotate, onContextLost }: StageSceneProps) {
   const contentRef = useRef<Group>(null);
   const canvas = useThree((s) => s.gl.domElement);
   const box = useMemo(() => new Box3(), []);
@@ -179,6 +183,7 @@ function StageScene({ children, explicitBounds, resetSignal, showGrid, active, t
       <fog attach="fog" args={[theme.background, fit.distance * 1.5, fit.distance * 5]} />
       <StageLighting theme={theme} />
       <StageGround fit={fit} theme={theme} showGrid={showGrid} />
+      {showAxes ? <StageAxes fit={fit} /> : null}
       <group ref={contentRef} name="rivet-stage-content" scale={SCENE_UNITS_PER_MM}>
         <Suspense fallback={null}>
           {children}
@@ -229,6 +234,7 @@ export function RivetStage({
   resetSignal,
   active = true,
   showGrid = true,
+  showAxes = false,
   onBackgroundClick,
   onCanvasPointerDown,
   theme: themeOverrides,
@@ -296,6 +302,7 @@ export function RivetStage({
               explicitBounds={explicitBounds}
               resetSignal={resetSignal}
               showGrid={showGrid}
+              showAxes={showAxes}
               active={active}
               theme={theme}
               view={view}

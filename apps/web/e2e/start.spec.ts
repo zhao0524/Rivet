@@ -47,10 +47,12 @@ test.describe('Prompt → workspace', () => {
       clarify: { max_budget: 50, max_length_mm: null, interpretation_choice: 'as_interpreted' },
     });
 
-    // The Build tab: Review stacks one card per risk, then Buy.
-    await expect(page.getByTestId('workspace-guide-review-toggle')).toHaveAttribute('aria-expanded', 'true');
-    expect(await page.getByTestId('workspace-risk').count()).toBeGreaterThan(1);
-    await page.getByTestId('workspace-guide-review-next').click();
+    // The Build tab is Buy then Build. It starts closed, with a hint beside Buy that goes once Buy is opened.
+    await expect(page.getByTestId('workspace-guide-review')).toHaveCount(0);
+    await expect(page.getByTestId('workspace-guide-buy-toggle')).toHaveAttribute('aria-expanded', 'false');
+    await expect(page.getByTestId('workspace-start-hint')).toContainText('Step 1: Buy');
+    await page.getByTestId('workspace-guide-buy-toggle').click();
+    await expect(page.getByTestId('workspace-start-hint')).toHaveCount(0);
     await expect(page.getByTestId('workspace-buy-total')).toContainText('$110.80');
 
     // The Parts tab: a part's store, picked in the model, and the printed body as a file to print.

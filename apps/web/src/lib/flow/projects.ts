@@ -107,10 +107,15 @@ export interface ProjectRecord {
   /** Workspace: what Rivet read, and the conversation so far. Missing on projects made before it. */
   reading?: ProjectReading | null;
   chat?: ProjectChat;
+  /** The Build tab's first step has been opened, so its "start here" hint is done. */
+  guideStarted?: boolean;
   /** Last autosave or "Save build" checkpoint. */
   savedAt?: string | null;
   /** Shared to the community gallery (browser-only until accounts are live). */
   publishedAt?: string | null;
+  /** Parts cost and creator shown in the community gallery, fixed when it was published. */
+  publishedPrice?: string | null;
+  publishedBy?: string | null;
 }
 
 export interface LocalAccount {
@@ -291,7 +296,10 @@ export function submitDraftProject(input: {
  * Records a save checkpoint without touching `updatedAt`, so "last edited" stays honest. Edits are
  * written as they happen; this is what the save indicator and "Save build" report.
  */
-export function markSaved(id: string, patch: Partial<Pick<ProjectRecord, 'publishedAt' | 'title'>> = {}): ProjectRecord | null {
+export function markSaved(
+  id: string,
+  patch: Partial<Pick<ProjectRecord, 'publishedAt' | 'publishedPrice' | 'publishedBy' | 'title'>> = {},
+): ProjectRecord | null {
   const current = getProject(id);
   if (!current) return null;
   const next = { ...current, ...patch, savedAt: new Date().toISOString() };

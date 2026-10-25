@@ -142,9 +142,12 @@ describe('Workspace', () => {
     expect(screen.getByTestId('workspace-chat-offline').textContent).toContain("isn't connected");
     expect(screen.getByTestId('workspace-chat-understood').textContent).not.toMatch(/board\.|esp32_|differential_drive/);
     expect(screen.getByTestId('workspace-chat-built').textContent).toMatch(/Picked \d+ parts/);
-    // The Build tab opens on Review, with later steps locked until reached.
-    expect(screen.getByTestId('workspace-guide-review-toggle').getAttribute('aria-expanded')).toBe('true');
-    expect((screen.getByTestId('workspace-guide-buy-toggle') as HTMLButtonElement).disabled).toBe(true);
+    // The Build tab starts with every step closed; later steps stay locked until reached.
+    expect(screen.getByTestId('workspace-guide-buy-toggle').getAttribute('aria-expanded')).toBe('false');
+    expect((screen.getByTestId('workspace-guide-build-toggle') as HTMLButtonElement).disabled).toBe(true);
+    fireEvent.click(screen.getByTestId('workspace-guide-buy-toggle'));
+    expect(screen.getByTestId('workspace-guide-buy-toggle').getAttribute('aria-expanded')).toBe('true');
+    expect(getProject('p_ws1')?.guideStarted).toBe(true);
 
     // A budget that changes the build starts a new run with it.
     await act(async () => {
@@ -224,13 +227,11 @@ describe('Workspace', () => {
     expect(startGeneration).not.toHaveBeenCalled();
     expect(screen.getByTestId('workspace-chat-built').textContent).toMatch(/Picked \d+ parts/);
     expect(screen.queryByTestId('workspace-question-budget')).toBeNull();
-    // Build tab: Review, Buy, Build. Review stacks one card per risk.
-    expect(screen.getAllByTestId('workspace-risk').length).toBeGreaterThan(1);
-    expect(screen.queryByTestId('workspace-guide-parts')).toBeNull();
-    expect(screen.queryByTestId('workspace-guide-wiring')).toBeNull();
-    fireEvent.click(screen.getByTestId('workspace-guide-review-next'));
-    expect(getProject('p_ws6')).toMatchObject({ furthestStep: 'buy', reviewDone: true });
+    // Build tab: step 1 Buy, step 2 Build. No review, parts or wiring steps.
+    for (const gone of ['review', 'parts', 'wiring']) expect(screen.queryByTestId(`workspace-guide-${gone}`)).toBeNull();
+    fireEvent.click(screen.getByTestId('workspace-guide-buy-toggle'));
     expect(screen.getByTestId('workspace-buy-total').textContent).toContain('$110.80');
+    expect(screen.getByTestId('workspace-guide-buy-next').textContent).toBe('Continue to Build');
     // Ticking a part you own takes it off the total.
     fireEvent.click(screen.getAllByRole('checkbox')[0]!);
     expect(getProject('p_ws6')?.ownedCatalogIds).toHaveLength(1);
@@ -277,7 +278,7 @@ describe('A0 Projects', () => {
     saveProject({ ...createProjectRecord({ id: 'p_a', prompt: 'rover one', phase: 'ready', buildId: 'b' }), furthestStep: 'wiring' });
     await renderIn(<ProjectsScreen />);
     const card = await screen.findByTestId('projects-card-p_a');
-    expect(card.textContent).toContain('Step 2 of 3 · Buy');
+    expect(card.textContent).toContain('Step 1 of 2 · Buy');
     fireEvent.click(screen.getByTestId('projects-menu-p_a'));
     fireEvent.click(screen.getByTestId('projects-delete'));
     await screen.findByTestId('projects-delete-modal');

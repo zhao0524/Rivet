@@ -62,7 +62,7 @@ export function LeftPanel({
         {!plan ? (
           <PanelSkeleton failed={status === 'failed'} />
         ) : tab === 'build' ? (
-          <BuildGuide project={project} update={update} plan={plan} catalog={catalog} selection={selection} onStep={onStep} />
+          <BuildGuide project={project} update={update} plan={plan} catalog={catalog} onStep={onStep} />
         ) : (
           <PartsPanel plan={plan} catalog={catalog} selection={selection} />
         )}
@@ -74,7 +74,7 @@ export function LeftPanel({
 function PanelSkeleton({ failed }: { failed: boolean }) {
   return (
     <div className="ws-tree-skel" aria-busy={!failed} data-testid="workspace-left-skeleton">
-      {['Review', 'Buy', 'Build'].map((label, i) => (
+      {['Buy', 'Build'].map((label, i) => (
         <div key={label} className="ws-tree-skel__row">
           <span className="ws-guide__num" aria-hidden="true">
             {i + 1}
