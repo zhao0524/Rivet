@@ -1,24 +1,26 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { partRows } from '../../../lib/flow/derive';
+import { partNicknames, partRows } from '../../../lib/flow/derive';
 import { useProjectContext } from '../../flow/ProjectShell';
 import { StepLayout } from '../../flow/StepLayout';
 import {
   APPROXIMATE_WIRING_DETAIL,
-  APPROXIMATE_WIRING_TEXT,
   buildWiringLayout,
   type WiringCatalogComponent,
   type WiringPlanInput,
 } from '../../three/wiring';
-import { BuildError, SceneSkeleton, SceneViewport, SkeletonRows, useStepOverflow } from '../phase1/shared';
+import { BuildError, MoreDetails, SceneSkeleton, SceneViewport, SkeletonRows, useStepOverflow } from '../phase1/shared';
 import { ConnectionList } from './ConnectionList';
 import { FirmwarePanel } from './FirmwarePanel';
 import { SimulationModal } from './SimulationModal';
 
 type Tab = 'wiring' | 'firmware';
 
-/** Step 3: how the parts connect, and code that matches the wiring. Flashing happens in Build. */
+/** Plain label on the 3D view when wire ends are placed roughly rather than on measured pins. */
+export const APPROXIMATE_WIRING_PLAIN = 'Wire positions are approximate';
+
+/** Step 3: how the parts connect, and starter code that matches the wiring. Loading it onto the board happens in Build. */
 export function WiringStep() {
   const { build, goTo } = useProjectContext();
   const { store, ready, error } = build;
@@ -37,6 +39,8 @@ export function WiringStep() {
     if (ready) for (const row of partRows(plan, catalog)) names.set(row.instanceId, row.name);
     return names;
   }, [ready, plan, catalog]);
+  const nicknames = useMemo(() => (ready ? partNicknames(plan, catalog) : new Map<string, string>()), [ready, plan, catalog]);
+  const roles = useMemo(() => new Map(plan.components.map((c) => [c.instance_id, c.role])), [plan.components]);
 
   // Same input the 3D overlay builds, so the list and the drawn wires agree.
   const layout = useMemo(() => {
@@ -63,16 +67,16 @@ export function WiringStep() {
 
   return (
     <StepLayout
-      title="Wiring & firmware"
-      purpose="How the parts connect, and code that matches the wiring. Nothing is flashed until Build."
+      title="Wiring & code"
+      purpose="How the parts connect, and the starter code that runs on the controller board. Nothing goes onto the board until Build."
       primary={{
         label: 'Continue to Buy',
         onClick: () => goTo('buy'),
         disabled: !ready,
         waitingFor: !ready
-          ? 'Loading the build'
+          ? 'Loading the wiring…'
           : plan.firmware.compile_status === 'failed'
-            ? 'The compile failed; Build will flag it again.'
+            ? "The starter code has an error. You can keep going; Build will remind you."
             : undefined,
         testId: 'wiring-primary',
       }}
@@ -81,7 +85,7 @@ export function WiringStep() {
     >
       {error ? <BuildError message={error} /> : null}
       <div className="p1-tabs-row">
-        <div className="ui-tabs" role="tablist" aria-label="Wiring or firmware">
+        <div className="ui-tabs" role="tablist" aria-label="Wiring or starter code">
           <button
             type="button"
             role="tab"
@@ -104,7 +108,7 @@ export function WiringStep() {
             onClick={() => setTab('firmware')}
             data-testid="wiring-tab-firmware"
           >
-            Firmware
+            Starter code
           </button>
         </div>
         <button
@@ -114,7 +118,7 @@ export function WiringStep() {
           disabled={!ready}
           data-testid="wiring-open-sim"
         >
-          Try it in simulation
+          Take a test drive (simulation)
         </button>
       </div>
 
@@ -127,11 +131,18 @@ export function WiringStep() {
               <>
                 <p className="ui-small ui-muted" style={{ margin: 0 }}>
                   {layout.counts.drawn} of {layout.counts.electrical_connections} connections drawn.{' '}
-                  {layout.approximate ? APPROXIMATE_WIRING_DETAIL : 'Pin positions come from the catalog.'}
+                  {layout.approximate
+                    ? 'Each wire starts and ends roughly on the right part, not on the exact pin. Hover or tap a wire to light it up.'
+                    : 'Pin positions come from the parts catalog. Hover or tap a wire to light it up.'}
                 </p>
+                {layout.approximate ? (
+                  <MoreDetails summary="Why approximate?">{APPROXIMATE_WIRING_DETAIL}</MoreDetails>
+                ) : null}
                 <ConnectionList
                   layout={layout}
                   partNames={partNames}
+                  nicknames={nicknames}
+                  roles={roles}
                   activeConnectionId={activeConnectionId}
                   pinnedConnectionId={pinned}
                   onHover={setHovered}
@@ -149,7 +160,7 @@ export function WiringStep() {
                 activeConnectionId={activeConnectionId}
                 onWireHover={(w) => setHovered(w?.connection_id ?? null)}
                 onWireSelect={(w) => setPinned(w.connection_id)}
-                label={layout?.approximate ? APPROXIMATE_WIRING_TEXT : undefined}
+                label={layout?.approximate ? APPROXIMATE_WIRING_PLAIN : undefined}
                 testId="wiring-viewport"
               />
             ) : (

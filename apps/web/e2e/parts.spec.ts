@@ -23,6 +23,10 @@ test.describe('Parts', () => {
       await expect(page.getByTestId(`parts-group-${group}`)).toBeVisible();
     }
     await expect(page.getByTestId('parts-step')).toContainText(`${ROWS.length} parts in`);
+    // Plain group names and a legend for the source tags.
+    await expect(page.getByTestId('parts-group-drive')).toContainText('Wheels & motors');
+    await expect(page.getByTestId('parts-group-control')).toContainText('Brains');
+    await expect(page.getByTestId('spec-legend')).toContainText('AI estimate');
 
     const controller = ROWS.find((r) => r.instanceId === 'controller-1')!;
     const row = page.getByTestId('parts-row-controller-1');

@@ -25,6 +25,9 @@ test.describe('Wiring & firmware', () => {
 
     const sda = page.getByTestId('wiring-row-wire-i2c-sda');
     await expect(sda).toContainText('I2C');
+    // Each row leads with what the wire does; the pin names stay in the secondary line.
+    await expect(sda).toContainText('Reads distance from the distance sensor');
+    await expect(sda).toContainText('gpio21');
     await expect(sda).toHaveAttribute('aria-pressed', 'false');
     await sda.hover();
     await expect(sda).toHaveClass(/p1-wire--active/);
@@ -36,7 +39,7 @@ test.describe('Wiring & firmware', () => {
     await sda.click();
     await expect(sda).toHaveAttribute('aria-pressed', 'false');
 
-    // Firmware tab.
+    // Starter code tab.
     await page.getByTestId('wiring-tab-firmware').click();
     await expect(page.getByTestId('wiring-tab-firmware')).toHaveAttribute('aria-selected', 'true');
     await expect(page.getByTestId('wiring-panel')).toHaveCount(0);
@@ -44,15 +47,18 @@ test.describe('Wiring & firmware', () => {
     await expect(firmware).toBeVisible();
     await expect(firmware).toContainText(SOURCED_PLAN.firmware.target);
     await expect(firmware).toContainText(SOURCED_PLAN.firmware.profile_id!);
-    await expect(page.getByTestId('firmware-compile-status')).toHaveText('Not compiled yet. Build compiles and flashes it.');
+    await expect(page.getByTestId('firmware-compile-status')).toHaveText('Not checked yet. It gets built when you copy it onto the board in Build.');
     const pinRows = page.getByTestId('firmware-pinmap').locator('tbody tr');
     await expect(pinRows).toHaveCount(PIN_MAP.length);
     for (const [signal, pin] of PIN_MAP) {
-      await expect(page.getByTestId('firmware-pinmap').getByRole('row', { name: new RegExp(`^${signal}\\s+${pin}$`) })).toBeVisible();
+      const row = page.getByTestId(`firmware-pin-${signal}`);
+      await expect(row).toBeVisible();
+      await expect(row.locator('td').first()).toContainText(signal);
+      await expect(row.locator('td').last()).toHaveText(String(pin));
     }
     // Offline there is no package to fetch, and the button says why instead of faking a file.
     await expect(page.getByTestId('firmware-download')).toBeDisabled();
-    await expect(page.getByTestId('firmware-download-reason')).toContainText('need the live engine');
+    await expect(page.getByTestId('firmware-download-reason')).toContainText("need Rivet's live engine");
 
     await page.getByTestId('wiring-tab-wiring').click();
     await expect(page.getByTestId('wiring-panel')).toBeVisible();

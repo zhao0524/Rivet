@@ -12,7 +12,7 @@ import { CartModal } from './CartModal';
 import { NO_VENDOR, buyTotals, groupByVendor, isOwned, regionForCurrency, stockLabel, unknownPriceNote, type VendorGroup } from './buy-model';
 import { downloadTextFile } from './download';
 
-const PURPOSE = 'Get every part in one pass: confirm the currency, tick what you already own, then open the vendor links.';
+const PURPOSE = 'Get every part in one go: check the currency, tick anything you already have, then open the store links.';
 
 /** Step 4 Buy: total, vendor groups, out-of-stock parts, and the cart of verified links. */
 export function BuyStep() {
@@ -39,7 +39,7 @@ export function BuyStep() {
   const overflow: OverflowItem[] = [
     {
       id: 'csv',
-      label: 'Export CSV',
+      label: 'Download parts list (CSV)',
       disabled: !build.ready,
       testId: 'buy-export-csv',
       onSelect: () => downloadTextFile(`${plan.build_id}-bom.csv`, buildBomCsvClientSide(plan), 'text/csv'),
@@ -48,9 +48,9 @@ export function BuyStep() {
       id: 'vendor',
       label: (
         <span>
-          Choose vendor per line
+          Pick a different store for a part
           <br />
-          <span className="ui-small ui-subtle">Each part has one known listing right now</span>
+          <span className="ui-small ui-subtle">Each part has one known store listing right now</span>
         </span>
       ),
       disabled: true,
@@ -64,7 +64,7 @@ export function BuyStep() {
       <StepLayout
         title="Buy"
         purpose={PURPOSE}
-        primary={{ label: 'Open cart', onClick: () => undefined, disabled: true, waitingFor: build.error ? undefined : 'Loading the parts list', testId: 'buy-primary' }}
+        primary={{ label: 'Open cart', onClick: () => undefined, disabled: true, waitingFor: build.error ? undefined : 'Loading your parts list…', testId: 'buy-primary' }}
         overflow={overflow}
         testId="buy-step"
       >
@@ -73,7 +73,7 @@ export function BuyStep() {
             <Icon name="alert" aria-hidden="true" /> {build.error}
           </p>
         ) : (
-          <div className="p2-grid" aria-busy="true" aria-label="Loading the parts list">
+          <div className="p2-grid" aria-busy="true" aria-label="Loading your parts list">
             <div className="p2-skeleton-lines">
               <div className="ui-skeleton" style={{ height: 56 }} />
               <div className="ui-skeleton" style={{ height: 56 }} />
@@ -137,15 +137,15 @@ export function BuyStep() {
           {fabricated.length > 0 ? (
             <section className="ui-island" aria-labelledby="buy-fab-title" data-testid="buy-fabricated">
               <h2 id="buy-fab-title" className="ui-h3">
-                Fabricated parts
+                Parts you 3D-print
               </h2>
-              <p className="p2-note">These are printed, not bought. Print files come with the build export.</p>
+              <p className="p2-note">You print these instead of buying them. The print files come with the design download.</p>
               <ul className="build__parts" style={{ marginTop: 10 }}>
                 {fabricated.map((line) => (
                   <li key={line.catalogId} className="build__part">
                     <Icon name="cube" aria-hidden="true" />
                     <span className="build__part-name">{line.name}</span>
-                    <span className="ui-small ui-muted">×{line.quantity} · print file</span>
+                    <span className="ui-small ui-muted">×{line.quantity} · you print it</span>
                   </li>
                 ))}
               </ul>
@@ -184,7 +184,10 @@ export function BuyStep() {
               </span>
             </div>
             <p style={{ margin: '6px 0 0', fontWeight: 500 }}>{region ? `${region} · ${currency}` : currency}</p>
-            <p className="p2-note">Prices were quoted in {currency} by the vendors listed. Changing region needs a live re-quote, which isn&apos;t available offline.</p>
+            <p className="p2-note">
+              Prices are in {currency}, as the stores listed them. Shopping from another country needs fresh prices from
+              Rivet&apos;s live engine, which isn&apos;t connected right now.
+            </p>
           </section>
         </aside>
       </div>
@@ -236,7 +239,7 @@ function VendorRow({
           {noVendor ? (
             <li className="buy-line" style={{ paddingLeft: 14 }}>
               <p className="p2-note" style={{ margin: 0 }}>
-                Rivet found no verified product page for {group.lines.length === 1 ? 'this part' : 'these parts'}. Any price here comes from the catalog, not a live product page.
+                Rivet couldn&apos;t find a store page it trusts for {group.lines.length === 1 ? 'this part' : 'these parts'}. Any price shown comes from Rivet&apos;s parts catalog, not a live store page.
               </p>
             </li>
           ) : null}

@@ -26,8 +26,12 @@ test.describe('Review', () => {
     await expect(page.getByTestId('stepper-parts')).toHaveAttribute('data-state', 'locked');
     const primary = page.getByTestId('review-primary');
     await expect(primary).toBeEnabled();
-    await expect(page.getByTestId('review-step')).toContainText(`${EXPECTED_BLOCKERS.length} checks are unresolved`);
-    await expect(page.getByTestId('review-assumptions')).toContainText('Assumptions (1)');
+    await expect(page.getByTestId('review-step')).toContainText(`${EXPECTED_BLOCKERS.length} problems are still open`);
+    await expect(page.getByTestId('review-assumptions')).toContainText('What Rivet assumed (1)');
+    // Plain headlines lead each card; no rule-id title reaches the screen.
+    await expect(cards.first().getByRole('heading', { level: 3 })).toHaveText('The left motor may not fit the frame');
+    await expect(page.getByTestId('review-step')).not.toContainText('Fit evidence');
+    await expect(page.getByTestId('review-saved-note')).toContainText("Rivet didn't design it from your words");
 
     // Fix this → offline fixtures cannot validate edits, and the card says so instead of pretending.
     const first = cards.first();
@@ -36,6 +40,7 @@ test.describe('Review', () => {
     const failed = first.getByTestId('review-fix-failed');
     await expect(failed).toBeVisible();
     await expect(failed).toContainText("Couldn't fix this automatically.");
+    await expect(failed).toContainText("Changes need Rivet's live engine, which isn't connected right now.");
     await expect(failed).toContainText('edits cannot be validated in fixture mode');
     await expect(first.getByTestId('review-fix')).toHaveText('Try the fix again');
     await expect(cards).toHaveCount(EXPECTED_BLOCKERS.length);

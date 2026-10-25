@@ -30,8 +30,8 @@ export function SimulationModal({ plan, open, onClose }: SimulationModalProps) {
         onClose();
       }}
       variant="wide"
-      title="Simulation"
-      description="A rough, kinematic preview. It is not a prediction of the real build."
+      title="Test drive"
+      description="A rough on-screen simulation of how the robot moves. The real one will behave differently."
       testId="sim-modal"
       footer={
         <>
@@ -55,11 +55,11 @@ export function SimulationModal({ plan, open, onClose }: SimulationModalProps) {
           <span className="ui-badge ui-badge--warn" data-testid="sim-approximate">
             Approximate
           </span>
-          <span className="ui-small ui-muted">Motors, slip, battery sag and sensor noise are not modelled.</span>
+          <span className="ui-small ui-muted">It leaves out motor strength, wheel slip, batteries running low and sensor noise.</span>
         </div>
         <div className="ui-field" style={{ maxWidth: 360 }}>
           <label className="ui-label" htmlFor="sim-scenario">
-            Scenario
+            Test course
           </label>
           <select
             id="sim-scenario"
@@ -82,7 +82,7 @@ export function SimulationModal({ plan, open, onClose }: SimulationModalProps) {
 
         {!extracted.ok ? (
           <div className="ui-notice" role="status" data-testid="sim-unavailable">
-            This build can&apos;t be simulated: {extracted.reason}
+            This design can&apos;t be test-driven on screen: {extracted.reason}
           </div>
         ) : run > 0 ? (
           <SimView key={`${scenarioId}-${run}`} plan={plan} initialScenarioId={scenarioId} autoPlay height={340} />
@@ -93,7 +93,7 @@ export function SimulationModal({ plan, open, onClose }: SimulationModalProps) {
         {/* Once running, SimView lists the same limitations under the stage. */}
         {limits.length > 0 && run === 0 ? (
           <details className="p1-details">
-            <summary>Not simulated ({limits.length})</summary>
+            <summary>What the simulation leaves out ({limits.length})</summary>
             <div className="p1-details__body">
               <ul className="p1-sim__limits" data-testid="sim-limits">
                 {limits.map((l, i) => (

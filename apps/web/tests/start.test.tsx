@@ -9,6 +9,7 @@ import { ProjectsScreen } from '../src/components/start/ProjectsScreen';
 import { summarizeIntent, whereIs } from '../src/components/start/shared';
 import { getSyntheticRoverIntent } from '../src/lib/fixtures';
 import { createProjectRecord, getProject, saveProject, writeDraft } from '../src/lib/flow/projects';
+import { STEPS } from '../src/lib/flow/steps';
 import { useStudioPlanStore } from '../src/lib/plan-store';
 
 const nav = { push: vi.fn(), replace: vi.fn(), pathname: '/', search: '' };
@@ -98,7 +99,13 @@ describe('A2 Clarify', () => {
     );
     await screen.findByTestId('clarify-understood');
     expect(screen.getByTestId('clarify-progress').textContent).toBe('Question 1 of 3');
-    expect(screen.getByTestId('clarify-offline')).toBeTruthy();
+    expect(screen.getByTestId('clarify-offline').textContent).toContain("This is a saved example. Rivet didn't read your words");
+    // The reading trace shows the real outcome of interpret, timed, and nothing else.
+    const trace = screen.getByTestId('clarify-thinking');
+    expect(screen.getByTestId('clarify-thinking-label').textContent).toMatch(/^Answered in \d/);
+    expect(trace.querySelectorAll('li')).toHaveLength(1);
+    expect(trace.textContent).toContain('Used a saved example instead of reading your words');
+    expect(screen.getByTestId('clarify-understood').textContent).not.toMatch(/board\.|esp32_|differential_drive/);
     expect(getProject('p_cl1')?.intentId).toBe('intent-rover-001');
     fireEvent.click(screen.getByTestId('clarify-next'));
     expect(screen.getByTestId('clarify-progress').textContent).toBe('Question 2 of 3');
@@ -160,9 +167,28 @@ describe('A3 Generate', () => {
       input: { kind: 'text', image_asset_id: null, user_text: 'Build a small rover that avoids obstacles' },
       requirements: { max_budget: null, currency: 'USD' },
     });
-    expect(screen.getByTestId('generate-tape').textContent).toContain('no live generation ran');
-    expect(screen.getByTestId('generate-fixture-note')).toBeTruthy();
-    expect(screen.getByTestId('generate-done').textContent).toMatch(/\d+\s*parts/);
+    // Fixture: exactly one real event, worded plainly, and the honest note.
+    const steps = screen.getByTestId('generate-thinking-steps').querySelectorAll('li');
+    expect(steps).toHaveLength(1);
+    expect(steps[0]!.textContent).toContain('Opened a saved example');
+    expect(screen.getByTestId('generate-thinking-label').textContent).toBe('Loaded instantly');
+    expect(screen.getByTestId('generate-fixture-note').textContent).toContain("This is a saved example. Rivet didn't design it from your words.");
+    // What it decided, read from the plan.
+    expect(screen.getByTestId('generate-done').textContent).toContain('Read from the finished build');
+    expect(screen.getByTestId('generate-decided-parts').textContent).toMatch(/^Picked \d+ parts/);
+    expect(screen.getByTestId('generate-decided-wires').textContent).toMatch(/Connected them with \d+ wires/);
+    expect(screen.getByTestId('generate-decided-checks').textContent).toMatch(/Ran \d+ checks: \d+ passed/);
+    expect(screen.getByTestId('generate-status').textContent).toMatch(/^Done: \d+ parts, ready to review$/);
+    // The tree: five phases in order, parts opened into plain groups.
+    const tree = screen.getByRole('tree', { name: 'What Rivet is building' });
+    const top = Array.from(tree.children).map((li) => li.querySelector('.tv-name')?.textContent);
+    expect(top).toEqual(['Understanding your idea', 'Choosing parts', 'Placing parts', 'Checking it works', 'Writing the code']);
+    expect(screen.getByTestId('generate-phase-parts').getAttribute('aria-expanded')).toBe('true');
+    expect(tree.textContent).toContain('Wheels & motors');
+    expect(tree.textContent).not.toMatch(/chassis-1|catalog_selection|motor_driver/);
+    // Picking a part names it under the tree.
+    fireEvent.click(screen.getByTestId('generate-part-chassis-1').querySelector('.tv-row')!);
+    expect(screen.getByTestId('generate-picked').textContent).toContain('highlighted in the model');
     expect(screen.queryByTestId('generate-cancel')).toBeNull();
     fireEvent.click(review);
     const project = getProject('p_gen1');
@@ -183,6 +209,7 @@ describe('A3 Generate', () => {
     );
     const error = await screen.findByTestId('generate-error');
     expect(error.textContent).toContain('Engine offline');
+    expect(screen.getByTestId('generate-status').textContent).toBe('Something went wrong: Engine offline');
     expect(screen.queryByTestId('generate-review')).toBeNull();
     expect(startGeneration).toHaveBeenCalledTimes(1);
     await act(async () => {
@@ -212,6 +239,10 @@ describe('A3 Generate', () => {
     );
     await screen.findByTestId('generate-review');
     expect(startGeneration).not.toHaveBeenCalled();
+    // No events were recorded for this visit, so none are shown: just the plan's decisions.
+    expect(screen.queryByTestId('generate-thinking')).toBeNull();
+    expect(screen.getByTestId('generate-nolog')).toBeTruthy();
+    expect(screen.getByTestId('generate-done')).toBeTruthy();
   });
 });
 
@@ -230,7 +261,7 @@ describe('A0 Projects', () => {
     saveProject({ ...createProjectRecord({ id: 'p_a', prompt: 'rover one', phase: 'ready', buildId: 'b' }), furthestStep: 'wiring' });
     await renderIn(<ProjectsScreen />);
     const card = await screen.findByTestId('projects-card-p_a');
-    expect(card.textContent).toContain('Step 3 of 5 · Wiring & firmware');
+    expect(card.textContent).toContain(`Step 3 of 5 · ${STEPS.find((st) => st.id === 'wiring')!.label}`);
     fireEvent.click(screen.getByTestId('projects-menu-p_a'));
     fireEvent.click(screen.getByTestId('projects-delete'));
     await screen.findByTestId('projects-delete-modal');

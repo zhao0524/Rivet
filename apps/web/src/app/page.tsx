@@ -16,7 +16,7 @@ const PROJECT_FAMILIES = [
     status: 'supported',
     label: 'Supported',
     tone: 'ok',
-    note: 'Two-wheel ESP32 rover with a motor driver and range sensor: 3D assembly, parts list, wiring, simulation and starter firmware.',
+    note: 'A two-wheel rover with an ESP32 controller board, a motor driver and a distance sensor. You get a 3D model, parts list, wiring, a test drive and starter code.',
     href: '/new',
     cta: 'Start a rover build',
   },
@@ -25,14 +25,14 @@ const PROJECT_FAMILIES = [
     status: 'planned',
     label: 'Planned',
     tone: 'warn',
-    note: 'Reuses the rover drive. Turned on only once it is independently verified.',
+    note: 'Uses the same wheels and motors as the rover. It gets switched on once it has been tested on its own.',
   },
   {
     family: 'Drones and robot arms',
     status: 'unsupported',
     label: 'Coming later',
     tone: 'neutral',
-    note: 'Flight and arm verification are outside this version.',
+    note: "Rivet can't check flying robots or arms yet.",
   },
 ] as const;
 
@@ -46,18 +46,18 @@ const HERO_DECOR = [
 ] as const;
 
 const OUTPUTS = [
-  { tag: 'Parts list', title: 'A BOM you can buy from', body: 'Every line is a real catalog part with a vendor, a price and a link, or it says plainly that it has none.' },
-  { tag: 'Verification', title: 'Checks before you solder', body: 'Voltage, current, pin and fit checks run on every revision. Blocking findings stay visible until they are resolved.' },
-  { tag: 'Wiring', title: 'Wires drawn on the model', body: 'Each connection is routed in 3D and colored by signal, with a schematic fallback when the geometry is approximate.' },
-  { tag: 'Firmware', title: 'ESP32 starter code', body: 'A PlatformIO project with the real pin map from your build, exported as a ZIP and optionally compile-checked.' },
-  { tag: 'Simulation', title: 'Drive it before you build it', body: 'A differential-drive simulator runs the obstacle behavior so you can watch the rover stop short of a wall.' },
-  { tag: 'Revisions', title: 'Ask for a change', body: '“Make it cheaper and move the sensor higher.” Each edit becomes a new revision only if the checks accept it.' },
+  { key: 'parts list', tag: 'Parts list', title: 'A parts list you can shop from', body: 'Every line is a real part with a store, a price and a link, or it says plainly that it has none.' },
+  { key: 'verification', tag: 'Checks', title: 'Checks before you solder', body: 'Rivet checks power, wiring and fit every time the design changes. Anything serious stays on screen until it is sorted.' },
+  { key: 'wiring', tag: 'Wiring', title: 'Wires drawn on the model', body: 'Every wire is drawn on the 3D model and colored by what it carries. When exact pin spots are unknown, wires are placed roughly and labelled that way.' },
+  { key: 'firmware', tag: 'Starter code', title: 'Code for the controller board', body: 'Code for the ESP32 board that already knows which pin each wire uses. Download it as a ZIP (a PlatformIO project) and copy it onto the board over USB.' },
+  { key: 'simulation', tag: 'Test drive', title: 'Drive it before you build it', body: 'A simple simulation drives the rover on screen so you can watch it stop short of a wall.' },
+  { key: 'revisions', tag: 'Changes', title: 'Ask for a change', body: '“Make it cheaper and move the sensor higher.” Rivet saves a new version only if the change passes its checks.' },
 ] as const;
 
 const FOOTER = [
   { title: 'Product', links: [['Start building', '/new'], ['Your projects', '/projects'], ['See an example', 'example']] },
   { title: 'Builds', links: [['Indoor rover', '/new'], ['Mini RC car (planned)', null], ['Drones and arms (later)', null]] },
-  { title: 'Docs', links: [['README', `${REPO_URL}#readme`], ['API contract', `${REPO_URL}/blob/main/contracts/api.md`], ['Project spec', `${REPO_URL}/blob/main/docs/project.md`]] },
+  { title: 'Docs', links: [['Read me first', `${REPO_URL}#readme`], ['Developer API', `${REPO_URL}/blob/main/contracts/api.md`], ['Project plan', `${REPO_URL}/blob/main/docs/project.md`]] },
   { title: 'Project', links: [['GitHub', REPO_URL], ['SOON Hackathon', null]] },
 ] as const;
 
@@ -103,8 +103,8 @@ export default function HomePage() {
               Hardware designed &amp; built faster with AI
             </h1>
             <p className="mk-hero__lede">
-              Use AI as your build partner, not a guess. Describe a robot and Rivet turns it into real catalog
-              parts, a 3D assembly, wiring and starter firmware you can review step by step.
+              Use AI as your build partner, not a guess. Describe a robot and Rivet turns it into real parts you can
+              buy, a 3D model, wiring and starter code you can check step by step.
             </p>
           </div>
 
@@ -124,8 +124,8 @@ export default function HomePage() {
               </h2>
             </div>
             <p className="mk-muted">
-              Everything starts from the same build plan. Walk the review in 3D, or export the parts list, build
-              file and firmware and start ordering.
+              Everything comes from the same design. Look it over in 3D, or download the parts list, design file
+              and starter code and start ordering.
             </p>
           </div>
 
@@ -134,8 +134,8 @@ export default function HomePage() {
               <span className="mk-eyebrow">Review</span>
               <h3 className="mk-h3">See every part, wire and step before you buy.</h3>
               <p className="mk-muted">
-                Click any part for its catalog data and fit checks. Explode the assembly, trace the wiring and run
-                the simulator, all in the browser.
+                Click any part to see its specs and whether it fits. Spread the parts out, follow each wire and take
+                a test drive, all in your browser.
               </p>
               <div className="mk-row">
                 <Link href="/new" className="ui-btn ui-btn--primary">
@@ -144,15 +144,15 @@ export default function HomePage() {
                 <ExampleButton className="ui-btn ui-btn--secondary">Open the example</ExampleButton>
               </div>
               <ul className="mk-path__list">
-                <li><strong>Interactive 3D</strong><span>Explode, isolate and outline any part</span></li>
-                <li><strong>Verification</strong><span>Electrical and fit checks on every revision</span></li>
-                <li><strong>Simulation</strong><span>Watch the obstacle behavior before you wire it</span></li>
+                <li><strong>3D model</strong><span>Spread the parts out and highlight any one</span></li>
+                <li><strong>Checks</strong><span>Power, wiring and fit, every time the design changes</span></li>
+                <li><strong>Test drive</strong><span>Watch it dodge obstacles before you wire it</span></li>
               </ul>
             </div>
             <div className="mk-path__visual mk-path__visual--pink" aria-hidden="true">
               <div className="mk-mock">
                 <div className="mk-mock__bar">
-                  {['Review', 'Parts', 'Wiring', 'Buy', 'Build'].map((t, i) => (
+                  {['Review', 'Parts', 'Wiring & code', 'Buy', 'Build'].map((t, i) => (
                     <span key={t} className={i === 0 ? 'is-on' : undefined}>{t}</span>
                   ))}
                 </div>
@@ -165,7 +165,7 @@ export default function HomePage() {
                   </div>
                   <div className="mk-mock__side">
                     <b>Build overview</b>
-                    {['Status · Needs review', 'Parts · 11 placed', 'Assembly · 8 steps', 'Blocking · 2 findings'].map((l) => (
+                    {['Status · Needs a look', 'Parts · 11 placed', 'Build · 8 steps', 'Problems · 2 to fix'].map((l) => (
                       <span key={l}>{l}</span>
                     ))}
                   </div>
@@ -178,9 +178,9 @@ export default function HomePage() {
             <div className="mk-path__visual mk-path__visual--violet" aria-hidden="true">
               <div className="mk-files">
                 {[
-                  ['bom.csv', 'Parts, vendors, prices'],
-                  ['build.json', 'The full build plan'],
-                  ['firmware.zip', 'PlatformIO, ESP32'],
+                  ['bom.csv', 'Parts list: stores, prices'],
+                  ['build.json', 'The whole design'],
+                  ['firmware.zip', 'Starter code for the board'],
                 ].map(([f, d]) => (
                   <div key={f} className="mk-file">
                     <span className="mk-file__icon" />
@@ -194,19 +194,19 @@ export default function HomePage() {
               <span className="mk-eyebrow">Export</span>
               <h3 className="mk-h3">Take the build to your bench.</h3>
               <p className="mk-muted">
-                Download a parts list you can order from, the build file for your own tools, and ESP32 starter
-                firmware with the pin map already filled in.
+                Download a parts list you can order from, the design file for your own tools, and starter code for
+                the ESP32 controller board with every pin already set.
               </p>
               <div className="mk-row">
                 <ExampleButton className="ui-btn ui-btn--primary">Try an export</ExampleButton>
                 <a href={`${REPO_URL}/blob/main/contracts/api.md`} className="ui-btn ui-btn--secondary">
-                  Read the API
+                  Developer API
                 </a>
               </div>
               <ul className="mk-path__list">
-                <li><strong>BOM CSV</strong><span>Vendor links only where they are verified</span></li>
-                <li><strong>build.json</strong><span>Versioned, schema-checked build plan</span></li>
-                <li><strong>Firmware ZIP</strong><span>Optional PlatformIO compile check</span></li>
+                <li><strong>Parts list (CSV)</strong><span>Store links only where Rivet checked them</span></li>
+                <li><strong>Design file (build.json)</strong><span>The whole design, with a version number</span></li>
+                <li><strong>Starter code (ZIP)</strong><span>Rivet can test-build it for you first</span></li>
               </ul>
             </div>
           </article>
@@ -237,8 +237,8 @@ export default function HomePage() {
               </h2>
               <div>
                 <p>
-                  The indoor rover works end to end. Other families stay labeled planned until they are implemented
-                  and verified.
+                  The indoor rover works from start to finish. Other kinds of robot stay marked as planned until they
+                  are built and tested.
                 </p>
                 <div className="mk-row">
                   <ExampleButton className="ui-btn ui-btn--primary">Open the example</ExampleButton>
@@ -256,7 +256,7 @@ export default function HomePage() {
             <div className="mk-proof__statwrap">
               <Decor items={[{ name: 'bolt-tee', spot: 'proof-bolt' }]} />
               <p className="mk-proof__stat">19</p>
-              <p className="mk-proof__label">Sourced parts behind every build</p>
+              <p className="mk-proof__label">Real parts in Rivet&apos;s parts catalog</p>
             </div>
             <div>
               <h2 id="mk-proof-title" className="mk-proof__title">
@@ -274,11 +274,11 @@ export default function HomePage() {
           </div>
           <div className="mk-masonry">
             {OUTPUTS.map((o) => (
-              <article key={o.tag} className="mk-note">
+              <article key={o.key} className="mk-note">
                 <h3>{o.title}</h3>
                 <p>{o.body}</p>
                 <footer>
-                  <span className={`mk-note__dot mk-note__dot--${o.tag.toLowerCase().replace(/\s+/g, '-')}`} aria-hidden="true" />
+                  <span className={`mk-note__dot mk-note__dot--${o.key.replace(/\s+/g, '-')}`} aria-hidden="true" />
                   {o.tag}
                 </footer>
               </article>

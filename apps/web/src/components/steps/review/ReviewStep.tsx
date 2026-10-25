@@ -1,10 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { blockers, isSafety, partRows } from '../../../lib/flow/derive';
+import { blockers, isSafety, partNicknames, partRows } from '../../../lib/flow/derive';
 import { projectPath } from '../../../lib/flow/steps';
 import type { BuildPlan, CatalogComponent, VerificationFinding } from '../../../lib/rivet/types';
 import { useProjectContext } from '../../flow/ProjectShell';
+import { Icon } from '../../system/Icon';
 import { StepLayout } from '../../flow/StepLayout';
 import { usePartSelection } from '../../three/interactions';
 import { BuildError, SceneSkeleton, SceneViewport, SkeletonRows, useStepOverflow } from '../phase1/shared';
@@ -51,6 +52,7 @@ export function ReviewStep() {
     if (ready) for (const row of partRows(plan, catalog)) names.set(row.instanceId, row.name);
     return names;
   }, [ready, plan, catalog]);
+  const nicknames = useMemo(() => (ready ? partNicknames(plan, catalog) : new Map<string, string>()), [ready, plan, catalog]);
 
   const [attempts, setAttempts] = useState<Record<string, FixAttempt>>({});
   const busyKey = Object.keys(attempts).find((k) => attempts[k]?.status === 'pending') ?? null;
@@ -70,7 +72,7 @@ export function ReviewStep() {
       }
       setAttempts((a) => ({
         ...a,
-        [blocker.key]: { status: 'failed', message: res?.finding?.message ?? null },
+        [blocker.key]: { status: 'failed', message: res?.finding?.message ?? null, ruleId: res?.finding?.rule_id ?? null },
       }));
     },
     [store],
@@ -106,12 +108,13 @@ export function ReviewStep() {
   const n = list.length;
 
   const waitingFor = !ready
-    ? 'Loading the build'
+    ? 'Loading your robot…'
     : pending
-      ? 'Checks are still running'
+      ? 'Still checking the design…'
       : n > 0
-        ? `${n} ${n === 1 ? 'check is' : 'checks are'} unresolved. Build will flag ${n === 1 ? 'it' : 'them'} again.`
+        ? `${n} ${n === 1 ? 'problem is' : 'problems are'} still open. You can keep going; Build will remind you.`
         : undefined;
+  const trust = store.trust;
 
   function next() {
     update({ reviewDone: true });
@@ -121,7 +124,7 @@ export function ReviewStep() {
   return (
     <StepLayout
       title="Review"
-      purpose="Fix what would stop this robot from working or being safe. Warnings and unverified values wait for you in Parts."
+      purpose="First, sort out anything that would stop this robot from working or make it unsafe. Smaller warnings wait for you in Parts."
       primary={{
         label: 'Looks good, continue to Parts',
         onClick: next,
@@ -133,6 +136,14 @@ export function ReviewStep() {
       testId="review-step"
     >
       {error ? <BuildError message={error} /> : null}
+      {ready && trust?.isSaved ? (
+        <p className="ui-small ui-muted" style={{ margin: '0 0 12px' }} data-testid="review-saved-note">
+          <Icon name="info" size={14} aria-hidden="true" style={{ verticalAlign: '-2px' }} />{' '}
+          {trust.isSynthetic
+            ? "This is a saved practice example made of placeholder parts. Rivet didn't design it from your words."
+            : "This is a saved example. Rivet didn't design it from your words."}
+        </p>
+      ) : null}
       {!ready ? (
         <div className="split">
           <SkeletonRows count={3} testId="review-skeleton" />
@@ -140,7 +151,7 @@ export function ReviewStep() {
         </div>
       ) : n === 0 && !pending ? (
         <div className="ui-card p1-empty" data-testid="review-empty">
-          <h2 className="ui-h2">Nothing blocks this build. Every safety and fit check passed.</h2>
+          <h2 className="ui-h2">Nothing is in the way. Every safety and fit check passed.</h2>
         </div>
       ) : (
         <div className="split">
@@ -148,15 +159,16 @@ export function ReviewStep() {
             {pending ? (
               <div className="ui-island p1-pending" role="status" aria-live="polite" data-testid="review-pending">
                 <span className="ui-spinner" aria-hidden="true" />
-                <span className="ui-muted">Checks are still running. New results appear here.</span>
+                <span className="ui-muted">Still checking the design. New results show up here.</span>
               </div>
             ) : null}
-            <ul className="p1-blockers" aria-label="Blocking checks" data-testid="review-blockers">
+            <ul className="p1-blockers" aria-label="Problems to sort out" data-testid="review-blockers">
               {list.map((b) => (
                 <BlockerCard
                   key={b.key}
                   blocker={b}
                   partNames={partNames}
+                  nicknames={nicknames}
                   attempt={attempts[b.key] ?? null}
                   busy={busyKey !== null && busyKey !== b.key}
                   onFix={(bl) => void fix(bl)}
@@ -169,7 +181,7 @@ export function ReviewStep() {
             <details className="p1-details" data-testid="review-assumptions">
               <summary>
                 <span>
-                  Assumptions <span className="p1-count">({assumptions.length})</span>
+                  What Rivet assumed <span className="p1-count">({assumptions.length})</span>
                 </span>
               </summary>
               <div className="p1-details__body p1-stack">
@@ -181,12 +193,12 @@ export function ReviewStep() {
                   </ul>
                 ) : (
                   <p className="ui-muted" style={{ margin: 0 }}>
-                    Rivet recorded no assumptions for this prompt.
+                    Rivet didn&apos;t note any guesses it made about your idea.
                   </p>
                 )}
                 <div>
                   <button type="button" className="ui-btn ui-btn--secondary ui-btn--sm" onClick={openIterate}>
-                    Edit assumptions
+                    Change these
                   </button>
                 </div>
               </div>

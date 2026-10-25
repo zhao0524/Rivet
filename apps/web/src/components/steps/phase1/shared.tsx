@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import '../../../styles/phase1.css';
+import '../../../styles/phase2.css';
 import { useProjectContext } from '../../flow/ProjectShell';
 import { projectPath } from '../../../lib/flow/steps';
 import type { BuildPlan, CatalogComponent } from '../../../lib/rivet/types';
@@ -37,7 +38,7 @@ export function useStepOverflow(extra: readonly OverflowItem[] = []): { items: O
   const items = useMemo<OverflowItem[]>(() => {
     const list: OverflowItem[] = [
       { id: 'iterate', label: 'Change something', onSelect: openIterate, testId: 'overflow-iterate' },
-      { id: 'buy-early', label: 'Open Buy early', onSelect: () => goTo('buy'), testId: 'overflow-buy-early' },
+      { id: 'buy-early', label: 'Jump ahead to Buy', onSelect: () => goTo('buy'), testId: 'overflow-buy-early' },
       ...extra,
     ];
     if (project.reviewDone) {
@@ -103,4 +104,17 @@ export function SceneViewport({ small = false, label, testId, ...scene }: SceneV
 /** Viewport-shaped skeleton. */
 export function SceneSkeleton({ small = false }: { small?: boolean }) {
   return <div className={small ? 'viewport viewport--sm ui-skeleton' : 'viewport ui-skeleton'} aria-hidden="true" />;
+}
+
+/**
+ * A small text-link disclosure for technical detail (ids, pin names, raw engine text), so the
+ * plain line stays first and nothing is deleted for people who want the specifics.
+ */
+export function MoreDetails({ summary = 'Details', children, testId }: { summary?: string; children: ReactNode; testId?: string }) {
+  return (
+    <details className="p2-details" data-testid={testId}>
+      <summary className="ui-small">{summary}</summary>
+      <div className="p2-details__body ui-small ui-muted">{children}</div>
+    </details>
+  );
 }

@@ -1,7 +1,8 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   createProjectRecord,
   getProject,
@@ -9,18 +10,26 @@ import {
   readDraft,
   saveProject,
   titleFromPrompt,
+  useProjects,
   writeDraft,
 } from '../../lib/flow/projects';
+import { SAMPLE_PROJECTS, type SampleProject } from '../../lib/flow/samples';
 import { projectPath } from '../../lib/flow/steps';
 import { AppHeader } from '../flow/AppHeader';
 import { useFlowStore } from '../flow/FlowProvider';
-import { PromptBox, SAMPLE_PROMPTS, type PromptBoxSubmit } from '../flow/PromptBox';
+import { PromptBox, type PromptBoxSubmit } from '../flow/PromptBox';
+import { CardSkeletons, ProjectCard, SampleCard } from './gallery/ProjectCards';
 import '../../styles/start.css';
+import '../../styles/gallery.css';
+
+/** How many of the user's own projects the gallery shows before "All projects". */
+const RECENT_LIMIT = 6;
 
 /**
  * A1 Prompt: the app's PromptBox with image attachment. Honors `?draft=<id>` (continue that draft)
  * and `?prompt=<text>` (prefill). Submitting creates the project under the draft id and moves on to
  * Clarify; coming back to the same draft updates the project instead of duplicating it.
+ * Below the box, "Recent projects": the user's own projects (newest first), then tagged samples.
  */
 export function NewProjectScreen() {
   const router = useRouter();
@@ -35,6 +44,33 @@ export function NewProjectScreen() {
   const [boxKey, setBoxKey] = useState(0);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState('');
+  const [focusTick, setFocusTick] = useState(0);
+  const [mounted, setMounted] = useState(false);
+  const [now, setNow] = useState(() => Date.now());
+  const projects = useProjects();
+  const recent = useMemo(
+    () => [...projects].sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt)).slice(0, RECENT_LIMIT),
+    [projects],
+  );
+
+  // The stored list is only readable after mount; keep the gallery as skeletons until then.
+  useEffect(() => {
+    setMounted(true);
+    setNow(Date.now());
+  }, []);
+
+  // After a sample fills the box (which remounts it), put the cursor at the end of the text.
+  useEffect(() => {
+    if (focusTick === 0) return;
+    const input = document.querySelector<HTMLTextAreaElement>('[data-testid="new-prompt-input"]');
+    if (!input) return;
+    input.focus({ preventScroll: true });
+    const end = input.value.length;
+    input.setSelectionRange(end, end);
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    input.closest('form')?.scrollIntoView?.({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+  }, [focusTick]);
 
   useEffect(() => {
     if (promptParam) {
@@ -53,6 +89,26 @@ export function NewProjectScreen() {
     setSeedId(id);
     setError(null);
     setBoxKey((k) => k + 1);
+  }
+
+  function pickSample(sample: SampleProject) {
+    if (sample.action.kind === 'example') {
+      const record = saveProject(
+        createProjectRecord({
+          prompt: sample.prompt,
+          title: sample.action.projectTitle,
+          exampleId: sample.action.exampleId,
+          buildId: sample.action.buildId,
+          phase: 'ready',
+          furthestStep: 'review',
+        }),
+      );
+      router.push(projectPath(record.id, 'review'));
+      return;
+    }
+    fill(sample.prompt);
+    setStatus(`Filled in the idea for “${sample.title}”. Change anything you like, then press Build it.`);
+    setFocusTick((t) => t + 1);
   }
 
   async function submit({ draft, image }: PromptBoxSubmit) {
@@ -129,14 +185,48 @@ export function NewProjectScreen() {
             <div className="ui-skeleton" style={{ height: 112, borderRadius: 16 }} aria-hidden="true" />
           )}
 
-          <div className="start-prompt__chips" aria-label="Sample prompts">
-            {SAMPLE_PROMPTS.map((sample) => (
-              <button key={sample} type="button" className="ui-chip" onClick={() => fill(sample)} data-testid="new-sample">
-                {sample}
-              </button>
-            ))}
-          </div>
+          <p className="ui-sr-only" aria-live="polite" data-testid="new-status">
+            {status}
+          </p>
         </div>
+
+        <section className="gal" aria-labelledby="new-gallery-title" data-testid="new-gallery">
+          <div className="gal__head">
+            <div>
+              <h2 className="ui-h2" id="new-gallery-title">
+                Recent projects
+              </h2>
+              <p className="gal__lede">
+                {mounted && recent.length > 0 ? 'Pick up where you left off, or start from a sample idea.' : 'Start from a sample idea. Samples are examples, not your work.'}
+              </p>
+            </div>
+            {mounted && projects.length > 0 ? (
+              <Link href="/projects" className="ui-btn ui-btn--link" data-testid="new-all-projects">
+                All projects
+              </Link>
+            ) : null}
+          </div>
+          <div className="gal__clip">
+            <ul className="gal-grid" data-testid="new-gallery-list">
+              {!mounted ? (
+                <CardSkeletons count={4} />
+              ) : (
+                <>
+                  {recent.map((p, i) => (
+                    <li key={p.id} data-kind="project">
+                      <ProjectCard project={p} now={now} index={i} testPrefix="new" />
+                    </li>
+                  ))}
+                  {SAMPLE_PROJECTS.map((sample, i) => (
+                    <li key={sample.id} data-kind="sample">
+                      <SampleCard sample={sample} now={now} index={recent.length + i} onPress={pickSample} />
+                    </li>
+                  ))}
+                </>
+              )}
+            </ul>
+          </div>
+        </section>
       </main>
     </>
   );

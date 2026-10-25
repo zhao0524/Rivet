@@ -27,7 +27,7 @@ test.describe('Projects', () => {
     await expect(list).toBeVisible();
     const cards = list.locator('[data-testid^="projects-card-"]');
     await expect(cards).toHaveCount(2);
-    await expect(page.getByTestId(`projects-card-${ready.id}`)).toContainText('Step 3 of 5 · Wiring & firmware');
+    await expect(page.getByTestId(`projects-card-${ready.id}`)).toContainText('Step 3 of 5');
     await expect(page.getByTestId(`projects-card-${clarifying.id}`)).toContainText('Clarifying');
 
     // Rename

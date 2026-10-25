@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { expect, test, type Locator, type Page, type Response } from '@playwright/test';
 import { firmwareStep, needsSafetyAck, orderedSteps, stepParts } from '../src/components/steps/build/build-model';
 import { NO_VENDOR, groupByVendor } from '../src/components/steps/buy/buy-model';
-import { blockers, buyLines, formatMoney, partRows, specRows } from '../src/lib/flow/derive';
+import { blockers, buyLines, formatMoney, partNicknames, partRows, plainInstructions, specRows } from '../src/lib/flow/derive';
 import type { BomItem, BuildPlan, CatalogComponent, EditResponse, InterpretResponse, JobResponse } from '../src/lib/rivet/types';
 import { API_URL, REFERENCE_IMAGE } from './env';
 import { apiGet, expectSceneFitsViewport, isPost, patchProject, readProject, readZip, watchPageErrors } from './helpers';
@@ -142,8 +142,8 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
     intentId = interpretation.intent_id;
 
     await expect(page.getByTestId('clarify-progress')).toHaveText('Question 1 of 3');
-    await expect(page.getByTestId('clarify-understood')).toContainText('Rivet read this as an indoor rover');
-    await expect(page.getByTestId('clarify-offline')).toContainText("weren't actually read");
+    await expect(page.getByTestId('clarify-understood')).toContainText('The saved example is an indoor rover');
+    await expect(page.getByTestId('clarify-offline')).toContainText("didn't read your words or picture");
     await expect(page.getByTestId('clarify-limitation')).toHaveCount(0);
     expect(await readProject<StoredProject>(page, projectId)).toMatchObject({ intentId });
     expect(generateCount, 'engine must wait for confirmation').toBe(0);
@@ -189,11 +189,12 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
     await expect(page.getByTestId('generate-done')).toBeVisible({ timeout: 60_000 });
     // Real stages from the engine, not a saved example.
     await expect(page.getByTestId('generate-fixture-note')).toHaveCount(0);
-    const tape = page.getByTestId('generate-tape');
-    await expect(tape).toContainText('Image received');
-    expect(await tape.locator('.tape__row').count()).toBeGreaterThan(1);
+    // The Thinking trace lists one plain step per real engine stage, with the engine's message as detail.
+    const trace = page.getByTestId('generate-thinking-steps');
+    await expect(trace).toContainText('Image received');
+    expect(await trace.locator('li').count()).toBeGreaterThan(1);
     await expect(page.getByTestId('generate-viewport').getByTestId('rover-scene')).toHaveAttribute('data-build-id', buildId);
-    await expect(page.getByTestId('generate-status')).toContainText(/^Done: \d+ parts$/);
+    await expect(page.getByTestId('generate-status')).toContainText(/^Done: \d+ parts, ready to review$/);
 
     await page.getByTestId('generate-review').click();
     await expect(page).toHaveURL(`/p/${projectId}/review`, { timeout: 60_000 });
@@ -244,7 +245,7 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
         await expect(cards.nth(i)).toContainText(finding.message);
       }
       await expect(page.getByTestId('review-step')).toContainText(
-        `${expectedBlockers.length} ${expectedBlockers.length === 1 ? 'check is' : 'checks are'} unresolved`,
+        `${expectedBlockers.length} ${expectedBlockers.length === 1 ? 'problem is' : 'problems are'} still open`,
       );
       const scene = page.getByTestId('review-viewport').getByTestId('rover-scene');
       await expect(scene).toHaveAttribute('data-build-id', buildId);
@@ -311,12 +312,15 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
     await page.getByTestId('wiring-tab-firmware').click();
     const firmware = page.getByTestId('wiring-firmware');
     await expect(firmware).toContainText(plan.firmware.target);
-    await expect(page.getByTestId('firmware-compile-status')).toHaveText('Not compiled yet. Build compiles and flashes it.');
+    await expect(page.getByTestId('firmware-compile-status')).toHaveText('Not checked yet. It gets built when you copy it onto the board in Build.');
     const pins = Object.entries(plan.firmware.pin_map);
     expect(pins.length).toBeGreaterThan(0);
     await expect(page.getByTestId('firmware-pinmap').locator('tbody tr')).toHaveCount(pins.length);
     for (const [signal, pin] of pins) {
-      await expect(page.getByTestId('firmware-pinmap').getByRole('row', { name: new RegExp(`^${signal}\\s+${pin}$`) })).toBeVisible();
+      const row = page.getByTestId(`firmware-pin-${signal}`);
+      await expect(row).toBeVisible();
+      await expect(row.locator('td').first()).toContainText(signal);
+      await expect(row.locator('td').last()).toHaveText(String(pin));
     }
 
     const link = page.getByTestId('firmware-download');
@@ -452,7 +456,10 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
       const position = index + 1;
       await expect(count).toHaveText(`Step ${position} of ${steps.length}`);
       await expect(page.getByTestId('build-panel').getByRole('heading', { level: 2 })).toHaveText(step.title);
-      await expect(page.getByTestId('build-instructions')).toHaveText(step.instructions);
+      // Everyday part names on screen; the engine's exact wording under "Show the exact pin and part names".
+      const plain = plainInstructions(step.instructions, partNicknames(plan, catalog));
+      await expect(page.getByTestId('build-instructions')).toHaveText(plain);
+      if (plain !== step.instructions) await expect(page.getByTestId('build-instructions-original')).toHaveText(step.instructions);
       const parts = stepParts(step, plan, catalog);
       for (const part of parts) await expect(page.getByTestId(`build-part-${part.instanceId}`)).toContainText(part.name);
       if (needsSafetyAck(step, parts)) {
@@ -466,7 +473,7 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
       }
       if (step.step === fwStep) {
         const card = page.getByTestId('build-firmware');
-        await expect(card).toContainText('Compile status: not checked yet');
+        await expect(card).toContainText('Code check: not checked yet');
         await expect(page.getByTestId('build-firmware-download')).toHaveAttribute('href', `/api/projects/${buildId}/exports/firmware.zip?revision=1`);
       } else {
         await expect(page.getByTestId('build-firmware')).toHaveCount(0);
@@ -491,9 +498,9 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
     await expect(page.getByTestId('done-part-count')).toHaveText(String(plan.components.length));
     await expect(page.getByTestId('done-step-count')).toHaveText(String(steps.length));
     const open = page.getByTestId('done-blockers');
-    if (expectedBlockers.length === 0) await expect(open).toContainText('None. Every blocking check passed.');
+    if (expectedBlockers.length === 0) await expect(open).toContainText('None. Every important check passed.');
     else {
-      await expect(open).toContainText(`${expectedBlockers.length} ${expectedBlockers.length === 1 ? 'check' : 'checks'} could not be settled`);
+      await expect(open).toContainText(`${expectedBlockers.length} ${expectedBlockers.length === 1 ? 'problem' : 'problems'} couldn't be settled`);
       for (const f of expectedBlockers) await expect(open).toContainText(f.message);
     }
     await expect(page.getByTestId('done-viewport').getByTestId('rover-scene')).toHaveAttribute('data-revision', '1');

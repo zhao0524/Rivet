@@ -51,10 +51,10 @@ export function ExampleButton({
 }
 
 const DELIVERABLES: ReadonlyArray<{ icon: IconName; title: string; body: string }> = [
-  { icon: 'cart', title: 'Parts list', body: 'Real catalog parts. Prices and vendors only where they were checked.' },
-  { icon: 'bolt', title: 'Wiring and pin map', body: 'Each connection drawn on the 3D model and listed by pin.' },
-  { icon: 'download', title: 'Starter firmware', body: 'An ESP32 PlatformIO project with your pin map filled in.' },
-  { icon: 'check', title: 'Step-by-step build', body: 'The assembly order with safety notes on every step.' },
+  { icon: 'cart', title: 'Parts list', body: 'Real parts. Prices and stores only where Rivet checked them.' },
+  { icon: 'bolt', title: 'Wiring', body: 'Every wire drawn on the 3D model, with the pin it plugs into.' },
+  { icon: 'download', title: 'Starter code', body: 'Code for the ESP32 controller board with your wiring already filled in.' },
+  { icon: 'check', title: 'Step-by-step build', body: 'The order to put it together, with safety notes on every step.' },
 ];
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -102,7 +102,7 @@ export function HeroFlow() {
               <ExampleButton testId="home-see-example">See an example</ExampleButton>
             </span>
             <span className="mk-prompt__hint">
-              Images are interpreted into a supported build, not reverse-engineered with certainty.
+              A picture gives Rivet ideas for a robot it can build. It can&apos;t copy the exact device in the photo.
             </span>
           </>
         }
@@ -157,8 +157,8 @@ function GuestPreview({
             <Icon name="check" size={12} /> Rover · supported today
           </span>
           <span className="ui-small ui-muted">
-            Rivet builds indoor rovers today. Your prompt is read as the closest supported rover, and you confirm the
-            details before it generates.
+            Rivet builds indoor rovers today. It matches your idea to the closest rover it can make, and you confirm
+            the details before it starts designing.
           </span>
         </div>
 

@@ -9,7 +9,7 @@ import { usePartSelection } from '../../three/interactions';
 import type { OverflowItem } from '../../system/OverflowMenu';
 import { BuildError, SceneSkeleton, SceneViewport, SkeletonRows, useStepOverflow } from '../phase1/shared';
 import { PartList } from './PartList';
-import { SpecDrawer } from './SpecDrawer';
+import { SourceLegend, SpecDrawer } from './SpecDrawer';
 
 /** Step 2: understand each component and what it does. List and 3D view select together. */
 export function PartsStep() {
@@ -72,7 +72,7 @@ export function PartsStep() {
     () => [
       {
         id: 'ai-only',
-        label: aiOnly ? 'Show all parts' : 'Show AI-estimated only',
+        label: aiOnly ? 'Show all parts' : 'Show only parts with AI estimates',
         onSelect: () => setAiOnly((v) => !v),
         testId: 'overflow-ai-only',
       },
@@ -86,12 +86,12 @@ export function PartsStep() {
   return (
     <StepLayout
       title="Parts"
-      purpose="Every component in this build, what it does, and where each number came from. Pick one in the list or the model."
+      purpose="Every part in your robot, what it's for, and where each number came from. Pick one in the list or click it in the 3D model."
       primary={{
-        label: 'Continue to Wiring',
+        label: 'Continue to Wiring & code',
         onClick: () => goTo('wiring'),
         disabled: !ready,
-        waitingFor: ready ? undefined : 'Loading the build',
+        waitingFor: ready ? undefined : 'Loading your parts list…',
         testId: 'parts-primary',
       }}
       overflow={overflow}
@@ -106,7 +106,7 @@ export function PartsStep() {
                 ? aiOnly
                   ? `${shown.length} of ${rows.length} parts have AI-estimated values`
                   : `${rows.length} parts in ${groups.length} groups`
-                : 'Loading parts'}
+                : 'Loading your parts list…'}
             </p>
             <button
               type="button"
@@ -118,9 +118,10 @@ export function PartsStep() {
               data-testid="parts-explode"
             >
               <span className="ui-switch__track" aria-hidden="true" />
-              Explode view
+              Spread parts out
             </button>
           </div>
+          <SourceLegend />
           {!ready ? (
             <SkeletonRows count={8} testId="parts-skeleton" />
           ) : groups.length === 0 ? (
@@ -155,7 +156,7 @@ export function PartsStep() {
               selection={selection}
               assemblyMode={exploded ? 'exploded' : 'assembled'}
               assemblyProgress={1}
-              label={selectedId ? byId.get(selectedId)?.name ?? selectedId : 'Click a part to select it'}
+              label={selectedId ? byId.get(selectedId)?.name ?? selectedId : 'Click a part to see what it is'}
               testId="parts-viewport"
             />
           ) : (

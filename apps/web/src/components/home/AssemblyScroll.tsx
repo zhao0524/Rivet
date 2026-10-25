@@ -106,8 +106,8 @@ export function AssemblyScroll() {
               From prompt to parts, <span className="mk-dim">one step at a time.</span>
             </h2>
             <p className="mk-build__lede mk-dim">
-              Every Rivet build ships with an assembly order. This is the saved starter rover putting
-              itself together, step by step.
+              Every Rivet design comes with build steps in order. This is a saved example rover, made of
+              placeholder parts, putting itself together step by step.
             </p>
             <ol className="mk-build__steps">
               {steps.map((s, i) => (
@@ -140,7 +140,7 @@ export function AssemblyScroll() {
               <span className="mk-build__counter">
                 {done ? 'Assembled' : step === 0 ? 'Parts laid out' : `Step ${step} of ${stepCount}`}
               </span>
-              <span className="mk-build__tag">Saved example · synthetic parts</span>
+              <span className="mk-build__tag">Saved example · placeholder parts</span>
             </div>
             <div className="mk-build__bar" aria-hidden="true">
               <div ref={barRef} className="mk-build__bar-fill" />

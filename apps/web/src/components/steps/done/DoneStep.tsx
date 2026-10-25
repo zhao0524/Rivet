@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import '../../../styles/phase2.css';
-import { blockers, catalogIndex, ruleTitle } from '../../../lib/flow/derive';
+import { blockers, catalogIndex, partNicknames, plainCheck, plainResult } from '../../../lib/flow/derive';
 import { useProjectContext } from '../../flow/ProjectShell';
 import { StepLayout } from '../../flow/StepLayout';
 import { Icon } from '../../system/Icon';
@@ -32,6 +32,7 @@ export function DoneStep() {
   const partCount = plan.components.length;
   const stepCount = plan.assembly_steps.length;
   const open = useMemo(() => (build.ready ? blockers(plan) : []), [build.ready, plan]);
+  const nicknames = useMemo(() => partNicknames(plan, catalog), [plan, catalog]);
   const missing = project.missingCatalogIds.map((id) => byId.get(id)?.identity.model ?? id);
 
   async function share() {
@@ -56,23 +57,23 @@ export function DoneStep() {
       return;
     }
     downloadTextFile(`${plan.build_id}-r${plan.revision}.build.json`, JSON.stringify(plan, null, 2), 'application/json');
-    setStatus('Downloaded build.json from the loaded plan.');
+    setStatus('Downloaded build.json, the full design file.');
   }
 
   const overflow: OverflowItem[] = [
     { id: 'iterate', label: 'Change something', onSelect: openIterate, testId: 'done-iterate' },
-    { id: 'export', label: 'Export build.json', disabled: !build.ready, onSelect: exportBuild, testId: 'done-export' },
+    { id: 'export', label: 'Download the design file (build.json)', disabled: !build.ready, onSelect: exportBuild, testId: 'done-export' },
   ];
 
   if (!build.ready) {
     return (
-      <StepLayout title="Done" purpose={PURPOSE} primary={{ label: 'Share', onClick: () => undefined, disabled: true, waitingFor: build.error ? undefined : 'Loading the build', testId: 'done-primary' }} overflow={overflow} testId="done-step">
+      <StepLayout title="Done" purpose={PURPOSE} primary={{ label: 'Share', onClick: () => undefined, disabled: true, waitingFor: build.error ? undefined : 'Loading your robot…', testId: 'done-primary' }} overflow={overflow} testId="done-step">
         {build.error ? (
           <p className="ui-notice ui-notice--danger" role="alert" data-testid="done-error">
             <Icon name="alert" aria-hidden="true" /> {build.error}
           </p>
         ) : (
-          <div className="p2-grid" aria-busy="true" aria-label="Loading the build">
+          <div className="p2-grid" aria-busy="true" aria-label="Loading your robot">
             <div className="ui-skeleton viewport viewport--sm" />
             <div className="p2-skeleton-lines">
               <div className="ui-skeleton" style={{ height: 72 }} />
@@ -112,11 +113,11 @@ export function DoneStep() {
                 <span className="p2-stat__n" data-testid="done-step-count">
                   {stepCount}
                 </span>
-                <span className="p2-stat__l">assembly steps</span>
+                <span className="p2-stat__l">build steps</span>
               </div>
               <div className="p2-stat">
                 <span className="p2-stat__n">{plan.revision}</span>
-                <span className="p2-stat__l">revision</span>
+                <span className="p2-stat__l">version</span>
               </div>
             </div>
             <p className="p2-note" style={{ marginTop: 14 }}>
@@ -124,7 +125,7 @@ export function DoneStep() {
               <button type="button" className="ui-btn ui-btn--link" onClick={openIterate} data-testid="done-change">
                 Change something
               </button>{' '}
-              and Rivet re-checks the whole build.
+              and Rivet checks the whole design again.
             </p>
           </section>
         </div>
@@ -150,21 +151,21 @@ export function DoneStep() {
 
           <section className="ui-island" aria-labelledby="done-blockers-title" data-testid="done-blockers">
             <h2 id="done-blockers-title" className="ui-h3">
-              Checks left unresolved
+              Problems still open
             </h2>
             {open.length === 0 ? (
-              <p className="p2-note">None. Every blocking check passed.</p>
+              <p className="p2-note">None. Every important check passed.</p>
             ) : (
               <>
                 <p className="p2-note">
-                  {open.length} {open.length === 1 ? 'check' : 'checks'} could not be settled from the data Rivet has. Nothing here is hidden.
+                  {open.length} {open.length === 1 ? 'problem' : 'problems'} couldn&apos;t be settled with the information Rivet has. Nothing here is hidden.
                 </p>
                 <ul className="done__list" style={{ marginTop: 10 }}>
                   {open.map((f, i) => (
                     <li key={`${f.rule_id}-${i}`} className="done__item">
                       <Icon name="alert" aria-hidden="true" style={{ color: 'var(--ui-danger)' }} />
                       <span>
-                        <strong>{ruleTitle(f.rule_id)}</strong> <span className="ui-badge">{f.result}</span>
+                        <strong>{plainCheck(f, nicknames).title}</strong> <span className="ui-badge">{plainResult(f.result)}</span>
                         <br />
                         <span className="ui-muted ui-small">{f.message}</span>
                       </span>

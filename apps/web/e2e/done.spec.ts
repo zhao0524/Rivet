@@ -32,7 +32,9 @@ test.describe('Done', () => {
     await expect(page.getByTestId('done-summary')).toContainText('Finished Oct 24, 2026');
     await expect(page.getByTestId('done-missing')).toContainText('Shadow Chassis');
     const open = page.getByTestId('done-blockers');
-    await expect(open).toContainText(`${OPEN.length} checks could not be settled`);
+    await expect(open).toContainText(`${OPEN.length} problems couldn't be settled`);
+    await expect(open).toContainText('The left motor may not fit the frame');
+    await expect(page.getByTestId('done-summary')).toContainText('version');
     for (const f of OPEN) await expect(open).toContainText(f.message);
     await expect(page.getByTestId('done-viewport')).toContainText(SOURCED_PLAN.title);
     await expect(page.getByTestId('stepper-build')).toHaveAttribute('data-state', 'done');

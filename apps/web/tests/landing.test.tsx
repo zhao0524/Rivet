@@ -40,7 +40,7 @@ describe('Landing page (M1, Guest preview, M2)', () => {
     expect(screen.getByTestId('home-prompt')).toBeDefined();
     expect(screen.getByTestId('home-prompt-submit').textContent).toContain('Build it');
     expect(
-      screen.getByText('Images are interpreted into a supported build, not reverse-engineered with certainty.'),
+      screen.getByText("A picture gives Rivet ideas for a robot it can build. It can't copy the exact device in the photo."),
     ).toBeDefined();
     const nav = screen.getByTestId('open-studio-link');
     expect(nav.getAttribute('href')).toBe('/new');
@@ -56,7 +56,7 @@ describe('Landing page (M1, Guest preview, M2)', () => {
     expect(preview.textContent).toContain('Rover · supported today');
     expect(preview.textContent).toContain('Parts list');
     expect(preview.textContent).toContain('Wiring');
-    expect(preview.textContent).toContain('firmware');
+    expect(preview.textContent).toContain('Starter code');
     expect(preview.textContent).toContain('Step-by-step build');
     expect(push).not.toHaveBeenCalled();
 
@@ -122,7 +122,7 @@ describe('Landing page (M1, Guest preview, M2)', () => {
     expect(screen.getByTestId('home-assembly-scroll')).toBeDefined();
     expect(screen.getByTestId('home-hero-stage')).toBeDefined();
     expect(screen.getAllByTestId('rover-scene')).toHaveLength(1);
-    expect(screen.getByText('Saved example · synthetic parts')).toBeDefined();
+    expect(screen.getByText('Saved example · placeholder parts')).toBeDefined();
   });
 
   it('labels build families honestly', () => {
@@ -141,5 +141,15 @@ describe('Landing page (M1, Guest preview, M2)', () => {
       a.getAttribute('href')!.startsWith('/studio'),
     );
     expect(studio).toHaveLength(0);
+  });
+
+  it('reads in plain words: no schema terms or unexplained acronyms in the copy', () => {
+    const { container } = render(<HomePage />);
+    const text = container.textContent ?? '';
+    for (const word of [/\bBOM\b/, /schema/i, /\brevision/i, /fixture/i, /synthetic/i, /verification/i, /differential/i, /kinematic/i]) {
+      expect(text).not.toMatch(word);
+    }
+    // ESP32 always comes with a plain gloss.
+    expect(text).toContain('ESP32 controller board');
   });
 });

@@ -24,8 +24,10 @@ test.describe('Prompt → Clarify → Generate', () => {
     // Card 1: what Rivet understood, honestly labelled offline.
     await expect(page.getByTestId('clarify-progress')).toHaveText('Question 1 of 3');
     await expect(page.getByTestId('clarify-understood')).toBeVisible();
-    await expect(page.getByTestId('clarify-understood')).toContainText('Rivet read this as an indoor rover');
-    await expect(page.getByTestId('clarify-offline')).toContainText('Offline mode');
+    await expect(page.getByTestId('clarify-understood')).toContainText('The saved example is an indoor rover');
+    await expect(page.getByTestId('clarify-offline')).toContainText("This is a saved example. Rivet didn't read your words");
+    await expect(page.getByTestId('clarify-thinking-label')).toHaveText(/^Answered in \d/);
+    await expect(page.getByTestId('clarify-thinking-steps').locator('li')).toHaveCount(1);
     await expect(page.getByTestId('clarify-next')).toHaveText(/^Next/);
     await page.getByTestId('clarify-next').click();
 
@@ -55,11 +57,29 @@ test.describe('Prompt → Clarify → Generate', () => {
 
     // Fixture mode: the saved example arrives as one real event; nothing pretends to generate.
     await expect(page.getByTestId('generate-done')).toBeVisible();
-    await expect(page.getByTestId('generate-fixture-note')).toContainText('no live generation ran');
-    await expect(page.getByTestId('generate-tape')).toContainText('no live generation ran');
-    await expect(page.getByTestId('generate-tape').locator('.tape__row')).toHaveCount(1);
-    await expect(page.getByTestId('generate-status')).toContainText(/Done: \d+ parts/);
-    await expect(page.getByTestId('generate-parts')).toBeVisible();
+    await expect(page.getByTestId('generate-fixture-note')).toContainText("This is a saved example. Rivet didn't design it from your words.");
+    await expect(page.getByTestId('generate-thinking-label')).toHaveText('Loaded instantly');
+    await expect(page.getByTestId('generate-thinking-steps').locator('li')).toHaveCount(1);
+    await expect(page.getByTestId('generate-status')).toHaveText(/^Done: \d+ parts, ready to review$/);
+    await expect(page.getByTestId('generate-decided-parts')).toContainText(/Picked \d+ parts/);
+    await expect(page.getByTestId('generate-decided-checks')).toContainText(/Ran \d+ checks/);
+    // The folded trace reopens on click.
+    await expect(page.getByTestId('generate-thinking-toggle')).toHaveAttribute('aria-expanded', 'false');
+    await page.getByTestId('generate-thinking-toggle').click();
+    await expect(page.getByTestId('generate-thinking-toggle')).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.getByTestId('generate-thinking-steps')).toContainText('Opened a saved example');
+    // The tree: parts open in plain groups; keyboard moves through it.
+    const tree = page.getByTestId('generate-tree');
+    await expect(page.getByTestId('generate-phase-parts')).toHaveAttribute('aria-expanded', 'true');
+    await expect(tree).toContainText('Wheels & motors');
+    await page.getByTestId('generate-phase-understand').focus();
+    await page.keyboard.press('ArrowRight');
+    await expect(page.getByTestId('generate-phase-understand')).toHaveAttribute('aria-expanded', 'true');
+    await tree.getByText('Frame', { exact: true }).click();
+    await page.getByTestId('generate-part-chassis-1').locator('> .tv-row').click();
+    await expect(page.getByTestId('generate-part-chassis-1')).toHaveAttribute('aria-selected', 'true');
+    await expect(page.getByTestId('generate-picked')).toContainText('highlighted in the model');
+    await expect(page.getByTestId('generate-viewport')).toBeVisible();
     await expect(page.getByTestId('generate-cancel')).toHaveCount(0);
 
     await page.getByTestId('generate-review').click();
