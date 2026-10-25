@@ -195,9 +195,6 @@ export function NewProjectScreen() {
           <p className="ui-sr-only" aria-live="polite" data-testid="new-status">
             {status}
           </p>
-          <p className="ui-hint" style={{ marginTop: 12 }}>
-            Want fully generated geometry with three design candidates? <a href="/design" data-testid="new-design-v2-link">Generate a 3D design</a>
-          </p>
         </div>
 
         <section className="gal" aria-labelledby="new-gallery-title" data-testid="new-gallery">

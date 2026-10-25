@@ -344,12 +344,9 @@ function UnderstoodCard({
 
       {!data.supported ? (
         <>
-          <p className="ui-notice ui-notice--warn" style={{ margin: 0 }} data-testid="clarify-limitation">
+          <p className="ui-notice ui-notice--danger" style={{ margin: 0 }} data-testid="clarify-limitation">
             <Icon name="alert" style={{ flex: 'none', marginTop: 3 }} />
-            <span>
-              {(data.limitation?.message ?? 'This kind of robot is not supported yet').replace(/\.?$/, '.')} Rivet can only
-              engineer rovers with real parts so far.
-            </span>
+            <span>{data.limitation?.message ?? 'This kind of robot is not supported yet.'}</span>
           </p>
           <ChoiceList
             label="How should Rivet continue?"
