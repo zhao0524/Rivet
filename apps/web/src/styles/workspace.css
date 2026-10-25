@@ -292,6 +292,7 @@ html:has(.ws), html:has(.ws) body { overflow: hidden; background: #0a0a0b; }
 .ws-stage__canvas > * { width: 100%; height: 100%; }
 .ws-stage__canvas[data-dim] { opacity: 0.35; filter: saturate(0.4) blur(1px); }
 .ws-stage__canvas[data-hidden] { opacity: 0; }
+.ws-stage__canvas[data-arrive] { animation: ws-fade 640ms ease; }
 
 .ws-stage__tools {
   position: absolute; top: 12px; left: 12px; right: 12px; display: flex; justify-content: space-between; gap: 8px;
@@ -355,8 +356,9 @@ html:has(.ws), html:has(.ws) body { overflow: hidden; background: #0a0a0b; }
 .ws-stage__empty-text { margin: 0 0 8px; max-width: 46ch; color: var(--ui-subtle); }
 
 /* Loading: an example build putting itself together under the job's real progress. */
-.ws-draft { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; animation: ws-fade 400ms ease; }
-.ws-preview { position: absolute; inset: 0; opacity: 0.92; }
+.ws-draft { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; opacity: 1; transition: opacity 640ms ease; }
+.ws-draft[data-leaving] { opacity: 0; pointer-events: none; }
+.ws-preview { position: absolute; inset: 0; }
 .ws-preview > div:first-child { width: 100%; height: 100%; }
 .ws-preview__caption {
   position: absolute; left: 50%; top: 14px; translate: -50% 0; font-size: 11px; color: #6b6b74; white-space: nowrap;
@@ -530,7 +532,7 @@ html:has(.ws), html:has(.ws) body { overflow: hidden; background: #0a0a0b; }
 @keyframes ws-turn { to { rotate: 360deg; } }
 @keyframes ws-shimmer { to { background-position: -200% 0; } }
 @media (prefers-reduced-motion: reduce) {
-  .ws-draft, .ws-skel, .ws-pill__dot, .ws-chat__state::before, .ws-hint { animation: none; }
+  .ws-draft, .ws-stage__canvas, .ws-skel, .ws-pill__dot, .ws-chat__state::before, .ws-hint { animation: none; transition: none; }
   .ws-msg, .ws-picked { animation: none; }
   .ws-spin { animation-duration: 2s; }
 }

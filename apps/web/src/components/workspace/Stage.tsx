@@ -2,12 +2,13 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { buyLines, formatMoney, makerLabel, partRows } from '../../lib/flow/derive';
-import type { BuildPlan, CatalogComponent, StageEvent } from '../../lib/rivet/types';
+import { isConceptPlan } from '../../lib/rivet/honesty';
+import type { BuildPlan, CatalogComponent } from '../../lib/rivet/types';
 import { Icon } from '../system/Icon';
 import { RoverScene } from '../three/RoverScene';
 import type { PartSelectionApi } from '../three/interactions';
-import { BUILD_PHASES, partNames, phaseStates, rolePlain } from '../start/shared';
-import { BuildingPreview } from './BuildingPreview';
+import { rolePlain } from '../start/shared';
+import { useComeTogether } from './comeTogether';
 import type { SessionStatus } from './session';
 
 export type StageMode = 'assembled' | 'exploded' | 'step';
@@ -28,34 +29,27 @@ const WORKSPACE_THEME = { gridCell: '#2c323b', gridSection: '#48505c' } as const
 export const DEFAULT_VIEW: StageView = { mode: 'assembled', step: 1, wires: false, body: true };
 
 /**
- * The middle of the workspace: the build in 3D. While Rivet is still reading or building it shows a
- * drafting table with the real progress of the job; a rebuild keeps the last model on screen, dimmed,
- * under the same progress. A new build plays its assembly once, then settles assembled.
+ * The middle of the workspace: the build in 3D. While Rivet is still working, the stage stays clear.
+ * When the build arrives it plays its assembly once, then settles assembled. A rebuild keeps the last
+ * model on screen, dimmed, until the new one is ready.
  */
 export function Stage({
-  prompt,
   plan,
   catalog,
   status,
   stageText,
   errorMessage,
-  events,
-  live,
   selection,
   view,
   onView,
   onRetry,
   retryLabel = 'Try again',
 }: {
-  /** The project's prompt, to pick which example the loading view assembles. */
-  prompt: string;
   plan: BuildPlan | null;
   catalog: readonly CatalogComponent[];
   status: SessionStatus;
   stageText: string;
   errorMessage: string | null;
-  events: readonly StageEvent[];
-  live: boolean;
   selection: PartSelectionApi;
   view: StageView;
   onView: (view: StageView) => void;
@@ -67,40 +61,33 @@ export function Stage({
   const busy = useHeld(status === 'reading' || status === 'generating' || status === 'loading', MIN_LOADING_MS);
   const failed = status === 'failed';
   const stepCount = plan?.assembly_steps.length ?? 0;
-  const replay = useReplay(plan, busy);
+  const replay = useReplay(plan);
   const [reset, setReset] = useState(0);
-  // Until a model has been on screen once, loading is the drafting table; after that, a rebuild dims the last model.
-  const [seen, setSeen] = useState(false);
-  useEffect(() => {
-    if (plan && !busy) setSeen(true);
-  }, [plan, busy]);
-  const drafting = busy && (!plan || !seen);
 
   const rows = useMemo(() => (plan ? partRows(plan, catalog) : []), [plan, catalog]);
-  const names = useMemo(() => partNames(rows), [rows]);
   const lines = useMemo(() => (plan ? buyLines(plan, catalog) : []), [plan, catalog]);
   const selected = selection.selectedInstanceId ? rows.find((r) => r.instanceId === selection.selectedInstanceId) ?? null : null;
   const selectedLine = selected ? lines.find((l) => l.catalogId === selected.catalogId) ?? null : null;
 
   const mode: StageMode = replay !== null ? 'step' : view.mode;
-  const step = replay ?? Math.min(Math.max(view.step, 1), Math.max(stepCount, 1));
+  const step = replay ? replay.step : Math.min(Math.max(view.step, 1), Math.max(stepCount, 1));
   const stepInfo = plan?.assembly_steps.find((s) => s.step === step) ?? null;
 
   return (
     <div className="ws-stage" data-testid="workspace-stage" data-state={busy ? 'busy' : failed ? 'failed' : 'ready'}>
       {plan ? (
-        <div className="ws-stage__canvas" data-dim={busy || undefined} data-hidden={drafting || undefined}>
+        <div className="ws-stage__canvas" data-dim={busy && !replay ? '' : undefined}>
           <RoverScene
             plan={plan}
             catalog={catalog}
             selection={selection}
             themeMode="dark"
             assemblyMode={mode}
-            assemblyProgress={mode === 'exploded' ? 1 : undefined}
+            assemblyProgress={replay ? replay.progress : mode === 'exploded' ? 1 : undefined}
             assemblyStep={step}
-            ghostFutureSteps
+            ghostFutureSteps={!replay}
             showWiring={view.wires && mode !== 'exploded'}
-            enclosure={view.body ? 'ghost' : 'none'}
+            enclosure={view.body && !isConceptPlan(plan) ? 'ghost' : 'none'}
             showGrid
             themeOverrides={WORKSPACE_THEME}
             resetSignal={reset}
@@ -108,11 +95,10 @@ export function Stage({
         </div>
       ) : null}
 
-      {drafting ? <DraftingTable prompt={prompt} status={status} stageText={stageText} events={events} live={live} names={names} /> : null}
-      {busy && !drafting ? (
-        <div className="ws-stage__veil" role="status" aria-live="polite" data-testid="workspace-rebuilding">
+      {!plan && busy && !failed ? (
+        <div className="ws-stage__veil" role="status" aria-live="polite" aria-busy="true" data-testid="workspace-loading">
           <span className="ws-spin" aria-hidden="true" />
-          <span>{stageText}</span>
+          <span data-testid="workspace-stage-text">{stageText}</span>
         </div>
       ) : null}
 
@@ -127,7 +113,7 @@ export function Stage({
         </div>
       ) : null}
 
-      {plan && !busy ? (
+      {plan && !busy && !replay ? (
         <>
           <div className="ws-stage__tools" role="toolbar" aria-label="View">
             <div className="ws-seg" role="radiogroup" aria-label="How to show the build">
@@ -247,78 +233,12 @@ function useHeld(on: boolean, ms: number): boolean {
   return on || held;
 }
 
-/** The step being replayed after a new build arrives, or null once it has settled. */
-function useReplay(plan: BuildPlan | null, busy: boolean): number | null {
-  const key = plan && !busy ? `${plan.build_id}@${plan.revision}` : null;
+/** The step being seated after a new build arrives, or null once it has settled. */
+function useReplay(plan: BuildPlan | null): { step: number; progress: number } | null {
+  const token = plan ? `${plan.build_id}@${plan.revision}` : null;
   const count = plan?.assembly_steps.length ?? 0;
-  const [state, setState] = useState<{ key: string | null; step: number | null }>({ key: null, step: null });
-
-  useEffect(() => {
-    if (!key || count === 0) return;
-    const reduced = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) {
-      setState({ key, step: null });
-      return;
-    }
-    let current = 1;
-    setState({ key, step: 1 });
-    const t = window.setInterval(() => {
-      current += 1;
-      if (current > count) {
-        window.clearInterval(t);
-        setState({ key, step: null });
-      } else setState({ key, step: current });
-    }, 260);
-    return () => window.clearInterval(t);
-  }, [key, count]);
-
-  return state.key === key ? state.step : null;
+  const play = useComeTogether(count, token);
+  if (!plan || play.done) return null;
+  return { step: play.step, progress: play.progress };
 }
 
-/* ── Loading: an example build assembling itself, under the job's real progress ── */
-
-function DraftingTable({
-  prompt,
-  status,
-  stageText,
-  events,
-  live,
-  names,
-}: {
-  prompt: string;
-  status: SessionStatus;
-  stageText: string;
-  events: readonly StageEvent[];
-  live: boolean;
-  names: ReadonlyMap<string, string>;
-}) {
-  const phases = useMemo(
-    () => phaseStates(events, { live: live || status !== 'failed', finished: false, failed: false, fixture: false, names }),
-    [events, live, status, names],
-  );
-  return (
-    <div className="ws-draft" role="status" aria-live="polite" aria-busy="true" data-testid="workspace-loading">
-      <BuildingPreview prompt={prompt} />
-      <div className="ws-draft__panel">
-        <p className="ws-draft__status">
-          <span className="ws-spin" aria-hidden="true" />
-          <span data-testid="workspace-stage-text">{status === 'ready' ? 'Putting it together…' : stageText}</span>
-        </p>
-        <ol className="ws-draft__phases">
-          {BUILD_PHASES.map((p) => {
-            const state =
-              status === 'ready' ? 'done' : status === 'reading' ? (p.id === 'understand' ? 'running' : 'pending') : phases[p.id].status;
-            return (
-              <li key={p.id} data-state={state}>
-                <span className="ws-draft__mark" aria-hidden="true">
-                  {state === 'done' ? <Icon name="check" size={11} /> : null}
-                </span>
-                <span>{p.label}</span>
-              </li>
-            );
-          })}
-        </ol>
-      </div>
-    </div>
-  );
-}
