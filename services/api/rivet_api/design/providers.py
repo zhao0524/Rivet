@@ -91,6 +91,7 @@ SOLID, RECOGNISABLE VOLUMES. Every part must read as the thing it is named, in r
 - If a part would be a featureless cylinder or box, either give it the proportions of the real part or compose it (boolean/extrude_profile) so its silhouette matches.
 
 STANDING ON THE FLOOR. The engine drops the whole assembly so its lowest point becomes y = 0, then checks static stability and rejects a design that cannot stand.
+- The design MUST include the parts it stands on, as their own bodies: wheels, feet, skids, landing gear or a flat base. An aircraft gets landing gear or skids; never let arms, booms, propellers or a bare body be what touches the floor.
 - Only the parts you mean as wheels, feet or a base may be the lowest ones. Work out, in millimetres, how far below its parent each contact part reaches, and make every contact part reach the SAME lowest level.
 - Give it either one wide flat base, or at least three contact patches that are not in one straight line (two side wheels plus a rear caster or tail counts).
 - A wheel attached to its parent's side face lands centred on that face, so it reaches (wheel_radius - parent_height/2) below the parent's bottom. Keep wheel_radius > parent_height/2 or the body drags on the floor.

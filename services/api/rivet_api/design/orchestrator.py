@@ -22,7 +22,7 @@ from pydantic import BaseModel
 from rivet_engine import engineering_bridge
 from rivet_engine.design_compiler import DesignValidationError, compile_design, kernel_versions
 from rivet_engine.design_ir import apply_patch, changed_bodies, normalize_spec_shapes, spec_digest, topology_signature
-from rivet_engine.geometry.repair import issue_score, repair, slender_structures
+from rivet_engine.geometry.repair import issue_score, repair, slender_structures, structural_floor_contacts
 
 from rivet_api.errors import ApiError
 
@@ -394,6 +394,15 @@ class Run:
                 f"over {stab.get('support_area_mm2', 0)} mm2. Make every intended wheel, foot or base reach the same lowest level "
                 "and give at least three contact patches that are not in a straight line."
             )
+            # No bounded repair can add the missing feet, so say exactly which parts are carrying
+            # the design and that they are the wrong ones.
+            on_structure = structural_floor_contacts({"geometry_report": {"stability": stab}, "part_manifest": cand.get("part_manifest") or []})
+            if on_structure:
+                notes.append(
+                    f"The design has no feet: it is resting on {', '.join(on_structure)}, which are structural members, not landing gear. "
+                    "Add explicit feet, skids or landing legs as their own bodies, reaching below every other part to the same level, "
+                    "spread wide enough that the centre of mass sits inside them."
+                )
         for hit in (mech.get("collisions") or {}).get("hard_collisions", [])[:6]:
             notes.append(f"{hit.get('a')} and {hit.get('b')} intersect by {hit.get('depth_mm', hit.get('volume_mm3'))}; move one onto the other's outer face instead.")
         for body in (cand.get("part_manifest") or []):

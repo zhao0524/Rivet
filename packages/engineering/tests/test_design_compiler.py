@@ -17,7 +17,7 @@ from rivet_engine.design_ir.models import Shape, implicit_anchor_axes  # noqa: E
 from rivet_engine.geometry import freeform, occ, parametric  # noqa: E402
 from rivet_engine.geometry.catalog_geometry import catalog_regions  # noqa: E402
 from rivet_engine.geometry.meshing import decode_glb, edge_manifold_report, encode_stl, weld  # noqa: E402
-from rivet_engine.geometry.repair import repair, slender_structures  # noqa: E402
+from rivet_engine.geometry.repair import repair, slender_structures, structural_floor_contacts  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[3]
 FIXTURES = ROOT / "fixtures" / "design"
@@ -318,6 +318,29 @@ def test_stick_thin_arm_is_thickened_by_deterministic_repair(tmp_path):
     assert any(a["accepted"] and a["body_id"] == "thin_arm" and "solid member" in a["reason"] for a in fixed["actions"])
     assert slender_structures(fixed["result"]) == []
     assert fixed["result"]["geometry_report"]["status"] == "valid"
+
+
+def test_a_design_resting_on_its_own_arms_is_named_as_having_no_feet():
+    # A quadcopter authored without landing gear rests on whichever booms reach lowest. No bounded
+    # repair can invent the missing feet, so the structural contacts are reported by name instead.
+    result = {
+        "geometry_report": {"stability": {"verdict": "unstable", "contact_bodies": ["arm_rear_left", "arm_rear_right"]}},
+        "part_manifest": [
+            {"body_id": "arm_rear_left", "role": "arm", "name": "Rear left arm", "tags": []},
+            {"body_id": "arm_rear_right", "role": "arm", "name": "Rear right arm", "tags": []},
+            {"body_id": "body", "role": "body", "name": "Central body", "tags": []},
+        ],
+    }
+    assert structural_floor_contacts(result) == ["arm_rear_left", "arm_rear_right"]
+    # Real feet are not reported, so a rover standing on its wheels and caster stays quiet.
+    grounded = {
+        "geometry_report": {"stability": {"verdict": "unstable", "contact_bodies": ["wheel_left", "caster"]}},
+        "part_manifest": [
+            {"body_id": "wheel_left", "role": "wheel", "name": "Left wheel", "tags": []},
+            {"body_id": "caster", "role": "caster", "name": "Rear caster", "tags": []},
+        ],
+    }
+    assert structural_floor_contacts(grounded) == []
 
 
 def test_contract_schema_matches_the_model():

@@ -34,6 +34,28 @@ def is_ground_part(body: DesignBody) -> bool:
     return bool(GROUND_PART.search(" ".join([body.role, body.name, *body.tags]).lower()))
 
 
+def structural_floor_contacts(result: dict) -> list[str]:
+    """Bodies holding the design off the floor that are structure, not feet.
+
+    A quadcopter authored without landing gear rests on its own arms: the support polygon is then
+    whatever two booms happen to reach lowest, which is why it reads as unstable. No bounded repair
+    can invent the missing feet, so this names the problem for the authoring model instead.
+    """
+    contacts = set((result.get("geometry_report", {}).get("stability") or {}).get("contact_bodies") or [])
+    if not contacts:
+        return []
+    out = []
+    for entry in result.get("part_manifest") or []:
+        if entry["body_id"] not in contacts:
+            continue
+        words = " ".join([entry.get("role") or "", entry.get("name") or "", *(entry.get("tags") or [])]).lower()
+        if GROUND_PART.search(words):
+            continue
+        if STRUCTURAL_PART.search(words):
+            out.append(entry["body_id"])
+    return sorted(out)
+
+
 def slender_structures(result: dict) -> list[dict]:
     """Fabricated structural parts (arms, legs, struts) whose cross-section is too thin to read
     as a solid member: below MIN_STRUCTURE_CROSS_MM, or below a tenth of their own length.
