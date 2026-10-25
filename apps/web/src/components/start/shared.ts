@@ -127,8 +127,10 @@ export function summarizeIntent(intent: IntentSpec): IntentSummary {
     facts.push(`Its brain: ${name}.`);
   }
   if (intent.visual_features.length > 0) facts.push(`From the picture: ${listWords(intent.visual_features)}.`);
-  if (intent.requirements.preferred_color) facts.push(`Color: ${intent.requirements.preferred_color}.`);
-  const unknowns = intent.unknowns.length > 0 ? `Still unknown: ${listWords(intent.unknowns.map(lowerFirst))}.` : null;
+  const color = intent.requirements.preferred_color?.trim();
+  if (color && !/^(unknown|unspecified|not specified|none|n\/a)$/i.test(color)) facts.push(`Color: ${color}.`);
+  const gaps = intent.unknowns.map((s) => lowerFirst(s.trim().replace(/[.!?]+$/, ''))).filter(Boolean);
+  const unknowns = gaps.length > 0 ? `Still unknown: ${listWords(gaps)}.` : null;
   const confidence = CONFIDENCE[String(intent.confidence)] ?? `${capitalize(String(intent.confidence))} confidence`;
   return { headline: `Rivet read this as ${family} that ${behavior}.`, facts, unknowns, confidence };
 }

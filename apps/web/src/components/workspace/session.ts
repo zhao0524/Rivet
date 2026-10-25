@@ -14,6 +14,7 @@ import {
   type ProjectRecord,
 } from '../../lib/flow/projects';
 import { takePendingImage } from '../../lib/flow/pending-image';
+import { RivetError } from '../../lib/rivet/errors';
 import { isConceptPlan, summarizeBom } from '../../lib/rivet/honesty';
 import type { BuildPlan, CatalogComponent, EditOperation, InterpretResponse } from '../../lib/rivet/types';
 import type { useFlowStore } from '../flow/FlowProvider';
@@ -43,6 +44,9 @@ const reading = new Set<string>();
 let jobOwner: { key: string; stale: unknown } | null = null;
 
 const QUESTION_ORDER: readonly ChatQuestion[] = ['use', 'budget', 'size'];
+
+/** Generate refusals that mean the saved reading is gone or stale, not that the build failed. */
+const STALE_INTENT: readonly string[] = ['INTENT_NOT_FOUND', 'INTENT_INPUT_MISMATCH'];
 
 let seq = 0;
 function entryId(kind: string): string {
@@ -187,7 +191,17 @@ export function useWorkspaceSession(): WorkspaceSession {
       try {
         await store.startGeneration(generateRequest(fresh));
       } catch (err) {
-        startedRuns.delete(key);
+        // The stored reading has expired or no longer matches the prompt: build from the prompt alone, once.
+        if (err instanceof RivetError && STALE_INTENT.includes(err.code) && fresh.intentId) {
+          updateProject(id, { intentId: null });
+          try {
+            await store.startGeneration(generateRequest({ ...fresh, intentId: null }));
+            return;
+          } catch (retry) {
+            err = retry;
+          }
+        }
+        // The run stays marked as started, so nothing restarts it on its own; Try again clears the mark.
         setStartError(err instanceof Error && err.message ? err.message : 'Rivet could not start.');
       }
     },

@@ -1,0 +1,697 @@
+{
+ "build_id": "design-c517aa58af1bdc2e0749ab3e",
+ "candidates": [
+  {
+   "bodies": 20,
+   "critical_issues": 1,
+   "feasible": true,
+   "geometry_digest": "f2df0fc3a829406329da4904e4444e0b693ce4923de593120fd241a99d59572d",
+   "hard_collisions": 0,
+   "id": "cand-1",
+   "judge": "openai:gpt-5+critic:gpt-4o",
+   "mechanical_status": "valid",
+   "revisions": [
+    {
+     "accepted": false,
+     "actions": [
+      {
+       "accepted": false,
+       "body_id": null,
+       "reason": "could not scale the design to fit its 6000 x 2000 x 2300 mm envelope: float() argument must be a string or a real number, not 'list'",
+       "round": 0,
+       "set": {
+        "__scale__": 0.44023
+       }
+      }
+     ],
+     "kind": "deterministic_repair",
+     "score_after": 40,
+     "score_before": 40
+    },
+    {
+     "accepted": false,
+     "changed": {
+      "added": [],
+      "changed": [
+       "fuselage",
+       "left_intake_cowl",
+       "tail_fin",
+       "wing_left",
+       "wing_right"
+      ],
+      "removed": [],
+      "unchanged": [
+       "canopy",
+       "left_skid_foot",
+       "left_skid_strut",
+       "neon_trim",
+       "nose_skid_foot",
+       "nose_skid_strut",
+       "nozzle_left",
+       "nozzle_right",
+       "right_skid_foot",
+       "right_skid_strut",
+       "ventral_lift_ports"
+      ]
+     },
+     "kind": "model_patch",
+     "score_after": 40,
+     "score_before": 40
+    },
+    {
+     "accepted": true,
+     "actions": [
+      {
+       "accepted": true,
+       "body_id": null,
+       "reason": "scale the whole design by 0.443 so it fits its declared 6480 x 2160 x 2360 mm envelope (it measured 1680 x 1416.19 x 5220 mm)",
+       "round": 0,
+       "score_after": 30,
+       "score_before": 70,
+       "set": {
+        "__scale__": 0.44307
+       }
+      },
+      {
+       "accepted": true,
+       "before": {
+        "attachment.offset_mm": [
+         0.0,
+         -3.5445,
+         664.5977
+        ]
+       },
+       "body_id": "nose_skid_foot",
+       "reason": "lower nose_skid_foot by 1.9 mm onto the floor the other contact parts stand on",
+       "round": 1,
+       "score_after": 0,
+       "score_before": 30,
+       "set": {
+        "attachment.offset_mm": [
+         0.0,
+         -5.465,
+         664.598
+        ]
+       }
+      },
+      {
+       "accepted": true,
+       "before": {
+        "attachment.offset_mm": [
+         -274.7004,
+         -3.5445,
+         -487.3716
+        ]
+       },
+       "body_id": "rear_left_skid_foot",
+       "reason": "lower rear_left_skid_foot by 1.9 mm onto the floor the other contact parts stand on",
+       "round": 1,
+       "score_after": 0,
+       "score_before": 30,
+       "set": {
+        "attachment.offset_mm": [
+         -274.7,
+         -5.465,
+         -487.372
+        ]
+       }
+      },
+      {
+       "accepted": true,
+       "before": {
+        "attachment.offset_mm": [
+         274.7004,
+         -3.5445,
+         -487.3716
+        ]
+       },
+       "body_id": "rear_right_skid_foot",
+       "reason": "lower rear_right_skid_foot by 1.9 mm onto the floor the other contact parts stand on",
+       "round": 1,
+       "score_after": 0,
+       "score_before": 30,
+       "set": {
+        "attachment.offset_mm": [
+         274.7,
+         -5.465,
+         -487.372
+        ]
+       }
+      },
+      {
+       "accepted": true,
+       "before": {
+        "attachment.offset_mm": [
+         0.0,
+         13.292,
+         531.6782
+        ]
+       },
+       "body_id": "nose_skid_leg",
+       "reason": "lower nose_skid_leg by 0.6 mm onto the floor the other contact parts stand on",
+       "round": 1,
+       "score_after": 0,
+       "score_before": 30,
+       "set": {
+        "attachment.offset_mm": [
+         0.0,
+         12.668,
+         531.678
+        ]
+       }
+      }
+     ],
+     "kind": "deterministic_repair",
+     "score_after": 0,
+     "score_before": 70
+    },
+    {
+     "accepted": true,
+     "blocking_after": [],
+     "blocking_before": [
+      "design exceeds its maximum bounds"
+     ],
+     "feedback": [
+      "The engine rejected the previous attempt: design exceeds its maximum bounds."
+     ],
+     "kind": "reauthor",
+     "score_after": 5.3,
+     "score_before": 7.0
+    },
+    {
+     "accepted": false,
+     "changed": {
+      "added": [
+       "trim_left",
+       "trim_right"
+      ],
+      "changed": [
+       "canopy",
+       "fuselage",
+       "intake_bulge",
+       "intake_tube",
+       "tail_fin"
+      ],
+      "removed": [],
+      "unchanged": [
+       "left_strake",
+       "lift_ports_front",
+       "lift_ports_rear",
+       "nose_skid_foot",
+       "nose_skid_leg",
+       "nozzle_glow_lower",
+       "nozzle_glow_upper",
+       "nozzle_lower",
+       "nozzle_upper",
+       "rear_left_skid_foot",
+       "rear_left_skid_leg",
+       "rear_right_skid_foot",
+       "rear_right_skid_leg",
+       "right_strake",
+       "tail_heat_shield"
+      ]
+     },
+     "critical_after": 0,
+     "critical_before": 1,
+     "geometry_digest_after": "f7da6ead26a3af91c39f6bc246c05544bcb26a10768e95b3f4620f1cf1288385",
+     "geometry_digest_before": "f2df0fc3a829406329da4904e4444e0b693ce4923de593120fd241a99d59572d",
+     "kind": "critic_revision",
+     "round": 1,
+     "score_after": 5.0,
+     "score_before": 5.3
+    },
+    {
+     "accepted": false,
+     "changed": {
+      "added": [
+       "canopy_trim"
+      ],
+      "changed": [
+       "canopy",
+       "fuselage",
+       "intake_bulge",
+       "intake_tube",
+       "tail_fin"
+      ],
+      "removed": [],
+      "unchanged": [
+       "left_strake",
+       "lift_ports_front",
+       "lift_ports_rear",
+       "nose_skid_foot",
+       "nose_skid_leg",
+       "nozzle_glow_lower",
+       "nozzle_glow_upper",
+       "nozzle_lower",
+       "nozzle_upper",
+       "rear_left_skid_foot",
+       "rear_left_skid_leg",
+       "rear_right_skid_foot",
+       "rear_right_skid_leg",
+       "right_strake",
+       "tail_heat_shield"
+      ]
+     },
+     "critical_after": 1,
+     "critical_before": 1,
+     "geometry_digest_after": "c7909aa5025d1622ad27b4f3cb871e6b98bd97001072ff5ddca3b5f4e0daf691",
+     "geometry_digest_before": "f2df0fc3a829406329da4904e4444e0b693ce4923de593120fd241a99d59572d",
+     "kind": "critic_revision",
+     "round": 2,
+     "score_after": 4.5,
+     "score_before": 5.3
+    }
+   ],
+   "shape_types": [
+    "box",
+    "ellipsoid",
+    "extrude_profile",
+    "plate",
+    "revolve_profile",
+    "rounded_box",
+    "sphere",
+    "tube"
+   ],
+   "status": "complete",
+   "strategy": "closest_to_reference",
+   "visual_overall": 5.3,
+   "visual_scores": {
+    "colour_and_surface": 4.0,
+    "pose_and_orientation": 6.0,
+    "proportions": 5.0,
+    "reference_consistency": 5.0,
+    "signature_features": 6.0,
+    "silhouette": 6.0
+   }
+  },
+  {
+   "bodies": 15,
+   "critical_issues": 1,
+   "feasible": true,
+   "geometry_digest": "632a761a562f9c191a3497a38a0d60ab4b712667952a17f198ccc666ce12b7da",
+   "hard_collisions": 0,
+   "id": "cand-2",
+   "judge": "openai:gpt-5+critic:gpt-4o",
+   "mechanical_status": "valid",
+   "revisions": [
+    {
+     "accepted": false,
+     "actions": [
+      {
+       "accepted": false,
+       "body_id": null,
+       "reason": "could not scale the design to fit its 2300 x 2100 x 6240 mm envelope: float() argument must be a string or a real number, not 'list'",
+       "round": 0,
+       "set": {
+        "__scale__": 0.83893
+       }
+      },
+      {
+       "accepted": false,
+       "body_id": "front_skid_leg",
+       "reason": "lower front_skid_leg by 59.6 mm onto the floor the other contact parts stand on",
+       "round": 1,
+       "set": null,
+       "skipped": "needs 59.6 mm, beyond the 8 mm allowance"
+      },
+      {
+       "accepted": false,
+       "body_id": "front_skid_foot",
+       "reason": "lower front_skid_foot by 19.6 mm onto the floor the other contact parts stand on",
+       "round": 1,
+       "set": null,
+       "skipped": "needs 19.6 mm, beyond the 8 mm allowance"
+      },
+      {
+       "accepted": false,
+       "body_id": "rear_left_skid_leg",
+       "reason": "lower rear_left_skid_leg by 53.5 mm onto the floor the other contact parts stand on",
+       "round": 1,
+       "set": null,
+       "skipped": "needs 53.5 mm, beyond the 8 mm allowance"
+      },
+      {
+       "accepted": false,
+       "body_id": "rear_right_skid_leg",
+       "reason": "lower rear_right_skid_leg by 53.5 mm onto the floor the other contact parts stand on",
+       "round": 1,
+       "set": null,
+       "skipped": "needs 53.5 mm, beyond the 8 mm allowance"
+      }
+     ],
+     "kind": "deterministic_repair",
+     "score_after": 70,
+     "score_before": 70
+    },
+    {
+     "accepted": false,
+     "changed": {
+      "added": [],
+      "changed": [
+       "canopy",
+       "front_skid_leg",
+       "fuselage",
+       "left_intake_ring",
+       "nozzle_outer",
+       "tail_fin"
+      ],
+      "removed": [],
+      "unchanged": [
+       "front_skid_foot",
+       "nozzle_core",
+       "rear_left_skid_foot",
+       "rear_left_skid_leg",
+       "rear_right_skid_foot",
+       "rear_right_skid_leg"
+      ]
+     },
+     "kind": "model_patch",
+     "score_after": 70,
+     "score_before": 70
+    },
+    {
+     "accepted": true,
+     "actions": [
+      {
+       "accepted": true,
+       "body_id": null,
+       "reason": "scale the whole design by 0.523 so it fits its declared 6240 x 2080 x 2275 mm envelope (it measured 1747.12 x 2071.6 x 4262.49 mm)",
+       "round": 0,
+       "score_after": 0,
+       "score_before": 40,
+       "set": {
+        "__scale__": 0.52305
+       }
+      }
+     ],
+     "kind": "deterministic_repair",
+     "score_after": 0,
+     "score_before": 40
+    },
+    {
+     "accepted": true,
+     "blocking_after": [],
+     "blocking_before": [
+      "design exceeds its maximum bounds",
+      "design is statically unstable"
+     ],
+     "feedback": [
+      "The engine rejected the previous attempt: design exceeds its maximum bounds.",
+      "The engine rejected the previous attempt: design is statically unstable.",
+      "Stability unstable: centre of mass lies outside the support polygon Contact parts were ['rear_left_skid_foot', 'rear_right_skid_foot'] over 357343.94 mm2. Make every intended wheel, foot or base reach the same lowest level and give at least three contact patches that are not in a straight line."
+     ],
+     "kind": "reauthor",
+     "score_after": 4.0,
+     "score_before": 5.0
+    }
+   ],
+   "shape_types": [
+    "box",
+    "cylinder",
+    "ellipsoid",
+    "extrude_profile",
+    "occupancy",
+    "plate",
+    "tube"
+   ],
+   "status": "complete",
+   "strategy": "simpler_manufacture",
+   "visual_overall": 4.0,
+   "visual_scores": {
+    "colour_and_surface": 6.0,
+    "pose_and_orientation": 5.0,
+    "proportions": 3.0,
+    "reference_consistency": 3.0,
+    "signature_features": 4.0,
+    "silhouette": 4.0
+   }
+  },
+  {
+   "bodies": 14,
+   "critical_issues": 0,
+   "feasible": false,
+   "geometry_digest": "8bf6efa2c709bb00ad64b55dd4c736b16117750c12c594d52d11d78a11d614d2",
+   "hard_collisions": 0,
+   "id": "cand-3",
+   "judge": "openai:gpt-5+critic:gpt-4o",
+   "mechanical_status": "invalid",
+   "revisions": [
+    {
+     "accepted": false,
+     "actions": [
+      {
+       "accepted": false,
+       "body_id": null,
+       "reason": "could not scale the design to fit its 2275 x 2080 x 6240 mm envelope: float() argument must be a string or a real number, not 'list'",
+       "round": 0,
+       "set": {
+        "__scale__": 0.95918
+       }
+      },
+      {
+       "accepted": false,
+       "body_id": "belly_plate",
+       "reason": "slide belly_plate away from rear_fairing_left (1187484.834 mm3 overlap)",
+       "round": 1,
+       "set": null,
+       "skipped": "needs 13.2 mm, beyond the 8 mm allowance"
+      },
+      {
+       "accepted": false,
+       "body_id": "rear_fairing_left",
+       "reason": "slide rear_fairing_left away from rear_left_leg (315000.0 mm3 overlap)",
+       "round": 1,
+       "set": null,
+       "skipped": "needs 51.2 mm, beyond the 8 mm allowance"
+      },
+      {
+       "accepted": false,
+       "body_id": "belly_plate",
+       "reason": "slide belly_plate away from rear_fairing_right (1187484.834 mm3 overlap)",
+       "round": 1,
+       "set": null,
+       "skipped": "needs 13.2 mm, beyond the 8 mm allowance"
+      },
+      {
+       "accepted": false,
+       "body_id": "rear_fairing_right",
+       "reason": "slide rear_fairing_right away from rear_right_leg (315000.0 mm3 overlap)",
+       "round": 1,
+       "set": null,
+       "skipped": "needs 51.2 mm, beyond the 8 mm allowance"
+      }
+     ],
+     "kind": "deterministic_repair",
+     "score_after": 450,
+     "score_before": 450
+    },
+    {
+     "accepted": true,
+     "changed": {
+      "added": [],
+      "changed": [
+       "belly_plate",
+       "front_leg",
+       "rear_left_leg",
+       "rear_right_leg"
+      ],
+      "removed": [],
+      "unchanged": [
+       "canopy",
+       "front_foot",
+       "fuselage",
+       "intake_left",
+       "intake_right",
+       "nozzle",
+       "nozzle_glow_core",
+       "rear_fairing_left",
+       "rear_fairing_right",
+       "rear_left_foot",
+       "rear_right_foot",
+       "tail_fin",
+       "trim_stripe"
+      ]
+     },
+     "kind": "model_patch",
+     "score_after": 250,
+     "score_before": 450
+    },
+    {
+     "accepted": false,
+     "actions": [
+      {
+       "accepted": false,
+       "body_id": null,
+       "reason": "could not scale the design to fit its 2275 x 2080 x 6240 mm envelope: float() argument must be a string or a real number, not 'list'",
+       "round": 0,
+       "set": {
+        "__scale__": 0.8601
+       }
+      }
+     ],
+     "kind": "deterministic_repair",
+     "score_after": 40,
+     "score_before": 40
+    },
+    {
+     "accepted": false,
+     "changed": {
+      "added": [],
+      "changed": [
+       "left_strake",
+       "right_strake"
+      ],
+      "removed": [],
+      "unchanged": [
+       "canopy",
+       "front_skid_foot",
+       "front_skid_leg",
+       "fuselage_main",
+       "left_intake",
+       "rear_left_skid_foot",
+       "rear_left_skid_leg",
+       "rear_right_skid_foot",
+       "rear_right_skid_leg",
+       "tail_fin",
+       "thruster_lower",
+       "thruster_upper"
+      ]
+     },
+     "kind": "model_patch",
+     "score_after": 40,
+     "score_before": 40
+    },
+    {
+     "accepted": true,
+     "blocking_after": [
+      "design exceeds its maximum bounds"
+     ],
+     "blocking_before": [
+      "hard collisions between physical parts",
+      "design exceeds its maximum bounds"
+     ],
+     "feedback": [
+      "The engine rejected the previous attempt: hard collisions between physical parts.",
+      "The engine rejected the previous attempt: design exceeds its maximum bounds.",
+      "rear_fairing_left and belly_plate intersect by 12.0; move one onto the other's outer face instead.",
+      "rear_fairing_right and belly_plate intersect by 12.0; move one onto the other's outer face instead."
+     ],
+     "kind": "reauthor",
+     "score_after": 3.7,
+     "score_before": 6.0
+    }
+   ],
+   "shape_types": [
+    "box",
+    "extrude_profile",
+    "loft",
+    "revolve_profile",
+    "rounded_box",
+    "tube"
+   ],
+   "status": "complete",
+   "strategy": "signature_geometry",
+   "visual_overall": 3.7,
+   "visual_scores": {
+    "colour_and_surface": 3.0,
+    "pose_and_orientation": 5.0,
+    "proportions": 3.0,
+    "reference_consistency": 4.0,
+    "signature_features": 4.0,
+    "silhouette": 3.0
+   }
+  }
+ ],
+ "case": "future_vehicle",
+ "design_model": "openai:gpt-5+critic:gpt-4o",
+ "final_exports": {
+  "assembly_steps": 200,
+  "bom": 200,
+  "glb": 200,
+  "manifest": 200
+ },
+ "generation_mode": "live",
+ "image_model": "openai:gpt-image-1-mini",
+ "limitations": [
+  "Specific propulsion type (jet vs. electric turbo-fan vs. hybrid) and exact thrust values",
+  "Verified hover mechanism performance, endurance, and top speed",
+  "Compliance with any racing league safety or noise standards",
+  "Exact intake sizing/pressure recovery data and compressor distortion margins",
+  "Thermal loads and plume interaction validation for twin nozzles and tail fin",
+  "Symmetric fuselage volume aside from a single left intake bulge",
+  "Minimal panel seams and fastener visibility",
+  "Abstracted internal structure and systems routing",
+  "Generic nozzle geometry (oval/circular) without actuator detail",
+  "Lift system represented as flush ventral ports without visible fan detail",
+  "Visual quality target NOT achieved: 5.3/10 against a target of 8.0/10 with 1 unresolved critical finding(s) after 2 refinement round(s); best result kept, not a verified success"
+ ],
+ "provider_evidence": {
+  "calls": 27,
+  "calls_with_images": 22,
+  "images_sent": 144,
+  "kinds": [
+   "chat",
+   "image",
+   "vision"
+  ]
+ },
+ "renderer": "chromium",
+ "revision": {
+  "accepted": true,
+  "changed_bodies": {
+   "added": [
+    "tail_fin_starboard"
+   ],
+   "changed": [
+    "fuselage"
+   ],
+   "removed": [],
+   "unchanged": [
+    "canopy",
+    "intake_bulge",
+    "intake_tube",
+    "left_strake",
+    "lift_ports_front",
+    "lift_ports_rear",
+    "nose_skid_foot",
+    "nose_skid_leg",
+    "nozzle_glow_lower",
+    "nozzle_glow_upper",
+    "nozzle_lower",
+    "nozzle_upper",
+    "rear_left_skid_foot",
+    "rear_left_skid_leg",
+    "rear_right_skid_foot",
+    "rear_right_skid_leg",
+    "right_strake",
+    "tail_fin",
+    "tail_heat_shield"
+   ]
+  },
+  "events": [
+   "Revision 2: changed fuselage, tail_fin_starboard; unchanged bodies keep their geometry",
+   "Revision 2 saved"
+  ],
+  "geometry_digest_after": "52ffb9f21b17b08d1d0b97a46064b75976b1ce62b0dc3d89f6ef0633b0dd733d",
+  "geometry_digest_before": "f2df0fc3a829406329da4904e4444e0b693ce4923de593120fd241a99d59572d",
+  "instruction": "Lengthen the nose by a third and add a second, smaller fin on the right side of the tail",
+  "job_status": "complete",
+  "revision_after": 2,
+  "revision_before": 1,
+  "visual_after": 6.0
+ },
+ "seconds": 699.1,
+ "selected": "cand-1",
+ "spent_usd": 3.96,
+ "status": "needs_review",
+ "title": "Distinctive futuristic vehicle",
+ "visual_quality": {
+  "achieved": false,
+  "critical_issues": 1,
+  "judge": "openai:gpt-5+critic:gpt-4o",
+  "refinement_rounds": 2,
+  "score": 5.3,
+  "statement": "Visual quality target NOT achieved: 5.3/10 against a target of 8.0/10 with 1 unresolved critical finding(s) after 2 refinement round(s); best result kept, not a verified success",
+  "target": 8.0
+ }
+}

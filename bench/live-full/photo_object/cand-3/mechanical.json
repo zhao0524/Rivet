@@ -1,0 +1,1350 @@
+{
+ "access": {},
+ "blocking": [
+  "hard collisions between physical parts",
+  "moving joints collide within their range"
+ ],
+ "bounds_mm": {
+  "max": [
+   72.591,
+   172.992,
+   83.295
+  ],
+  "min": [
+   -72.591,
+   0.0,
+   -83.295
+  ],
+  "size": [
+   145.183,
+   172.992,
+   166.59
+  ]
+ },
+ "collisions": {
+  "approximate_pairs": [],
+  "broadphase_pairs": 32,
+  "clearance_violations": [],
+  "cosmetic_overlaps": [],
+  "hard_collisions": [
+   {
+    "a": "box_body",
+    "b": "drawer_front_panel",
+    "depth_mm": 7.936,
+    "exact": true,
+    "kind": "collision",
+    "suggestion": "separate box_body and drawer_front_panel by at least 8.9 mm or add a cut-out",
+    "volume_mm3": 4439.385
+   },
+   {
+    "a": "dome_cap",
+    "b": "upper_burr",
+    "depth_mm": 9.573,
+    "exact": true,
+    "kind": "collision",
+    "suggestion": "separate dome_cap and upper_burr by at least 10.6 mm or add a cut-out",
+    "volume_mm3": 1083.057
+   }
+  ],
+  "intended_contacts": [
+   {
+    "a": "base_plinth",
+    "b": "box_body",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.009
+   },
+   {
+    "a": "box_body",
+    "b": "top_plate",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.01
+   },
+   {
+    "a": "box_body",
+    "b": "drawer_box",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "top_plate",
+    "b": "flange_ring",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "top_plate",
+    "b": "corner_screw_fl",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "top_plate",
+    "b": "corner_screw_fr",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "top_plate",
+    "b": "corner_screw_bl",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "top_plate",
+    "b": "corner_screw_br",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "flange_ring",
+    "b": "dome_cap",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "dome_cap",
+    "b": "spindle_collar",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "spindle_collar",
+    "b": "spindle_post",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "spindle_post",
+    "b": "crank_hub",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "crank_hub",
+    "b": "crank_arm",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "crank_hub",
+    "b": "lock_nut",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "crank_arm",
+    "b": "knob_stem",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "hinge_pin",
+    "b": "fill_flap",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "drawer_front_panel",
+    "b": "drawer_knob_stem",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "drawer_knob_stem",
+    "b": "drawer_knob_cap",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   }
+  ],
+  "method": "AABB broadphase + exact mesh boolean narrowphase (manifold3d)",
+  "narrowphase_pairs": 32,
+  "pairs": 406,
+  "unintended_contacts": [
+   {
+    "a": "base_plinth",
+    "b": "drawer_front_panel",
+    "gap_mm": 0.0,
+    "kind": "unintended_contact"
+   }
+  ]
+ },
+ "connectivity": {
+  "connected": true,
+  "max_depth": 10,
+  "note": "every placed body is attached through a named anchor chain to a root",
+  "roots": [
+   "base_plinth"
+  ],
+  "standalone": [],
+  "unresolved": []
+ },
+ "counts": {
+  "blocked_access": 0,
+  "blocking_manufacturing_issues": 0,
+  "clearance_violations": 0,
+  "cosmetic_overlaps": 0,
+  "failed_bodies": 0,
+  "failed_required_bodies": 0,
+  "failed_required_features": 0,
+  "floating_bodies": 0,
+  "hard_collisions": 2,
+  "invalid_hierarchy_cycles": 0,
+  "missing_purchased_part_geometry_source": 0,
+  "sweep_collisions": 11,
+  "unresolved_required_mounts": 0
+ },
+ "manufacturing": {
+  "issues": [
+   {
+    "body_id": "flange_ring",
+    "message": "Dome flange ring is 2.4 mm thick and carries 115 g of attached parts",
+    "rule": "structure.thin_load_path",
+    "severity": "advisory"
+   },
+   {
+    "body_id": "fill_flap",
+    "message": "Bean fill flap is not a flat plate, so it cannot be sheet cut",
+    "rule": "sheet.flat_part",
+    "severity": "advisory"
+   },
+   {
+    "body_id": "fill_flap",
+    "message": "Bean fill flap is a slender unsupported member (length 22 mm, thinnest section 1.6 mm, ratio 14:1); check stiffness",
+    "rule": "structure.unsupported_cantilever",
+    "severity": "advisory",
+    "slenderness": 13.89
+   },
+   {
+    "body_id": "badge_plate",
+    "message": "Front badge is not a flat plate, so it cannot be sheet cut",
+    "rule": "sheet.flat_part",
+    "severity": "advisory"
+   },
+   {
+    "body_id": "badge_plate",
+    "message": "Front badge is a slender unsupported member (length 33 mm, thinnest section 1.6 mm, ratio 21:1); check stiffness",
+    "rule": "structure.unsupported_cantilever",
+    "severity": "advisory",
+    "slenderness": 20.83
+   }
+  ],
+  "parts": [
+   {
+    "bbox_mm": [
+     103.17,
+     9.52,
+     103.17
+    ],
+    "body_id": "base_plinth",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "beech",
+    "min_wall_mm": 9.523,
+    "name": "Base plinth",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 98.058,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     87.29,
+     79.36,
+     87.17
+    ],
+    "body_id": "box_body",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "beech",
+    "min_wall_mm": 4.761,
+    "name": "Wooden box body",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 148.432,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     103.17,
+     11.11,
+     103.17
+    ],
+    "body_id": "top_plate",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "beech",
+    "min_wall_mm": 11.11,
+    "name": "Top overhanging plate",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 114.162,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     79.36,
+     2.38,
+     79.36
+    ],
+    "body_id": "flange_ring",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 33.915,
+    "material": "stainless_steel",
+    "min_wall_mm": 63.487,
+    "name": "Dome flange ring",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 4.239,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     63.49,
+     22.22,
+     63.49
+    ],
+    "body_id": "dome_cap",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 114.623,
+    "material": "stainless_steel",
+    "min_wall_mm": null,
+    "name": "Polished dome",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 14.328,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     17.46,
+     11.11,
+     17.46
+    ],
+    "body_id": "spindle_collar",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 21.278,
+    "material": "stainless_steel",
+    "min_wall_mm": 17.459,
+    "name": "Spindle collar",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 2.66,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     6.35,
+     22.22,
+     6.35
+    ],
+    "body_id": "spindle_post",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 5.627,
+    "material": "stainless_steel",
+    "min_wall_mm": 6.349,
+    "name": "Vertical spindle",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 0.703,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     19.05,
+     4.76,
+     19.05
+    ],
+    "body_id": "crank_hub",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 10.853,
+    "material": "stainless_steel",
+    "min_wall_mm": 19.046,
+    "name": "Crank hub",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 1.357,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     47.62,
+     8.0,
+     11.11
+    ],
+    "body_id": "crank_arm",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 32.926,
+    "material": "stainless_steel",
+    "min_wall_mm": 8.0,
+    "name": "Crank arm",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 4.116,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     11.11,
+     7.94,
+     7.94
+    ],
+    "body_id": "knob_stem",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 4.396,
+    "material": "stainless_steel",
+    "min_wall_mm": 7.936,
+    "name": "Knob stem",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 0.55,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     25.39,
+     25.39,
+     25.39
+    ],
+    "body_id": "knob_ball",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "maple_knob",
+    "min_wall_mm": null,
+    "name": "Crank knob",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 8.575,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     11.11,
+     6.35,
+     11.11
+    ],
+    "body_id": "lock_nut",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 4.924,
+    "material": "stainless_steel",
+    "min_wall_mm": 11.11,
+    "name": "Top lock nut",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 0.615,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     11.11,
+     3.17,
+     3.17
+    ],
+    "body_id": "hinge_pin",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 0.703,
+    "material": "stainless_steel",
+    "min_wall_mm": 3.174,
+    "name": "Fill flap hinge pin",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 0.088,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     22.22,
+     1.6,
+     12.7
+    ],
+    "body_id": "fill_flap",
+    "checks": [
+     {
+      "message": "not a constant-thickness plate",
+      "result": "FAIL",
+      "rule": "sheet.flat_part"
+     }
+    ],
+    "estimate_basis": null,
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 3.487,
+    "material": "stainless_steel",
+    "min_wall_mm": 1.6,
+    "name": "Bean fill flap",
+    "representation": "brep",
+    "route": "sheet_cut",
+    "volume_cm3": 0.436,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     76.18,
+     31.74,
+     71.42
+    ],
+    "body_id": "drawer_box",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "beech",
+    "min_wall_mm": 31.744,
+    "name": "Grounds drawer",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 172.726,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     85.71,
+     39.68,
+     7.94
+    ],
+    "body_id": "drawer_front_panel",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "amber_wood",
+    "min_wall_mm": 7.936,
+    "name": "Drawer front panel",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 25.59,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     7.94,
+     7.94,
+     7.94
+    ],
+    "body_id": "drawer_knob_stem",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 3.14,
+    "material": "stainless_steel",
+    "min_wall_mm": 7.936,
+    "name": "Drawer knob stem",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 0.393,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     12.7,
+     12.7,
+     12.7
+    ],
+    "body_id": "drawer_knob_cap",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 8.575,
+    "material": "stainless_steel",
+    "min_wall_mm": null,
+    "name": "Drawer knob cap",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 1.072,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     33.33,
+     1.6,
+     20.63
+    ],
+    "body_id": "badge_plate",
+    "checks": [
+     {
+      "message": "not a constant-thickness plate",
+      "result": "FAIL",
+      "rule": "sheet.flat_part"
+     }
+    ],
+    "estimate_basis": null,
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 9.15,
+    "material": "brass",
+    "min_wall_mm": 1.6,
+    "name": "Front badge",
+    "representation": "brep",
+    "route": "sheet_cut",
+    "volume_cm3": 1.077,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     3.65,
+     2.38,
+     3.65
+    ],
+    "body_id": "flange_screw_1",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 0.196,
+    "material": "steel",
+    "min_wall_mm": 3.65,
+    "name": "Flange screw 1",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 0.025,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     3.65,
+     2.38,
+     3.65
+    ],
+    "body_id": "flange_screw_2",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 0.196,
+    "material": "steel",
+    "min_wall_mm": 3.65,
+    "name": "Flange screw 2",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 0.025,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     3.65,
+     2.38,
+     3.65
+    ],
+    "body_id": "flange_screw_3",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 0.196,
+    "material": "steel",
+    "min_wall_mm": 3.65,
+    "name": "Flange screw 3",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 0.025,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     3.65,
+     2.38,
+     3.65
+    ],
+    "body_id": "flange_screw_4",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 0.196,
+    "material": "steel",
+    "min_wall_mm": 3.65,
+    "name": "Flange screw 4",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 0.025,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     3.97,
+     2.38,
+     3.97
+    ],
+    "body_id": "corner_screw_fl",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 0.231,
+    "material": "steel",
+    "min_wall_mm": 3.968,
+    "name": "Top corner screw FL",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 0.029,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     3.97,
+     2.38,
+     3.97
+    ],
+    "body_id": "corner_screw_fr",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 0.231,
+    "material": "steel",
+    "min_wall_mm": 3.968,
+    "name": "Top corner screw FR",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 0.029,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     3.97,
+     2.38,
+     3.97
+    ],
+    "body_id": "corner_screw_bl",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 0.231,
+    "material": "steel",
+    "min_wall_mm": 3.968,
+    "name": "Top corner screw BL",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 0.029,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     3.97,
+     2.38,
+     3.97
+    ],
+    "body_id": "corner_screw_br",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 0.231,
+    "material": "steel",
+    "min_wall_mm": 3.968,
+    "name": "Top corner screw BR",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 0.029,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     44.44,
+     15.87,
+     44.44
+    ],
+    "body_id": "lower_burr",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "hardened_steel",
+    "min_wall_mm": null,
+    "name": "Lower conical burr",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 3.978,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     39.68,
+     14.28,
+     39.68
+    ],
+    "body_id": "upper_burr",
+    "checks": [
+     {
+      "message": "machinability (tool access, internal corners) needs a machinist's review",
+      "result": "UNKNOWN",
+      "rule": "cnc.review"
+     }
+    ],
+    "estimate_basis": "CNC parts need a shop quote",
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "hardened_steel",
+    "min_wall_mm": null,
+    "name": "Upper conical burr",
+    "representation": "brep",
+    "route": "cnc",
+    "volume_cm3": 2.487,
+    "watertight": true
+   }
+  ],
+  "rules": {
+   "min_wall_mm": 1.6,
+   "slender_fail": 25.0,
+   "slender_warn": 12.0
+  }
+ },
+ "report_url": "/api/v2/assets/asset-5a0466243abeb7a50f947fe93fafe8634f0ef84cedaf8766d7313a1ec3818871",
+ "stability": {
+  "com_mm": [
+   -18.637,
+   66.578,
+   -13.97
+  ],
+  "contact_bodies": [
+   "base_plinth"
+  ],
+  "known_mass_g": 255.3,
+  "limitations": [
+   "Static check on a flat, level floor; no dynamics, impacts, slopes or motor torque",
+   "Not a structural strength or safety certification"
+  ],
+  "margin_mm": 31.415,
+  "margin_range_mm": [
+   27.973,
+   43.518
+  ],
+  "reason": "centre of mass stays at least 28.0 mm inside the support polygon",
+  "scenarios": {
+   "unknown_heavy": {
+    "com_mm": [
+     -19.32,
+     54.418,
+     -10.528
+    ],
+    "margin_mm": 27.973,
+    "tip_direction_xz": [
+     0.0,
+     1.0
+    ],
+    "total_mass_g": 2149.53
+   },
+   "unknown_nominal": {
+    "com_mm": [
+     -18.637,
+     66.578,
+     -13.97
+    ],
+    "margin_mm": 31.415,
+    "tip_direction_xz": [
+     0.0,
+     1.0
+    ],
+    "total_mass_g": 886.71
+   },
+   "unknown_zero": {
+    "com_mm": [
+     -15.763,
+     117.771,
+     -28.46
+    ],
+    "margin_mm": 43.518,
+    "tip_direction_xz": [
+     1.0,
+     -0.0
+    ],
+    "total_mass_g": 255.3
+   }
+  },
+  "support_area_mm2": 9584.42,
+  "support_polygon_xz_mm": [
+   [
+    -69.772,
+    -79.009
+   ],
+   [
+    -68.738,
+    -80.869
+   ],
+   [
+    26.722,
+    -80.869
+   ],
+   [
+    27.755,
+    -79.009
+   ],
+   [
+    27.755,
+    15.586
+   ],
+   [
+    26.722,
+    17.445
+   ],
+   [
+    -68.738,
+    17.445
+   ],
+   [
+    -69.772,
+    15.586
+   ]
+  ],
+  "tip_direction_xz": [
+   0.0,
+   1.0
+  ],
+  "unknown_mass_bodies": [
+   "base_plinth",
+   "box_body",
+   "top_plate",
+   "knob_ball",
+   "drawer_box",
+   "drawer_front_panel",
+   "lower_burr",
+   "upper_burr"
+  ],
+  "verdict": "stable"
+ },
+ "status": "invalid",
+ "sweeps": [
+  {
+   "a": "upper_burr",
+   "b": "dome_cap",
+   "depth_mm": 9.573,
+   "exact": true,
+   "joint_body": "spindle_post",
+   "value": 0.0,
+   "volume_mm3": 1083.057
+  },
+  {
+   "a": "upper_burr",
+   "b": "dome_cap",
+   "depth_mm": 9.706,
+   "exact": true,
+   "joint_body": "spindle_post",
+   "value": 45.0,
+   "volume_mm3": 1083.19
+  },
+  {
+   "a": "upper_burr",
+   "b": "dome_cap",
+   "depth_mm": 9.75,
+   "exact": true,
+   "joint_body": "spindle_post",
+   "value": 90.0,
+   "volume_mm3": 1083.293
+  },
+  {
+   "a": "upper_burr",
+   "b": "dome_cap",
+   "depth_mm": 9.706,
+   "exact": true,
+   "joint_body": "spindle_post",
+   "value": 135.0,
+   "volume_mm3": 1083.19
+  },
+  {
+   "a": "upper_burr",
+   "b": "dome_cap",
+   "depth_mm": 9.573,
+   "exact": true,
+   "joint_body": "spindle_post",
+   "value": 180.0,
+   "volume_mm3": 1083.057
+  },
+  {
+   "a": "upper_burr",
+   "b": "dome_cap",
+   "depth_mm": 9.706,
+   "exact": true,
+   "joint_body": "spindle_post",
+   "value": 225.0,
+   "volume_mm3": 1083.19
+  },
+  {
+   "a": "upper_burr",
+   "b": "dome_cap",
+   "depth_mm": 9.75,
+   "exact": true,
+   "joint_body": "spindle_post",
+   "value": 270.0,
+   "volume_mm3": 1083.293
+  },
+  {
+   "a": "upper_burr",
+   "b": "dome_cap",
+   "depth_mm": 9.706,
+   "exact": true,
+   "joint_body": "spindle_post",
+   "value": 315.0,
+   "volume_mm3": 1083.19
+  },
+  {
+   "a": "upper_burr",
+   "b": "dome_cap",
+   "depth_mm": 9.573,
+   "exact": true,
+   "joint_body": "spindle_post",
+   "value": 360.0,
+   "volume_mm3": 1083.057
+  },
+  {
+   "a": "drawer_front_panel",
+   "b": "box_body",
+   "depth_mm": 7.936,
+   "exact": true,
+   "joint_body": "drawer_box",
+   "value": 0.0,
+   "volume_mm3": 4439.385
+  },
+  {
+   "a": "drawer_front_panel",
+   "b": "box_body",
+   "depth_mm": 3.154,
+   "exact": true,
+   "joint_body": "drawer_box",
+   "value": 8.75,
+   "volume_mm3": 992.276
+  }
+ ],
+ "within_max_bounds": true
+}

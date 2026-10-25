@@ -1,0 +1,2958 @@
+{
+ "bodies": [
+  {
+   "anchors": [],
+   "attachment": null,
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "base_plinth",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#D8B076",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "beech_wood",
+    "opacity": 1.0,
+    "roughness": 0.5
+   },
+   "name": "Base plinth",
+   "parent_id": null,
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "base",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     128.0,
+     12.0,
+     128.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 5.4,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "footprint"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "fastened",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [
+    {
+     "axis": "X",
+     "count": 1,
+     "counterbore_depth_mm": 2.0,
+     "counterbore_radius_mm": 4.0,
+     "depth_mm": 1.2,
+     "edges": "all",
+     "id": "seam_front",
+     "length_mm": 96.0,
+     "open_face": "top",
+     "pattern_axis": "X",
+     "position_mm": [
+      0.0,
+      0.0,
+      56.0
+     ],
+     "radius_mm": 2.0,
+     "required": false,
+     "spacing_mm": 5.0,
+     "type": "pocket",
+     "wall_mm": 2.0,
+     "width_mm": 2.0
+    },
+    {
+     "axis": "X",
+     "count": 1,
+     "counterbore_depth_mm": 2.0,
+     "counterbore_radius_mm": 4.0,
+     "depth_mm": 1.2,
+     "edges": "all",
+     "id": "seam_back",
+     "length_mm": 96.0,
+     "open_face": "top",
+     "pattern_axis": "X",
+     "position_mm": [
+      0.0,
+      0.0,
+      -56.0
+     ],
+     "radius_mm": 2.0,
+     "required": false,
+     "spacing_mm": 5.0,
+     "type": "pocket",
+     "wall_mm": 2.0,
+     "width_mm": 2.0
+    },
+    {
+     "axis": "Z",
+     "count": 1,
+     "counterbore_depth_mm": 2.0,
+     "counterbore_radius_mm": 4.0,
+     "depth_mm": 1.2,
+     "edges": "all",
+     "id": "seam_left",
+     "length_mm": 96.0,
+     "open_face": "top",
+     "pattern_axis": "X",
+     "position_mm": [
+      -56.0,
+      0.0,
+      0.0
+     ],
+     "radius_mm": 2.0,
+     "required": false,
+     "spacing_mm": 5.0,
+     "type": "pocket",
+     "wall_mm": 2.0,
+     "width_mm": 2.0
+    },
+    {
+     "axis": "Z",
+     "count": 1,
+     "counterbore_depth_mm": 2.0,
+     "counterbore_radius_mm": 4.0,
+     "depth_mm": 1.2,
+     "edges": "all",
+     "id": "seam_right",
+     "length_mm": 96.0,
+     "open_face": "top",
+     "pattern_axis": "X",
+     "position_mm": [
+      56.0,
+      0.0,
+      0.0
+     ],
+     "radius_mm": 2.0,
+     "required": false,
+     "spacing_mm": 5.0,
+     "type": "pocket",
+     "wall_mm": 2.0,
+     "width_mm": 2.0
+    }
+   ],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "box_body",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#D8B076",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "beech_wood",
+    "opacity": 1.0,
+    "roughness": 0.5
+   },
+   "name": "Box body",
+   "parent_id": "base_plinth",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "body",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     112.0,
+     100.0,
+     112.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 8.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "wooden_box"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "fastened",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "top_plate",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#D8B076",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "beech_wood",
+    "opacity": 1.0,
+    "roughness": 0.5
+   },
+   "name": "Top plate",
+   "parent_id": "box_body",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "lid_support",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     128.0,
+     12.0,
+     128.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 5.4,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "overhang"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "dome_ring",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "molded",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.9,
+    "name": "stainless_steel",
+    "opacity": 1.0,
+    "roughness": 0.25
+   },
+   "name": "Dome flange ring",
+   "parent_id": "top_plate",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "ring",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [
+     {
+      "angle_deg": 360.0,
+      "asset_id": null,
+      "axis": "Y",
+      "children": [],
+      "dimensions_mm": [
+       20.0,
+       20.0,
+       20.0
+      ],
+      "frame": {
+       "position_mm": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "height_mm": 3.0,
+      "hollow": false,
+      "minor_radius_mm": 2.0,
+      "open_face": "none",
+      "operation": "union",
+      "path_mm": [],
+      "pitch_mm": 2.0,
+      "profile_mm": [],
+      "radius_mm": 48.0,
+      "radius_top_mm": 0.0,
+      "ruled": false,
+      "section_heights_mm": [],
+      "sections": [],
+      "smoothing_mm": 2.0,
+      "spokes": 0,
+      "type": "cylinder",
+      "wall_mm": 2.0
+     },
+     {
+      "angle_deg": 360.0,
+      "asset_id": null,
+      "axis": "Y",
+      "children": [],
+      "dimensions_mm": [
+       20.0,
+       20.0,
+       20.0
+      ],
+      "frame": {
+       "position_mm": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "height_mm": 3.0,
+      "hollow": false,
+      "minor_radius_mm": 2.0,
+      "open_face": "none",
+      "operation": "union",
+      "path_mm": [],
+      "pitch_mm": 2.0,
+      "profile_mm": [],
+      "radius_mm": 36.0,
+      "radius_top_mm": 0.0,
+      "ruled": false,
+      "section_heights_mm": [],
+      "sections": [],
+      "smoothing_mm": 2.0,
+      "spokes": 0,
+      "type": "cylinder",
+      "wall_mm": 2.0
+     }
+    ],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "difference",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 5.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "boolean",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "flange"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "dome",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "molded",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.9,
+    "name": "stainless_steel",
+    "opacity": 1.0,
+    "roughness": 0.25
+   },
+   "name": "Polished dome",
+   "parent_id": "dome_ring",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "dome",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [
+     [
+      36.0,
+      0.0
+     ],
+     [
+      37.0,
+      2.0
+     ],
+     [
+      35.0,
+      8.0
+     ],
+     [
+      24.0,
+      16.0
+     ],
+     [
+      10.0,
+      24.0
+     ],
+     [
+      0.0,
+      30.0
+     ]
+    ],
+    "radius_mm": 5.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "revolve_profile",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "lid"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "shaft_collar",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.9,
+    "name": "stainless_steel",
+    "opacity": 1.0,
+    "roughness": 0.25
+   },
+   "name": "Shaft collar",
+   "parent_id": "dome",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "collar",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 12.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 9.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": []
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "spindle_shaft",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.85,
+    "name": "steel",
+    "opacity": 1.0,
+    "roughness": 0.3
+   },
+   "name": "Spindle shaft",
+   "parent_id": "shaft_collar",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "shaft",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 30.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 4.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": []
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "clearance",
+    "fasteners": null,
+    "joint": "shaft",
+    "limits": [
+     -180.0,
+     180.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.6,
+     0.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "crank_arm",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.9,
+    "name": "stainless_steel",
+    "opacity": 1.0,
+    "roughness": 0.25
+   },
+   "name": "Crank arm",
+   "parent_id": "spindle_shaft",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "crank_arm",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     140.0,
+     10.0,
+     12.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 5.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "box",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": []
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "spindle_cap_nut",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.95,
+    "name": "steel_polished",
+    "opacity": 1.0,
+    "roughness": 0.2
+   },
+   "name": "Cap nut",
+   "parent_id": "crank_arm",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "fastener",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 10.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 7.0,
+    "radius_top_mm": 4.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cone",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "nut"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "back",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     -7.0,
+     0.0
+    ],
+    "parent_anchor": "right",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "knob_stem",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.9,
+    "name": "stainless_steel",
+    "opacity": 1.0,
+    "roughness": 0.25
+   },
+   "name": "Knob stem",
+   "parent_id": "crank_arm",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "fastener",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 10.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 4.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": []
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "top",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    "parent_anchor": "bottom",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "knob_wood",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#B78545",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "maple_wood",
+    "opacity": 1.0,
+    "roughness": 0.45
+   },
+   "name": "Handle knob",
+   "parent_id": "knob_stem",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "knob",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 12.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "sphere",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "grip"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Z",
+    "child_anchor": "back",
+    "clearance_mm": 0.0,
+    "contact": "clearance",
+    "fasteners": null,
+    "joint": "slide",
+    "limits": [
+     0.0,
+     60.0
+    ],
+    "offset_mm": [
+     0.0,
+     -24.0,
+     1.0
+    ],
+    "parent_anchor": "front",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "drawer_front",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#D8B076",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "beech_wood",
+    "opacity": 1.0,
+    "roughness": 0.5
+   },
+   "name": "Drawer front",
+   "parent_id": "box_body",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "drawer_front",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     92.0,
+     44.0,
+     8.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 3.6,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "sliding_face"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "back",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "front",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "drawer_knob_stem",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.95,
+    "name": "steel_polished",
+    "opacity": 1.0,
+    "roughness": 0.2
+   },
+   "name": "Drawer knob stem",
+   "parent_id": "drawer_front",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "fastener",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Z",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 8.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 5.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": []
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "back",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "front",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "drawer_knob_cap",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.95,
+    "name": "steel_polished",
+    "opacity": 1.0,
+    "roughness": 0.2
+   },
+   "name": "Drawer pull cap",
+   "parent_id": "drawer_knob_stem",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "knob",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 7.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "sphere",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": []
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "back",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     10.0,
+     1.0
+    ],
+    "parent_anchor": "front",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "badge_plate",
+   "internal": false,
+   "kind": "concept_visual",
+   "manufacturing": "none",
+   "material": {
+    "color": "#6B3E2E",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.3,
+    "name": "brass_tone",
+    "opacity": 1.0,
+    "roughness": 0.55
+   },
+   "name": "Front badge plate",
+   "parent_id": "box_body",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "decor",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     40.0,
+     2.0,
+     22.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 0.9,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "logo_plate"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     44.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "ring_screw_n",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.95,
+    "name": "steel_polished",
+    "opacity": 1.0,
+    "roughness": 0.2
+   },
+   "name": "Flange screw N",
+   "parent_id": "dome_ring",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "fastener",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 2.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 2.5,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "flange_screw"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     -44.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "ring_screw_s",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.95,
+    "name": "steel_polished",
+    "opacity": 1.0,
+    "roughness": 0.2
+   },
+   "name": "Flange screw S",
+   "parent_id": "dome_ring",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "fastener",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 2.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 2.5,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "flange_screw"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     44.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "ring_screw_e",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.95,
+    "name": "steel_polished",
+    "opacity": 1.0,
+    "roughness": 0.2
+   },
+   "name": "Flange screw E",
+   "parent_id": "dome_ring",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "fastener",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 2.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 2.5,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "flange_screw"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     -44.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "ring_screw_w",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.95,
+    "name": "steel_polished",
+    "opacity": 1.0,
+    "roughness": 0.2
+   },
+   "name": "Flange screw W",
+   "parent_id": "dome_ring",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "fastener",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 2.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 2.5,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "flange_screw"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     50.0,
+     0.0,
+     50.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "wood_screw_ne",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.95,
+    "name": "steel_polished",
+    "opacity": 1.0,
+    "roughness": 0.2
+   },
+   "name": "Top plate screw NE",
+   "parent_id": "top_plate",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "fastener",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 2.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 2.5,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "top_plate_screw"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     -50.0,
+     0.0,
+     50.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "wood_screw_nw",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.95,
+    "name": "steel_polished",
+    "opacity": 1.0,
+    "roughness": 0.2
+   },
+   "name": "Top plate screw NW",
+   "parent_id": "top_plate",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "fastener",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 2.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 2.5,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "top_plate_screw"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     50.0,
+     0.0,
+     -50.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "wood_screw_se",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.95,
+    "name": "steel_polished",
+    "opacity": 1.0,
+    "roughness": 0.2
+   },
+   "name": "Top plate screw SE",
+   "parent_id": "top_plate",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "fastener",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 2.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 2.5,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "top_plate_screw"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     -50.0,
+     0.0,
+     -50.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "wood_screw_sw",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.95,
+    "name": "steel_polished",
+    "opacity": 1.0,
+    "roughness": 0.2
+   },
+   "name": "Top plate screw SW",
+   "parent_id": "top_plate",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "fastener",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 2.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 2.5,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "top_plate_screw"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "X",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "clearance",
+    "fasteners": null,
+    "joint": "hinge",
+    "limits": [
+     0.0,
+     80.0
+    ],
+    "offset_mm": [
+     -26.0,
+     1.6,
+     10.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "bean_lid",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.9,
+    "name": "stainless_steel",
+    "opacity": 1.0,
+    "roughness": 0.25
+   },
+   "name": "Bean fill lid",
+   "parent_id": "dome",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "lid",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     24.0,
+     2.0,
+     16.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 0.9,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "hinged_flap"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     8.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "bean_tab",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "cnc",
+   "material": {
+    "color": "#C0C6CC",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.95,
+    "name": "steel_polished",
+    "opacity": 1.0,
+    "roughness": 0.2
+   },
+   "name": "Lid lift tab",
+   "parent_id": "bean_lid",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "fastener",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 6.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 2.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "tab"
+   ]
+  }
+ ],
+ "constraints": {
+  "handedness": "right",
+  "max_bounds_mm": [
+   180.0,
+   220.0,
+   180.0
+  ],
+  "mesh_tolerance_mm": 0.15,
+  "min_general_clearance_mm": 1.0,
+  "min_wall_mm": 1.6,
+  "must_be_stable": true,
+  "printer_volume_mm": [
+   256.0,
+   256.0,
+   256.0
+  ],
+  "units": "mm",
+  "up_axis": "Y"
+ },
+ "mode": "concept_only",
+ "notes": [],
+ "schema_version": "2.0",
+ "seed": 0,
+ "strategy": "closest_to_reference",
+ "subject": "Vintage hand-crank coffee grinder (box mill)",
+ "visual_goal": {
+  "description": "Compact square wooden box grinder with chrome dome lid, lateral crank and small front drawer face.",
+  "palette": [
+   {
+    "hex": "#D8B076",
+    "name": "Honey beech wood"
+   },
+   {
+    "hex": "#B78545",
+    "name": "Aged amber wood"
+   },
+   {
+    "hex": "#C0C6CC",
+    "name": "Polished steel"
+   },
+   {
+    "hex": "#6B3E2E",
+    "name": "Coffee bean brown"
+   },
+   {
+    "hex": "#222222",
+    "name": "Black accent"
+   }
+  ],
+  "proportion_targets": {},
+  "reference_image_ids": [],
+  "signature_features": [
+   "Square wooden box body with rounded edges and base plinth",
+   "Polished metal dome with circular flange and central spindle",
+   "Side crank arm with spherical wooden knob",
+   "Front pull-out drawer front with round metal pull",
+   "Small badge on the front face",
+   "Exposed screws around the flange and on the top plate corners"
+  ],
+  "target_size_mm": [
+   130.0,
+   130.0,
+   200.0
+  ],
+  "uncertainties": []
+ }
+}

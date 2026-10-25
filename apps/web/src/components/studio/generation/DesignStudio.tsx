@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import Link from 'next/link';
+import '../../../styles/generation.css';
 import { RivetStage } from '../../three/stage/RivetStage';
 import { CandidateCompare } from '../../three/generation/CandidateCompare';
 import { DesignLayers } from '../../three/generation/DesignLayers';
@@ -23,8 +25,12 @@ export function DesignStudio({ request, onExit }: { request: DesignStartRequest 
   const [frame, setFrame] = useState<Bounds | null>(null);
   const [instruction, setInstruction] = useState('');
   const [showDiff, setShowDiff] = useState(false);
+  const startedRequest = useRef<DesignStartRequest | null>(null);
   useEffect(() => {
-    if (request) void d.start(request);
+    if (request && startedRequest.current !== request) {
+      startedRequest.current = request;
+      void d.start(request);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request]);
 
@@ -35,10 +41,27 @@ export function DesignStudio({ request, onExit }: { request: DesignStartRequest 
   const exportUrl = (kind: string, bodyId?: string) => (d.bundle ? d.source.exportUrl(d.bundle, kind, bodyId) : '#');
   const fabricated = chosen?.part_manifest.filter((p) => p.kind === 'fabricated') ?? [];
 
+  if (d.error && !d.bundle && !d.busy) {
+    return (
+      <main className="app-main app-main--narrow" data-testid="design-start-failed">
+        <section className="ui-card ui-card--pad" role="alert">
+          <h1 className="ui-h2">We couldn&apos;t generate this design</h1>
+          <p className="ui-muted">{d.error}</p>
+          <p>Your prompt is kept. You can try again, change the request, or explore the saved projects.</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+            <button className="ui-btn ui-btn--primary" onClick={() => request && void d.start(request)}>Try again</button>
+            <button className="ui-btn ui-btn--secondary" onClick={onExit}>Back to your prompt</button>
+            <Link href="/projects" className="ui-btn ui-btn--secondary">Projects and examples</Link>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
   return (
-    <div data-testid="design-studio" style={{ position: 'fixed', inset: 0, display: 'grid', gridTemplateColumns: 'minmax(240px, 22%) 1fr minmax(300px, 28%)', gridTemplateRows: 'auto 1fr', background: 'var(--rv-bg, #0f1115)', color: 'var(--rv-text, #e6e8eb)', zIndex: 50 }}>
+    <div data-testid="design-studio" className="design-workspace">
       <header style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px', borderBottom: '1px solid var(--rv-border, #2a2f37)' }}>
-        <button type="button" className="rv-btn" onClick={onExit} data-testid="design-exit">Back to studio</button>
+        <button type="button" className="rv-btn" onClick={onExit} data-testid="design-exit">Back to your prompt</button>
         <strong data-testid="design-title">{d.bundle?.title ?? request?.text ?? '3D design'}</strong>
         {d.bundle ? <span className={`rv-badge rv-badge--${d.bundle.status === 'complete' ? 'ok' : d.bundle.status === 'unbuildable' ? 'bad' : 'warn'}`} data-testid="design-status">{d.bundle.status.replace(/_/g, ' ')}</span> : null}
         {d.bundle ? <span className="rv-badge" data-testid="design-mode">{d.bundle.mode === 'engineered' ? 'Engineered' : 'Concept only'} · {d.bundle.provenance.generation_mode}{d.bundle.provenance.cached ? ' · cached replay' : ' · fresh'}</span> : null}
@@ -54,7 +77,7 @@ export function DesignStudio({ request, onExit }: { request: DesignStartRequest 
         {d.bundle?.distilled ? <p className="rv-hint" data-testid="design-features">Signature features: {d.bundle.distilled.signature_features.join(', ')}</p> : null}
         <GenerationTimeline events={d.events} />
       </aside>
-      <main style={{ position: 'relative', minHeight: 0 }}>
+      <main className="design-workspace__stage">
         <RivetStage boundsMm={frame ?? undefined} label="Generated 3D design" onBackgroundClick={() => setSelectedBody(null)}>
           <PreviewSwapper url={sceneUrl} selectedBodyId={selectedBody} layers={layers} explode={explode} onSelect={setSelectedBody}
             onBounds={(b) => setFrame((prev) => growBounds(prev, b))} />
@@ -63,7 +86,7 @@ export function DesignStudio({ request, onExit }: { request: DesignStartRequest 
           <DesignLayers layers={layers} onChange={setLayers} explode={explode} onExplode={setExplode} />
           {d.bundle ? (
             <form onSubmit={(e) => { e.preventDefault(); if (instruction.trim()) { void d.revise(instruction.trim()); setInstruction(''); } }} style={{ display: 'flex', gap: 6 }}>
-              <input className="rv-input" data-testid="design-revise-input" value={instruction} onChange={(e) => setInstruction(e.target.value)} placeholder="Describe a change, e.g. make the chassis wider" disabled={d.busy} />
+              <input className="rv-input" aria-label="Describe a design change" data-testid="design-revise-input" value={instruction} onChange={(e) => setInstruction(e.target.value)} placeholder="Describe a change, e.g. make the chassis wider" disabled={d.busy} />
               <button type="submit" className="rv-btn rv-btn--primary" data-testid="design-revise-submit" disabled={d.busy || !instruction.trim()}>Revise</button>
             </form>
           ) : null}

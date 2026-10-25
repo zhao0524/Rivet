@@ -1,0 +1,1628 @@
+{
+ "bodies": [
+  {
+   "anchors": [],
+   "attachment": null,
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "body_shell",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#2B2B2B",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.1,
+    "name": "pc-abs",
+    "opacity": 1.0,
+    "roughness": 0.6
+   },
+   "name": "Main body shell",
+   "parent_id": null,
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "body",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     125.0,
+     73.0,
+     36.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 7.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "camera_body",
+    "chassis"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "back",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     25.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "front",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "lens_mount_ring",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#D0D3D4",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.85,
+    "name": "magnesium_alloy",
+    "opacity": 1.0,
+    "roughness": 0.35
+   },
+   "name": "Lens mount ring",
+   "parent_id": "body_shell",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "bezel",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Z",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 2.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 26.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "tube",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "mount",
+    "accent"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "back",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     25.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "front",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "lens_barrel",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#2B2B2B",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.7,
+    "name": "aluminum_black_anodized",
+    "opacity": 1.0,
+    "roughness": 0.35
+   },
+   "name": "Lens barrel",
+   "parent_id": "body_shell",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "lens",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Z",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [
+     [
+      22.0,
+      0.0
+     ],
+     [
+      22.5,
+      2.0
+     ],
+     [
+      21.5,
+      6.0
+     ],
+     [
+      22.5,
+      10.0
+     ],
+     [
+      21.0,
+      16.0
+     ],
+     [
+      22.0,
+      18.0
+     ]
+    ],
+    "radius_mm": 5.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "revolve_profile",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "optics",
+    "barrel"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "back",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "front",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "lens_front_glass",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#2E4A40",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "optical_glass",
+    "opacity": 1.0,
+    "roughness": 0.05
+   },
+   "name": "Front element",
+   "parent_id": "lens_barrel",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "glass",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Z",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 3.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 17.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "optics"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "back",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     -44.5,
+     -14.0,
+     0.0
+    ],
+    "parent_anchor": "front",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "grip_panel",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#0F0F0F",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "tpe_rubber",
+    "opacity": 1.0,
+    "roughness": 0.9
+   },
+   "name": "Left rubber grip",
+   "parent_id": "body_shell",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "grip",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     36.0,
+     50.0,
+     3.5
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 1.575,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "texture",
+    "tactile"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "back",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     -50.0,
+     23.0,
+     0.0
+    ],
+    "parent_anchor": "front",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "viewfinder_housing",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#2B2B2B",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.05,
+    "name": "pc-abs",
+    "opacity": 1.0,
+    "roughness": 0.6
+   },
+   "name": "Viewfinder housing (front)",
+   "parent_id": "body_shell",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "bezel",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     14.0,
+     6.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 2.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "viewfinder"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "back",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "front",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "viewfinder_glass",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#354A52",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "optical_glass",
+    "opacity": 1.0,
+    "roughness": 0.06
+   },
+   "name": "Viewfinder window glass",
+   "parent_id": "viewfinder_housing",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "glass",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     12.0,
+     8.0,
+     2.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 5.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "box",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "window"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "shaft",
+    "limits": [
+     0.0,
+     360.0
+    ],
+    "offset_mm": [
+     -35.0,
+     0.0,
+     -6.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [
+    {
+     "axis": "Y",
+     "count": 1,
+     "counterbore_depth_mm": 2.0,
+     "counterbore_radius_mm": 4.0,
+     "depth_mm": 10.0,
+     "edges": "top",
+     "id": "dial_top_chamfer",
+     "length_mm": 10.0,
+     "open_face": "top",
+     "pattern_axis": "X",
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "radius_mm": 0.8,
+     "required": false,
+     "spacing_mm": 5.0,
+     "type": "chamfer",
+     "wall_mm": 2.0,
+     "width_mm": 2.0
+    }
+   ],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "top_dial",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#D0D3D4",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.85,
+    "name": "anodized_aluminum",
+    "opacity": 1.0,
+    "roughness": 0.35
+   },
+   "name": "Top knurled dial",
+   "parent_id": "body_shell",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "dial",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 6.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 13.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "control"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     10.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "dial_marker",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#FF6A00",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "paint",
+    "opacity": 1.0,
+    "roughness": 0.5
+   },
+   "name": "Dial indicator pip",
+   "parent_id": "top_dial",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "indicator",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     20.0,
+     20.0,
+     20.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 1.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 1.5,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "marker"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     -10.0,
+     0.0,
+     -2.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "hot_shoe_left_rail",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#D0D3D4",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 1.0,
+    "name": "stainless_steel",
+    "opacity": 1.0,
+    "roughness": 0.25
+   },
+   "name": "Hot shoe rail (left)",
+   "parent_id": "body_shell",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "hot_shoe_rail",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     2.0,
+     2.5,
+     22.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 0.5,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "accessory_mount"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     10.0,
+     0.0,
+     -2.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "hot_shoe_right_rail",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#D0D3D4",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 1.0,
+    "name": "stainless_steel",
+    "opacity": 1.0,
+    "roughness": 0.25
+   },
+   "name": "Hot shoe rail (right)",
+   "parent_id": "body_shell",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "hot_shoe_rail",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     2.0,
+     2.5,
+     22.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 0.5,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "accessory_mount"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "left",
+    "clearance_mm": 0.0,
+    "contact": "clearance",
+    "fasteners": null,
+    "joint": "hinge",
+    "limits": [
+     0.0,
+     115.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     -4.0
+    ],
+    "parent_anchor": "right",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "port_door",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#2B2B2B",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.05,
+    "name": "pc-abs",
+    "opacity": 1.0,
+    "roughness": 0.6
+   },
+   "name": "Right-side port door",
+   "parent_id": "body_shell",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "port_door",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     2.0,
+     50.0,
+     24.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 0.9,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "io_cover"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "top",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     10.0
+    ],
+    "parent_anchor": "bottom",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "foot_front",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#0F0F0F",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "rubber",
+    "opacity": 1.0,
+    "roughness": 0.9
+   },
+   "name": "Front rubber foot",
+   "parent_id": "body_shell",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "foot",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     50.0,
+     2.0,
+     6.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 0.9,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "stability"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "top",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     -10.0
+    ],
+    "parent_anchor": "bottom",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "foot_rear",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#0F0F0F",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "rubber",
+    "opacity": 1.0,
+    "roughness": 0.9
+   },
+   "name": "Rear rubber foot",
+   "parent_id": "body_shell",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "foot",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     50.0,
+     2.0,
+     6.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 20.0,
+    "hollow": false,
+    "minor_radius_mm": 2.0,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 2.0,
+    "profile_mm": [],
+    "radius_mm": 0.9,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 2.0,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 2.0
+   },
+   "standalone": false,
+   "tags": [
+    "stability"
+   ]
+  }
+ ],
+ "constraints": {
+  "handedness": "right",
+  "max_bounds_mm": [
+   170.0,
+   100.0,
+   80.0
+  ],
+  "mesh_tolerance_mm": 0.15,
+  "min_general_clearance_mm": 1.0,
+  "min_wall_mm": 1.6,
+  "must_be_stable": true,
+  "printer_volume_mm": [
+   256.0,
+   256.0,
+   256.0
+  ],
+  "units": "mm",
+  "up_axis": "Y"
+ },
+ "mode": "concept_only",
+ "notes": [],
+ "schema_version": "2.0",
+ "seed": 202,
+ "strategy": "signature_geometry",
+ "subject": "Compact rangefinder-style digital camera (left-grip, right-offset lens)",
+ "visual_goal": {
+  "description": "Boxy, compact rangefinder-style camera body with a right-offset lens barrel, a left-only rubber grip, a single prominent knurled dial and a centered hot shoe on the top plate, plus a small optical viewfinder window at the top-left of the front and a hinged I/O port door on the right side.",
+  "palette": [
+   {
+    "hex": "#2B2B2B",
+    "name": "Matte Black Body"
+   },
+   {
+    "hex": "#0F0F0F",
+    "name": "Charcoal Rubber Grip"
+   },
+   {
+    "hex": "#D0D3D4",
+    "name": "Brushed Silver Accents"
+   },
+   {
+    "hex": "#FF6A00",
+    "name": "Indicator Orange"
+   }
+  ],
+  "proportion_targets": {
+   "depth_width": 0.46,
+   "height_width": 0.58,
+   "lens_barrel_diameter_width": 0.36,
+   "lens_center_offset_from_body_center_width": 0.2,
+   "viewfinder_window_to_top_edge_gap_height": 0.08,
+   "width_height": 1.71
+  },
+  "reference_image_ids": [],
+  "signature_features": [
+   "Right-offset cylindrical lens barrel",
+   "Left-only textured rubber grip panel",
+   "Large knurled top dial",
+   "Centered ISO-518 hot shoe on top plate",
+   "Front viewfinder window at top-left",
+   "Right-side hinged port door"
+  ],
+  "target_size_mm": [
+   125.0,
+   73.0,
+   58.0
+  ],
+  "uncertainties": []
+ }
+}

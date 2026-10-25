@@ -66,8 +66,6 @@ export interface RoverSceneProps {
   showMounts?: boolean;
   /** Show floor millimeter grid. */
   showGrid?: boolean;
-  /** X/Y/Z millimetre rulers (see RivetStage). */
-  showAxes?: boolean;
   /** Show debug telemetry overlay in the corner of the stage. */
   showDebugOverlay?: boolean;
   /** Stage lighting/color theme preset or custom overrides. */
@@ -117,7 +115,6 @@ export function RoverScene({
   wireframe = false,
   showMounts = false,
   showGrid = true,
-  showAxes = false,
   showDebugOverlay = false,
   themeMode = 'dark',
   themeOverrides,
@@ -384,7 +381,6 @@ export function RoverScene({
           padding={framePadding}
           active={active}
           showGrid={showGrid}
-          showAxes={showAxes}
           view={cameraView}
           theme={mergedTheme}
           onCanvasPointerDown={selection.canvasProps.onPointerDown}

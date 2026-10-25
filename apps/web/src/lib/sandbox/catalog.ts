@@ -1,4 +1,3 @@
-import demoCatalog from "./catalog.json";
 import { formatPartPrice } from "../showcase/format";
 import { showcaseFixtureIndex, showcaseFixtureProduct } from "../showcase/fixtures";
 import { SHOWCASE_CATEGORIES, type ShowcasePart, type ShowcaseProduct } from "../showcase/types";
@@ -97,7 +96,8 @@ function build(): SandboxProduct[] {
     const product = showcaseFixtureProduct(entry.product_id);
     if (product) real.push(showcaseToSandbox(product));
   }
-  const all = [...real, ...parseDemoCatalog(demoCatalog)];
+  // Only sourced products belong in the public catalogue. Invented shapes remain test data.
+  const all = real;
   const ids = new Set<string>();
   for (const p of all) {
     if (ids.has(p.product_id)) throw new Error(`duplicate sandbox product ${p.product_id}`);
@@ -108,7 +108,7 @@ function build(): SandboxProduct[] {
 
 let cache: SandboxProduct[] | null = null;
 
-/** Real SKU-backed products first, then the hard-coded demo models; at most `SANDBOX_MAX_PRODUCTS`. */
+/** Sourced products with actual parts lists; at most `SANDBOX_MAX_PRODUCTS`. */
 export function sandboxProducts(): readonly SandboxProduct[] {
   return (cache ??= build());
 }

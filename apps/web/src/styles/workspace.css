@@ -251,17 +251,6 @@ html:has(.ws), html:has(.ws) body { overflow: hidden; background: #0a0a0b; }
 .ws-proj__facts dd { margin: 0; color: var(--ui-text); text-align: right; }
 .ws-proj__csv { margin: 10px 4px 0; }
 
-/* Axis rulers in the 3D view (drawn by StageAxes as DOM labels over the canvas). */
-.rivet-axis-tick {
-  display: block; padding: 0 3px; font: 500 10px/1 var(--ui-mono); white-space: nowrap; opacity: 0.85;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8); pointer-events: none; user-select: none;
-}
-.rivet-axis-label {
-  display: block; font: 700 12px/1 var(--ui-font); white-space: nowrap; pointer-events: none; user-select: none;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
-}
-.rivet-axis-label small { font-weight: 500; font-size: 10px; opacity: 0.75; }
-
 /* "Start here" hint beside the first step, until it is opened. */
 .ws-hint {
   position: fixed; z-index: 40; width: 280px; translate: 0 -50%; padding: 10px 12px; border-radius: 10px;

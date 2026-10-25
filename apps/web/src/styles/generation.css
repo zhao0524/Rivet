@@ -1,0 +1,82 @@
+/* The v2 workspace still uses rv-* primitives. Scope them to this screen and
+ * map to the shared theme, rather than restoring the removed global stylesheet. */
+.design-start,
+.design-workspace {
+  --rv-bg: var(--ui-bg);
+  --rv-text: var(--ui-text);
+  --rv-border: var(--ui-border);
+  --rv-accent: var(--ui-accent);
+  --rv-danger-text: var(--ui-danger);
+  --rv-warn-text: var(--ui-warn);
+}
+.design-start {
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.design-workspace {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: minmax(200px, 22%) minmax(0, 1fr) minmax(280px, 28%);
+  grid-template-rows: auto minmax(0, 1fr);
+  background: var(--ui-bg);
+  color: var(--ui-text);
+}
+.design-workspace > header { flex-wrap: wrap; }
+.design-workspace > header strong { overflow-wrap: anywhere; min-width: 0; flex: 1; }
+.design-workspace > aside { min-width: 0; overflow-wrap: anywhere; }
+.design-workspace__stage { position: relative; min-height: 420px; }
+:is(.design-start, .design-workspace) .rv-hint { color: var(--ui-muted); font-size: 0.875rem; }
+:is(.design-start, .design-workspace) .rv-btn,
+.design-workspace .rv-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid var(--ui-border-strong);
+  border-radius: 8px;
+  background: var(--ui-surface);
+  color: var(--ui-text);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+:is(.design-start, .design-workspace) .rv-btn--primary {
+  color: var(--ui-on-accent);
+  background: var(--ui-accent);
+  border-color: var(--ui-accent);
+}
+:is(.design-start, .design-workspace) .rv-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+:is(.design-start, .design-workspace) .rv-input,
+.design-start select {
+  min-width: 0;
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--ui-surface);
+  color: var(--ui-text);
+  border: 1px solid var(--ui-border-strong);
+  border-radius: 8px;
+  font: inherit;
+}
+.design-start__attach { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.design-start__attach .rv-btn { max-width: 100%; text-align: left; overflow-wrap: anywhere; }
+.design-start .rv-btn--ghost { border-color: transparent; background: transparent; color: var(--ui-muted); }
+.design-workspace .rv-details { border: 1px solid var(--ui-border); border-radius: 10px; background: var(--ui-surface); }
+.design-workspace .rv-badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 0.75rem; background: var(--ui-raised); }
+.design-workspace .rv-badge--ok { background: var(--ui-ok-bg); color: var(--ui-ok); }
+.design-workspace .rv-badge--warn { background: var(--ui-warn-bg); color: var(--ui-warn); }
+.design-workspace .rv-badge--bad { background: var(--ui-danger-bg); color: var(--ui-danger); }
+.design-workspace .rv-chip[aria-pressed='true'] { background: var(--ui-accent-soft); color: var(--ui-accent-text); }
+.design-workspace :is(button, a, input, select):focus-visible,
+.design-start :is(button, a, input, select, textarea):focus-visible { outline: 2px solid var(--ui-accent-text); outline-offset: 3px; }
+@media (max-width: 1000px) {
+  .design-workspace { overflow-y: auto; display: flex; flex-direction: column; }
+  .design-workspace > header { flex: none; }
+  .design-workspace__stage { order: 1; flex: 0 0 55vh; min-height: 420px; }
+  .design-workspace > aside { order: 2; flex: none; overflow-y: visible !important; }
+}

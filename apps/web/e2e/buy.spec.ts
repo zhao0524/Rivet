@@ -5,7 +5,7 @@ import rawCatalog from '../src/lib/rivet/fixtures/sourced-seed-components.json';
 import { expectUrl, readProject, seedExample, SOURCED_PLAN, watchPageErrors } from './helpers';
 
 const CATALOG = rawCatalog as unknown as CatalogComponent[];
-const LINES = buyLines(SOURCED_PLAN, CATALOG);
+const LINES = buyLines(SOURCED_PLAN, CATALOG).filter((line) => !line.included);
 const CURRENCY = SOURCED_PLAN.bom.currency;
 const POWER_BANK = 'power.adafruit_usb_power_bank_5000_4288';
 const CASTER = 'caster.sparkfun_shadow_nub';
@@ -30,17 +30,19 @@ test.describe('Buy', () => {
     await expect(page.getByTestId('buy-unknown-prices')).toHaveCount(0);
     await expect(page.getByTestId('buy-region')).toContainText(`United States · ${CURRENCY}`);
 
-    // Vendors come from the verified links; the kit caster has none and is named, not linked.
+    // The kit caster remains visible without becoming a separate purchase.
     await expect(page.getByTestId('buy-vendor-Adafruit')).toBeVisible();
     await expect(page.getByTestId('buy-vendor-SparkFun')).toBeVisible();
-    const noVendor = page.getByTestId('buy-vendor-No verified vendor');
-    await expect(noVendor).toContainText('no product page to link');
-    await expect(noVendor.getByTestId(`buy-line-${CASTER}`)).toContainText('Shadow Chassis nub caster');
+    await expect(page.getByTestId('buy-vendor-No verified vendor')).toHaveCount(0);
+    await expect(page.getByTestId('buy-included')).toContainText('Shadow Chassis nub caster');
+    await expect(page.getByTestId(`buy-line-${CASTER}`)).toHaveCount(0);
 
     // The out-of-stock ESP32 is listed plainly, without an invented alternative.
     const oos = page.getByTestId('buy-out-of-stock');
     await expect(oos).toContainText('ESP32-DevKitC');
-    await expect(oos).toContainText('No in-stock alternative found yet');
+    await expect(oos).toContainText('Out of stock when checked');
+    await expect(oos).toContainText('Check the vendor for current availability');
+    await expect(oos).toContainText('You will need this part or a compatible replacement');
 
     // Own the power bank: it leaves the total and the cart.
     await page.getByTestId('buy-vendor-Adafruit').getByRole('button').first().click();

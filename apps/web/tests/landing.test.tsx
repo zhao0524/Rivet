@@ -150,12 +150,13 @@ describe('Landing page (M1, sign in, workspace)', () => {
     expect(push).toHaveBeenCalledWith(`/p/${p.id}/workspace`);
   });
 
-  it('shows one 3D scene in the scroll demo, with a six-step build overview', () => {
+  it('shows the sourced example with its unresolved fit clearly labelled', () => {
     render(<HomePage />);
     const section = screen.getByTestId('home-assembly-scroll');
     expect(screen.getByTestId('home-hero-stage')).toBeDefined();
     expect(section.querySelectorAll('[data-testid="rover-scene"]')).toHaveLength(1);
     expect(section.querySelectorAll('.mk-build__step')).toHaveLength(6);
+    expect(screen.getByText('Saved example · sourced parts · fit needs review')).toBeDefined();
   });
 
   it('shows three gallery samples, each tagged and honest about what Rivet builds', () => {

@@ -1,0 +1,1807 @@
+{
+ "bodies": [
+  {
+   "anchors": [],
+   "attachment": null,
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "body_core",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#2B2B2B",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "pc-abs",
+    "opacity": 1.0,
+    "roughness": 0.7
+   },
+   "name": "Main body shell",
+   "parent_id": null,
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "body",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     117.8481,
+     59.3954,
+     32.0547
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 18.8557,
+    "hollow": false,
+    "minor_radius_mm": 1.7777,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 1.8856,
+    "profile_mm": [],
+    "radius_mm": 6.5995,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 1.8856,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 1.8856
+   },
+   "standalone": false,
+   "tags": [
+    "rangefinder",
+    "camera"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "top_plate",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#2B2B2B",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.2,
+    "name": "magnesium",
+    "opacity": 1.0,
+    "roughness": 0.55
+   },
+   "name": "Top plate",
+   "parent_id": "body_core",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "top_plate",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     117.8481,
+     6.5995,
+     32.0547
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 18.8557,
+    "hollow": false,
+    "minor_radius_mm": 1.7777,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 1.8856,
+    "profile_mm": [],
+    "radius_mm": 2.9698,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 1.8856,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 1.8856
+   },
+   "standalone": false,
+   "tags": []
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "top",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "bottom",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "bottom_plate",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#2B2B2B",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.2,
+    "name": "magnesium",
+    "opacity": 1.0,
+    "roughness": 0.55
+   },
+   "name": "Bottom plate (base)",
+   "parent_id": "body_core",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "base",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     117.8481,
+     6.0,
+     32.0547
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 18.8557,
+    "hollow": false,
+    "minor_radius_mm": 1.1455,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 1.8856,
+    "profile_mm": [],
+    "radius_mm": 1.2728,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 1.8856,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 1.8856
+   },
+   "standalone": false,
+   "tags": [
+    "stands_on_floor"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "back",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     -37.7114,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "front",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "left_grip",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#0F0F0F",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "tpe_rubber",
+    "opacity": 1.0,
+    "roughness": 0.9
+   },
+   "name": "Left rubber grip panel",
+   "parent_id": "body_core",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "grip",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     33.9403,
+     49.0248,
+     4.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 18.8557,
+    "hollow": false,
+    "minor_radius_mm": 1.0182,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 1.8856,
+    "profile_mm": [],
+    "radius_mm": 1.1313,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 1.8856,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 1.8856
+   },
+   "standalone": false,
+   "tags": [
+    "tactile"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "back",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     23.5696,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "front",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "lens_barrel",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#2B2B2B",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.6,
+    "name": "coated_aluminum",
+    "opacity": 1.0,
+    "roughness": 0.4
+   },
+   "name": "Lens barrel (right-offset)",
+   "parent_id": "body_core",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "lens",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [
+     {
+      "angle_deg": 360.0,
+      "asset_id": null,
+      "axis": "Z",
+      "children": [],
+      "dimensions_mm": [
+       18.8557,
+       18.8557,
+       18.8557
+      ],
+      "frame": {
+       "position_mm": [
+        0.0,
+        0.0,
+        -7.5423
+       ],
+       "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "height_mm": 7.5423,
+      "hollow": false,
+      "minor_radius_mm": 1.7777,
+      "open_face": "none",
+      "operation": "union",
+      "path_mm": [],
+      "pitch_mm": 1.8856,
+      "profile_mm": [],
+      "radius_mm": 19.7985,
+      "radius_top_mm": 0.0,
+      "ruled": false,
+      "section_heights_mm": [],
+      "sections": [],
+      "smoothing_mm": 1.8856,
+      "spokes": 0,
+      "type": "cylinder",
+      "wall_mm": 1.8856
+     },
+     {
+      "angle_deg": 360.0,
+      "asset_id": null,
+      "axis": "Z",
+      "children": [],
+      "dimensions_mm": [
+       18.8557,
+       18.8557,
+       18.8557
+      ],
+      "frame": {
+       "position_mm": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "height_mm": 7.5423,
+      "hollow": false,
+      "minor_radius_mm": 1.7777,
+      "open_face": "none",
+      "operation": "union",
+      "path_mm": [],
+      "pitch_mm": 1.8856,
+      "profile_mm": [],
+      "radius_mm": 20.7413,
+      "radius_top_mm": 0.0,
+      "ruled": false,
+      "section_heights_mm": [],
+      "sections": [],
+      "smoothing_mm": 1.8856,
+      "spokes": 0,
+      "type": "cylinder",
+      "wall_mm": 1.8856
+     },
+     {
+      "angle_deg": 360.0,
+      "asset_id": null,
+      "axis": "Z",
+      "children": [],
+      "dimensions_mm": [
+       18.8557,
+       18.8557,
+       18.8557
+      ],
+      "frame": {
+       "position_mm": [
+        0.0,
+        0.0,
+        6.1281
+       ],
+       "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "height_mm": 4.7139,
+      "hollow": false,
+      "minor_radius_mm": 1.7777,
+      "open_face": "none",
+      "operation": "union",
+      "path_mm": [],
+      "pitch_mm": 1.8856,
+      "profile_mm": [],
+      "radius_mm": 16.9701,
+      "radius_top_mm": 0.0,
+      "ruled": false,
+      "section_heights_mm": [],
+      "sections": [],
+      "smoothing_mm": 1.8856,
+      "spokes": 0,
+      "type": "cylinder",
+      "wall_mm": 1.8856
+     },
+     {
+      "angle_deg": 360.0,
+      "asset_id": null,
+      "axis": "Z",
+      "children": [],
+      "dimensions_mm": [
+       18.8557,
+       18.8557,
+       18.8557
+      ],
+      "frame": {
+       "position_mm": [
+        0.0,
+        0.0,
+        9.8992
+       ],
+       "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "height_mm": 2.8284,
+      "hollow": false,
+      "minor_radius_mm": 1.7777,
+      "open_face": "none",
+      "operation": "union",
+      "path_mm": [],
+      "pitch_mm": 1.8856,
+      "profile_mm": [],
+      "radius_mm": 19.7985,
+      "radius_top_mm": 0.0,
+      "ruled": false,
+      "section_heights_mm": [],
+      "sections": [],
+      "smoothing_mm": 1.8856,
+      "spokes": 0,
+      "type": "cylinder",
+      "wall_mm": 1.8856
+     }
+    ],
+    "dimensions_mm": [
+     18.8557,
+     18.8557,
+     18.8557
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 18.8557,
+    "hollow": false,
+    "minor_radius_mm": 1.7777,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 1.8856,
+    "profile_mm": [],
+    "radius_mm": 4.7139,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 1.8856,
+    "spokes": 0,
+    "type": "boolean",
+    "wall_mm": 1.8856
+   },
+   "standalone": false,
+   "tags": [
+    "barrel",
+    "manual_focus_ring"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "back",
+    "clearance_mm": 0.0,
+    "contact": "embedded",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "front",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "lens_glass",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#6FA89A",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "optical_glass",
+    "opacity": 1.0,
+    "roughness": 0.08
+   },
+   "name": "Front lens element",
+   "parent_id": "lens_barrel",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "optics",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     18.8557,
+     18.8557,
+     18.8557
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 18.8557,
+    "hollow": false,
+    "minor_radius_mm": 1.7777,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 1.8856,
+    "profile_mm": [],
+    "radius_mm": 8.4851,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 1.8856,
+    "spokes": 0,
+    "type": "sphere",
+    "wall_mm": 1.8856
+   },
+   "standalone": false,
+   "tags": [
+    "glass"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "back",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     46.1965,
+     24.5124,
+     0.0
+    ],
+    "parent_anchor": "front",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "viewfinder_bezel",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#2B2B2B",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "pc-abs",
+    "opacity": 1.0,
+    "roughness": 0.65
+   },
+   "name": "Viewfinder bezel (top-right)",
+   "parent_id": "body_core",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "window_bezel",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     15.0846,
+     11.3134,
+     2.8284
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 18.8557,
+    "hollow": false,
+    "minor_radius_mm": 1.1455,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 1.8856,
+    "profile_mm": [],
+    "radius_mm": 1.2728,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 1.8856,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 1.8856
+   },
+   "standalone": false,
+   "tags": []
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "back",
+    "clearance_mm": 0.0,
+    "contact": "embedded",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.1886
+    ],
+    "parent_anchor": "front",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "viewfinder_glass",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#A4C3CF",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "optical_glass",
+    "opacity": 1.0,
+    "roughness": 0.1
+   },
+   "name": "Viewfinder glass",
+   "parent_id": "viewfinder_bezel",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "window",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     11.3134,
+     7.5423,
+     2.0
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 18.8557,
+    "hollow": false,
+    "minor_radius_mm": 1.7777,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 1.8856,
+    "profile_mm": [],
+    "radius_mm": 4.7139,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 1.8856,
+    "spokes": 0,
+    "type": "box",
+    "wall_mm": 1.8856
+   },
+   "standalone": false,
+   "tags": [
+    "optical"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     2.828,
+     5.914,
+     -7.542
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [
+    {
+     "axis": "Y",
+     "count": 1,
+     "counterbore_depth_mm": 1.8856,
+     "counterbore_radius_mm": 3.7711,
+     "depth_mm": 9.4278,
+     "edges": "top",
+     "id": "dial_left_chamfer",
+     "length_mm": 9.4278,
+     "open_face": "top",
+     "pattern_axis": "X",
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "radius_mm": 0.5657,
+     "required": false,
+     "spacing_mm": 4.7139,
+     "type": "chamfer",
+     "wall_mm": 1.8856,
+     "width_mm": 1.8856
+    }
+   ],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "dial_left",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#2B2B2B",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.8,
+    "name": "aluminum_anodized",
+    "opacity": 1.0,
+    "roughness": 0.35
+   },
+   "name": "Left top dial (primary)",
+   "parent_id": "top_plate",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "dial",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     18.8557,
+     18.8557,
+     18.8557
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 5.6567,
+    "hollow": false,
+    "minor_radius_mm": 1.7777,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 1.8856,
+    "profile_mm": [],
+    "radius_mm": 11.3134,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 1.8856,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 1.8856
+   },
+   "standalone": false,
+   "tags": [
+    "knurled"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     38.956,
+     0.0,
+     -7.542
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [
+    {
+     "axis": "Y",
+     "count": 1,
+     "counterbore_depth_mm": 1.8856,
+     "counterbore_radius_mm": 3.7711,
+     "depth_mm": 9.4278,
+     "edges": "top",
+     "id": "dial_right_chamfer",
+     "length_mm": 9.4278,
+     "open_face": "top",
+     "pattern_axis": "X",
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "radius_mm": 0.5657,
+     "required": false,
+     "spacing_mm": 4.7139,
+     "type": "chamfer",
+     "wall_mm": 1.8856,
+     "width_mm": 1.8856
+    }
+   ],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "dial_right",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#2B2B2B",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.8,
+    "name": "aluminum_anodized",
+    "opacity": 1.0,
+    "roughness": 0.35
+   },
+   "name": "Right top dial (secondary)",
+   "parent_id": "top_plate",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "dial",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": "Y",
+    "children": [],
+    "dimensions_mm": [
+     18.8557,
+     18.8557,
+     18.8557
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 5.6567,
+    "hollow": false,
+    "minor_radius_mm": 1.7777,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 1.8856,
+    "profile_mm": [],
+    "radius_mm": 9.0,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 1.8856,
+    "spokes": 0,
+    "type": "cylinder",
+    "wall_mm": 1.8856
+   },
+   "standalone": false,
+   "tags": [
+    "knurled"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "bottom",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     16.5,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "top",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "hot_shoe",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#D0D3D4",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 1.0,
+    "name": "stainless_steel",
+    "opacity": 1.0,
+    "roughness": 0.35
+   },
+   "name": "Top hot shoe (ISO-518 style)",
+   "parent_id": "top_plate",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "hot_shoe",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [
+     {
+      "angle_deg": 360.0,
+      "asset_id": null,
+      "axis": null,
+      "children": [],
+      "dimensions_mm": [
+       24.5124,
+       1.8856,
+       18.8557
+      ],
+      "frame": {
+       "position_mm": [
+        0.0,
+        0.9428,
+        0.0
+       ],
+       "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "height_mm": 18.8557,
+      "hollow": false,
+      "minor_radius_mm": 1.7777,
+      "open_face": "none",
+      "operation": "union",
+      "path_mm": [],
+      "pitch_mm": 1.8856,
+      "profile_mm": [],
+      "radius_mm": 4.7139,
+      "radius_top_mm": 0.0,
+      "ruled": false,
+      "section_heights_mm": [],
+      "sections": [],
+      "smoothing_mm": 1.8856,
+      "spokes": 0,
+      "type": "box",
+      "wall_mm": 1.8856
+     },
+     {
+      "angle_deg": 360.0,
+      "asset_id": null,
+      "axis": null,
+      "children": [],
+      "dimensions_mm": [
+       3.7711,
+       3.7711,
+       18.8557
+      ],
+      "frame": {
+       "position_mm": [
+        -10.3706,
+        2.8284,
+        0.0
+       ],
+       "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "height_mm": 18.8557,
+      "hollow": false,
+      "minor_radius_mm": 1.7777,
+      "open_face": "none",
+      "operation": "union",
+      "path_mm": [],
+      "pitch_mm": 1.8856,
+      "profile_mm": [],
+      "radius_mm": 4.7139,
+      "radius_top_mm": 0.0,
+      "ruled": false,
+      "section_heights_mm": [],
+      "sections": [],
+      "smoothing_mm": 1.8856,
+      "spokes": 0,
+      "type": "box",
+      "wall_mm": 1.8856
+     },
+     {
+      "angle_deg": 360.0,
+      "asset_id": null,
+      "axis": null,
+      "children": [],
+      "dimensions_mm": [
+       3.7711,
+       3.7711,
+       18.8557
+      ],
+      "frame": {
+       "position_mm": [
+        10.3706,
+        2.8284,
+        0.0
+       ],
+       "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "height_mm": 18.8557,
+      "hollow": false,
+      "minor_radius_mm": 1.7777,
+      "open_face": "none",
+      "operation": "union",
+      "path_mm": [],
+      "pitch_mm": 1.8856,
+      "profile_mm": [],
+      "radius_mm": 4.7139,
+      "radius_top_mm": 0.0,
+      "ruled": false,
+      "section_heights_mm": [],
+      "sections": [],
+      "smoothing_mm": 1.8856,
+      "spokes": 0,
+      "type": "box",
+      "wall_mm": 1.8856
+     }
+    ],
+    "dimensions_mm": [
+     18.8557,
+     18.8557,
+     18.8557
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 18.8557,
+    "hollow": false,
+    "minor_radius_mm": 1.7777,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 1.8856,
+    "profile_mm": [],
+    "radius_mm": 4.7139,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 1.8856,
+    "spokes": 0,
+    "type": "boolean",
+    "wall_mm": 1.8856
+   },
+   "standalone": false,
+   "tags": [
+    "accessory_mount"
+   ]
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "front",
+    "clearance_mm": 0.0,
+    "contact": "touch",
+    "fasteners": null,
+    "joint": "rigid",
+    "limits": [
+     0.0,
+     0.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "back",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "rear_screen",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#0F0F0F",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "glass_coated",
+    "opacity": 1.0,
+    "roughness": 0.2
+   },
+   "name": "Rear screen panel",
+   "parent_id": "body_core",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "display",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     92.3929,
+     50.9104,
+     3.2
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 18.8557,
+    "hollow": false,
+    "minor_radius_mm": 0.6873,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 1.8856,
+    "profile_mm": [],
+    "radius_mm": 0.7637,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 1.8856,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 1.8856
+   },
+   "standalone": false,
+   "tags": []
+  },
+  {
+   "anchors": [],
+   "attachment": {
+    "adjust_mm": 0.0,
+    "axis": "Y",
+    "child_anchor": "left",
+    "clearance_mm": 0.0,
+    "contact": "clearance",
+    "fasteners": null,
+    "joint": "hinge",
+    "limits": [
+     0.0,
+     110.0
+    ],
+    "offset_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent_anchor": "right",
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": 0.0
+   },
+   "catalog_id": null,
+   "features": [],
+   "frame": {
+    "position_mm": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "id": "port_door",
+   "internal": false,
+   "kind": "fabricated",
+   "manufacturing": "3d_print",
+   "material": {
+    "color": "#2B2B2B",
+    "density_g_cm3": null,
+    "density_source": null,
+    "metallic": 0.0,
+    "name": "pc-abs",
+    "opacity": 1.0,
+    "roughness": 0.6
+   },
+   "name": "Right-side port door",
+   "parent_id": "body_core",
+   "provenance": {
+    "license": null,
+    "notes": [],
+    "origin": "prompted",
+    "source_url": null
+   },
+   "required": true,
+   "role": "port_door",
+   "shape": {
+    "angle_deg": 360.0,
+    "asset_id": null,
+    "axis": null,
+    "children": [],
+    "dimensions_mm": [
+     3.6,
+     49.0248,
+     18.8557
+    ],
+    "frame": {
+     "position_mm": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotation_deg": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "height_mm": 18.8557,
+    "hollow": false,
+    "minor_radius_mm": 0.7637,
+    "open_face": "none",
+    "operation": "union",
+    "path_mm": [],
+    "pitch_mm": 1.8856,
+    "profile_mm": [],
+    "radius_mm": 0.8485,
+    "radius_top_mm": 0.0,
+    "ruled": false,
+    "section_heights_mm": [],
+    "sections": [],
+    "smoothing_mm": 1.8856,
+    "spokes": 0,
+    "type": "rounded_box",
+    "wall_mm": 1.8856
+   },
+   "standalone": false,
+   "tags": [
+    "hinged"
+   ]
+  }
+ ],
+ "constraints": {
+  "handedness": "right",
+  "max_bounds_mm": [
+   163.0,
+   95.0,
+   76.0
+  ],
+  "mesh_tolerance_mm": 0.15,
+  "min_general_clearance_mm": 1.0,
+  "min_wall_mm": 1.6,
+  "must_be_stable": true,
+  "printer_volume_mm": [
+   256.0,
+   256.0,
+   256.0
+  ],
+  "units": "mm",
+  "up_axis": "Y"
+ },
+ "mode": "concept_only",
+ "notes": [
+  "Overall dimensions meet target size: width 125 mm, height 63+7+3 = 73 mm, depth body 34 mm + lens 24 mm = 58 mm.",
+  "Lens center offset +25 mm to the right (0.2\u00d7 body width) with ~45 mm OD (\u22480.36\u00d7 width).",
+  "Viewfinder bezel at top-right with ~6 mm gap to top edge per ratio; clear of lens line-of-sight.",
+  "Hot shoe centered-right on the top plate with \u226518 mm flat rear clearance on the top surface.",
+  "Left grip panel stands 3.5 mm proud of the front surface only; no wrap on right side.",
+  "Flat bottom plate is the only floor contact; no other parts reach lower than it, ensuring stability."
+ ],
+ "schema_version": "2.0",
+ "seed": 101,
+ "strategy": "simpler_manufacture",
+ "subject": "Compact rangefinder-style digital camera (left-grip, right-offset lens)",
+ "visual_goal": {
+  "description": "A compact, boxy rangefinder-style camera with a right-offset lens, a left-only tactile grip, two top dials and a centered hot shoe, plus a small optical viewfinder window at the top-right of the front and a right-side port door.",
+  "palette": [
+   {
+    "hex": "#2B2B2B",
+    "name": "Matte Black Body"
+   },
+   {
+    "hex": "#0F0F0F",
+    "name": "Charcoal Rubber Grip"
+   },
+   {
+    "hex": "#D0D3D4",
+    "name": "Brushed Silver Accents"
+   },
+   {
+    "hex": "#FF6A00",
+    "name": "Indicator Orange"
+   },
+   {
+    "hex": "#A4C3CF",
+    "name": "Optical Glass Tint"
+   },
+   {
+    "hex": "#6FA89A",
+    "name": "Lens Glass Tint"
+   }
+  ],
+  "proportion_targets": {
+   "depth_width": 0.46,
+   "height_width": 0.58,
+   "lens_barrel_diameter_width": 0.36,
+   "lens_center_offset_from_body_center_widt": 0.2,
+   "viewfinder_window_to_top_edge_gap_height": 0.08,
+   "width_height": 1.71
+  },
+  "reference_image_ids": [],
+  "signature_features": [
+   "Right-offset cylindrical lens barrel",
+   "Left-only textured rubber grip panel",
+   "Two knurled top dials (per reference)",
+   "Centered ISO-518 style hot shoe on top plate",
+   "Front viewfinder window at top-right (per reference)",
+   "Right-side hinged port door"
+  ],
+  "target_size_mm": [
+   117.8481,
+   68.8233,
+   54.6815
+  ],
+  "uncertainties": []
+ }
+}

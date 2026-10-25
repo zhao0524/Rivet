@@ -100,7 +100,6 @@ export function Stage({
             showWiring={view.wires && mode !== 'exploded'}
             enclosure={view.body ? 'ghost' : 'none'}
             showGrid
-            showAxes
             themeOverrides={WORKSPACE_THEME}
             resetSignal={reset}
           />

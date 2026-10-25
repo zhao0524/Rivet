@@ -12,6 +12,7 @@ import type { OverflowItem } from '../../system/OverflowMenu';
 import { CartModal } from './CartModal';
 import { NO_VENDOR, buyTotals, groupByVendor, isOwned, regionForCurrency, stockLabel, unknownPriceNote, type VendorGroup } from './buy-model';
 import { downloadTextFile } from './download';
+import { printableLines, sizeLabel, stlFileName, type PrintLine } from './print-model';
 
 const PURPOSE = 'Get every part in one go: check the currency, tick anything you already have, then open the store links.';
 
@@ -24,8 +25,11 @@ export function BuyStep() {
   const concept = build.ready && isConceptPlan(plan);
   const allLines = useMemo(() => (build.ready ? buyLines(plan, catalog) : []), [build.ready, plan, catalog]);
   // A concept's body shapes and wires are part of the 3D model, not things to buy.
-  const lines = useMemo(() => (concept ? allLines.filter((l) => l.url) : allLines), [concept, allLines]);
+  const lines = useMemo(() => allLines.filter((l) => !l.included && (!concept || l.url)), [concept, allLines]);
+  const included = allLines.filter((l) => l.included);
   const shapes = concept ? allLines.filter((l) => !l.url) : [];
+  // Shapes with no store link and no price can be printed from the model instead.
+  const printable = concept ? printableLines(shapes, catalog) : [];
   const owned = project.ownedCatalogIds;
   const currency = plan.bom.currency || 'USD';
   const totals = useMemo(() => buyTotals(lines, owned), [lines, owned]);
@@ -117,7 +121,8 @@ export function BuyStep() {
               <Icon name="info" style={{ flex: 'none', marginTop: 3 }} aria-hidden="true" />
               <span>
                 None of this model&apos;s parts matches a role Rivet has a suggested product for (boards, motors, batteries,
-                sensors…), so there is nothing to buy here. Its {shapes.length} {shapes.length === 1 ? 'item is a shape' : 'items are shapes'} in the 3D model.
+                sensors…), so there is nothing to buy here. Its {shapes.length} {shapes.length === 1 ? 'item is a shape' : 'items are shapes'} in the 3D model
+                {printable.length > 0 ? `; ${printable.length} of them can be 3D-printed below.` : '.'}
               </span>
             </p>
           ) : concept ? (
@@ -127,7 +132,9 @@ export function BuyStep() {
                 These are suggested real parts, hand-picked for each role in the 3D model. They were not checked against its
                 size, power or wiring, so confirm they fit before you order.
                 {shapes.length > 0
-                  ? ` ${shapes.length} more ${shapes.length === 1 ? 'item is a shape' : 'items are shapes'} in the model (body, covers, wires) with nothing to buy.`
+                  ? ` ${shapes.length} more ${shapes.length === 1 ? 'item is a shape' : 'items are shapes'} in the model (body, covers, wires) with no store listing${
+                      printable.length > 0 ? `; ${printable.length} of them can be 3D-printed below` : ''
+                    }.`
                   : ''}
               </span>
             </p>
@@ -137,11 +144,18 @@ export function BuyStep() {
               <VendorRow key={group.vendor} group={group} currency={currency} owned={owned} onToggleOwned={toggleOwned} />
             ))}
           </ul>
+          {included.length > 0 ? (
+            <section className="ui-island" aria-label="Included in kits" data-testid="buy-included">
+              <h2 className="ui-h3">Included in kits</h2>
+              <p className="p2-note">These parts come with a kit already in the parts list. No separate purchase is needed.</p>
+              <ul>{included.map((line) => <li key={line.catalogId}>{line.name} · Qty {line.quantity}</li>)}</ul>
+            </section>
+          ) : null}
 
           {outOfStock.length > 0 ? (
             <section className="buy-oos" aria-labelledby="buy-oos-title" data-testid="buy-out-of-stock">
               <h2 id="buy-oos-title" className="ui-h3">
-                Out of stock right now
+                Out of stock when checked
               </h2>
               {outOfStock.map((line) => (
                 <article key={line.catalogId} className="buy-oos__card">
@@ -154,11 +168,13 @@ export function BuyStep() {
                       </span>
                     </div>
                   </div>
-                  <p className="p2-note">No in-stock alternative found yet. It doesn&apos;t block the build: buy the rest now and check this listing again later.</p>
+                  <p className="p2-note">Check the vendor for current availability. You will need this part or a compatible replacement before assembling the build.</p>
                 </article>
               ))}
             </section>
           ) : null}
+
+          {printable.length > 0 ? <PrintSection buildId={plan.build_id} parts={printable} /> : null}
 
           {fabricated.length > 0 ? (
             <section className="ui-island" aria-labelledby="buy-fab-title" data-testid="buy-fabricated">
@@ -327,5 +343,80 @@ function BuyLineRow({
         </label>
       </div>
     </li>
+  );
+}
+
+/** Concept parts with no store link or price: download each as an STL, or all of them on one plate. */
+function PrintSection({ buildId, parts }: { buildId: string; parts: readonly PrintLine[] }) {
+  const [busy, setBusy] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const copies = parts.reduce((n, p) => n + p.line.quantity, 0);
+
+  async function download(key: string, filename: string, selection: readonly PrintLine[], single: boolean) {
+    setBusy(key);
+    setError(null);
+    try {
+      // three is only loaded when someone asks for a print file.
+      const [{ printPlateStl }, { downloadBlob }] = await Promise.all([
+        import('../../../lib/print/stl'),
+        import('../../three/enclosure/export'),
+      ]);
+      const stl = printPlateStl(selection.map((p) => ({ shape: p.shape, size: p.size, count: single ? 1 : p.line.quantity })));
+      downloadBlob(filename, new Blob([stl], { type: 'model/stl' }));
+    } catch {
+      setError('The print file could not be made. Try again.');
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  return (
+    <section className="ui-island" aria-labelledby="buy-print-title" data-testid="buy-print">
+      <div className="p2-kv">
+        <h2 id="buy-print-title" className="ui-h3">
+          3D print instead
+        </h2>
+        <button
+          type="button"
+          className="ui-btn ui-btn--secondary"
+          disabled={busy !== null}
+          onClick={() => download('all', `${buildId}-print-plate.stl`, parts, false)}
+          data-testid="buy-print-all"
+        >
+          <Icon name="download" aria-hidden="true" /> {busy === 'all' ? 'Preparing…' : `All parts (${copies})`}
+        </button>
+      </div>
+      <p className="p2-note">
+        These parts have no store listing or price. You can print them from the model: each file is the part&apos;s shape at
+        its estimated size, in millimetres. Sizes were read from the photo, so check them against the real object first.
+        &ldquo;All parts&rdquo; puts every copy on one plate.
+      </p>
+      {error ? (
+        <p className="ui-notice ui-notice--danger" role="alert" data-testid="buy-print-error">
+          <Icon name="alert" aria-hidden="true" /> {error}
+        </p>
+      ) : null}
+      <ul className="build__parts" style={{ marginTop: 10 }}>
+        {parts.map((part) => (
+          <li key={part.line.catalogId} className="build__part" data-testid={`buy-print-${part.line.catalogId}`}>
+            <Icon name="cube" aria-hidden="true" />
+            <span className="build__part-name">{part.line.name}</span>
+            <span className="ui-small ui-muted">
+              ×{part.line.quantity} · {sizeLabel(part.size)}
+            </span>
+            <button
+              type="button"
+              className="ui-btn ui-btn--ghost ui-btn--sm"
+              disabled={busy !== null}
+              onClick={() => download(part.line.catalogId, stlFileName(buildId, part.line.name), [part], true)}
+              data-testid={`buy-print-stl-${part.line.catalogId}`}
+            >
+              {busy === part.line.catalogId ? 'Preparing…' : 'STL'}
+              <span className="ui-sr-only"> for {part.line.name}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }

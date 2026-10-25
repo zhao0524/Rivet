@@ -49,11 +49,14 @@ export function useProjectBuild(project: ProjectRecord | null): ProjectBuildStat
     else void store.loadBuild(target, project.revision ?? undefined);
   }, [project, target, key, store]);
 
-  const ready = Boolean(target) && store.plan.build_id === target && !store.loading;
+  const matches = Boolean(target) && store.plan.build_id === target &&
+    (project?.revision == null || store.plan.revision === project.revision);
+  const error = store.contractError ?? store.revisionError;
+  const ready = matches && !store.loading;
   return {
     store,
     ready,
-    loading: store.loading || (Boolean(target) && store.plan.build_id !== target),
-    error: store.contractError ?? store.revisionError,
+    loading: store.loading || (Boolean(target) && !matches && !error),
+    error,
   };
 }

@@ -1,0 +1,14 @@
+## Network requests
+Showing 1-12 of 12 (Page 1 of 1).
+reqid=166 GET http://localhost:3000/design [200]
+reqid=177 GET http://localhost:3000/api/projects/examples [200]
+reqid=178 GET http://localhost:3000/api/estelle/status [net::ERR_ABORTED]
+reqid=179 GET http://localhost:3000/api/projects/examples [200]
+reqid=180 GET http://localhost:3000/api/estelle/status [200]
+reqid=181 GET http://localhost:3000/api/v2/session [200]
+reqid=182 POST http://localhost:3000/api/v2/generations [202]
+reqid=183 GET http://localhost:3000/api/v2/generations/gen-55a9debf0e32a4ac1aa838d8/events?last_event_id=0 [200]
+reqid=184 GET http://localhost:3000/api/v2/generations/gen-55a9debf0e32a4ac1aa838d8 [200]
+reqid=188 GET http://localhost:3000/api/v2/assets/asset-58368d8b7b548d744026ac89f45c7015214fa2676302c0a833b17fd0e24d78a5 [200]
+reqid=189 GET http://localhost:3000/api/v2/projects/design-f98de634774a89b0a2ab21be/design [200]
+reqid=190 GET http://localhost:3000/api/v2/projects/design-f98de634774a89b0a2ab21be/revisions [200]

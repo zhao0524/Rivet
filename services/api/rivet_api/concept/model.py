@@ -184,10 +184,10 @@ def _finite(values: list[float], lo: float, hi: float, default: float) -> list[f
     return [min(hi, max(lo, v)) if math.isfinite(v) else default for v in values]
 
 
-def clean_concept(model: ConceptModel) -> ConceptModel:
-    """Cap text, clamp numbers, normalise colors and keep at most MAX_PARTS parts."""
+def clean_concept(model: ConceptModel, max_parts: int = MAX_PARTS) -> ConceptModel:
+    """Cap text, clamp numbers, normalise colors and keep at most `max_parts` parts."""
     parts = []
-    for p in model.parts[:MAX_PARTS]:
+    for p in model.parts[:max_parts]:
         size = _finite([abs(v) for v in p.size_mm], MIN_SIZE_MM, MAX_SIZE_MM, 10.0)
         if p.position_mm is None:  # placed by its two ends
             a = _finite(p.from_mm or [0, 0, 0], -MAX_POSITION_MM, MAX_POSITION_MM, 0.0)

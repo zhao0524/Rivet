@@ -15,10 +15,11 @@ describe('sandbox catalogue', () => {
     expect(new Set(products.map((p) => p.product_id)).size).toBe(products.length);
   });
 
-  it('lists the real SKU-backed products before the demo models', () => {
+  it('only publishes sourced products, never invented demo catalogue entries', () => {
     const kinds = products.map((p) => p.kind);
     expect(kinds.slice(0, 2)).toEqual(['showcase', 'showcase']);
-    expect(kinds.slice(2).every((k) => k === 'demo')).toBe(true);
+    expect(kinds.every((k) => k === 'showcase')).toBe(true);
+    expect(sandboxProduct('demo-pocket-rover-2wd')).toBeNull();
   });
 
   it('every part has a drawable shape and sits above the ground', () => {
@@ -88,7 +89,7 @@ describe('searchProducts', () => {
   });
 
   it('finds a product through one of its part names', () => {
-    expect(searchProducts(products, 'gripper').some((p) => p.product_id.startsWith('demo-'))).toBe(true);
+    expect(searchProducts(products, 'standoffs').some((p) => p.product_id === 'sample-simple-raspberry-pi-robot')).toBe(true);
   });
 });
 
@@ -101,7 +102,7 @@ describe('layout', () => {
   });
 
   it('bounds cover every part and explode offsets point away from the centre', () => {
-    const p = sandboxProducts().find((x) => x.kind === 'demo')!;
+    const p = parseDemoCatalog(demoCatalog)[0]!;
     const b = productBoundsMm(p.parts);
     for (const part of p.parts) {
       const e = partExtentMm(part);

@@ -1,0 +1,11 @@
+## Network requests
+Showing 1-9 of 9 (Page 1 of 1).
+reqid=84 GET http://localhost:3000/design [200]
+reqid=85 GET http://localhost:3000/_next/static/webpack/6a4d3fe9e23e8947.webpack.hot-update.json [200]
+reqid=95 GET http://localhost:3000/api/projects/examples [200]
+reqid=96 GET http://localhost:3000/api/estelle/status [net::ERR_ABORTED]
+reqid=97 GET http://localhost:3000/api/projects/examples [200]
+reqid=98 GET http://localhost:3000/api/estelle/status [200]
+reqid=99 GET http://localhost:3000/api/v2/session [404]
+reqid=100 GET http://localhost:3000/api/v2/session [404]
+reqid=101 GET http://localhost:3000/_next/static/webpack/d5e82978d9f5e295.webpack.hot-update.json [200]

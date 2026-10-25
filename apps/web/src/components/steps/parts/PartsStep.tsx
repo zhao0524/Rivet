@@ -29,6 +29,8 @@ export function PartsStep() {
   const shown = useMemo(() => (aiOnly ? rows.filter((r) => isAiEstimated(r.catalog)) : rows), [rows, aiOnly]);
   const groups = useMemo(() => groupParts(shown), [shown]);
   const byId = useMemo(() => new Map(rows.map((r) => [r.instanceId, r])), [rows]);
+  // Wires, cables and batteries have no place in the 3D model; they are still bought in Buy.
+  const hidden = ready ? plan.components.length - rows.length : 0;
 
   const revealRow = useCallback(
     (instanceId: string) => {
@@ -86,7 +88,7 @@ export function PartsStep() {
   return (
     <StepLayout
       title="Parts"
-      purpose="Every part in your robot, what it's for, and where each number came from. Pick one in the list or click it in the 3D model."
+      purpose="Every part you can see in the 3D model, what it's for, and where each number came from. Pick one in the list or click it in the 3D model."
       primary={{
         label: 'Continue to Wiring & code',
         onClick: () => goTo('wiring'),
@@ -107,6 +109,12 @@ export function PartsStep() {
                   ? `${shown.length} of ${rows.length} parts have AI-estimated values`
                   : `${rows.length} parts in ${groups.length} groups`
                 : 'Loading your parts list…'}
+              {ready && !aiOnly && hidden > 0 ? (
+                <span data-testid="parts-hidden-note">
+                  {' '}
+                  · plus {hidden} small {hidden === 1 ? 'item' : 'items'} such as wires and batteries, listed in Buy
+                </span>
+              ) : null}
             </p>
             <button
               type="button"

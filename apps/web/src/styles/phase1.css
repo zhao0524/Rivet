@@ -97,6 +97,14 @@ button.list__row.p1-wire--active, button.list__row.p1-wire--active:hover { backg
 /* Simulation modal */
 .p1-sim { display: grid; gap: 14px; }
 .p1-sim__row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+/* The stage before the first Run: say what the empty box is waiting for. */
+.p1-sim__idle { display: grid; place-content: center; justify-items: center; gap: 10px; padding: 24px; text-align: center; }
+.p1-sim__idle p { margin: 0; max-width: 32ch; font-size: 14px; color: var(--ui-muted); text-wrap: balance; }
+.p1-sim__idle strong { color: var(--ui-text); }
+.p1-sim__idle-icon {
+  display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+  background: var(--ui-surface); color: var(--ui-accent-text); border: 1px solid var(--ui-border);
+}
 .p1-sim__limits { margin: 0; padding-left: 18px; font-size: 13px; color: var(--ui-muted); display: grid; gap: 4px; }
 
 /* Keep the sticky viewport's bottom (and its label) clear of the sticky step footer. */

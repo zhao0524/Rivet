@@ -1,0 +1,104 @@
+[
+ {
+  "accepted": true,
+  "actions": [
+   {
+    "accepted": true,
+    "body_id": null,
+    "reason": "scale the whole design by 0.943 so it fits its declared 163 x 95 x 76 mm envelope (it measured 127 x 79 x 79 mm)",
+    "round": 0,
+    "score_after": 100,
+    "score_before": 140,
+    "set": {
+     "__scale__": 0.94278
+    }
+   },
+   {
+    "accepted": false,
+    "before": {
+     "attachment.offset_mm": [
+      -11.3134,
+      0.0,
+      -7.5423
+     ]
+    },
+    "body_id": "dial_right",
+    "reason": "slide dial_right away from hot_shoe (130.613 mm3 overlap)",
+    "round": 1,
+    "score_after": 100,
+    "score_before": 100,
+    "set": {
+     "attachment.offset_mm": [
+      -16.275,
+      0.0,
+      -7.542
+     ]
+    }
+   },
+   {
+    "accepted": false,
+    "before": {
+     "shape.dimensions_mm": [
+      11.3134,
+      7.5423,
+      1.3199
+     ]
+    },
+    "body_id": "viewfinder_glass",
+    "reason": "thicken viewfinder_glass to the 1.6 mm minimum wall",
+    "round": 1,
+    "score_after": 100,
+    "score_before": 100,
+    "set": {
+     "shape.dimensions_mm": [
+      11.3134,
+      7.5423,
+      1.6
+     ]
+    }
+   }
+  ],
+  "kind": "deterministic_repair",
+  "score_after": 100,
+  "score_before": 140
+ },
+ {
+  "accepted": true,
+  "changed": {
+   "added": [],
+   "changed": [
+    "bottom_plate",
+    "hot_shoe",
+    "left_grip",
+    "port_door",
+    "rear_screen",
+    "viewfinder_glass"
+   ],
+   "removed": [],
+   "unchanged": [
+    "body_core",
+    "dial_left",
+    "dial_right",
+    "lens_barrel",
+    "lens_glass",
+    "top_plate",
+    "viewfinder_bezel"
+   ]
+  },
+  "kind": "model_patch",
+  "score_after": 0,
+  "score_before": 100
+ },
+ {
+  "accepted": false,
+  "kind": "critic_revision",
+  "reason": "patch rejected: cannot remove required body 'dial_right'",
+  "round": 1
+ },
+ {
+  "accepted": false,
+  "kind": "critic_revision",
+  "reason": "patch rejected: cannot remove required body 'dial_right'",
+  "round": 2
+ }
+]

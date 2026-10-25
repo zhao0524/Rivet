@@ -92,6 +92,19 @@ class AssetStore:
             raise ApiError("ASSET_NOT_FOUND", "No such asset", 404)
         return path.read_bytes(), _MIME_BY_EXT[path.suffix]
 
+    # -- demo photos ---------------------------------------------------------
+    # Which hand-built demo model an upload matched (concept/demo); decided at upload time,
+    # because the stored image is re-encoded and its file name is not kept.
+    def tag_demo(self, asset_id: str, key: str) -> None:
+        self._write_atomic(self.root / f"{self._check_id(asset_id)}.demo", key.encode())
+
+    def demo_key(self, asset_id: str) -> str | None:
+        try:
+            path = self.root / f"{self._check_id(asset_id)}.demo"
+        except ApiError:
+            return None
+        return (path.read_text().strip() or None) if path.is_file() else None
+
     # -- upload --------------------------------------------------------------
     def save(self, data: bytes, session_id: str) -> AssetRecord:
         self._count_attempt(session_id[:128] or "anonymous")

@@ -14,7 +14,8 @@ from pydantic import ValidationError
 from rivet_api.agents.editor import EditSelector, parse_edit
 from rivet_api.agents.intent_sanitizer import sanitize_intent
 from rivet_api.agents.vision import MockVisionProvider, VisionPort, ensure_supported, support_limitation
-from rivet_api.concept import CONCEPT_PREFIX, build_concept_plan, concept_from_plan, fixture_concept, is_concept_plan
+from rivet_api.concept import CONCEPT_PREFIX, build_concept_plan, concept_from_plan, fixture_concept, is_concept_plan, mock_edit_concept
+from rivet_api.concept.demo import demo_concept, demo_keys
 from rivet_api.concept.model import ConceptModel
 from rivet_api.concept.reference_parts import REFERENCE_URLS
 from rivet_api.adapters.engineering import EngineeringPort
@@ -64,9 +65,18 @@ _VALIDATE_STATUS = {
 }
 
 
+def demo_key_for(req: GenerateRequest, deps: Deps) -> str | None:
+    """The hand-built demo model the uploaded photo was matched to at upload time, if any."""
+    lookup = getattr(deps.assets, "demo_key", None)
+    if not req.input.image_asset_id or lookup is None:
+        return None
+    key = lookup(req.input.image_asset_id)
+    return key if key in demo_keys() else None
+
+
 def planned_stages(deps: Deps, req: GenerateRequest) -> list[str]:
     stages = ["upload"] if req.input.image_asset_id else []
-    if req.interpretation_choice == "concept_model":
+    if req.interpretation_choice == "concept_model" or demo_key_for(req, deps):
         return stages + ["understand", "assembly", "validate", "complete"]
     stages += ["understand", "catalog_selection"]
     if getattr(deps.engine, "generation_mode", None) is None:
@@ -205,6 +215,27 @@ def generate_concept(
     return saved["build_id"], saved["revision"]
 
 
+DEMO_MODEL_NOTE = "Hand-built reference model for this photo; not read from the image by the vision model"
+
+
+def generate_demo(req: GenerateRequest, deps: Deps, job_id: str, key: str) -> tuple[str, int]:
+    """A recognised demo photo gets its detailed hand-built concept model (concept/demo)."""
+    jobs = deps.jobs
+    jobs.emit(job_id, "understand", "vision", "running", "Breaking the image into parts")
+    concept = demo_concept(key)
+    jobs.emit(job_id, "understand", "vision", "ok", f"Recognised a {concept.object_type} (matched a reference model)")
+    plan = build_concept_plan(concept, f"concept-{job_id}"[:80], req.input.kind, "manual_template")
+    plan["provenance"]["notes"].append(DEMO_MODEL_NOTE)
+    plan["concept"]["demo"] = key
+    check_concept_plan(plan)
+    visible = sum(1 for c in plan["components"] if not c["render_overrides"].get("internal"))
+    jobs.emit(job_id, "assembly", "engineer", "ok", f"Placed {visible} visible parts and {len(plan['components']) - visible} internal parts")
+    jobs.emit(job_id, "validate", "validator", "warning", "Concept model: appearance only, nothing engineered or sourced")
+    saved = deps.store.create(plan)
+    jobs.complete(job_id, saved["build_id"], saved["revision"])
+    return saved["build_id"], saved["revision"]
+
+
 def _label_provenance(plan: dict[str, Any], vision_mode: str) -> None:
     prov = plan["provenance"]
     if prov["generation_mode"] == "live" and vision_mode != "live":
@@ -272,6 +303,10 @@ def generate_project(
     if req.input.image_asset_id:
         image = deps.assets.read_bytes(req.input.image_asset_id)
         jobs.emit(job_id, "upload", "system", "ok", f"Image received ({len(image[0])} bytes, {image[1]})")
+
+    demo = demo_key_for(req, deps)
+    if demo is not None:
+        return generate_demo(req, deps, job_id, demo)
 
     fallback_from: ApiError | None = None
     if req.interpretation_choice == "concept_model":
@@ -387,11 +422,19 @@ def apply_concept_edit(build_id: str, current: dict[str, Any], req: EditRequest,
     if not instruction:
         raise ApiError("CONCEPT_EDIT_NEEDS_TEXT", "Describe the change in words for a concept model", 422)
     before = concept_from_plan(current)
+    demo = (current.get("concept") or {}).get("demo")
     try:
-        after = deps.vision.edit_concept(before, instruction)
+        # A hand-built demo model is too large to round-trip through the vision model for a
+        # recolor, so color changes are applied directly; anything else still goes to the model.
+        after = mock_edit_concept(before, instruction) if demo else before
+        if after == before:
+            after = deps.vision.edit_concept(before, instruction)
         plan = build_concept_plan(
             after, current["source_intent_id"], current["provenance"]["input_mode"], current["provenance"]["generation_mode"]
         )
+        if demo:
+            plan["concept"]["demo"] = demo
+            plan["provenance"]["notes"].append(DEMO_MODEL_NOTE)
         plan["provenance"]["notes"] = [*plan["provenance"]["notes"], f"Edited: {instruction[:200]}"]
         check_concept_plan(plan)
     except ApiError as err:

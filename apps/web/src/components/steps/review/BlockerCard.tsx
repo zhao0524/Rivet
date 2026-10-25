@@ -6,7 +6,7 @@ import type { VerificationFinding } from '../../../lib/rivet/types';
 import { Icon } from '../../system/Icon';
 import { MoreDetails } from '../phase1/shared';
 
-export type BlockerKind = 'safety' | 'wont-work' | 'needs-part';
+export type BlockerKind = 'safety' | 'wont-work' | 'needs-part' | 'unverified';
 
 export interface Blocker {
   /** Stable key: rule id plus affected instances (a rule can fire once per part). */
@@ -39,18 +39,20 @@ export interface BlockerCardProps {
   /** Another card's fix is in flight: this card's button waits. */
   busy: boolean;
   onFix: (blocker: Blocker) => void;
-  /** Where "Look at this part in Parts" goes (Parts with the first affected part preselected). */
+  /** Parts with the first affected part preselected for inspection. */
   partsHref: string;
+  canFix?: boolean;
 }
 
 const BADGE: Record<BlockerKind, { className: string; text: string }> = {
   safety: { className: 'ui-badge ui-badge--danger', text: 'Safety' },
   'wont-work': { className: 'ui-badge ui-badge--warn', text: "Won't work" },
   'needs-part': { className: 'ui-badge ui-badge--accent', text: 'Needs a part' },
+  unverified: { className: 'ui-badge ui-badge--warn', text: 'Needs verification' },
 };
 
-/** One blocking check with one fix button; a failed fix stays visible with its reason. */
-export function BlockerCard({ blocker, partNames, nicknames, attempt, busy, onFix, partsHref }: BlockerCardProps) {
+/** One blocking check with a live fix or saved-example inspection action. */
+export function BlockerCard({ blocker, partNames, nicknames, attempt, busy, onFix, partsHref, canFix = true }: BlockerCardProps) {
   const { finding, kind } = blocker;
   const badge = BADGE[kind];
   const links = finding.evidence_urls.map(safeHttpUrl).filter((u): u is string => u !== null);
@@ -111,7 +113,7 @@ export function BlockerCard({ blocker, partNames, nicknames, attempt, busy, onFi
           {plainWhy && attempt.message ? <p className="ui-small ui-muted">Details: {attempt.message}</p> : null}
           <p>
             <Link href={partsHref} className="ui-btn ui-btn--link" data-testid="review-swap-manually">
-              Look at this part in Parts
+              Inspect this part
             </Link>
           </p>
         </div>
@@ -123,7 +125,7 @@ export function BlockerCard({ blocker, partNames, nicknames, attempt, busy, onFi
             Checking the fix…
           </span>
         ) : null}
-        <button
+        {canFix ? <button
           type="button"
           className="ui-btn ui-btn--secondary"
           onClick={() => onFix(blocker)}
@@ -131,7 +133,7 @@ export function BlockerCard({ blocker, partNames, nicknames, attempt, busy, onFi
           data-testid="review-fix"
         >
           {failed ? 'Try the fix again' : 'Fix this'}
-        </button>
+        </button> : <Link href={partsHref} className="ui-btn ui-btn--secondary" data-testid="review-inspect">Inspect this part</Link>}
       </div>
     </li>
   );
