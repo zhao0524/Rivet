@@ -12,7 +12,8 @@ export type DecorName =
   | 'spring'
   | 'crystal'
   | 'wrench-a'
-  | 'wrench-b';
+  | 'wrench-b'
+  | 'washer';
 
 /** Intrinsic sizes of the exported files, so the browser reserves space before they load. */
 const SIZES: Record<DecorName, [number, number]> = {
@@ -25,6 +26,7 @@ const SIZES: Record<DecorName, [number, number]> = {
   crystal: [685, 720],
   'wrench-a': [258, 720],
   'wrench-b': [376, 720],
+  washer: [720, 539],
 };
 
 export interface DecorItem {

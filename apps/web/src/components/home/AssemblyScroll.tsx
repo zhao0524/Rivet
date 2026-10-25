@@ -12,6 +12,19 @@ import { RoverScene } from '../three/RoverScene';
 const QUANTUM = 0.08;
 
 /**
+ * Plain labels for the plan's first six steps, the ones that add parts. The plan's later
+ * inspection steps add nothing to the model, so the overview stops once everything is on.
+ */
+const STEP_LABELS = [
+  'Build the frame',
+  'Add the motors',
+  'Put on the wheels',
+  'Add the brains',
+  'Mount the sensor',
+  'Power it up',
+] as const;
+
+/**
  * Scroll demo: the saved synthetic rover assembles itself as the section is scrolled.
  * GSAP pins the section and scrubs a timeline position in [0, stepCount], which the
  * assembly engine turns into the current step and its seat-in progress.
@@ -20,7 +33,7 @@ export function AssemblyScroll() {
   const plan = useMemo(() => getSyntheticRoverPlan(), []);
   const catalog = useMemo(() => getSyntheticCatalog(), []);
   const steps = useMemo(
-    () => [...plan.assembly_steps].sort((a, b) => a.step - b.step),
+    () => [...plan.assembly_steps].sort((a, b) => a.step - b.step).slice(0, STEP_LABELS.length),
     [plan],
   );
   const stepCount = steps.length;
@@ -60,7 +73,7 @@ export function AssemblyScroll() {
         onUpdate: (self) => {
           const next = Math.round((self.progress * stepCount) / QUANTUM) * QUANTUM;
           setPosition((prev) => (prev === next ? prev : next));
-          if (barRef.current) barRef.current.style.transform = `scaleX(${self.progress})`;
+          barRef.current?.style.setProperty('--mk-p', self.progress.toFixed(4));
         },
       });
 
@@ -101,13 +114,12 @@ export function AssemblyScroll() {
       <div ref={pinRef} className="mk-build__pin">
         <div className="mk-build__panel mk-dark">
           <div className="mk-build__copy">
-            <span className="mk-eyebrow">Scroll to assemble</span>
             <h2 id="mk-build-title" className="mk-build__title">
-              From prompt to parts, <span className="mk-dim">one step at a time.</span>
+              Build exceptional projects, <span className="mk-dim">no experience needed.</span>
             </h2>
             <p className="mk-build__lede mk-dim">
-              Every Rivet design comes with build steps in order. This is a saved example rover, made of
-              placeholder parts, putting itself together step by step.
+              Describe an ideal build or upload an image, and Rivet will guide you on how to build your
+              project from beginning to finish.
             </p>
             <ol className="mk-build__steps">
               {steps.map((s, i) => (
@@ -117,7 +129,7 @@ export function AssemblyScroll() {
                   data-state={done || i < activeIndex ? 'done' : i === activeIndex && step > 0 ? 'active' : 'todo'}
                 >
                   <span className="mk-build__num">{String(s.step).padStart(2, '0')}</span>
-                  <span>{s.title}</span>
+                  <span>{STEP_LABELS[i]}</span>
                 </li>
               ))}
             </ol>
@@ -134,16 +146,12 @@ export function AssemblyScroll() {
                 previousStepsDisplay="solid"
                 themeMode={themeMode}
                 showGrid
+                orbitOnly
               />
             ) : null}
-            <div className="mk-build__hud">
-              <span className="mk-build__counter">
-                {done ? 'Assembled' : step === 0 ? 'Parts laid out' : `Step ${step} of ${stepCount}`}
-              </span>
-              <span className="mk-build__tag">Saved example · placeholder parts</span>
-            </div>
-            <div className="mk-build__bar" aria-hidden="true">
-              <div ref={barRef} className="mk-build__bar-fill" />
+            <div ref={barRef} className="mk-build__bar" aria-hidden="true">
+              <div className="mk-build__bar-fill" />
+              <div className="mk-build__bar-tip" />
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useAppRouter } from '../system/Navigation';
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import {
   createProjectRecord,
@@ -28,7 +28,7 @@ import '../../styles/gallery.css';
  * its overflow (Rename, Duplicate, Delete).
  */
 export function ProjectsScreen() {
-  const router = useRouter();
+  const router = useAppRouter();
   const projects = useProjects();
   const [mounted, setMounted] = useState(false);
   const [renaming, setRenaming] = useState<ProjectRecord | null>(null);

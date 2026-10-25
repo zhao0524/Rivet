@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { DM_Sans } from 'next/font/google';
 import type { ReactNode } from 'react';
+import { NavigationWatch } from '../components/system/Navigation';
 import { THEME_BOOT_SCRIPT } from '../components/system/ThemeToggle';
 import '../styles/system.css';
 import '../styles/flow.css';
@@ -26,7 +27,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <NavigationWatch />
+      </body>
     </html>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useAppRouter } from '../system/Navigation';
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import type { ClarifyAnswers } from '../../lib/flow/projects';
 import { projectPath } from '../../lib/flow/steps';
@@ -35,7 +35,7 @@ function budgetChoiceFrom(answers: ClarifyAnswers): { choice: BudgetChoice; cust
  * straight to Generate with the defaults.
  */
 export function ClarifyScreen() {
-  const router = useRouter();
+  const router = useAppRouter();
   const { project, update, build } = useProjectContext();
   const store = build.store;
   const [card, setCard] = useState(0);

@@ -12,6 +12,7 @@ import { RoverScene } from '../../three/RoverScene';
 import { clampStep, firmwareStep, needsSafetyAck, orderedSteps, stepParts } from './build-model';
 import { FlashFirmwareCard } from './FlashFirmwareCard';
 import { MissingPartModal } from './MissingPartModal';
+import { PrintedBodyCard } from './PrintedBodyCard';
 
 const PURPOSE = 'Put it together one step at a time. Parts for this step are solid in the model; later ones are see-through.';
 const SEAT_MS = 650;
@@ -258,6 +259,8 @@ export function BuildStep() {
               </label>
             </div>
           ) : null}
+
+          {current === 1 ? <PrintedBodyCard plan={plan} catalog={catalog} synthetic={synthetic} /> : null}
 
           {fwStep === step.step ? <FlashFirmwareCard firmware={plan.firmware} downloadUrl={firmwareUrl} /> : null}
 

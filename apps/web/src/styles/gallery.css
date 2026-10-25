@@ -21,7 +21,7 @@
 /* ── The card ─────────────────────────────────────────── */
 .elc {
   --elc-r: var(--ui-r-xl);
-  --elc-hue: var(--ui-accent);
+  --elc-hue: var(--ui-lavender);
   --elc-c: color-mix(in srgb, var(--elc-hue) 82%, var(--ui-text));
   /* masks read alpha only; any opaque token works as the "on" stop */
   --elc-m: var(--ui-text);
@@ -33,7 +33,7 @@
 .elc[data-glow='pink'] { --elc-hue: var(--ui-pink); }
 .elc[data-glow='orange'] { --elc-hue: var(--ui-orange); }
 [data-theme='dark'] .elc { --elc-c: color-mix(in srgb, var(--elc-hue) 72%, var(--ui-text)); }
-[data-theme='dark'] .elc[data-glow='accent'] { --elc-hue: var(--ui-accent-text); }
+[data-theme='dark'] .elc[data-glow='accent'] { --elc-hue: var(--ui-lavender-text); }
 
 .elc__slab {
   position: relative; display: grid; border-radius: inherit; background: var(--ui-surface); color: var(--ui-text);

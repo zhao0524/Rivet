@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useAppRouter } from '../system/Navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { partRows } from '../../lib/flow/derive';
 import { projectPath } from '../../lib/flow/steps';
@@ -47,7 +47,7 @@ let jobOwner: string | null = null;
  * replay once the plan has loaded. Done → Review; failed → Resume.
  */
 export function GenerateScreen() {
-  const router = useRouter();
+  const router = useAppRouter();
   const { project, update, build } = useProjectContext();
   const store = build.store;
   const { plan, catalog } = store;

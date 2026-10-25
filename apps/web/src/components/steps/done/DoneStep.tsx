@@ -9,6 +9,7 @@ import { Icon } from '../../system/Icon';
 import type { OverflowItem } from '../../system/OverflowMenu';
 import { useThemeMode } from '../../system/ThemeToggle';
 import { RoverScene } from '../../three/RoverScene';
+import { usePrintFiles } from '../../three/enclosure/usePrintFiles';
 import { downloadTextFile } from '../buy/download';
 
 const PURPOSE = 'Your rover is assembled. Here is what you built, and anything still worth a look.';
@@ -26,6 +27,7 @@ export function DoneStep() {
   const { plan, catalog, dataSource } = build.store;
   const theme = useThemeMode();
   const [status, setStatus] = useState<string | null>(null);
+  const printFiles = usePrintFiles(plan, catalog);
 
   const byId = useMemo(() => catalogIndex(catalog), [catalog]);
   // Every component counts as a part, including wiring and accessories that have no visible mesh.
@@ -63,6 +65,18 @@ export function DoneStep() {
   const overflow: OverflowItem[] = [
     { id: 'iterate', label: 'Change something', onSelect: openIterate, testId: 'done-iterate' },
     { id: 'export', label: 'Download the design file (build.json)', disabled: !build.ready, onSelect: exportBuild, testId: 'done-export' },
+    ...(printFiles.spec
+      ? [
+          {
+            id: 'print-obj',
+            label: 'Download the printed body (.obj)',
+            disabled: !build.ready || printFiles.busy !== null,
+            onSelect: () =>
+              void printFiles.download('obj').then((ok) => setStatus(ok ? 'Downloaded the printed body as an OBJ file, in millimetres.' : "Couldn't make the print file in this browser. Try again, or try another browser.")),
+            testId: 'done-print-obj',
+          },
+        ]
+      : []),
   ];
 
   if (!build.ready) {

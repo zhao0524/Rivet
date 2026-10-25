@@ -135,3 +135,14 @@ describe('plain language', () => {
     expect(plainInstructions('No ids here.', names)).toBe('No ids here.');
   });
 });
+
+describe('picture handoff from the landing page', () => {
+  it('hands the picture to the same draft once, and to no other draft', async () => {
+    const { setPendingImage, takePendingImage } = await import('../src/lib/flow/pending-image');
+    const file = new File(['x'], 'robot.png', { type: 'image/png' });
+    setPendingImage('p_a', file);
+    expect(takePendingImage('p_b')).toBeNull();
+    expect(takePendingImage('p_a')).toBe(file);
+    expect(takePendingImage('p_a')).toBeNull();
+  });
+});

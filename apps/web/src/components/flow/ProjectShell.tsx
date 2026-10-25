@@ -1,11 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { projectStepOf, useAppRouter, usePendingNavigation } from '../system/Navigation';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useProject, type ProjectRecord } from '../../lib/flow/projects';
 import { advance, isStepId, projectPath, type StepId } from '../../lib/flow/steps';
 import { IterateModal } from '../steps/IterateModal';
+import { StepSkeleton } from '../system/PageSkeletons';
 import { AppHeader } from './AppHeader';
 import { useProjectBuild, type ProjectBuildState } from './FlowProvider';
 import { Stepper } from './Stepper';
@@ -32,12 +34,13 @@ export function useProjectContext(): ProjectContextValue {
 
 /** Wraps every `/p/:id/*` screen: loads the project and its build, shows the stepper once ready. */
 export function ProjectShell({ id, children }: { id: string; children: ReactNode }) {
-  const router = useRouter();
+  const router = useAppRouter();
   const pathname = usePathname() ?? '';
   const [project, update] = useProject(id);
   const build = useProjectBuild(project);
   const [iterateOpen, setIterateOpen] = useState(false);
   const [checked, setChecked] = useState(false);
+  const pendingNav = usePendingNavigation();
 
   // useSyncExternalStore returns null during SSR and the first client pass; wait one tick
   // before deciding the project does not exist.
@@ -71,7 +74,7 @@ export function ProjectShell({ id, children }: { id: string; children: ReactNode
     return (
       <>
         <AppHeader />
-        <main className="app-main app-main--narrow">
+        <main className={checked ? 'app-main app-main--narrow' : 'app-main'}>
           {checked ? (
             <div className="ui-card ui-card--pad" data-testid="project-missing">
               <h1 className="ui-h2">This project isn&apos;t on this device</h1>
@@ -82,7 +85,9 @@ export function ProjectShell({ id, children }: { id: string; children: ReactNode
                 New project
               </Link>
             </div>
-          ) : null}
+          ) : (
+            <StepSkeleton />
+          )}
         </main>
       </>
     );
@@ -94,8 +99,14 @@ export function ProjectShell({ id, children }: { id: string; children: ReactNode
     <ProjectContext.Provider value={value}>
       <AppHeader center={<span data-testid="project-title">{project.title}</span>} />
       {showStepper ? <Stepper projectId={project.id} current={segment as StepId} furthest={project.furthestStep} /> : null}
-      <main className="app-main">{children}</main>
+      <main className="app-main">{pendingStep(pendingNav?.path, project.id, segment) ? <StepSkeleton /> : children}</main>
       <IterateModal open={iterateOpen} onClose={() => setIterateOpen(false)} />
     </ProjectContext.Provider>
   );
+}
+
+/** A move to another step of this same project is on its way: show that step's skeleton under the stepper. */
+function pendingStep(path: string | undefined, id: string, segment: string): boolean {
+  const to = path ? projectStepOf(path) : null;
+  return !!to && to.id === id && to.step !== segment;
 }

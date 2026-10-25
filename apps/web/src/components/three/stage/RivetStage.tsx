@@ -45,6 +45,13 @@ export interface RivetStageProps {
   view?: CameraView;
   /** Fraction of each half-frame kept free around the framed volume. */
   padding?: number;
+  /**
+   * Drag-to-rotate only: no zoom or pan, so wheel and touch scrolling reach the page.
+   * For scroll-driven embeds where camera zoom would fight the page's scroll effects.
+   */
+  orbitOnly?: boolean;
+  /** Turn slowly around the model on its own (dragging still orbits). Renders every frame while on. */
+  autoRotate?: boolean;
   /** Replaces the built-in message when WebGL is unavailable or the renderer fails. */
   fallback?: ReactNode;
   className?: string;
@@ -123,11 +130,14 @@ interface StageSceneProps {
   theme: StageTheme;
   view?: CameraView;
   padding?: number;
+  orbitOnly: boolean;
+  autoRotate: boolean;
   onContextLost: (lost: boolean) => void;
 }
 
-function StageScene({ children, explicitBounds, resetSignal, showGrid, active, theme, view, padding, onContextLost }: StageSceneProps) {
+function StageScene({ children, explicitBounds, resetSignal, showGrid, active, theme, view, padding, orbitOnly, autoRotate, onContextLost }: StageSceneProps) {
   const contentRef = useRef<Group>(null);
+  const canvas = useThree((s) => s.gl.domElement);
   const box = useMemo(() => new Box3(), []);
   const [measured, setMeasured] = useState<Bounds3 | null>(null);
   const [mountTick, setMountTick] = useState(0);
@@ -145,6 +155,21 @@ function StageScene({ children, explicitBounds, resetSignal, showGrid, active, t
   }, [children, mountTick, explicitBounds, resetSignal, box]);
 
   const fit = useStageFit(explicitBounds ?? measured, view, padding);
+
+  useEffect(() => {
+    if (!orbitOnly) return;
+    // OrbitControls sets touch-action: none; let vertical swipes scroll the page instead.
+    canvas.style.touchAction = 'pan-y';
+    // A trackpad pinch arrives as ctrl+wheel; with zoom off it would zoom the whole page.
+    const blockPinch = (event: WheelEvent) => {
+      if (event.ctrlKey) event.preventDefault();
+    };
+    canvas.addEventListener('wheel', blockPinch, { passive: false });
+    return () => {
+      canvas.style.touchAction = 'none';
+      canvas.removeEventListener('wheel', blockPinch);
+    };
+  }, [canvas, orbitOnly]);
 
   return (
     <>
@@ -167,6 +192,10 @@ function StageScene({ children, explicitBounds, resetSignal, showGrid, active, t
         rotateSpeed={0.7}
         zoomSpeed={0.8}
         panSpeed={0.8}
+        enableZoom={!orbitOnly}
+        enablePan={!orbitOnly}
+        autoRotate={autoRotate}
+        autoRotateSpeed={0.9}
         screenSpacePanning
         minDistance={fit.minDistance}
         maxDistance={fit.maxDistance}
@@ -205,6 +234,8 @@ export function RivetStage({
   theme: themeOverrides,
   view,
   padding,
+  orbitOnly = false,
+  autoRotate = false,
   fallback,
   className,
   style,
@@ -249,7 +280,7 @@ export function RivetStage({
       {support === 'ready' && !crashed && (
         <StageErrorBoundary onError={() => setCrashed(true)}>
           <Canvas
-            frameloop={active ? 'demand' : 'never'}
+            frameloop={active ? (autoRotate ? 'always' : 'demand') : 'never'}
             dpr={STAGE_DPR}
             camera={{ fov: STAGE_FOV_DEG, near: 0.001, far: 100, position: [0.4, 0.3, 0.6] }}
             gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
@@ -269,6 +300,8 @@ export function RivetStage({
               theme={theme}
               view={view}
               padding={padding}
+              orbitOnly={orbitOnly}
+              autoRotate={autoRotate}
               onContextLost={setContextLost}
             >
               {children}

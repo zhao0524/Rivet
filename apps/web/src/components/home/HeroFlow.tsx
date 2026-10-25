@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useAppRouter } from '../system/Navigation';
 import { useState, type FormEvent, type ReactNode } from 'react';
 import {
   createProjectRecord,
@@ -10,6 +10,7 @@ import {
   type Draft,
   type LocalAccount,
 } from '../../lib/flow/projects';
+import { setPendingImage } from '../../lib/flow/pending-image';
 import { projectPath } from '../../lib/flow/steps';
 import { PromptBox } from '../flow/PromptBox';
 import { Icon, type IconName } from '../system/Icon';
@@ -42,7 +43,7 @@ export function ExampleButton({
   children: ReactNode;
   testId?: string;
 }) {
-  const router = useRouter();
+  const router = useAppRouter();
   return (
     <button type="button" className={className} data-testid={testId} onClick={() => router.push(createExampleProject())}>
       {children}
@@ -57,6 +58,12 @@ const DELIVERABLES: ReadonlyArray<{ icon: IconName; title: string; body: string 
   { icon: 'check', title: 'Step-by-step build', body: 'The order to put it together, with safety notes on every step.' },
 ];
 
+/** Starter prompts, from a first robot to an ambitious one. Short enough to share one row. */
+const EXAMPLE_PROMPTS = [
+  'A robot car that avoids walls',
+  'Help me build a drone from scratch',
+] as const;
+
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
@@ -66,7 +73,7 @@ const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
  * the draft id to the app prompt at `/new?draft=<id>`.
  */
 export function HeroFlow() {
-  const router = useRouter();
+  const router = useAppRouter();
   const [draft, setDraft] = useState<Draft | null>(null);
   const [stage, setStage] = useState<'idle' | 'preview' | 'save'>('idle');
 
@@ -91,21 +98,14 @@ export function HeroFlow() {
       <PromptBox
         submitLabel="Build it"
         testId="home-prompt"
-        onSubmit={({ draft: next }) => {
+        placeholder="Describe a hardware project in a sentence or two…"
+        examples={EXAMPLE_PROMPTS}
+        allowImage
+        onSubmit={({ draft: next, image }) => {
+          setPendingImage(next.id, image);
           setDraft(next);
           setStage('preview');
         }}
-        footer={
-          <>
-            <span>
-              No prompt in mind?{' '}
-              <ExampleButton testId="home-see-example">See an example</ExampleButton>
-            </span>
-            <span className="mk-prompt__hint">
-              A picture gives Rivet ideas for a robot it can build. It can&apos;t copy the exact device in the photo.
-            </span>
-          </>
-        }
       />
 
       <GuestPreview

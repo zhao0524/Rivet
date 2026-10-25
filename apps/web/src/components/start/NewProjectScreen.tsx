@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useAppRouter } from '../system/Navigation';
 import { useEffect, useMemo, useState } from 'react';
 import {
   createProjectRecord,
@@ -17,6 +18,7 @@ import { SAMPLE_PROJECTS, type SampleProject } from '../../lib/flow/samples';
 import { projectPath } from '../../lib/flow/steps';
 import { AppHeader } from '../flow/AppHeader';
 import { useFlowStore } from '../flow/FlowProvider';
+import { takePendingImage } from '../../lib/flow/pending-image';
 import { PromptBox, type PromptBoxSubmit } from '../flow/PromptBox';
 import { CardSkeletons, ProjectCard, SampleCard } from './gallery/ProjectCards';
 import '../../styles/start.css';
@@ -32,7 +34,7 @@ const RECENT_LIMIT = 6;
  * Below the box, "Recent projects": the user's own projects (newest first), then tagged samples.
  */
 export function NewProjectScreen() {
-  const router = useRouter();
+  const router = useAppRouter();
   const params = useSearchParams();
   const store = useFlowStore();
   const draftParam = params?.get('draft') || null;
@@ -41,6 +43,8 @@ export function NewProjectScreen() {
   // The draft id the PromptBox should restore. Set after mount so a `?prompt=` seed is written
   // to the shared draft before the box reads it.
   const [seedId, setSeedId] = useState<string | null | undefined>(undefined);
+  // A picture picked on the landing page for this draft (held in memory across the client-side hop).
+  const [carriedImage, setCarriedImage] = useState<File | null>(null);
   const [boxKey, setBoxKey] = useState(0);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -80,6 +84,8 @@ export function NewProjectScreen() {
     } else {
       setSeedId(draftParam);
     }
+    const carried = takePendingImage(draftParam);
+    if (carried) setCarriedImage(carried);
   }, [draftParam, promptParam]);
 
   function fill(text: string) {
@@ -167,6 +173,7 @@ export function NewProjectScreen() {
               allowImage
               autoFocus
               initialDraftId={seedId}
+              initialImage={carriedImage}
               submitLabel="Build it"
               busy={busy}
               onSubmit={(value) => void submit(value)}
