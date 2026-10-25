@@ -271,11 +271,27 @@ def _carry_choice_notes(previous: dict[str, Any], plan: dict[str, Any]) -> None:
             _record_choice(plan, note)
 
 
+def _interpret_or_fallback(
+    vision: VisionPort, req: GenerateRequest, image: tuple[bytes, str] | None
+) -> tuple[IntentSpec, str]:
+    """The provider's reading, or the saved rover reading when a live provider cannot answer.
+
+    A fixture provider still raises: tests and offline mode should see that failure. A live
+    provider that errors (billing, timeout) must not stop a normal build.
+    """
+    try:
+        return vision.interpret(req, image), vision.mode
+    except ApiError:
+        if vision.mode != "live":
+            raise
+        return MockVisionProvider().interpret(req, image), "fallback"
+
+
 def interpret_request(req: InterpretRequest, deps: Deps) -> dict[str, Any]:
     """Vision port + sanitizer only (no engine solve). The result is stored for a later build."""
     as_generate = GenerateRequest(input=req.input, requirements=req.requirements)
     image = deps.assets.read_bytes(req.input.image_asset_id) if req.input.image_asset_id else None
-    raw, vision_mode = deps.vision.interpret(as_generate, image), deps.vision.mode
+    raw, vision_mode = _interpret_or_fallback(deps.vision, as_generate, image)
     catalog_ids = {c["catalog_id"] for c in deps.engine.get_catalog()}
     intent = sanitize_intent(raw, catalog_ids, as_generate)
     deps.intents.put(intent, vision_mode)
@@ -335,8 +351,7 @@ def generate_project(
     if stored is None:
         jobs.emit(job_id, "understand", "vision", "running", "Reading the request")
         try:
-            raw: IntentSpec = deps.vision.interpret(req, image)
-            vision_mode: str = deps.vision.mode
+            raw, vision_mode = _interpret_or_fallback(deps.vision, req, image)
         except ApiError:
             if fallback_from is None:
                 raise

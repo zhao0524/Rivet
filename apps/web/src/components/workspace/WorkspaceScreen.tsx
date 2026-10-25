@@ -29,7 +29,8 @@ export function WorkspaceScreen() {
   const { project, update, build } = useProjectContext();
   const session = useWorkspaceSession();
   const store = build.store;
-  const plan = build.ready ? store.plan : null;
+  // A demo photo's model stays hidden until the chat has finished the engineering pass.
+  const plan = build.ready && session.paceStartedAt == null ? store.plan : null;
   const [view, setView] = useState<StageView>(DEFAULT_VIEW);
   const [pane, setPane] = useState<Pane>('model');
   const [tab, setTab] = useState<LeftTab>('build');
@@ -55,9 +56,9 @@ export function WorkspaceScreen() {
     if (session.status === 'reading' || session.status === 'generating') return { text: 'Building', tone: 'busy' };
     if (session.status === 'failed') return { text: 'Stopped', tone: 'danger' };
     if (session.status === 'loading') return { text: 'Opening', tone: 'busy' };
-    if (concept) return { text: 'Concept model', tone: 'quiet' };
+    if (concept && !(project.demoKey && project.imageAssetId && !fixture)) return { text: 'Concept model', tone: 'quiet' };
     return null;
-  }, [session.status, concept]);
+  }, [session.status, concept, project.demoKey, project.imageAssetId, fixture]);
 
   useEffect(() => {
     if (!toast) return;

@@ -164,6 +164,29 @@ def test_interpret_accepted_rover_returns_the_intent_without_running_the_engine(
     assert engine.solve_calls == [] and engine.edit_calls == []
 
 
+class _DownLiveVision:
+    """A live reader that cannot answer, the way a billing failure comes back."""
+
+    mode = "live"
+
+    def interpret(self, request, image):
+        raise ApiError("PROVIDER_ERROR", "The vision provider could not complete the request", 502)
+
+
+def test_interpret_uses_the_saved_reading_when_the_live_reader_fails(make_client):
+    client, _ = make_client(vision=_DownLiveVision())
+    body = interpret(client)
+    assert body["vision_mode"] == "fallback"
+    assert body["supported"] is True and body["intent"]["project_family"] == "rover"
+
+
+def test_generate_still_finishes_when_the_live_reader_fails(make_client, wait_job):
+    client, _ = make_client(vision=_DownLiveVision())
+    job = build(client, wait_job, ROVER)
+    assert job["status"] == "complete"
+    assert job.get("error") is None
+
+
 def test_interpret_intent_matches_the_intent_schema(make_client):
     jsonschema = pytest.importorskip("jsonschema")
     client, _ = make_client()

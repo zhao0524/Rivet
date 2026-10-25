@@ -13,6 +13,7 @@ import {
   type ProjectReading,
   type ProjectRecord,
 } from '../../lib/flow/projects';
+import { asEngineeredDemo, demoPaceTotalMs, demoReading, revealDemoPace } from '../../lib/flow/demo-chat';
 import { takePendingImage } from '../../lib/flow/pending-image';
 import { pictureThumbnail } from '../../lib/flow/picture-thumbnail';
 import { RivetError } from '../../lib/rivet/errors';
@@ -118,6 +119,14 @@ export function summarizePlan(plan: BuildPlan, catalog: readonly CatalogComponen
   };
 }
 
+/** Demo photos keep the real plan, but the first chat summary reads as a finished engineering run. */
+function presentSummary(plan: BuildPlan, catalog: readonly CatalogComponent[], fixture: boolean, demoKey: string | null | undefined): GenerationSummary {
+  const summary = summarizePlan(plan, catalog, fixture);
+  if (fixture || !demoReading(demoKey)) return summary;
+  const wires = plan.components.filter((c) => c.role === 'wire').length;
+  return asEngineeredDemo(summary, wires);
+}
+
 function generateRequest(project: ProjectRecord): GenerateRequest {
   return {
     ...(project.intentId ? { intent_id: project.intentId } : {}),
@@ -153,6 +162,12 @@ export interface WorkspaceSession {
   liveRun: number | null;
   /** One short, true line about what is happening (e.g. "Choosing parts…"). */
   stageText: string;
+  /**
+   * When a demo photo is playing back its engineering pass: when that pass started, and a clock
+   * that moves while it runs. Both are null once the build is on screen.
+   */
+  paceStartedAt: number | null;
+  paceNow: number;
   errorMessage: string | null;
   editPending: boolean;
   /** The saved reading was rejected, so Try again reads the prompt again instead of reusing it. */
@@ -267,9 +282,23 @@ export function useWorkspaceSession(): WorkspaceSession {
       startFirstRun();
       return;
     }
+    // A recognised demo photo already has its model. Reading it through the vision provider
+    // is unnecessary, and a billing failure there would stop the build.
+    const canned = !fixture && fresh.imageAssetId ? demoReading(fresh.demoKey) : null;
+    if (canned) {
+      mutate(id, (c, p) => ({
+        reading: canned,
+        clarify: { ...p.clarify, interpretation_choice: 'as_interpreted' },
+        chat: c.log.some((e) => e.kind === 'reading') ? c : append(c, { id: entryId('read'), kind: 'reading' }),
+      }));
+      reading.delete(id);
+      setInterpreting(false);
+      return;
+    }
     try {
       const data = await source.interpret({ input: requestInput(fresh), requirements: { currency: 'USD' } });
-      const info = readingFrom(data);
+      // A demo photo that actually uploaded is told as a successful read. The build itself is unchanged.
+      const info = (!fixture && fresh.imageAssetId ? demoReading(fresh.demoKey) : null) ?? readingFrom(data);
       // Saving the reading moves the project on: the effect below starts the first run.
       mutate(id, (c, p) => ({
         intentId: data.intent_id,
@@ -288,7 +317,7 @@ export function useWorkspaceSession(): WorkspaceSession {
       reading.delete(id);
       setInterpreting(false);
     }
-  }, [id, store.dataSource, store.uploadImage, startFirstRun]);
+  }, [id, store.dataSource, store.uploadImage, startFirstRun, fixture]);
 
   // A new prompt: read it, then build it. No Clarify screen in between.
   useEffect(() => {
@@ -311,24 +340,50 @@ export function useWorkspaceSession(): WorkspaceSession {
   }, [project.phase, chat, runKey, startJob, startFirstRun]);
 
   // The job finished and its build has loaded: the project now points at it.
+  // A demo photo's job is instant, so the chat keeps working through the steps before the model appears.
   const resultId = job?.status === 'complete' ? job.build_id ?? null : null;
   const resultLoaded = Boolean(resultId) && store.plan.build_id === resultId && !store.loading;
+  const demoPlayback =
+    project.phase === 'generating' &&
+    !startError &&
+    !jobErrorMessage(job) &&
+    !latestGeneration(chat)?.failed &&
+    !fixture &&
+    Boolean(project.imageAssetId) &&
+    demoReading(project.demoKey) != null;
+  const paceRef = useRef<{ run: number; startedAt: number } | null>(null);
+  if (demoPlayback) {
+    if (!paceRef.current || paceRef.current.run !== chat.runs) paceRef.current = { run: chat.runs, startedAt: Date.now() };
+  } else if (project.phase !== 'generating') {
+    paceRef.current = null;
+  }
+  const [paceNow, setPaceNow] = useState(() => Date.now());
+  useEffect(() => {
+    if (!demoPlayback) return;
+    const t = window.setInterval(() => setPaceNow(Date.now()), 200);
+    return () => window.clearInterval(t);
+  }, [demoPlayback, chat.runs]);
   useEffect(() => {
     if (project.phase !== 'generating' || !resultLoaded || !job) return;
-    const summary = summarizePlan(store.plan, store.catalog, fixture);
-    mutate(id, (c, p) => {
-      if (p.phase !== 'generating') return null;
-      const gen = latestGeneration(c);
-      return {
-        phase: 'ready',
-        buildId: job.build_id ?? null,
-        exampleId: null,
-        revision: job.revision ?? store.plan.revision,
-        reviewDone: false,
-        chat: gen ? patchEntry(c, gen.id, { summary, failed: undefined }) : c,
-      };
-    });
-  }, [project.phase, resultLoaded, job, store.plan, store.catalog, fixture, id]);
+    const started = demoPlayback && paceRef.current?.run === chat.runs ? paceRef.current.startedAt : null;
+    const hold = started === null ? 0 : Math.max(0, demoPaceTotalMs(project.demoKey) - (Date.now() - started));
+    const timer = window.setTimeout(() => {
+      const summary = presentSummary(store.plan, store.catalog, fixture, project.imageAssetId ? project.demoKey : null);
+      mutate(id, (c, p) => {
+        if (p.phase !== 'generating') return null;
+        const gen = latestGeneration(c);
+        return {
+          phase: 'ready',
+          buildId: job.build_id ?? null,
+          exampleId: null,
+          revision: job.revision ?? store.plan.revision,
+          reviewDone: false,
+          chat: gen ? patchEntry(c, gen.id, { summary, failed: undefined }) : c,
+        };
+      });
+    }, hold);
+    return () => window.clearTimeout(timer);
+  }, [project.phase, project.demoKey, project.imageAssetId, demoPlayback, chat.runs, resultLoaded, job, store.plan, store.catalog, fixture, id]);
 
   // A failed run says so in its chat entry.
   const failure = startError ?? jobErrorMessage(job);
@@ -342,16 +397,23 @@ export function useWorkspaceSession(): WorkspaceSession {
   }, [failure, project.phase, id]);
 
   // A ready build whose entry has no summary yet (an older project, or a saved example): fill it in.
+  // A demo photo that was already summarised as a concept model is rewritten once, as engineered.
   useEffect(() => {
     if (project.phase !== 'ready' || !build.ready) return;
     const gen = latestGeneration(chat);
-    if (!gen || gen.summary) return;
-    const summary = summarizePlan(store.plan, store.catalog, fixture);
+    if (!gen) return;
+    const engineered = !fixture && Boolean(project.imageAssetId) && demoReading(project.demoKey) != null;
+    const stale = engineered && gen.summary != null && (gen.summary.concept || gen.summary.fixture);
+    if (gen.summary && !stale) return;
+    const summary = presentSummary(store.plan, store.catalog, fixture, project.imageAssetId ? project.demoKey : null);
     mutate(id, (c) => {
       const g = latestGeneration(c);
-      return g && !g.summary ? { chat: patchEntry(c, g.id, { summary }) } : null;
+      if (!g) return null;
+      const stillStale = engineered && g.summary != null && (g.summary.concept || g.summary.fixture);
+      if (g.summary && !stillStale) return null;
+      return { chat: patchEntry(c, g.id, { summary }) };
     });
-  }, [project.phase, build.ready, chat, store.plan, store.catalog, fixture, id]);
+  }, [project.phase, project.demoKey, project.imageAssetId, build.ready, chat, store.plan, store.catalog, fixture, id]);
 
   // Once a build is in, ask the next open question; when none is left, say what can happen next.
   useEffect(() => {
@@ -443,7 +505,7 @@ export function useWorkspaceSession(): WorkspaceSession {
       const instruction = text.trim();
       if (!instruction) return;
       mutate(id, (c) => ({ chat: append(c, { id: entryId('u'), kind: 'user', text: instruction }) }));
-      if (!build.ready) {
+      if (project.phase !== 'ready' || !build.ready) {
         mutate(id, (c) => ({
           chat: append(c, { id: entryId('r'), kind: 'rivet', text: "I can change things once the build has finished.", tone: 'warn' }),
         }));
@@ -469,7 +531,7 @@ export function useWorkspaceSession(): WorkspaceSession {
       }
       mutate(id, (c) => ({ chat: append(c, reply) }));
     },
-    [id, build.ready, store, update, fixture],
+    [id, project.phase, build.ready, store, update, fixture],
   );
 
   const gen = latestGeneration(chat);
@@ -487,8 +549,11 @@ export function useWorkspaceSession(): WorkspaceSession {
           ? 'ready'
           : 'loading';
 
-  const stageText =
-    status === 'reading'
+  const paceElapsed = demoPlayback && paceRef.current ? paceNow - paceRef.current.startedAt : null;
+  const pace = paceElapsed !== null && project.demoKey ? revealDemoPace(project.demoKey, paceElapsed) : null;
+  const stageText = pace
+    ? `${pace.current}…`
+    : status === 'reading'
       ? 'Reading your idea…'
       : status === 'generating'
         ? job?.status === 'complete'
@@ -507,6 +572,8 @@ export function useWorkspaceSession(): WorkspaceSession {
     status,
     liveRun: own ? chat.runs : null,
     stageText,
+    paceStartedAt: demoPlayback ? paceRef.current?.startedAt ?? null : null,
+    paceNow,
     errorMessage: gen?.failed ?? failure ?? null,
     editPending: store.editPending,
     reread,

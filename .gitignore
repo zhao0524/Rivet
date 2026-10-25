@@ -60,3 +60,5 @@ temp/
 
 # Agent skills: .claude/skills mirrors .devin/skills; restore with `npx skills experimental_install`
 .claude/skills/
+.vercel
+.env*.local

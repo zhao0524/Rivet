@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent, type ReactNode } from 'react';
+import { demoPaceTotalMs, demoReading, revealDemoPace } from '../../lib/flow/demo-chat';
 import type { ChatEntry, ChatQuestion, ProjectRecord } from '../../lib/flow/projects';
 import type { BuildPlan, StageEvent } from '../../lib/rivet/types';
 import { presetsFor, type Preset } from '../steps/IterateModal';
@@ -28,6 +29,7 @@ export function Chat({
   fixture: boolean;
 }) {
   const { chat, status } = session;
+  const demoKey = !fixture && project.imageAssetId && project.demoKey && demoReading(project.demoKey) ? project.demoKey : null;
   const listRef = useRef<HTMLDivElement>(null);
   const lastId = chat.log[chat.log.length - 1]?.id;
   const latestGen = latestGeneration(chat);
@@ -78,6 +80,7 @@ export function Chat({
             isLatestGen={entry.kind === 'generation' && entry.id === latestGen?.id}
             events={events}
             fixture={fixture}
+            demoKey={demoKey}
           />
         ))}
         {status === 'reading' && !chat.log.some((e) => e.kind === 'reading') ? (
@@ -116,6 +119,7 @@ function Entry({
   isLatestGen,
   events,
   fixture,
+  demoKey,
 }: {
   entry: ChatEntry;
   project: ProjectRecord;
@@ -124,6 +128,7 @@ function Entry({
   isLatestGen: boolean;
   events: readonly StageEvent[];
   fixture: boolean;
+  demoKey: string | null;
 }) {
   switch (entry.kind) {
     case 'prompt':
@@ -183,7 +188,7 @@ function Entry({
         </Rivet>
       );
     case 'generation':
-      return <Generation entry={entry} session={session} latest={isLatestGen} events={events} fixture={fixture} />;
+      return <Generation entry={entry} session={session} latest={isLatestGen} events={events} fixture={fixture} demoKey={demoKey} />;
     case 'question':
       return <Question question={entry.question} project={project} session={session} open={isLast && !session.chat.answered[entry.question]} />;
     case 'user':
@@ -214,16 +219,33 @@ function Generation({
   latest,
   events,
   fixture,
+  demoKey,
 }: {
   entry: Extract<ChatEntry, { kind: 'generation' }>;
   session: WorkspaceSession;
   latest: boolean;
   events: readonly StageEvent[];
   fixture: boolean;
+  demoKey: string | null;
 }) {
   const live = latest && session.liveRun === entry.run && session.status === 'generating';
-  const steps = useMemo(() => (latest && session.liveRun === entry.run ? eventSteps(events, { live, fixture }) : []), [latest, session.liveRun, entry.run, events, live, fixture]);
-  const elapsed = useMemo(() => (latest && session.liveRun === entry.run ? eventsElapsedMs(events) : null), [latest, session.liveRun, entry.run, events]);
+  const showTrace = latest && session.liveRun === entry.run;
+  const paceElapsed =
+    demoKey && showTrace
+      ? live && session.paceStartedAt != null
+        ? Math.max(0, session.paceNow - session.paceStartedAt)
+        : demoPaceTotalMs(demoKey)
+      : null;
+  const steps = useMemo(() => {
+    if (!showTrace) return [];
+    if (demoKey && paceElapsed != null) return revealDemoPace(demoKey, paceElapsed)?.steps ?? [];
+    return eventSteps(events, { live, fixture });
+  }, [showTrace, demoKey, paceElapsed, events, live, fixture]);
+  const elapsed = useMemo(() => {
+    if (!showTrace) return null;
+    if (demoKey) return live ? null : demoPaceTotalMs(demoKey);
+    return eventsElapsedMs(events);
+  }, [showTrace, demoKey, live, events]);
 
   if (entry.failed) {
     return (

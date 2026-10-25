@@ -1,0 +1,52 @@
+# Local deps and build output
+node_modules
+**/node_modules
+.pnpm-store
+.next
+**/.next
+.next-*
+out
+dist
+.turbo
+
+# Python
+.venv
+**/.venv
+venv
+__pycache__
+**/.pytest_cache
+**/.mypy_cache
+**/.ruff_cache
+.uv
+
+# Git / IDE / local
+.git
+.idea
+.vscode
+.DS_Store
+*.log
+coverage
+tmp
+temp
+data
+**/data
+exports
+.pio
+.claude
+
+# Tests / agent tooling not needed for web deploy
+.devin
+docs
+**/*.md
+!apps/web/README.md
+e2e-acceptance
+**/e2e-acceptance
+playwright-report
+test-results
+**/__tests__
+**/*.test.ts
+**/*.test.tsx
+services
+packages
+scripts
+.github
