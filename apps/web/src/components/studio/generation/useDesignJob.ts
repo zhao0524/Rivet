@@ -56,6 +56,7 @@ export function useDesignJob(source: DesignSource = new DesignSource()) {
   }, [src, load]);
 
   const start = useCallback(async (req: DesignStartRequest) => {
+    setBusy(true);
     setError(null);
     setBundle(null);
     try {

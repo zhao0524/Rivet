@@ -1,0 +1,6578 @@
+{
+  "schema_version": "1.0",
+  "build_id": "demo-robot-dog",
+  "revision": 1,
+  "project_family": "unknown",
+  "title": "Quadruped robot dog",
+  "source_intent_id": "demo-robot-dog",
+  "created_at": "2026-10-25T00:00:00Z",
+  "status": "needs_review",
+  "components": [
+    {
+      "instance_id": "torso-shell-1",
+      "catalog_id": "concept.torso-shell",
+      "role": "body",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          327.0,
+          -13.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#a9aeb4",
+        "label": "Torso shell"
+      }
+    },
+    {
+      "instance_id": "top-cover-1",
+      "catalog_id": "concept.cover",
+      "role": "body",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          385.0,
+          -23.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#bfc3c8",
+        "label": "Top cover"
+      }
+    },
+    {
+      "instance_id": "top-cover-hatch-1",
+      "catalog_id": "concept.cover-hatch",
+      "role": "body",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          392.6,
+          -83.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#9ea3a9",
+        "label": "Top cover hatch"
+      }
+    },
+    {
+      "instance_id": "power-button-1",
+      "catalog_id": "concept.power-button",
+      "role": "body",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -40.0,
+          389.0,
+          136.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#bfc3c8",
+        "label": "Power button"
+      }
+    },
+    {
+      "instance_id": "belly-pan-1",
+      "catalog_id": "concept.belly-pan",
+      "role": "body",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          265.0,
+          -13.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#8d9298",
+        "label": "Belly pan"
+      }
+    },
+    {
+      "instance_id": "rear-plate-1",
+      "catalog_id": "concept.plate",
+      "role": "body",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          327.0,
+          -235.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#bfc3c8",
+        "label": "Rear plate"
+      }
+    },
+    {
+      "instance_id": "hip-recess-1",
+      "catalog_id": "concept.hip-recess",
+      "role": "body",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -98.5,
+          317.0,
+          136.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Hip recess"
+      }
+    },
+    {
+      "instance_id": "hip-recess-rear-1",
+      "catalog_id": "concept.hip-recess",
+      "role": "body",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -98.5,
+          317.0,
+          -163.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Hip recess rear"
+      }
+    },
+    {
+      "instance_id": "side-wordmark-1",
+      "catalog_id": "concept.side-wordmark",
+      "role": "decal",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -98.6,
+          357.0,
+          16.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#f4f5f6",
+        "label": "Side wordmark"
+      }
+    },
+    {
+      "instance_id": "number-decal-1",
+      "catalog_id": "concept.number-decal",
+      "role": "decal",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -98.6,
+          329.0,
+          166.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#f4f5f6",
+        "label": "Number decal"
+      }
+    },
+    {
+      "instance_id": "speed-stripe-1",
+      "catalog_id": "concept.speed-stripe",
+      "role": "decal",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -98.6,
+          329.0,
+          194.68
+        ],
+        "rotation_deg": [
+          340.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#f4f5f6",
+        "label": "Speed stripe"
+      }
+    },
+    {
+      "instance_id": "speed-stripe-2-1",
+      "catalog_id": "concept.speed-stripe",
+      "role": "decal",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -98.6,
+          329.0,
+          188.68
+        ],
+        "rotation_deg": [
+          340.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#f4f5f6",
+        "label": "Speed stripe 2"
+      }
+    },
+    {
+      "instance_id": "speed-stripe-3-1",
+      "catalog_id": "concept.speed-stripe",
+      "role": "decal",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -98.6,
+          329.0,
+          182.68
+        ],
+        "rotation_deg": [
+          340.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#f4f5f6",
+        "label": "Speed stripe 3"
+      }
+    },
+    {
+      "instance_id": "speed-stripe-4-1",
+      "catalog_id": "concept.speed-stripe",
+      "role": "decal",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -98.6,
+          329.0,
+          176.68
+        ],
+        "rotation_deg": [
+          340.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#f4f5f6",
+        "label": "Speed stripe 4"
+      }
+    },
+    {
+      "instance_id": "hip-recess-2-1",
+      "catalog_id": "concept.hip-recess",
+      "role": "body",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          98.5,
+          317.0,
+          136.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Hip recess 2"
+      }
+    },
+    {
+      "instance_id": "hip-recess-rear-2-1",
+      "catalog_id": "concept.hip-recess",
+      "role": "body",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          98.5,
+          317.0,
+          -163.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Hip recess rear 2"
+      }
+    },
+    {
+      "instance_id": "side-wordmark-2-1",
+      "catalog_id": "concept.side-wordmark",
+      "role": "decal",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          98.6,
+          357.0,
+          16.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#f4f5f6",
+        "label": "Side wordmark 2"
+      }
+    },
+    {
+      "instance_id": "number-decal-2-1",
+      "catalog_id": "concept.number-decal",
+      "role": "decal",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          98.6,
+          329.0,
+          166.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#f4f5f6",
+        "label": "Number decal 2"
+      }
+    },
+    {
+      "instance_id": "speed-stripe-5-1",
+      "catalog_id": "concept.speed-stripe",
+      "role": "decal",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          98.6,
+          329.0,
+          194.68
+        ],
+        "rotation_deg": [
+          340.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#f4f5f6",
+        "label": "Speed stripe 5"
+      }
+    },
+    {
+      "instance_id": "speed-stripe-6-1",
+      "catalog_id": "concept.speed-stripe",
+      "role": "decal",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          98.6,
+          329.0,
+          188.68
+        ],
+        "rotation_deg": [
+          340.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#f4f5f6",
+        "label": "Speed stripe 6"
+      }
+    },
+    {
+      "instance_id": "speed-stripe-7-1",
+      "catalog_id": "concept.speed-stripe",
+      "role": "decal",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          98.6,
+          329.0,
+          182.68
+        ],
+        "rotation_deg": [
+          340.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#f4f5f6",
+        "label": "Speed stripe 7"
+      }
+    },
+    {
+      "instance_id": "speed-stripe-8-1",
+      "catalog_id": "concept.speed-stripe",
+      "role": "decal",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          98.6,
+          329.0,
+          176.68
+        ],
+        "rotation_deg": [
+          340.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#f4f5f6",
+        "label": "Speed stripe 8"
+      }
+    },
+    {
+      "instance_id": "battery-bay-1",
+      "catalog_id": "concept.battery-bay",
+      "role": "battery",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          99.0,
+          321.0,
+          -53.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#9a9fa5",
+        "label": "Battery bay"
+      }
+    },
+    {
+      "instance_id": "battery-latch-slot-1",
+      "catalog_id": "concept.battery-latch-slot",
+      "role": "battery",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          101.0,
+          321.0,
+          -83.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2b2d31",
+        "label": "Battery latch slot"
+      }
+    },
+    {
+      "instance_id": "battery-latch-slot-2-1",
+      "catalog_id": "concept.battery-latch-slot",
+      "role": "battery",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          101.0,
+          321.0,
+          -53.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2b2d31",
+        "label": "Battery latch slot 2"
+      }
+    },
+    {
+      "instance_id": "status-led-1",
+      "catalog_id": "concept.status-led",
+      "role": "light",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          101.5,
+          335.0,
+          -35.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2fd36b",
+        "label": "Status LED"
+      }
+    },
+    {
+      "instance_id": "status-led-2-1",
+      "catalog_id": "concept.status-led",
+      "role": "light",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          101.5,
+          328.0,
+          -35.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2fd36b",
+        "label": "Status LED 2"
+      }
+    },
+    {
+      "instance_id": "status-led-3-1",
+      "catalog_id": "concept.status-led",
+      "role": "light",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          101.5,
+          321.0,
+          -35.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2fd36b",
+        "label": "Status LED 3"
+      }
+    },
+    {
+      "instance_id": "head-1",
+      "catalog_id": "concept.head",
+      "role": "body",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          323.0,
+          226.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#a9aeb4",
+        "label": "Head"
+      }
+    },
+    {
+      "instance_id": "face-panel-1",
+      "catalog_id": "concept.face-panel",
+      "role": "sensor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          329.0,
+          257.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#121314",
+        "label": "Face panel"
+      }
+    },
+    {
+      "instance_id": "face-camera-1",
+      "catalog_id": "concept.face-camera",
+      "role": "camera",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          349.0,
+          261.68
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#0a0a0c",
+        "label": "Face camera"
+      }
+    },
+    {
+      "instance_id": "face-camera-ring-1",
+      "catalog_id": "concept.face-camera-ring",
+      "role": "camera",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          349.0,
+          261.68
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#4a4d52",
+        "label": "Face camera ring"
+      }
+    },
+    {
+      "instance_id": "face-sensor-1",
+      "catalog_id": "concept.face-sensor",
+      "role": "sensor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          319.0,
+          261.68
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#0a0a0c",
+        "label": "Face sensor"
+      }
+    },
+    {
+      "instance_id": "face-sensor-ring-1",
+      "catalog_id": "concept.face-sensor-ring",
+      "role": "sensor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          319.0,
+          261.68
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#e0e0e0",
+        "label": "Face sensor ring"
+      }
+    },
+    {
+      "instance_id": "lidar-dome-1",
+      "catalog_id": "concept.lidar-dome",
+      "role": "sensor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          255.0,
+          236.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#16171a",
+        "label": "Lidar dome"
+      }
+    },
+    {
+      "instance_id": "lidar-base-1",
+      "catalog_id": "concept.lidar-base",
+      "role": "sensor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          283.0,
+          236.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#121314",
+        "label": "Lidar base"
+      }
+    },
+    {
+      "instance_id": "lidar-rib-1",
+      "catalog_id": "concept.lidar-rib",
+      "role": "sensor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          42.0,
+          253.0,
+          236.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Lidar rib"
+      }
+    },
+    {
+      "instance_id": "lidar-rib-2-1",
+      "catalog_id": "concept.lidar-rib",
+      "role": "sensor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          29.7,
+          253.0,
+          262.84
+        ],
+        "rotation_deg": [
+          0.0,
+          315.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Lidar rib 2"
+      }
+    },
+    {
+      "instance_id": "lidar-rib-3-1",
+      "catalog_id": "concept.lidar-rib",
+      "role": "sensor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          253.0,
+          273.68
+        ],
+        "rotation_deg": [
+          0.0,
+          270.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Lidar rib 3"
+      }
+    },
+    {
+      "instance_id": "lidar-rib-4-1",
+      "catalog_id": "concept.lidar-rib",
+      "role": "sensor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -29.7,
+          253.0,
+          262.84
+        ],
+        "rotation_deg": [
+          0.0,
+          225.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Lidar rib 4"
+      }
+    },
+    {
+      "instance_id": "lidar-rib-5-1",
+      "catalog_id": "concept.lidar-rib",
+      "role": "sensor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -42.0,
+          253.0,
+          236.68
+        ],
+        "rotation_deg": [
+          0.0,
+          180.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Lidar rib 5"
+      }
+    },
+    {
+      "instance_id": "lidar-rib-6-1",
+      "catalog_id": "concept.lidar-rib",
+      "role": "sensor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -29.7,
+          253.0,
+          210.51
+        ],
+        "rotation_deg": [
+          0.0,
+          135.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Lidar rib 6"
+      }
+    },
+    {
+      "instance_id": "lidar-rib-7-1",
+      "catalog_id": "concept.lidar-rib",
+      "role": "sensor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -0.0,
+          253.0,
+          199.68
+        ],
+        "rotation_deg": [
+          0.0,
+          90.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Lidar rib 7"
+      }
+    },
+    {
+      "instance_id": "lidar-rib-8-1",
+      "catalog_id": "concept.lidar-rib",
+      "role": "sensor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          29.7,
+          253.0,
+          210.51
+        ],
+        "rotation_deg": [
+          0.0,
+          45.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Lidar rib 8"
+      }
+    },
+    {
+      "instance_id": "front-left-hip-actuator-1",
+      "catalog_id": "concept.hip-actuator",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -66.0,
+          323.0,
+          180.68
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#a9aeb4",
+        "label": "Front-left hip actuator"
+      }
+    },
+    {
+      "instance_id": "front-left-hip-end-cap-1",
+      "catalog_id": "concept.hip-end-cap",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -66.0,
+          323.0,
+          220.68
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d4d7db",
+        "label": "Front-left hip end cap"
+      }
+    },
+    {
+      "instance_id": "front-left-hip-cap-ring-1",
+      "catalog_id": "concept.hip-cap-ring",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -66.0,
+          323.0,
+          215.68
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#9a9fa5",
+        "label": "Front-left hip cap ring"
+      }
+    },
+    {
+      "instance_id": "front-left-thigh-actuator-1",
+      "catalog_id": "concept.thigh-actuator",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -132.0,
+          317.0,
+          154.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#bfc3c8",
+        "label": "Front-left thigh actuator"
+      }
+    },
+    {
+      "instance_id": "front-left-thigh-motor-cap-1",
+      "catalog_id": "concept.thigh-motor-cap",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -168.0,
+          317.0,
+          154.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d4d7db",
+        "label": "Front-left thigh motor cap"
+      }
+    },
+    {
+      "instance_id": "front-left-thigh-cap-rim-1",
+      "catalog_id": "concept.thigh-cap-rim",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -165.0,
+          317.0,
+          154.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#9a9fa5",
+        "label": "Front-left thigh cap rim"
+      }
+    },
+    {
+      "instance_id": "front-left-thigh-cap-screw-1",
+      "catalog_id": "concept.thigh-cap-screw",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -173.0,
+          317.0,
+          154.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#7d8288",
+        "label": "Front-left thigh cap screw"
+      }
+    },
+    {
+      "instance_id": "front-left-thigh-upper-1",
+      "catalog_id": "concept.thigh",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -140.0,
+          277.5,
+          131.68
+        ],
+        "rotation_deg": [
+          222.26,
+          356.32,
+          3.34
+        ]
+      },
+      "render_overrides": {
+        "color": "#c9ccd0",
+        "label": "Front-left thigh upper"
+      }
+    },
+    {
+      "instance_id": "front-left-thigh-lower-1",
+      "catalog_id": "concept.thigh-2",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -141.0,
+          213.5,
+          96.68
+        ],
+        "rotation_deg": [
+          197.42,
+          4.55,
+          358.58
+        ]
+      },
+      "render_overrides": {
+        "color": "#c9ccd0",
+        "label": "Front-left thigh lower"
+      }
+    },
+    {
+      "instance_id": "front-left-thigh-cover-1",
+      "catalog_id": "concept.thigh-cover",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -140.0,
+          275.0,
+          144.68
+        ],
+        "rotation_deg": [
+          24.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#bfc3c8",
+        "label": "Front-left thigh cover"
+      }
+    },
+    {
+      "instance_id": "front-left-thigh-screw-1",
+      "catalog_id": "concept.thigh-screw",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -166.0,
+          227.0,
+          96.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#7d8288",
+        "label": "Front-left thigh screw"
+      }
+    },
+    {
+      "instance_id": "front-left-knee-joint-1",
+      "catalog_id": "concept.knee-joint",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -140.0,
+          175.0,
+          84.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Front-left knee joint"
+      }
+    },
+    {
+      "instance_id": "front-left-knee-cap-1",
+      "catalog_id": "concept.knee-cap",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -161.0,
+          175.0,
+          84.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#5c6066",
+        "label": "Front-left knee cap"
+      }
+    },
+    {
+      "instance_id": "front-left-shin-upper-1",
+      "catalog_id": "concept.shin",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -139.0,
+          138.0,
+          96.68
+        ],
+        "rotation_deg": [
+          341.91,
+          4.53,
+          181.48
+        ]
+      },
+      "render_overrides": {
+        "color": "#c9ccd0",
+        "label": "Front-left shin upper"
+      }
+    },
+    {
+      "instance_id": "front-left-shin-lower-1",
+      "catalog_id": "concept.shin-2",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -137.0,
+          67.0,
+          134.68
+        ],
+        "rotation_deg": [
+          322.55,
+          1.75,
+          181.34
+        ]
+      },
+      "render_overrides": {
+        "color": "#c9ccd0",
+        "label": "Front-left shin lower"
+      }
+    },
+    {
+      "instance_id": "front-left-shin-dot-1",
+      "catalog_id": "concept.shin-dot",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -150.5,
+          121.0,
+          112.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#5c6066",
+        "label": "Front-left shin dot"
+      }
+    },
+    {
+      "instance_id": "front-left-foot-1",
+      "catalog_id": "concept.foot",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -136.0,
+          19.0,
+          160.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#121314",
+        "label": "Front-left foot"
+      }
+    },
+    {
+      "instance_id": "front-left-foot-collar-1",
+      "catalog_id": "concept.foot-collar",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -136.0,
+          37.0,
+          160.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Front-left foot collar"
+      }
+    },
+    {
+      "instance_id": "front-right-hip-actuator-1",
+      "catalog_id": "concept.hip-actuator",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          66.0,
+          323.0,
+          180.68
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#a9aeb4",
+        "label": "Front-right hip actuator"
+      }
+    },
+    {
+      "instance_id": "front-right-hip-end-cap-1",
+      "catalog_id": "concept.hip-end-cap",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          66.0,
+          323.0,
+          220.68
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d4d7db",
+        "label": "Front-right hip end cap"
+      }
+    },
+    {
+      "instance_id": "front-right-hip-cap-ring-1",
+      "catalog_id": "concept.hip-cap-ring",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          66.0,
+          323.0,
+          215.68
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#9a9fa5",
+        "label": "Front-right hip cap ring"
+      }
+    },
+    {
+      "instance_id": "front-right-thigh-actuator-1",
+      "catalog_id": "concept.thigh-actuator",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          132.0,
+          317.0,
+          154.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#bfc3c8",
+        "label": "Front-right thigh actuator"
+      }
+    },
+    {
+      "instance_id": "front-right-thigh-motor-cap-1",
+      "catalog_id": "concept.thigh-motor-cap",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          168.0,
+          317.0,
+          154.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d4d7db",
+        "label": "Front-right thigh motor cap"
+      }
+    },
+    {
+      "instance_id": "front-right-thigh-cap-rim-1",
+      "catalog_id": "concept.thigh-cap-rim",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          165.0,
+          317.0,
+          154.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#9a9fa5",
+        "label": "Front-right thigh cap rim"
+      }
+    },
+    {
+      "instance_id": "front-right-thigh-cap-screw-1",
+      "catalog_id": "concept.thigh-cap-screw",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          173.0,
+          317.0,
+          154.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#7d8288",
+        "label": "Front-right thigh cap screw"
+      }
+    },
+    {
+      "instance_id": "front-right-thigh-upper-1",
+      "catalog_id": "concept.thigh",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          140.0,
+          277.5,
+          131.68
+        ],
+        "rotation_deg": [
+          222.26,
+          3.68,
+          356.66
+        ]
+      },
+      "render_overrides": {
+        "color": "#c9ccd0",
+        "label": "Front-right thigh upper"
+      }
+    },
+    {
+      "instance_id": "front-right-thigh-lower-1",
+      "catalog_id": "concept.thigh-2",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          141.0,
+          213.5,
+          96.68
+        ],
+        "rotation_deg": [
+          197.42,
+          355.45,
+          1.42
+        ]
+      },
+      "render_overrides": {
+        "color": "#c9ccd0",
+        "label": "Front-right thigh lower"
+      }
+    },
+    {
+      "instance_id": "front-right-thigh-cover-1",
+      "catalog_id": "concept.thigh-cover",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          140.0,
+          275.0,
+          144.68
+        ],
+        "rotation_deg": [
+          24.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#bfc3c8",
+        "label": "Front-right thigh cover"
+      }
+    },
+    {
+      "instance_id": "front-right-thigh-screw-1",
+      "catalog_id": "concept.thigh-screw",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          166.0,
+          227.0,
+          96.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#7d8288",
+        "label": "Front-right thigh screw"
+      }
+    },
+    {
+      "instance_id": "front-right-knee-joint-1",
+      "catalog_id": "concept.knee-joint",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          140.0,
+          175.0,
+          84.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Front-right knee joint"
+      }
+    },
+    {
+      "instance_id": "front-right-knee-cap-1",
+      "catalog_id": "concept.knee-cap",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          161.0,
+          175.0,
+          84.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#5c6066",
+        "label": "Front-right knee cap"
+      }
+    },
+    {
+      "instance_id": "front-right-shin-upper-1",
+      "catalog_id": "concept.shin",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          139.0,
+          138.0,
+          96.68
+        ],
+        "rotation_deg": [
+          341.91,
+          355.47,
+          178.52
+        ]
+      },
+      "render_overrides": {
+        "color": "#c9ccd0",
+        "label": "Front-right shin upper"
+      }
+    },
+    {
+      "instance_id": "front-right-shin-lower-1",
+      "catalog_id": "concept.shin-2",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          137.0,
+          67.0,
+          134.68
+        ],
+        "rotation_deg": [
+          322.55,
+          358.25,
+          178.66
+        ]
+      },
+      "render_overrides": {
+        "color": "#c9ccd0",
+        "label": "Front-right shin lower"
+      }
+    },
+    {
+      "instance_id": "front-right-shin-dot-1",
+      "catalog_id": "concept.shin-dot",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          150.5,
+          121.0,
+          112.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#5c6066",
+        "label": "Front-right shin dot"
+      }
+    },
+    {
+      "instance_id": "front-right-foot-1",
+      "catalog_id": "concept.foot",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          136.0,
+          19.0,
+          160.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#121314",
+        "label": "Front-right foot"
+      }
+    },
+    {
+      "instance_id": "front-right-foot-collar-1",
+      "catalog_id": "concept.foot-collar",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          136.0,
+          37.0,
+          160.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Front-right foot collar"
+      }
+    },
+    {
+      "instance_id": "rear-left-hip-actuator-1",
+      "catalog_id": "concept.hip-actuator",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -66.0,
+          323.0,
+          -207.32
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#a9aeb4",
+        "label": "Rear-left hip actuator"
+      }
+    },
+    {
+      "instance_id": "rear-left-hip-end-cap-1",
+      "catalog_id": "concept.hip-end-cap",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -66.0,
+          323.0,
+          -247.32
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d4d7db",
+        "label": "Rear-left hip end cap"
+      }
+    },
+    {
+      "instance_id": "rear-left-hip-cap-ring-1",
+      "catalog_id": "concept.hip-cap-ring",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -66.0,
+          323.0,
+          -242.32
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#9a9fa5",
+        "label": "Rear-left hip cap ring"
+      }
+    },
+    {
+      "instance_id": "rear-left-thigh-actuator-1",
+      "catalog_id": "concept.thigh-actuator",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -132.0,
+          317.0,
+          -181.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#bfc3c8",
+        "label": "Rear-left thigh actuator"
+      }
+    },
+    {
+      "instance_id": "rear-left-thigh-motor-cap-1",
+      "catalog_id": "concept.thigh-motor-cap",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -168.0,
+          317.0,
+          -181.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d4d7db",
+        "label": "Rear-left thigh motor cap"
+      }
+    },
+    {
+      "instance_id": "rear-left-thigh-cap-rim-1",
+      "catalog_id": "concept.thigh-cap-rim",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -165.0,
+          317.0,
+          -181.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#9a9fa5",
+        "label": "Rear-left thigh cap rim"
+      }
+    },
+    {
+      "instance_id": "rear-left-thigh-cap-screw-1",
+      "catalog_id": "concept.thigh-cap-screw",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -173.0,
+          317.0,
+          -181.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#7d8288",
+        "label": "Rear-left thigh cap screw"
+      }
+    },
+    {
+      "instance_id": "rear-left-thigh-upper-1",
+      "catalog_id": "concept.thigh",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -140.0,
+          277.5,
+          -204.32
+        ],
+        "rotation_deg": [
+          222.26,
+          356.32,
+          3.34
+        ]
+      },
+      "render_overrides": {
+        "color": "#c9ccd0",
+        "label": "Rear-left thigh upper"
+      }
+    },
+    {
+      "instance_id": "rear-left-thigh-lower-1",
+      "catalog_id": "concept.thigh-2",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -141.0,
+          213.5,
+          -239.32
+        ],
+        "rotation_deg": [
+          197.42,
+          4.55,
+          358.58
+        ]
+      },
+      "render_overrides": {
+        "color": "#c9ccd0",
+        "label": "Rear-left thigh lower"
+      }
+    },
+    {
+      "instance_id": "rear-left-thigh-cover-1",
+      "catalog_id": "concept.thigh-cover",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -140.0,
+          275.0,
+          -191.32
+        ],
+        "rotation_deg": [
+          24.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#bfc3c8",
+        "label": "Rear-left thigh cover"
+      }
+    },
+    {
+      "instance_id": "rear-left-thigh-screw-1",
+      "catalog_id": "concept.thigh-screw",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -166.0,
+          227.0,
+          -239.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#7d8288",
+        "label": "Rear-left thigh screw"
+      }
+    },
+    {
+      "instance_id": "rear-left-knee-joint-1",
+      "catalog_id": "concept.knee-joint",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -140.0,
+          175.0,
+          -251.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Rear-left knee joint"
+      }
+    },
+    {
+      "instance_id": "rear-left-knee-cap-1",
+      "catalog_id": "concept.knee-cap",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -161.0,
+          175.0,
+          -251.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#5c6066",
+        "label": "Rear-left knee cap"
+      }
+    },
+    {
+      "instance_id": "rear-left-shin-upper-1",
+      "catalog_id": "concept.shin",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -139.0,
+          138.0,
+          -239.32
+        ],
+        "rotation_deg": [
+          341.91,
+          4.53,
+          181.48
+        ]
+      },
+      "render_overrides": {
+        "color": "#c9ccd0",
+        "label": "Rear-left shin upper"
+      }
+    },
+    {
+      "instance_id": "rear-left-shin-lower-1",
+      "catalog_id": "concept.shin-2",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -137.0,
+          67.0,
+          -201.32
+        ],
+        "rotation_deg": [
+          322.55,
+          1.75,
+          181.34
+        ]
+      },
+      "render_overrides": {
+        "color": "#c9ccd0",
+        "label": "Rear-left shin lower"
+      }
+    },
+    {
+      "instance_id": "rear-left-shin-dot-1",
+      "catalog_id": "concept.shin-dot",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -150.5,
+          121.0,
+          -223.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#5c6066",
+        "label": "Rear-left shin dot"
+      }
+    },
+    {
+      "instance_id": "rear-left-foot-1",
+      "catalog_id": "concept.foot",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -136.0,
+          19.0,
+          -175.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#121314",
+        "label": "Rear-left foot"
+      }
+    },
+    {
+      "instance_id": "rear-left-foot-collar-1",
+      "catalog_id": "concept.foot-collar",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -136.0,
+          37.0,
+          -175.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Rear-left foot collar"
+      }
+    },
+    {
+      "instance_id": "rear-right-hip-actuator-1",
+      "catalog_id": "concept.hip-actuator",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          66.0,
+          323.0,
+          -207.32
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#a9aeb4",
+        "label": "Rear-right hip actuator"
+      }
+    },
+    {
+      "instance_id": "rear-right-hip-end-cap-1",
+      "catalog_id": "concept.hip-end-cap",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          66.0,
+          323.0,
+          -247.32
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d4d7db",
+        "label": "Rear-right hip end cap"
+      }
+    },
+    {
+      "instance_id": "rear-right-hip-cap-ring-1",
+      "catalog_id": "concept.hip-cap-ring",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          66.0,
+          323.0,
+          -242.32
+        ],
+        "rotation_deg": [
+          90.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#9a9fa5",
+        "label": "Rear-right hip cap ring"
+      }
+    },
+    {
+      "instance_id": "rear-right-thigh-actuator-1",
+      "catalog_id": "concept.thigh-actuator",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          132.0,
+          317.0,
+          -181.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#bfc3c8",
+        "label": "Rear-right thigh actuator"
+      }
+    },
+    {
+      "instance_id": "rear-right-thigh-motor-cap-1",
+      "catalog_id": "concept.thigh-motor-cap",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          168.0,
+          317.0,
+          -181.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d4d7db",
+        "label": "Rear-right thigh motor cap"
+      }
+    },
+    {
+      "instance_id": "rear-right-thigh-cap-rim-1",
+      "catalog_id": "concept.thigh-cap-rim",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          165.0,
+          317.0,
+          -181.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#9a9fa5",
+        "label": "Rear-right thigh cap rim"
+      }
+    },
+    {
+      "instance_id": "rear-right-thigh-cap-screw-1",
+      "catalog_id": "concept.thigh-cap-screw",
+      "role": "motor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          173.0,
+          317.0,
+          -181.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#7d8288",
+        "label": "Rear-right thigh cap screw"
+      }
+    },
+    {
+      "instance_id": "rear-right-thigh-upper-1",
+      "catalog_id": "concept.thigh",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          140.0,
+          277.5,
+          -204.32
+        ],
+        "rotation_deg": [
+          222.26,
+          3.68,
+          356.66
+        ]
+      },
+      "render_overrides": {
+        "color": "#c9ccd0",
+        "label": "Rear-right thigh upper"
+      }
+    },
+    {
+      "instance_id": "rear-right-thigh-lower-1",
+      "catalog_id": "concept.thigh-2",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          141.0,
+          213.5,
+          -239.32
+        ],
+        "rotation_deg": [
+          197.42,
+          355.45,
+          1.42
+        ]
+      },
+      "render_overrides": {
+        "color": "#c9ccd0",
+        "label": "Rear-right thigh lower"
+      }
+    },
+    {
+      "instance_id": "rear-right-thigh-cover-1",
+      "catalog_id": "concept.thigh-cover",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          140.0,
+          275.0,
+          -191.32
+        ],
+        "rotation_deg": [
+          24.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#bfc3c8",
+        "label": "Rear-right thigh cover"
+      }
+    },
+    {
+      "instance_id": "rear-right-thigh-screw-1",
+      "catalog_id": "concept.thigh-screw",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          166.0,
+          227.0,
+          -239.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#7d8288",
+        "label": "Rear-right thigh screw"
+      }
+    },
+    {
+      "instance_id": "rear-right-knee-joint-1",
+      "catalog_id": "concept.knee-joint",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          140.0,
+          175.0,
+          -251.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Rear-right knee joint"
+      }
+    },
+    {
+      "instance_id": "rear-right-knee-cap-1",
+      "catalog_id": "concept.knee-cap",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          161.0,
+          175.0,
+          -251.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#5c6066",
+        "label": "Rear-right knee cap"
+      }
+    },
+    {
+      "instance_id": "rear-right-shin-upper-1",
+      "catalog_id": "concept.shin",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          139.0,
+          138.0,
+          -239.32
+        ],
+        "rotation_deg": [
+          341.91,
+          355.47,
+          178.52
+        ]
+      },
+      "render_overrides": {
+        "color": "#c9ccd0",
+        "label": "Rear-right shin upper"
+      }
+    },
+    {
+      "instance_id": "rear-right-shin-lower-1",
+      "catalog_id": "concept.shin-2",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          137.0,
+          67.0,
+          -201.32
+        ],
+        "rotation_deg": [
+          322.55,
+          358.25,
+          178.66
+        ]
+      },
+      "render_overrides": {
+        "color": "#c9ccd0",
+        "label": "Rear-right shin lower"
+      }
+    },
+    {
+      "instance_id": "rear-right-shin-dot-1",
+      "catalog_id": "concept.shin-dot",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          150.5,
+          121.0,
+          -223.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          90.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#5c6066",
+        "label": "Rear-right shin dot"
+      }
+    },
+    {
+      "instance_id": "rear-right-foot-1",
+      "catalog_id": "concept.foot",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          136.0,
+          19.0,
+          -175.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#121314",
+        "label": "Rear-right foot"
+      }
+    },
+    {
+      "instance_id": "rear-right-foot-collar-1",
+      "catalog_id": "concept.foot-collar",
+      "role": "leg",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          136.0,
+          37.0,
+          -175.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2a2c30",
+        "label": "Rear-right foot collar"
+      }
+    },
+    {
+      "instance_id": "battery-pack-1",
+      "catalog_id": "concept.battery-pack",
+      "role": "battery",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          317.0,
+          -53.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#3a3d44",
+        "label": "Battery pack",
+        "internal": true
+      }
+    },
+    {
+      "instance_id": "power-distribution-board-1",
+      "catalog_id": "concept.power-distribution-board",
+      "role": "board",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          283.0,
+          66.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#1f6f3a",
+        "label": "Power distribution board",
+        "internal": true
+      }
+    },
+    {
+      "instance_id": "motion-control-board-1",
+      "catalog_id": "concept.motion-control-board",
+      "role": "board",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          357.0,
+          46.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#1d4fa0",
+        "label": "Motion control board",
+        "internal": true
+      }
+    },
+    {
+      "instance_id": "compute-module-1",
+      "catalog_id": "concept.compute-module",
+      "role": "board",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          357.0,
+          -73.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#141414",
+        "label": "Compute module",
+        "internal": true
+      }
+    },
+    {
+      "instance_id": "imu-1",
+      "catalog_id": "concept.imu",
+      "role": "sensor",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          353.0,
+          -13.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#7a2a8f",
+        "label": "IMU",
+        "internal": true
+      }
+    },
+    {
+      "instance_id": "battery-to-power-board-1",
+      "catalog_id": "concept.wire-power-3-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          300.0,
+          6.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d01f1f",
+        "label": "Battery to power board",
+        "internal": true,
+        "path_mm": [
+          [
+            0.0,
+            17.0,
+            -60.0
+          ],
+          [
+            0.0,
+            -17.0,
+            60.0
+          ]
+        ],
+        "thickness_mm": 3.0,
+        "connects": [
+          "battery-pack-1",
+          "power-distribution-board-1"
+        ],
+        "wire_kind": "power"
+      }
+    },
+    {
+      "instance_id": "power-board-to-motion-control-1",
+      "catalog_id": "concept.wire-power-2-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          320.0,
+          56.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d01f1f",
+        "label": "Power board to motion control",
+        "internal": true,
+        "path_mm": [
+          [
+            0.0,
+            -37.0,
+            10.0
+          ],
+          [
+            0.0,
+            37.0,
+            -10.0
+          ]
+        ],
+        "thickness_mm": 2.0,
+        "connects": [
+          "power-distribution-board-1",
+          "motion-control-board-1"
+        ],
+        "wire_kind": "power"
+      }
+    },
+    {
+      "instance_id": "motion-control-to-compute-1",
+      "catalog_id": "concept.wire-data-1-5",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          357.0,
+          -13.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2b6fd6",
+        "label": "Motion control to compute",
+        "internal": true,
+        "path_mm": [
+          [
+            0.0,
+            0.0,
+            60.0
+          ],
+          [
+            0.0,
+            0.0,
+            -60.0
+          ]
+        ],
+        "thickness_mm": 1.5,
+        "connects": [
+          "motion-control-board-1",
+          "compute-module-1"
+        ],
+        "wire_kind": "data"
+      }
+    },
+    {
+      "instance_id": "compute-to-imu-1",
+      "catalog_id": "concept.wire-signal-1-2",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          355.0,
+          -43.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#f2c200",
+        "label": "Compute to IMU",
+        "internal": true,
+        "path_mm": [
+          [
+            0.0,
+            2.0,
+            -30.0
+          ],
+          [
+            0.0,
+            -2.0,
+            30.0
+          ]
+        ],
+        "thickness_mm": 1.2,
+        "connects": [
+          "compute-module-1",
+          "imu-1"
+        ],
+        "wire_kind": "signal"
+      }
+    },
+    {
+      "instance_id": "compute-to-lidar-1",
+      "catalog_id": "concept.wire-data-1-5",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          306.0,
+          81.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2b6fd6",
+        "label": "Compute to lidar",
+        "internal": true,
+        "path_mm": [
+          [
+            0.0,
+            51.0,
+            -155.0
+          ],
+          [
+            0.0,
+            -9.0,
+            105.0
+          ],
+          [
+            0.0,
+            -51.0,
+            155.0
+          ]
+        ],
+        "thickness_mm": 1.5,
+        "connects": [
+          "compute-module-1",
+          "lidar-dome-1"
+        ],
+        "wire_kind": "data"
+      }
+    },
+    {
+      "instance_id": "compute-to-face-camera-1",
+      "catalog_id": "concept.wire-data-1-5",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          0.0,
+          352.0,
+          94.18
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#2b6fd6",
+        "label": "Compute to face camera",
+        "internal": true,
+        "path_mm": [
+          [
+            0.0,
+            5.0,
+            -167.5
+          ],
+          [
+            0.0,
+            -5.0,
+            92.5
+          ],
+          [
+            0.0,
+            -3.0,
+            167.5
+          ]
+        ],
+        "thickness_mm": 1.5,
+        "connects": [
+          "compute-module-1",
+          "face-camera-1"
+        ],
+        "wire_kind": "data"
+      }
+    },
+    {
+      "instance_id": "power-to-front-left-leg-1",
+      "catalog_id": "concept.wire-power-2-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -33.0,
+          303.0,
+          123.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d01f1f",
+        "label": "Power to front-left leg",
+        "internal": true,
+        "path_mm": [
+          [
+            33.0,
+            -20.0,
+            -57.0
+          ],
+          [
+            -33.0,
+            20.0,
+            57.0
+          ]
+        ],
+        "thickness_mm": 2.0,
+        "connects": [
+          "power-distribution-board-1",
+          "front-left-hip-actuator-1"
+        ],
+        "wire_kind": "power"
+      }
+    },
+    {
+      "instance_id": "power-to-front-right-leg-1",
+      "catalog_id": "concept.wire-power-2-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          33.0,
+          303.0,
+          123.68
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d01f1f",
+        "label": "Power to front-right leg",
+        "internal": true,
+        "path_mm": [
+          [
+            -33.0,
+            -20.0,
+            -57.0
+          ],
+          [
+            33.0,
+            20.0,
+            57.0
+          ]
+        ],
+        "thickness_mm": 2.0,
+        "connects": [
+          "power-distribution-board-1",
+          "front-right-hip-actuator-1"
+        ],
+        "wire_kind": "power"
+      }
+    },
+    {
+      "instance_id": "power-to-rear-left-leg-1",
+      "catalog_id": "concept.wire-power-2-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          -33.0,
+          303.0,
+          -70.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d01f1f",
+        "label": "Power to rear-left leg",
+        "internal": true,
+        "path_mm": [
+          [
+            33.0,
+            -20.0,
+            137.0
+          ],
+          [
+            -33.0,
+            20.0,
+            -137.0
+          ]
+        ],
+        "thickness_mm": 2.0,
+        "connects": [
+          "power-distribution-board-1",
+          "rear-left-hip-actuator-1"
+        ],
+        "wire_kind": "power"
+      }
+    },
+    {
+      "instance_id": "power-to-rear-right-leg-1",
+      "catalog_id": "concept.wire-power-2-0",
+      "role": "wire",
+      "parent_instance_id": null,
+      "attached_to_mount_id": null,
+      "own_mount_id": null,
+      "pose": {
+        "position_mm": [
+          33.0,
+          303.0,
+          -70.32
+        ],
+        "rotation_deg": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "render_overrides": {
+        "color": "#d01f1f",
+        "label": "Power to rear-right leg",
+        "internal": true,
+        "path_mm": [
+          [
+            -33.0,
+            -20.0,
+            137.0
+          ],
+          [
+            33.0,
+            20.0,
+            -137.0
+          ]
+        ],
+        "thickness_mm": 2.0,
+        "connects": [
+          "power-distribution-board-1",
+          "rear-right-hip-actuator-1"
+        ],
+        "wire_kind": "power"
+      }
+    }
+  ],
+  "connections": [],
+  "verification": {
+    "overall": "needs_review",
+    "findings": [
+      {
+        "rule_id": "concept.not_engineered",
+        "result": "UNKNOWN",
+        "severity": "blocking",
+        "affected_instance_ids": [
+          "torso-shell-1",
+          "top-cover-1",
+          "top-cover-hatch-1",
+          "power-button-1",
+          "belly-pan-1",
+          "rear-plate-1",
+          "hip-recess-1",
+          "hip-recess-rear-1",
+          "side-wordmark-1",
+          "number-decal-1",
+          "speed-stripe-1",
+          "speed-stripe-2-1",
+          "speed-stripe-3-1",
+          "speed-stripe-4-1",
+          "hip-recess-2-1",
+          "hip-recess-rear-2-1",
+          "side-wordmark-2-1",
+          "number-decal-2-1",
+          "speed-stripe-5-1",
+          "speed-stripe-6-1",
+          "speed-stripe-7-1",
+          "speed-stripe-8-1",
+          "battery-bay-1",
+          "battery-latch-slot-1",
+          "battery-latch-slot-2-1",
+          "status-led-1",
+          "status-led-2-1",
+          "status-led-3-1",
+          "head-1",
+          "face-panel-1",
+          "face-camera-1",
+          "face-camera-ring-1",
+          "face-sensor-1",
+          "face-sensor-ring-1",
+          "lidar-dome-1",
+          "lidar-base-1",
+          "lidar-rib-1",
+          "lidar-rib-2-1",
+          "lidar-rib-3-1",
+          "lidar-rib-4-1",
+          "lidar-rib-5-1",
+          "lidar-rib-6-1",
+          "lidar-rib-7-1",
+          "lidar-rib-8-1",
+          "front-left-hip-actuator-1",
+          "front-left-hip-end-cap-1",
+          "front-left-hip-cap-ring-1",
+          "front-left-thigh-actuator-1",
+          "front-left-thigh-motor-cap-1",
+          "front-left-thigh-cap-rim-1",
+          "front-left-thigh-cap-screw-1",
+          "front-left-thigh-upper-1",
+          "front-left-thigh-lower-1",
+          "front-left-thigh-cover-1",
+          "front-left-thigh-screw-1",
+          "front-left-knee-joint-1",
+          "front-left-knee-cap-1",
+          "front-left-shin-upper-1",
+          "front-left-shin-lower-1",
+          "front-left-shin-dot-1",
+          "front-left-foot-1",
+          "front-left-foot-collar-1",
+          "front-right-hip-actuator-1",
+          "front-right-hip-end-cap-1",
+          "front-right-hip-cap-ring-1",
+          "front-right-thigh-actuator-1",
+          "front-right-thigh-motor-cap-1",
+          "front-right-thigh-cap-rim-1",
+          "front-right-thigh-cap-screw-1",
+          "front-right-thigh-upper-1",
+          "front-right-thigh-lower-1",
+          "front-right-thigh-cover-1",
+          "front-right-thigh-screw-1",
+          "front-right-knee-joint-1",
+          "front-right-knee-cap-1",
+          "front-right-shin-upper-1",
+          "front-right-shin-lower-1",
+          "front-right-shin-dot-1",
+          "front-right-foot-1",
+          "front-right-foot-collar-1",
+          "rear-left-hip-actuator-1",
+          "rear-left-hip-end-cap-1",
+          "rear-left-hip-cap-ring-1",
+          "rear-left-thigh-actuator-1",
+          "rear-left-thigh-motor-cap-1",
+          "rear-left-thigh-cap-rim-1",
+          "rear-left-thigh-cap-screw-1",
+          "rear-left-thigh-upper-1",
+          "rear-left-thigh-lower-1",
+          "rear-left-thigh-cover-1",
+          "rear-left-thigh-screw-1",
+          "rear-left-knee-joint-1",
+          "rear-left-knee-cap-1",
+          "rear-left-shin-upper-1",
+          "rear-left-shin-lower-1",
+          "rear-left-shin-dot-1",
+          "rear-left-foot-1",
+          "rear-left-foot-collar-1",
+          "rear-right-hip-actuator-1",
+          "rear-right-hip-end-cap-1",
+          "rear-right-hip-cap-ring-1",
+          "rear-right-thigh-actuator-1",
+          "rear-right-thigh-motor-cap-1",
+          "rear-right-thigh-cap-rim-1",
+          "rear-right-thigh-cap-screw-1",
+          "rear-right-thigh-upper-1",
+          "rear-right-thigh-lower-1",
+          "rear-right-thigh-cover-1",
+          "rear-right-thigh-screw-1",
+          "rear-right-knee-joint-1",
+          "rear-right-knee-cap-1",
+          "rear-right-shin-upper-1",
+          "rear-right-shin-lower-1",
+          "rear-right-shin-dot-1",
+          "rear-right-foot-1",
+          "rear-right-foot-collar-1",
+          "battery-pack-1",
+          "power-distribution-board-1",
+          "motion-control-board-1",
+          "compute-module-1",
+          "imu-1",
+          "battery-to-power-board-1",
+          "power-board-to-motion-control-1",
+          "motion-control-to-compute-1",
+          "compute-to-imu-1",
+          "compute-to-lidar-1",
+          "compute-to-face-camera-1",
+          "power-to-front-left-leg-1",
+          "power-to-front-right-leg-1",
+          "power-to-rear-left-leg-1",
+          "power-to-rear-right-leg-1"
+        ],
+        "message": "This is a visual concept of a quadruped robot dog rebuilt from the image. Parts are shapes, not sourced products; wiring, power, fit and function were not checked",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "concept.geometry_estimated",
+        "result": "WARN",
+        "severity": "advisory",
+        "affected_instance_ids": [
+          "torso-shell-1",
+          "top-cover-1",
+          "top-cover-hatch-1",
+          "power-button-1",
+          "belly-pan-1",
+          "rear-plate-1",
+          "hip-recess-1",
+          "hip-recess-rear-1",
+          "side-wordmark-1",
+          "number-decal-1",
+          "speed-stripe-1",
+          "speed-stripe-2-1",
+          "speed-stripe-3-1",
+          "speed-stripe-4-1",
+          "hip-recess-2-1",
+          "hip-recess-rear-2-1",
+          "side-wordmark-2-1",
+          "number-decal-2-1",
+          "speed-stripe-5-1",
+          "speed-stripe-6-1",
+          "speed-stripe-7-1",
+          "speed-stripe-8-1",
+          "battery-bay-1",
+          "battery-latch-slot-1",
+          "battery-latch-slot-2-1",
+          "status-led-1",
+          "status-led-2-1",
+          "status-led-3-1",
+          "head-1",
+          "face-panel-1",
+          "face-camera-1",
+          "face-camera-ring-1",
+          "face-sensor-1",
+          "face-sensor-ring-1",
+          "lidar-dome-1",
+          "lidar-base-1",
+          "lidar-rib-1",
+          "lidar-rib-2-1",
+          "lidar-rib-3-1",
+          "lidar-rib-4-1",
+          "lidar-rib-5-1",
+          "lidar-rib-6-1",
+          "lidar-rib-7-1",
+          "lidar-rib-8-1",
+          "front-left-hip-actuator-1",
+          "front-left-hip-end-cap-1",
+          "front-left-hip-cap-ring-1",
+          "front-left-thigh-actuator-1",
+          "front-left-thigh-motor-cap-1",
+          "front-left-thigh-cap-rim-1",
+          "front-left-thigh-cap-screw-1",
+          "front-left-thigh-upper-1",
+          "front-left-thigh-lower-1",
+          "front-left-thigh-cover-1",
+          "front-left-thigh-screw-1",
+          "front-left-knee-joint-1",
+          "front-left-knee-cap-1",
+          "front-left-shin-upper-1",
+          "front-left-shin-lower-1",
+          "front-left-shin-dot-1",
+          "front-left-foot-1",
+          "front-left-foot-collar-1",
+          "front-right-hip-actuator-1",
+          "front-right-hip-end-cap-1",
+          "front-right-hip-cap-ring-1",
+          "front-right-thigh-actuator-1",
+          "front-right-thigh-motor-cap-1",
+          "front-right-thigh-cap-rim-1",
+          "front-right-thigh-cap-screw-1",
+          "front-right-thigh-upper-1",
+          "front-right-thigh-lower-1",
+          "front-right-thigh-cover-1",
+          "front-right-thigh-screw-1",
+          "front-right-knee-joint-1",
+          "front-right-knee-cap-1",
+          "front-right-shin-upper-1",
+          "front-right-shin-lower-1",
+          "front-right-shin-dot-1",
+          "front-right-foot-1",
+          "front-right-foot-collar-1",
+          "rear-left-hip-actuator-1",
+          "rear-left-hip-end-cap-1",
+          "rear-left-hip-cap-ring-1",
+          "rear-left-thigh-actuator-1",
+          "rear-left-thigh-motor-cap-1",
+          "rear-left-thigh-cap-rim-1",
+          "rear-left-thigh-cap-screw-1",
+          "rear-left-thigh-upper-1",
+          "rear-left-thigh-lower-1",
+          "rear-left-thigh-cover-1",
+          "rear-left-thigh-screw-1",
+          "rear-left-knee-joint-1",
+          "rear-left-knee-cap-1",
+          "rear-left-shin-upper-1",
+          "rear-left-shin-lower-1",
+          "rear-left-shin-dot-1",
+          "rear-left-foot-1",
+          "rear-left-foot-collar-1",
+          "rear-right-hip-actuator-1",
+          "rear-right-hip-end-cap-1",
+          "rear-right-hip-cap-ring-1",
+          "rear-right-thigh-actuator-1",
+          "rear-right-thigh-motor-cap-1",
+          "rear-right-thigh-cap-rim-1",
+          "rear-right-thigh-cap-screw-1",
+          "rear-right-thigh-upper-1",
+          "rear-right-thigh-lower-1",
+          "rear-right-thigh-cover-1",
+          "rear-right-thigh-screw-1",
+          "rear-right-knee-joint-1",
+          "rear-right-knee-cap-1",
+          "rear-right-shin-upper-1",
+          "rear-right-shin-lower-1",
+          "rear-right-shin-dot-1",
+          "rear-right-foot-1",
+          "rear-right-foot-collar-1",
+          "battery-pack-1",
+          "power-distribution-board-1",
+          "motion-control-board-1",
+          "compute-module-1",
+          "imu-1",
+          "battery-to-power-board-1",
+          "power-board-to-motion-control-1",
+          "motion-control-to-compute-1",
+          "compute-to-imu-1",
+          "compute-to-lidar-1",
+          "compute-to-face-camera-1",
+          "power-to-front-left-leg-1",
+          "power-to-front-right-leg-1",
+          "power-to-rear-left-leg-1",
+          "power-to-rear-right-leg-1"
+        ],
+        "message": "Sizes are estimated from the image (about 349 x 394 x 553 mm overall)",
+        "evidence_urls": []
+      },
+      {
+        "rule_id": "concept.internals_inferred",
+        "result": "WARN",
+        "severity": "advisory",
+        "affected_instance_ids": [
+          "battery-pack-1",
+          "power-distribution-board-1",
+          "motion-control-board-1",
+          "compute-module-1",
+          "imu-1",
+          "battery-to-power-board-1",
+          "power-board-to-motion-control-1",
+          "motion-control-to-compute-1",
+          "compute-to-imu-1",
+          "compute-to-lidar-1",
+          "compute-to-face-camera-1",
+          "power-to-front-left-leg-1",
+          "power-to-front-right-leg-1",
+          "power-to-rear-left-leg-1",
+          "power-to-rear-right-leg-1"
+        ],
+        "message": "15 internal parts are typical for a quadruped robot dog, inferred rather than seen in the image; their type, size and placement are guesses",
+        "evidence_urls": []
+      }
+    ]
+  },
+  "assembly_steps": [
+    {
+      "step": 1,
+      "title": "Place the internal battery parts",
+      "instance_ids": [
+        "battery-pack-1"
+      ],
+      "instructions": "Visual concept only: typical internal parts, inferred (not seen in the image); shows roughly where they sit.",
+      "safety_notes": []
+    },
+    {
+      "step": 2,
+      "title": "Place the internal board parts",
+      "instance_ids": [
+        "power-distribution-board-1",
+        "motion-control-board-1",
+        "compute-module-1"
+      ],
+      "instructions": "Visual concept only: typical internal parts, inferred (not seen in the image); shows roughly where they sit.",
+      "safety_notes": []
+    },
+    {
+      "step": 3,
+      "title": "Place the internal sensor parts",
+      "instance_ids": [
+        "imu-1"
+      ],
+      "instructions": "Visual concept only: typical internal parts, inferred (not seen in the image); shows roughly where they sit.",
+      "safety_notes": []
+    },
+    {
+      "step": 4,
+      "title": "Place the internal wire parts",
+      "instance_ids": [
+        "battery-to-power-board-1",
+        "power-board-to-motion-control-1",
+        "motion-control-to-compute-1",
+        "compute-to-imu-1",
+        "compute-to-lidar-1",
+        "compute-to-face-camera-1",
+        "power-to-front-left-leg-1",
+        "power-to-front-right-leg-1",
+        "power-to-rear-left-leg-1",
+        "power-to-rear-right-leg-1"
+      ],
+      "instructions": "Visual concept only: typical internal parts, inferred (not seen in the image); shows roughly where they sit.",
+      "safety_notes": []
+    },
+    {
+      "step": 5,
+      "title": "Place the body parts",
+      "instance_ids": [
+        "torso-shell-1",
+        "top-cover-1",
+        "top-cover-hatch-1",
+        "power-button-1",
+        "belly-pan-1",
+        "rear-plate-1",
+        "hip-recess-1",
+        "hip-recess-rear-1",
+        "hip-recess-2-1",
+        "hip-recess-rear-2-1",
+        "head-1"
+      ],
+      "instructions": "Visual concept only: shows where these parts sit, not how to fasten them.",
+      "safety_notes": []
+    },
+    {
+      "step": 6,
+      "title": "Place the decal parts",
+      "instance_ids": [
+        "side-wordmark-1",
+        "number-decal-1",
+        "speed-stripe-1",
+        "speed-stripe-2-1",
+        "speed-stripe-3-1",
+        "speed-stripe-4-1",
+        "side-wordmark-2-1",
+        "number-decal-2-1",
+        "speed-stripe-5-1",
+        "speed-stripe-6-1",
+        "speed-stripe-7-1",
+        "speed-stripe-8-1"
+      ],
+      "instructions": "Visual concept only: shows where these parts sit, not how to fasten them.",
+      "safety_notes": []
+    },
+    {
+      "step": 7,
+      "title": "Place the battery parts",
+      "instance_ids": [
+        "battery-bay-1",
+        "battery-latch-slot-1",
+        "battery-latch-slot-2-1"
+      ],
+      "instructions": "Visual concept only: shows where these parts sit, not how to fasten them.",
+      "safety_notes": []
+    },
+    {
+      "step": 8,
+      "title": "Place the light parts",
+      "instance_ids": [
+        "status-led-1",
+        "status-led-2-1",
+        "status-led-3-1"
+      ],
+      "instructions": "Visual concept only: shows where these parts sit, not how to fasten them.",
+      "safety_notes": []
+    },
+    {
+      "step": 9,
+      "title": "Place the sensor parts",
+      "instance_ids": [
+        "face-panel-1",
+        "face-sensor-1",
+        "face-sensor-ring-1",
+        "lidar-dome-1",
+        "lidar-base-1",
+        "lidar-rib-1",
+        "lidar-rib-2-1",
+        "lidar-rib-3-1",
+        "lidar-rib-4-1",
+        "lidar-rib-5-1",
+        "lidar-rib-6-1",
+        "lidar-rib-7-1",
+        "lidar-rib-8-1"
+      ],
+      "instructions": "Visual concept only: shows where these parts sit, not how to fasten them.",
+      "safety_notes": []
+    },
+    {
+      "step": 10,
+      "title": "Place the camera parts",
+      "instance_ids": [
+        "face-camera-1",
+        "face-camera-ring-1"
+      ],
+      "instructions": "Visual concept only: shows where these parts sit, not how to fasten them.",
+      "safety_notes": []
+    },
+    {
+      "step": 11,
+      "title": "Place the motor parts",
+      "instance_ids": [
+        "front-left-hip-actuator-1",
+        "front-left-hip-end-cap-1",
+        "front-left-hip-cap-ring-1",
+        "front-left-thigh-actuator-1",
+        "front-left-thigh-motor-cap-1",
+        "front-left-thigh-cap-rim-1",
+        "front-left-thigh-cap-screw-1",
+        "front-right-hip-actuator-1",
+        "front-right-hip-end-cap-1",
+        "front-right-hip-cap-ring-1",
+        "front-right-thigh-actuator-1",
+        "front-right-thigh-motor-cap-1",
+        "front-right-thigh-cap-rim-1",
+        "front-right-thigh-cap-screw-1",
+        "rear-left-hip-actuator-1",
+        "rear-left-hip-end-cap-1",
+        "rear-left-hip-cap-ring-1",
+        "rear-left-thigh-actuator-1",
+        "rear-left-thigh-motor-cap-1",
+        "rear-left-thigh-cap-rim-1",
+        "rear-left-thigh-cap-screw-1",
+        "rear-right-hip-actuator-1",
+        "rear-right-hip-end-cap-1",
+        "rear-right-hip-cap-ring-1",
+        "rear-right-thigh-actuator-1",
+        "rear-right-thigh-motor-cap-1",
+        "rear-right-thigh-cap-rim-1",
+        "rear-right-thigh-cap-screw-1"
+      ],
+      "instructions": "Visual concept only: shows where these parts sit, not how to fasten them.",
+      "safety_notes": []
+    },
+    {
+      "step": 12,
+      "title": "Place the leg parts",
+      "instance_ids": [
+        "front-left-thigh-upper-1",
+        "front-left-thigh-lower-1",
+        "front-left-thigh-cover-1",
+        "front-left-thigh-screw-1",
+        "front-left-knee-joint-1",
+        "front-left-knee-cap-1",
+        "front-left-shin-upper-1",
+        "front-left-shin-lower-1",
+        "front-left-shin-dot-1",
+        "front-left-foot-1",
+        "front-left-foot-collar-1",
+        "front-right-thigh-upper-1",
+        "front-right-thigh-lower-1",
+        "front-right-thigh-cover-1",
+        "front-right-thigh-screw-1",
+        "front-right-knee-joint-1",
+        "front-right-knee-cap-1",
+        "front-right-shin-upper-1",
+        "front-right-shin-lower-1",
+        "front-right-shin-dot-1",
+        "front-right-foot-1",
+        "front-right-foot-collar-1",
+        "rear-left-thigh-upper-1",
+        "rear-left-thigh-lower-1",
+        "rear-left-thigh-cover-1",
+        "rear-left-thigh-screw-1",
+        "rear-left-knee-joint-1",
+        "rear-left-knee-cap-1",
+        "rear-left-shin-upper-1",
+        "rear-left-shin-lower-1",
+        "rear-left-shin-dot-1",
+        "rear-left-foot-1",
+        "rear-left-foot-collar-1",
+        "rear-right-thigh-upper-1",
+        "rear-right-thigh-lower-1",
+        "rear-right-thigh-cover-1",
+        "rear-right-thigh-screw-1",
+        "rear-right-knee-joint-1",
+        "rear-right-knee-cap-1",
+        "rear-right-shin-upper-1",
+        "rear-right-shin-lower-1",
+        "rear-right-shin-dot-1",
+        "rear-right-foot-1",
+        "rear-right-foot-collar-1"
+      ],
+      "instructions": "Visual concept only: shows where these parts sit, not how to fasten them.",
+      "safety_notes": []
+    }
+  ],
+  "bom": {
+    "currency": "USD",
+    "known_subtotal_amount": "66.75",
+    "total_status": "incomplete",
+    "items": [
+      {
+        "catalog_id": "concept.torso-shell",
+        "quantity": 1,
+        "instance_ids": [
+          "torso-shell-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.cover",
+        "quantity": 1,
+        "instance_ids": [
+          "top-cover-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.cover-hatch",
+        "quantity": 1,
+        "instance_ids": [
+          "top-cover-hatch-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.power-button",
+        "quantity": 1,
+        "instance_ids": [
+          "power-button-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.belly-pan",
+        "quantity": 1,
+        "instance_ids": [
+          "belly-pan-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.plate",
+        "quantity": 1,
+        "instance_ids": [
+          "rear-plate-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.hip-recess",
+        "quantity": 4,
+        "instance_ids": [
+          "hip-recess-1",
+          "hip-recess-rear-1",
+          "hip-recess-2-1",
+          "hip-recess-rear-2-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.side-wordmark",
+        "quantity": 2,
+        "instance_ids": [
+          "side-wordmark-1",
+          "side-wordmark-2-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.number-decal",
+        "quantity": 2,
+        "instance_ids": [
+          "number-decal-1",
+          "number-decal-2-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.speed-stripe",
+        "quantity": 8,
+        "instance_ids": [
+          "speed-stripe-1",
+          "speed-stripe-2-1",
+          "speed-stripe-3-1",
+          "speed-stripe-4-1",
+          "speed-stripe-5-1",
+          "speed-stripe-6-1",
+          "speed-stripe-7-1",
+          "speed-stripe-8-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.battery-bay",
+        "quantity": 1,
+        "instance_ids": [
+          "battery-bay-1"
+        ],
+        "unit_price_amount": "7.95",
+        "purchase_url": "https://www.adafruit.com/product/1578",
+        "link_status": "manufacturer_reference_only"
+      },
+      {
+        "catalog_id": "concept.battery-latch-slot",
+        "quantity": 2,
+        "instance_ids": [
+          "battery-latch-slot-1",
+          "battery-latch-slot-2-1"
+        ],
+        "unit_price_amount": "7.95",
+        "purchase_url": "https://www.adafruit.com/product/1578",
+        "link_status": "manufacturer_reference_only"
+      },
+      {
+        "catalog_id": "concept.status-led",
+        "quantity": 3,
+        "instance_ids": [
+          "status-led-1",
+          "status-led-2-1",
+          "status-led-3-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.head",
+        "quantity": 1,
+        "instance_ids": [
+          "head-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.face-panel",
+        "quantity": 1,
+        "instance_ids": [
+          "face-panel-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.face-camera",
+        "quantity": 1,
+        "instance_ids": [
+          "face-camera-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.face-camera-ring",
+        "quantity": 1,
+        "instance_ids": [
+          "face-camera-ring-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.face-sensor",
+        "quantity": 1,
+        "instance_ids": [
+          "face-sensor-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.face-sensor-ring",
+        "quantity": 1,
+        "instance_ids": [
+          "face-sensor-ring-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.lidar-dome",
+        "quantity": 1,
+        "instance_ids": [
+          "lidar-dome-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.lidar-base",
+        "quantity": 1,
+        "instance_ids": [
+          "lidar-base-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.lidar-rib",
+        "quantity": 8,
+        "instance_ids": [
+          "lidar-rib-1",
+          "lidar-rib-2-1",
+          "lidar-rib-3-1",
+          "lidar-rib-4-1",
+          "lidar-rib-5-1",
+          "lidar-rib-6-1",
+          "lidar-rib-7-1",
+          "lidar-rib-8-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.hip-actuator",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-hip-actuator-1",
+          "front-right-hip-actuator-1",
+          "rear-left-hip-actuator-1",
+          "rear-right-hip-actuator-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.hip-end-cap",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-hip-end-cap-1",
+          "front-right-hip-end-cap-1",
+          "rear-left-hip-end-cap-1",
+          "rear-right-hip-end-cap-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.hip-cap-ring",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-hip-cap-ring-1",
+          "front-right-hip-cap-ring-1",
+          "rear-left-hip-cap-ring-1",
+          "rear-right-hip-cap-ring-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.thigh-actuator",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-thigh-actuator-1",
+          "front-right-thigh-actuator-1",
+          "rear-left-thigh-actuator-1",
+          "rear-right-thigh-actuator-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.thigh-motor-cap",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-thigh-motor-cap-1",
+          "front-right-thigh-motor-cap-1",
+          "rear-left-thigh-motor-cap-1",
+          "rear-right-thigh-motor-cap-1"
+        ],
+        "unit_price_amount": "3.75",
+        "purchase_url": "https://www.sparkfun.com/hobby-gearmotor-140-rpm-pair.html",
+        "link_status": "manufacturer_reference_only"
+      },
+      {
+        "catalog_id": "concept.thigh-cap-rim",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-thigh-cap-rim-1",
+          "front-right-thigh-cap-rim-1",
+          "rear-left-thigh-cap-rim-1",
+          "rear-right-thigh-cap-rim-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.thigh-cap-screw",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-thigh-cap-screw-1",
+          "front-right-thigh-cap-screw-1",
+          "rear-left-thigh-cap-screw-1",
+          "rear-right-thigh-cap-screw-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.thigh",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-thigh-upper-1",
+          "front-right-thigh-upper-1",
+          "rear-left-thigh-upper-1",
+          "rear-right-thigh-upper-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.thigh-2",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-thigh-lower-1",
+          "front-right-thigh-lower-1",
+          "rear-left-thigh-lower-1",
+          "rear-right-thigh-lower-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.thigh-cover",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-thigh-cover-1",
+          "front-right-thigh-cover-1",
+          "rear-left-thigh-cover-1",
+          "rear-right-thigh-cover-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.thigh-screw",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-thigh-screw-1",
+          "front-right-thigh-screw-1",
+          "rear-left-thigh-screw-1",
+          "rear-right-thigh-screw-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.knee-joint",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-knee-joint-1",
+          "front-right-knee-joint-1",
+          "rear-left-knee-joint-1",
+          "rear-right-knee-joint-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.knee-cap",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-knee-cap-1",
+          "front-right-knee-cap-1",
+          "rear-left-knee-cap-1",
+          "rear-right-knee-cap-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.shin",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-shin-upper-1",
+          "front-right-shin-upper-1",
+          "rear-left-shin-upper-1",
+          "rear-right-shin-upper-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.shin-2",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-shin-lower-1",
+          "front-right-shin-lower-1",
+          "rear-left-shin-lower-1",
+          "rear-right-shin-lower-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.shin-dot",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-shin-dot-1",
+          "front-right-shin-dot-1",
+          "rear-left-shin-dot-1",
+          "rear-right-shin-dot-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.foot",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-foot-1",
+          "front-right-foot-1",
+          "rear-left-foot-1",
+          "rear-right-foot-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.foot-collar",
+        "quantity": 4,
+        "instance_ids": [
+          "front-left-foot-collar-1",
+          "front-right-foot-collar-1",
+          "rear-left-foot-collar-1",
+          "rear-right-foot-collar-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.battery-pack",
+        "quantity": 1,
+        "instance_ids": [
+          "battery-pack-1"
+        ],
+        "unit_price_amount": "7.95",
+        "purchase_url": "https://www.adafruit.com/product/1578",
+        "link_status": "manufacturer_reference_only"
+      },
+      {
+        "catalog_id": "concept.power-distribution-board",
+        "quantity": 1,
+        "instance_ids": [
+          "power-distribution-board-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.motion-control-board",
+        "quantity": 1,
+        "instance_ids": [
+          "motion-control-board-1"
+        ],
+        "unit_price_amount": "19.95",
+        "purchase_url": "https://www.adafruit.com/product/3405",
+        "link_status": "manufacturer_reference_only"
+      },
+      {
+        "catalog_id": "concept.compute-module",
+        "quantity": 1,
+        "instance_ids": [
+          "compute-module-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.imu",
+        "quantity": 1,
+        "instance_ids": [
+          "imu-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.wire-power-3-0",
+        "quantity": 1,
+        "instance_ids": [
+          "battery-to-power-board-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.wire-power-2-0",
+        "quantity": 5,
+        "instance_ids": [
+          "power-board-to-motion-control-1",
+          "power-to-front-left-leg-1",
+          "power-to-front-right-leg-1",
+          "power-to-rear-left-leg-1",
+          "power-to-rear-right-leg-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.wire-data-1-5",
+        "quantity": 3,
+        "instance_ids": [
+          "motion-control-to-compute-1",
+          "compute-to-lidar-1",
+          "compute-to-face-camera-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      },
+      {
+        "catalog_id": "concept.wire-signal-1-2",
+        "quantity": 1,
+        "instance_ids": [
+          "compute-to-imu-1"
+        ],
+        "unit_price_amount": null,
+        "purchase_url": null,
+        "link_status": "not_available"
+      }
+    ]
+  },
+  "behavior": null,
+  "simulation": {
+    "kind": "none",
+    "enabled": false,
+    "wheel_radius_m": null,
+    "wheel_base_m": null,
+    "max_wheel_speed_mps": null,
+    "sensor_range_m": null,
+    "sensor_fov_deg": null,
+    "limitations": [
+      "Concept model: no motion or physics is simulated"
+    ]
+  },
+  "firmware": {
+    "target": "none",
+    "profile_id": "concept.none",
+    "pin_map": {},
+    "compile_status": "not_supported"
+  },
+  "provenance": {
+    "input_mode": "image",
+    "catalog_version": "CONCEPT-1.0",
+    "generation_mode": "manual_template",
+    "notes": [
+      "Concept model of a quadruped robot dog (high confidence); appearance only",
+      "Hand-built model of the uploaded photo; sizes estimated for a robot dog about 70 cm long standing",
+      "Internal parts are typical for this kind of device, not seen in the photo"
+    ]
+  },
+  "concept_catalog": [
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.torso-shell",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Torso shell",
+        "sku": null,
+        "category": "body"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 196.0,
+          "y": 112.0,
+          "z": 440.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:rounded_box",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.cover",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Cover",
+        "sku": null,
+        "category": "body"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 170.0,
+          "y": 14.0,
+          "z": 380.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:rounded_box",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.cover-hatch",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Cover hatch",
+        "sku": null,
+        "category": "body"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 70.0,
+          "y": 2.0,
+          "z": 50.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.power-button",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Power button",
+        "sku": null,
+        "category": "body"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 26.0,
+          "y": 8.0,
+          "z": 26.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.belly-pan",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Belly pan",
+        "sku": null,
+        "category": "body"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 156.0,
+          "y": 20.0,
+          "z": 360.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:rounded_box",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.plate",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Plate",
+        "sku": null,
+        "category": "body"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 166.0,
+          "y": 82.0,
+          "z": 14.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:rounded_box",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.hip-recess",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Hip recess",
+        "sku": null,
+        "category": "body"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 6.0,
+          "y": 70.0,
+          "z": 90.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:rounded_box",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.side-wordmark",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Side wordmark",
+        "sku": null,
+        "category": "decal"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 1.0,
+          "y": 14.0,
+          "z": 100.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.number-decal",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Number decal",
+        "sku": null,
+        "category": "decal"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 1.0,
+          "y": 18.0,
+          "z": 26.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.speed-stripe",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Speed stripe",
+        "sku": null,
+        "category": "decal"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 1.0,
+          "y": 22.0,
+          "z": 3.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.battery-bay",
+      "identity": {
+        "manufacturer": "Suggested part from Adafruit",
+        "model": "Battery bay: Lithium Ion Polymer Battery - 3.7v 500mAh",
+        "sku": null,
+        "category": "battery"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 4.0,
+          "y": 64.0,
+          "z": 120.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:rounded_box",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.adafruit.com/product/1578",
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": "7.95",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unverified",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part for this role: Lithium Ion Polymer Battery - 3.7v 500mAh (Adafruit, SKU 1578). Hand-picked, not checked against this design's size, power or wiring."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.battery-latch-slot",
+      "identity": {
+        "manufacturer": "Suggested part from Adafruit",
+        "model": "Battery latch slot: Lithium Ion Polymer Battery - 3.7v 500mAh",
+        "sku": null,
+        "category": "battery"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 2.0,
+          "y": 26.0,
+          "z": 14.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.adafruit.com/product/1578",
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": "7.95",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unverified",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part for this role: Lithium Ion Polymer Battery - 3.7v 500mAh (Adafruit, SKU 1578). Hand-picked, not checked against this design's size, power or wiring."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.status-led",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Status led",
+        "sku": null,
+        "category": "light"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 4.0,
+          "y": 4.0,
+          "z": 4.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:sphere",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.head",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Head",
+        "sku": null,
+        "category": "body"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 150.0,
+          "y": 96.0,
+          "z": 60.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:rounded_box",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.face-panel",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Face panel",
+        "sku": null,
+        "category": "sensor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 52.0,
+          "y": 74.0,
+          "z": 6.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:rounded_box",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.face-camera",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Face camera",
+        "sku": null,
+        "category": "camera"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 20.0,
+          "y": 4.0,
+          "z": 20.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "glass"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.face-camera-ring",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Face camera ring",
+        "sku": null,
+        "category": "camera"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 24.0,
+          "y": 3.0,
+          "z": 24.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:torus",
+        "asset_path": null,
+        "material_preset": "metal"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.face-sensor",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Face sensor",
+        "sku": null,
+        "category": "sensor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 16.0,
+          "y": 4.0,
+          "z": 16.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "glass"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.face-sensor-ring",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Face sensor ring",
+        "sku": null,
+        "category": "sensor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 19.0,
+          "y": 2.4,
+          "z": 19.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:torus",
+        "asset_path": null,
+        "material_preset": "metal"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.lidar-dome",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Lidar dome",
+        "sku": null,
+        "category": "sensor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 84.0,
+          "y": 60.0,
+          "z": 74.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:sphere",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.lidar-base",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Lidar base",
+        "sku": null,
+        "category": "sensor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 90.0,
+          "y": 14.0,
+          "z": 80.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.lidar-rib",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Lidar rib",
+        "sku": null,
+        "category": "sensor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 4.0,
+          "y": 52.0,
+          "z": 6.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.hip-actuator",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Hip actuator",
+        "sku": null,
+        "category": "motor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 92.0,
+          "y": 74.0,
+          "z": 92.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.hip-end-cap",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Hip end cap",
+        "sku": null,
+        "category": "motor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 84.0,
+          "y": 10.0,
+          "z": 84.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.hip-cap-ring",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Hip cap ring",
+        "sku": null,
+        "category": "motor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 86.0,
+          "y": 4.0,
+          "z": 86.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:torus",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.thigh-actuator",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Thigh actuator",
+        "sku": null,
+        "category": "motor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 100.0,
+          "y": 66.0,
+          "z": 100.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.thigh-motor-cap",
+      "identity": {
+        "manufacturer": "Suggested part from SparkFun",
+        "model": "Thigh motor cap: Hobby Gearmotor - 140 RPM (Pair)",
+        "sku": null,
+        "category": "motor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 88.0,
+          "y": 8.0,
+          "z": 88.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.sparkfun.com/hobby-gearmotor-140-rpm-pair.html",
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": "3.75",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unverified",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part for this role: Hobby Gearmotor - 140 RPM (Pair) (SparkFun, SKU ROB-13302), sold as 2 in one (7.50 USD); shared across the parts that use it. Hand-picked, not checked against this design's size, power or wiring."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.thigh-cap-rim",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Thigh cap rim",
+        "sku": null,
+        "category": "motor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 92.0,
+          "y": 5.0,
+          "z": 92.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:torus",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.thigh-cap-screw",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Thigh cap screw",
+        "sku": null,
+        "category": "motor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 8.0,
+          "y": 3.0,
+          "z": 8.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "metal"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.thigh",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Thigh",
+        "sku": null,
+        "category": "leg"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 46.0,
+          "y": 68.8,
+          "z": 74.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:rounded_box",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.thigh-2",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Thigh",
+        "sku": null,
+        "category": "leg"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 38.0,
+          "y": 80.7,
+          "z": 50.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:rounded_box",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.thigh-cover",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Thigh cover",
+        "sku": null,
+        "category": "leg"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 50.0,
+          "y": 70.0,
+          "z": 96.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:rounded_box",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.thigh-screw",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Thigh screw",
+        "sku": null,
+        "category": "leg"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 5.0,
+          "y": 3.0,
+          "z": 5.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "metal"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.knee-joint",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Knee joint",
+        "sku": null,
+        "category": "leg"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 34.0,
+          "y": 40.0,
+          "z": 34.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.knee-cap",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Knee cap",
+        "sku": null,
+        "category": "leg"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 26.0,
+          "y": 4.0,
+          "z": 26.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "metal"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.shin",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Shin",
+        "sku": null,
+        "category": "leg"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 24.0,
+          "y": 77.8,
+          "z": 30.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:rounded_box",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.shin-2",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Shin",
+        "sku": null,
+        "category": "leg"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 20.0,
+          "y": 85.6,
+          "z": 24.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:rounded_box",
+        "asset_path": null,
+        "material_preset": "glossy_plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.shin-dot",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Shin dot",
+        "sku": null,
+        "category": "leg"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 5.0,
+          "y": 2.0,
+          "z": 5.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.foot",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Foot",
+        "sku": null,
+        "category": "leg"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 40.0,
+          "y": 38.0,
+          "z": 40.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:sphere",
+        "asset_path": null,
+        "material_preset": "rubber"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.foot-collar",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Foot collar",
+        "sku": null,
+        "category": "leg"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 28.0,
+          "y": 10.0,
+          "z": 28.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cylinder",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "estimated_from_image",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Shape and size estimated from the uploaded image; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.battery-pack",
+      "identity": {
+        "manufacturer": "Suggested part from Adafruit",
+        "model": "Battery pack: Lithium Ion Polymer Battery - 3.7v 500mAh",
+        "sku": null,
+        "category": "battery"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 120.0,
+          "y": 60.0,
+          "z": 200.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.adafruit.com/product/1578",
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": "7.95",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unverified",
+        "notes": [
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
+          "Suggested real part for this role: Lithium Ion Polymer Battery - 3.7v 500mAh (Adafruit, SKU 1578). Hand-picked, not checked against this design's size, power or wiring."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.power-distribution-board",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Power distribution board",
+        "sku": null,
+        "category": "board"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 110.0,
+          "y": 1.6,
+          "z": 80.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "pcb"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.motion-control-board",
+      "identity": {
+        "manufacturer": "Suggested part from Adafruit",
+        "model": "Motion control board: Adafruit HUZZAH32 - ESP32 Feather Board",
+        "sku": null,
+        "category": "board"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 100.0,
+          "y": 1.6,
+          "z": 90.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "pcb"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": "https://www.adafruit.com/product/3405",
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": "19.95",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-24T00:00:00Z",
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unverified",
+        "notes": [
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
+          "Suggested real part for this role: Adafruit HUZZAH32 - ESP32 Feather Board (Adafruit, SKU 3405). Hand-picked, not checked against this design's size, power or wiring."
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.compute-module",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Compute module",
+        "sku": null,
+        "category": "board"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 80.0,
+          "y": 10.0,
+          "z": 70.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "pcb"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.imu",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Imu",
+        "sku": null,
+        "category": "sensor"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 24.0,
+          "y": 6.0,
+          "z": 24.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:box",
+        "asset_path": null,
+        "material_preset": "plastic"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.wire-power-3-0",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Power wire, 3 mm",
+        "sku": null,
+        "category": "wire"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 3.0,
+          "y": 3.0,
+          "z": 3.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cable",
+        "asset_path": null,
+        "material_preset": "rubber"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.wire-power-2-0",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Power wire, 2 mm",
+        "sku": null,
+        "category": "wire"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 2.0,
+          "y": 2.0,
+          "z": 2.0
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cable",
+        "asset_path": null,
+        "material_preset": "rubber"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.wire-data-1-5",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Data wire, 1.5 mm",
+        "sku": null,
+        "category": "wire"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 1.5,
+          "y": 1.5,
+          "z": 1.5
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cable",
+        "asset_path": null,
+        "material_preset": "rubber"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "catalog_id": "concept.wire-signal-1-2",
+      "identity": {
+        "manufacturer": "Concept (not a sourced part)",
+        "model": "Signal wire, 1.2 mm",
+        "sku": null,
+        "category": "wire"
+      },
+      "physical": {
+        "dimensions_mm": {
+          "x": 1.2,
+          "y": 1.2,
+          "z": 1.2
+        },
+        "mass_g": null,
+        "bounds_verified": false,
+        "geometry_kind": "concept:cable",
+        "asset_path": null,
+        "material_preset": "rubber"
+      },
+      "mounts": [],
+      "ports": [],
+      "sourcing": {
+        "manufacturer_reference_url": null,
+        "datasheet_url": null,
+        "purchase_url": null,
+        "purchase_url_verified_at": null,
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
+        "availability_status": "unknown"
+      },
+      "evidence": {
+        "dimensions": "unknown",
+        "electrical": "unknown",
+        "price": "unknown",
+        "notes": [
+          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product"
+        ]
+      }
+    }
+  ],
+  "concept": {
+    "object_type": "quadruped robot dog",
+    "summary": "A grey four-legged robot dog: long rounded torso, black sensor face with a ribbed lidar dome under the chin, aluminium-capped hip and thigh actuators, curved thighs and slim shins on black rubber feet.",
+    "confidence": "high"
+  }
+}

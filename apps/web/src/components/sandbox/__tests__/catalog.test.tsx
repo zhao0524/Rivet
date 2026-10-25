@@ -24,8 +24,9 @@ describe('SandboxCatalog', () => {
     expect(await screen.findByTestId('sandbox-empty')).toBeTruthy();
 
     fireEvent.change(screen.getByTestId('sandbox-search'), { target: { value: '' } });
-    fireEvent.click(screen.getByTestId('sandbox-cat-drone'));
-    expect(await screen.findByTestId('sandbox-card-demo-camera-drone')).toBeTruthy();
+    fireEvent.click(screen.getByTestId('sandbox-cat-other'));
+    expect(await screen.findByTestId('sandbox-card-sample-sparkfun-inventors-kit-v412')).toBeTruthy();
+    expect(screen.queryByTestId('sandbox-cat-drone')).toBeNull();
     expect(screen.queryByTestId('sandbox-card-demo-pocket-rover-2wd')).toBeNull();
   });
 });

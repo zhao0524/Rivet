@@ -1,0 +1,22 @@
+## Latest page snapshot
+uid=20_0 RootWebArea "Rivet: hardware designed and built with AI" url="http://localhost:3000/p/p_44dc72abee/generate"
+  uid=25_0 banner
+    uid=25_1 link "Rivet home" url="http://localhost:3000/"
+    uid=25_2 link "Projects" url="http://localhost:3000/projects"
+    uid=25_4 "Build a small rover that avoids obstacles"
+    uid=25_5 button "Switch to light theme"
+  uid=25_6 main
+    uid=70_0 heading "Generation stopped" level="1"
+    uid=70_1 paragraph live="polite" relevant="additions text"
+      uid=70_2 "Generation failed"
+    uid=70_3 "Nothing was built."
+    uid=70_4 alert atomic live="assertive" relevant="additions text"
+      uid=70_5 "No such interpretation (unknown or expired); interpret the input again"
+    uid=70_6 button "Cancel and go back"
+    uid=70_7 button "Resume"
+    uid=70_8 complementary "Generation events"
+      uid=70_9 "Events"
+      uid=70_10 "None yet"
+      uid=70_11 list live="polite" relevant="additions text"
+        uid=70_12 "Events from the engine appear here as they happen."
+  uid=20_22 alert atomic live="assertive" relevant="additions text"

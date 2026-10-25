@@ -40,6 +40,7 @@ export function Stage({
   view,
   onView,
   onRetry,
+  retryLabel = 'Try again',
 }: {
   plan: BuildPlan | null;
   catalog: readonly CatalogComponent[];
@@ -52,6 +53,7 @@ export function Stage({
   view: StageView;
   onView: (view: StageView) => void;
   onRetry: () => void;
+  retryLabel?: string;
 }) {
   // A saved example answers instantly; holding the loading state a moment makes the hand-off read as a
   // transition, not a flicker.
@@ -112,7 +114,7 @@ export function Stage({
           <p className="ws-stage__empty-title">Rivet stopped before the model was ready</p>
           {errorMessage ? <p className="ws-stage__empty-text">{errorMessage}</p> : null}
           <button type="button" className="ws-btn ws-btn--primary" onClick={onRetry} data-testid="workspace-retry">
-            Try again
+            {retryLabel}
           </button>
         </div>
       ) : null}

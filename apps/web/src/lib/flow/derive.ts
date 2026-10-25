@@ -397,6 +397,13 @@ export interface BuyLine {
   fabricated: boolean;
   /** A hand-picked product for a concept part's role: a real listing, not checked against the design. */
   suggested: boolean;
+  /** Explicitly documented kit content, not a separate purchase. */
+  included?: boolean;
+}
+
+export function isIncludedKitPart(cat: CatalogComponent | null): boolean {
+  return cat?.sourcing.price_amount !== null && Number(cat?.sourcing.price_amount) === 0 &&
+    Boolean(cat?.evidence.notes.some((note) => /included/i.test(note) && /not bought separately/i.test(note)));
 }
 
 export function buyLines(plan: BuildPlan, catalog: readonly CatalogComponent[]): BuyLine[] {
@@ -409,6 +416,9 @@ export function buyLines(plan: BuildPlan, catalog: readonly CatalogComponent[]):
     const suggested = concept && item.link_status === 'manufacturer_reference_only';
     const url = item.link_status === 'verified_product' || suggested ? safeHttpUrl(item.purchase_url) : null;
     const stock = cat?.sourcing.availability_status;
+    // Do not drop a free item just because it costs zero: the catalog must name
+    // the included kit, and that kit must actually be in this BOM.
+    const kitSku = isIncludedKitPart(cat) ? cat?.identity.model.match(/\(included with ([^)]+)\)/i)?.[1] : null;
     return {
       catalogId: item.catalog_id,
       name: cat?.identity.model ?? item.catalog_id,
@@ -420,6 +430,8 @@ export function buyLines(plan: BuildPlan, catalog: readonly CatalogComponent[]):
       checkedAt: cat?.sourcing.price_checked_at ?? null,
       fabricated: /printed|fabricat|3d.?print/i.test(`${cat?.identity.category ?? ''} ${item.catalog_id}`),
       suggested: suggested && url !== null,
+      included: Boolean(kitSku && item.unit_price_amount !== null && Number(item.unit_price_amount) === 0 &&
+        plan.bom.items.some((other) => byId.get(other.catalog_id)?.identity.sku === kitSku)),
     };
   });
 }

@@ -139,6 +139,7 @@ export function WorkspaceScreen() {
             view={view}
             onView={setView}
             onRetry={session.retry}
+            retryLabel={session.reread ? 'Read it again' : 'Try again'}
           />
         </section>
         <aside className="ws-col ws-col--right" aria-label="Chat with Rivet">

@@ -233,7 +233,7 @@ function Generation({
         {latest ? (
           <div className="ws-chips">
             <button type="button" className="ws-chip" onClick={session.retry} data-testid="workspace-chat-retry">
-              Try again
+              {session.reread ? 'Read it again' : 'Try again'}
             </button>
           </div>
         ) : null}

@@ -1,0 +1,112 @@
+[
+ {
+  "accepted": false,
+  "actions": [
+   {
+    "accepted": false,
+    "body_id": null,
+    "reason": "could not scale the design to fit its 2300 x 2100 x 6240 mm envelope: float() argument must be a string or a real number, not 'list'",
+    "round": 0,
+    "set": {
+     "__scale__": 0.83893
+    }
+   },
+   {
+    "accepted": false,
+    "body_id": "front_skid_leg",
+    "reason": "lower front_skid_leg by 59.6 mm onto the floor the other contact parts stand on",
+    "round": 1,
+    "set": null,
+    "skipped": "needs 59.6 mm, beyond the 8 mm allowance"
+   },
+   {
+    "accepted": false,
+    "body_id": "front_skid_foot",
+    "reason": "lower front_skid_foot by 19.6 mm onto the floor the other contact parts stand on",
+    "round": 1,
+    "set": null,
+    "skipped": "needs 19.6 mm, beyond the 8 mm allowance"
+   },
+   {
+    "accepted": false,
+    "body_id": "rear_left_skid_leg",
+    "reason": "lower rear_left_skid_leg by 53.5 mm onto the floor the other contact parts stand on",
+    "round": 1,
+    "set": null,
+    "skipped": "needs 53.5 mm, beyond the 8 mm allowance"
+   },
+   {
+    "accepted": false,
+    "body_id": "rear_right_skid_leg",
+    "reason": "lower rear_right_skid_leg by 53.5 mm onto the floor the other contact parts stand on",
+    "round": 1,
+    "set": null,
+    "skipped": "needs 53.5 mm, beyond the 8 mm allowance"
+   }
+  ],
+  "kind": "deterministic_repair",
+  "score_after": 70,
+  "score_before": 70
+ },
+ {
+  "accepted": false,
+  "changed": {
+   "added": [],
+   "changed": [
+    "canopy",
+    "front_skid_leg",
+    "fuselage",
+    "left_intake_ring",
+    "nozzle_outer",
+    "tail_fin"
+   ],
+   "removed": [],
+   "unchanged": [
+    "front_skid_foot",
+    "nozzle_core",
+    "rear_left_skid_foot",
+    "rear_left_skid_leg",
+    "rear_right_skid_foot",
+    "rear_right_skid_leg"
+   ]
+  },
+  "kind": "model_patch",
+  "score_after": 70,
+  "score_before": 70
+ },
+ {
+  "accepted": true,
+  "actions": [
+   {
+    "accepted": true,
+    "body_id": null,
+    "reason": "scale the whole design by 0.523 so it fits its declared 6240 x 2080 x 2275 mm envelope (it measured 1747.12 x 2071.6 x 4262.49 mm)",
+    "round": 0,
+    "score_after": 0,
+    "score_before": 40,
+    "set": {
+     "__scale__": 0.52305
+    }
+   }
+  ],
+  "kind": "deterministic_repair",
+  "score_after": 0,
+  "score_before": 40
+ },
+ {
+  "accepted": true,
+  "blocking_after": [],
+  "blocking_before": [
+   "design exceeds its maximum bounds",
+   "design is statically unstable"
+  ],
+  "feedback": [
+   "The engine rejected the previous attempt: design exceeds its maximum bounds.",
+   "The engine rejected the previous attempt: design is statically unstable.",
+   "Stability unstable: centre of mass lies outside the support polygon Contact parts were ['rear_left_skid_foot', 'rear_right_skid_foot'] over 357343.94 mm2. Make every intended wheel, foot or base reach the same lowest level and give at least three contact patches that are not in a straight line."
+  ],
+  "kind": "reauthor",
+  "score_after": 4.0,
+  "score_before": 5.0
+ }
+]

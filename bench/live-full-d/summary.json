@@ -1,0 +1,281 @@
+{
+ "cases": [
+  {
+   "build_id": "design-94859ad84999f8ce5ce4d0ec",
+   "candidates": [
+    {
+     "error": {
+      "code": "CANDIDATE_INVALID",
+      "details": {
+       "errors": [
+        "bodies.3.features.0.edges: Input should be 'all', 'vertical', 'horizontal', 'top' or 'bottom'"
+       ]
+      },
+      "message": "closest_to_reference: the design model did not return a valid DesignSpec",
+      "retryable": false
+     },
+     "id": "cand-1",
+     "status": "failed",
+     "strategy": "closest_to_reference"
+    },
+    {
+     "bodies": 13,
+     "critical_issues": 0,
+     "feasible": true,
+     "geometry_digest": "cfe5eeb3a42fd5664086a1f46cbad60a300630599b6cb0a5d4ab621b4958199b",
+     "hard_collisions": 0,
+     "id": "cand-2",
+     "judge": "openai:gpt-5+critic:gpt-4o",
+     "mechanical_status": "valid",
+     "revisions": [
+      {
+       "accepted": true,
+       "actions": [
+        {
+         "accepted": true,
+         "body_id": null,
+         "reason": "scale the whole design by 0.943 so it fits its declared 163 x 95 x 76 mm envelope (it measured 127 x 79 x 79 mm)",
+         "round": 0,
+         "score_after": 100,
+         "score_before": 140,
+         "set": {
+          "__scale__": 0.94278
+         }
+        },
+        {
+         "accepted": false,
+         "before": {
+          "attachment.offset_mm": [
+           -11.3134,
+           0.0,
+           -7.5423
+          ]
+         },
+         "body_id": "dial_right",
+         "reason": "slide dial_right away from hot_shoe (130.613 mm3 overlap)",
+         "round": 1,
+         "score_after": 100,
+         "score_before": 100,
+         "set": {
+          "attachment.offset_mm": [
+           -16.275,
+           0.0,
+           -7.542
+          ]
+         }
+        },
+        {
+         "accepted": false,
+         "before": {
+          "shape.dimensions_mm": [
+           11.3134,
+           7.5423,
+           1.3199
+          ]
+         },
+         "body_id": "viewfinder_glass",
+         "reason": "thicken viewfinder_glass to the 1.6 mm minimum wall",
+         "round": 1,
+         "score_after": 100,
+         "score_before": 100,
+         "set": {
+          "shape.dimensions_mm": [
+           11.3134,
+           7.5423,
+           1.6
+          ]
+         }
+        }
+       ],
+       "kind": "deterministic_repair",
+       "score_after": 100,
+       "score_before": 140
+      },
+      {
+       "accepted": true,
+       "changed": {
+        "added": [],
+        "changed": [
+         "bottom_plate",
+         "hot_shoe",
+         "left_grip",
+         "port_door",
+         "rear_screen",
+         "viewfinder_glass"
+        ],
+        "removed": [],
+        "unchanged": [
+         "body_core",
+         "dial_left",
+         "dial_right",
+         "lens_barrel",
+         "lens_glass",
+         "top_plate",
+         "viewfinder_bezel"
+        ]
+       },
+       "kind": "model_patch",
+       "score_after": 0,
+       "score_before": 100
+      },
+      {
+       "accepted": false,
+       "kind": "critic_revision",
+       "reason": "patch rejected: cannot remove required body 'dial_right'",
+       "round": 1
+      },
+      {
+       "accepted": false,
+       "kind": "critic_revision",
+       "reason": "patch rejected: cannot remove required body 'dial_right'",
+       "round": 2
+      }
+     ],
+     "shape_types": [
+      "boolean",
+      "box",
+      "cylinder",
+      "rounded_box",
+      "sphere"
+     ],
+     "status": "complete",
+     "strategy": "simpler_manufacture",
+     "visual_overall": 6.8,
+     "visual_scores": {
+      "colour_and_surface": 6.0,
+      "pose_and_orientation": 9.0,
+      "proportions": 7.0,
+      "reference_consistency": 5.0,
+      "signature_features": 6.0,
+      "silhouette": 8.0
+     }
+    },
+    {
+     "bodies": 14,
+     "critical_issues": 0,
+     "feasible": true,
+     "geometry_digest": "3ca2bb6014c2d421681f8d2d20b1eb4869e91da060bff9f01949ac1962f964f3",
+     "hard_collisions": 0,
+     "id": "cand-3",
+     "judge": "openai:gpt-5+critic:gpt-4o",
+     "mechanical_status": "valid",
+     "revisions": [],
+     "shape_types": [
+      "box",
+      "cylinder",
+      "revolve_profile",
+      "rounded_box",
+      "tube"
+     ],
+     "status": "complete",
+     "strategy": "signature_geometry",
+     "visual_overall": 6.0,
+     "visual_scores": {
+      "colour_and_surface": 6.0,
+      "pose_and_orientation": 7.0,
+      "proportions": 6.0,
+      "reference_consistency": 5.0,
+      "signature_features": 5.0,
+      "silhouette": 7.0
+     }
+    }
+   ],
+   "case": "asymmetric",
+   "design_model": "openai:gpt-5+critic:gpt-4o",
+   "final_exports": {
+    "assembly_steps": 200,
+    "bom": 200,
+    "glb": 200,
+    "manifest": 200
+   },
+   "generation_mode": "live",
+   "image_model": "openai:gpt-image-1-mini",
+   "limitations": [
+    "Sensor size, resolution, and image quality claims",
+    "Lens focal length, aperture, and optical performance",
+    "Autofocus method and speed, and any subject tracking",
+    "In-body or lens-based stabilization performance",
+    "Weather sealing rating or ingress protection",
+    "Shutter type (mechanical/electronic) and durability cycles",
+    "EVF presence/specs or rear display type and resolution",
+    "Battery life, charging speed, or wireless connectivity features",
+    "Rear control layout and display not specified",
+    "No explicit sealing gaskets or environmental protections modeled",
+    "Single top dial; additional secondary controls omitted",
+    "Generic port door without specifying exact connectors or slot arrangement",
+    "Lens mechanical details (e.g., filter thread, aperture ring) not elaborated",
+    "Visual quality target NOT achieved: 6.8/10 against a target of 8.0/10 after 2 refinement round(s); best result kept, not a verified success"
+   ],
+   "provider_evidence": {
+    "calls": 16,
+    "calls_with_images": 11,
+    "images_sent": 64,
+    "kinds": [
+     "chat",
+     "image",
+     "vision"
+    ]
+   },
+   "renderer": "chromium",
+   "revision": {
+    "accepted": true,
+    "changed_bodies": {
+     "added": [],
+     "changed": [
+      "dial_left",
+      "dial_right"
+     ],
+     "removed": [],
+     "unchanged": [
+      "body_core",
+      "bottom_plate",
+      "hot_shoe",
+      "left_grip",
+      "lens_barrel",
+      "lens_glass",
+      "port_door",
+      "rear_screen",
+      "top_plate",
+      "viewfinder_bezel",
+      "viewfinder_glass"
+     ]
+    },
+    "events": [
+     "Revision 2: changed dial_left, dial_right; unchanged bodies keep their geometry",
+     "Revision 2 saved"
+    ],
+    "geometry_digest_after": "910c81108e9c6050e6eff3b99b9a8fe1f360f971efa94f124c21f84218dbb755",
+    "geometry_digest_before": "cfe5eeb3a42fd5664086a1f46cbad60a300630599b6cb0a5d4ab621b4958199b",
+    "instruction": "Move the dial to the left of the hot shoe and add a second smaller dial on the right",
+    "job_status": "complete",
+    "revision_after": 2,
+    "revision_before": 1,
+    "visual_after": 7.0
+   },
+   "seconds": 695.7,
+   "selected": "cand-2",
+   "spent_usd": 2.52,
+   "status": "needs_review",
+   "title": "Asymmetric object with recognisable surface details",
+   "visual_quality": {
+    "achieved": false,
+    "critical_issues": 0,
+    "judge": "openai:gpt-5+critic:gpt-4o",
+    "refinement_rounds": 2,
+    "score": 6.8,
+    "statement": "Visual quality target NOT achieved: 6.8/10 against a target of 8.0/10 after 2 refinement round(s); best result kept, not a verified success",
+    "target": 8.0
+   }
+  }
+ ],
+ "settings": {
+  "design_mode": "live",
+  "design_model": "gpt-5",
+  "image_model": "gpt-image-1-mini",
+  "image_provider": "openai",
+  "renderer": "chromium",
+  "review_rounds": 2,
+  "visual_target": 8.0
+ },
+ "total_spent_usd": 2.52
+}

@@ -1,0 +1,248 @@
+{
+ "issues": [
+  {
+   "body_id": "dome",
+   "observed": "The dome appears too conical instead of a flattened dome.",
+   "patch": null,
+   "proposed_change": "Adjust the dome shape to be flatter with smoother curves.",
+   "severity": "major",
+   "target": "Flattened dome with smoother curves.",
+   "view": "perspective"
+  },
+  {
+   "body_id": "crank_arm",
+   "observed": "Crank arm is too thick and angular.",
+   "patch": null,
+   "proposed_change": "Thin the crank arm and make it more refined and rounded.",
+   "severity": "major",
+   "target": "Thinner and more refined crank arm.",
+   "view": "left"
+  },
+  {
+   "body_id": "box_body",
+   "observed": "The box body appears slightly too tall.",
+   "patch": null,
+   "proposed_change": "Reduce the height of the box body slightly.",
+   "severity": "minor",
+   "target": "Proportionate height as per reference.",
+   "view": "front"
+  },
+  {
+   "body_id": "knob_wood",
+   "observed": "Knob color inconsistency, appears darker than reference.",
+   "patch": null,
+   "proposed_change": "Adjust the knob color to a lighter amber tone.",
+   "severity": "minor",
+   "target": "Lighter amber tone.",
+   "view": "right"
+  },
+  {
+   "body_id": null,
+   "observed": "Lid handle and hinge not present.",
+   "patch": null,
+   "proposed_change": "Add a lid handle and side hinge to the dome as in the reference.",
+   "severity": "major",
+   "target": "Lid with handle and hinge.",
+   "view": "perspective"
+  },
+  {
+   "body_id": "badge_plate",
+   "observed": "Front badge is missing.",
+   "patch": null,
+   "proposed_change": "Add a badge plate centered above the drawer.",
+   "severity": "major",
+   "target": "Prominent front badge.",
+   "view": "front"
+  },
+  {
+   "body_id": "top_plate",
+   "observed": "Top plate screws are not visible.",
+   "patch": null,
+   "proposed_change": "Ensure screws are visible around the dome flange.",
+   "severity": "minor",
+   "target": "Visible screws around dome flange.",
+   "view": "top"
+  },
+  {
+   "body_id": "drawer_front",
+   "observed": "Drawer pull knob is oversimplified.",
+   "patch": null,
+   "proposed_change": "Make drawer pull knob more detailed and consistent with reference.",
+   "severity": "minor",
+   "target": "Detailed drawer pull knob.",
+   "view": "front"
+  }
+ ],
+ "judge_model": "openai:gpt-5+critic:gpt-4o",
+ "metrics": {
+  "deterministic_overall": 7.84,
+  "deterministic_scores": {
+   "colour_and_surface": 10.0,
+   "pose_and_orientation": 8.0,
+   "proportions": 7.0,
+   "reference_consistency": 7.06,
+   "signature_features": 8.09,
+   "silhouette": 7.06
+  },
+  "features_named": {
+   "Exposed screws around the dome flange": true,
+   "Front pull-out drawer with round metal pull": true,
+   "Polished metal dome lid with central spindle": true,
+   "Side crank arm with spherical wooden knob": true,
+   "Small badge/logo on the front face": true,
+   "Square wooden box body with rounded edges": true
+  },
+  "measured_proportions": {
+   "height_length": 1.459,
+   "length_width": 1.156
+  },
+  "method": "deterministic matched-view silhouette, proportion, outline-detail and palette metrics; names and labels earn no credit",
+  "outline_detail_ratio": {
+   "back": 0.891,
+   "left": 0.592,
+   "perspective": 0.198,
+   "top": 0.414
+  },
+  "reference_silhouette_iou": {
+   "back": 0.634,
+   "left": 0.767,
+   "perspective": 0.681,
+   "top": 0.743
+  },
+  "silhouette_parts": [
+   {
+    "body_id": "box_body",
+    "protrudes": true,
+    "volume_share": 6.3802
+   },
+   {
+    "body_id": "top_plate",
+    "protrudes": true,
+    "volume_share": 1.0
+   },
+   {
+    "body_id": "dome_ring",
+    "protrudes": true,
+    "volume_share": 0.1402
+   },
+   {
+    "body_id": "dome",
+    "protrudes": true,
+    "volume_share": 0.8337
+   },
+   {
+    "body_id": "shaft_collar",
+    "protrudes": true,
+    "volume_share": 0.0198
+   },
+   {
+    "body_id": "spindle_shaft",
+    "protrudes": true,
+    "volume_share": 0.0098
+   },
+   {
+    "body_id": "crank_arm",
+    "protrudes": true,
+    "volume_share": 0.061
+   },
+   {
+    "body_id": "spindle_cap_nut",
+    "protrudes": true,
+    "volume_share": 0.01
+   },
+   {
+    "body_id": "knob_stem",
+    "protrudes": true,
+    "volume_share": 0.0033
+   },
+   {
+    "body_id": "knob_wood",
+    "protrudes": true,
+    "volume_share": 0.07
+   },
+   {
+    "body_id": "drawer_front",
+    "protrudes": true,
+    "volume_share": 0.1647
+   },
+   {
+    "body_id": "drawer_knob_stem",
+    "protrudes": true,
+    "volume_share": 0.0041
+   },
+   {
+    "body_id": "drawer_knob_cap",
+    "protrudes": true,
+    "volume_share": 0.0139
+   },
+   {
+    "body_id": "badge_plate",
+    "protrudes": true,
+    "volume_share": 0.009
+   },
+   {
+    "body_id": "ring_screw_n",
+    "protrudes": true,
+    "volume_share": 0.0003
+   },
+   {
+    "body_id": "ring_screw_s",
+    "protrudes": true,
+    "volume_share": 0.0003
+   },
+   {
+    "body_id": "ring_screw_e",
+    "protrudes": true,
+    "volume_share": 0.0003
+   },
+   {
+    "body_id": "ring_screw_w",
+    "protrudes": true,
+    "volume_share": 0.0003
+   },
+   {
+    "body_id": "wood_screw_ne",
+    "protrudes": true,
+    "volume_share": 0.0003
+   },
+   {
+    "body_id": "wood_screw_nw",
+    "protrudes": true,
+    "volume_share": 0.0003
+   },
+   {
+    "body_id": "wood_screw_se",
+    "protrudes": true,
+    "volume_share": 0.0003
+   },
+   {
+    "body_id": "wood_screw_sw",
+    "protrudes": true,
+    "volume_share": 0.0003
+   },
+   {
+    "body_id": "bean_lid",
+    "protrudes": true,
+    "volume_share": 0.0039
+   },
+   {
+    "body_id": "bean_tab",
+    "protrudes": true,
+    "volume_share": 0.0005
+   }
+  ],
+  "target_proportions": {}
+ },
+ "overall": 6.8,
+ "render_digest": "d5043e14e2bc043872a0eb7fb827da57143a9ebc69cc87baaa49a954dd3543b6",
+ "scores": {
+  "colour_and_surface": 6.0,
+  "pose_and_orientation": 9.0,
+  "proportions": 7.0,
+  "reference_consistency": 5.0,
+  "signature_features": 6.0,
+  "silhouette": 8.0
+ },
+ "subjective": true,
+ "summary": "The render resembles the reference with key features captured but needs refinements in details and proportions."
+}

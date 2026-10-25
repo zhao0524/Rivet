@@ -1,3 +1,5 @@
+import rawMechanicalArm from './rivet/fixtures/demo-mechanical-arm.json';
+import rawRobotDog from './rivet/fixtures/demo-robot-dog.json';
 import rawConceptPlan from './rivet/fixtures/concept-quadcopter-v1.json';
 import rawSourcedPlan from './rivet/fixtures/sourced-rover-obstacle-v1.json';
 import rawSourcedCatalog from './rivet/fixtures/sourced-seed-components.json';
@@ -41,6 +43,49 @@ export function getSourcedCatalog(): CatalogComponent[] {
 /** Saved concept model (appearance only) served for concept requests in fixture mode. */
 export function getConceptExamplePlan(): BuildPlan {
   return parseBuildPlan(structuredClone(rawConceptPlan));
+}
+
+function demoPlan(raw: unknown): BuildPlan {
+  return parseBuildPlan(structuredClone(raw));
+}
+
+/** Hand-built robot dog served when that demo photo is uploaded. */
+export function getRobotDogPlan(): BuildPlan {
+  return demoPlan(rawRobotDog);
+}
+
+/**
+ * The same dog, with its parts folded into six steps so the landing scroll can bring them in
+ * one group at a time: body, motors, legs, sensors, power, then markings.
+ */
+export function getRobotDogScrollPlan(): BuildPlan {
+  const plan = getRobotDogPlan();
+  const groups: readonly (readonly string[])[] = [
+    ['body'],
+    ['motor'],
+    ['leg'],
+    ['sensor', 'camera'],
+    ['battery', 'light'],
+    ['decal', 'board', 'wire'],
+  ];
+  const buckets = groups.map(() => [] as string[]);
+  for (const component of plan.components) {
+    const index = groups.findIndex((roles) => roles.includes(component.role));
+    buckets[index === -1 ? buckets.length - 1 : index]!.push(component.instance_id);
+  }
+  plan.assembly_steps = buckets.map((instance_ids, index) => ({
+    step: index + 1,
+    title: plan.assembly_steps[index]?.title ?? `Step ${index + 1}`,
+    instance_ids,
+    instructions: 'Visual concept only: shows where these parts sit, not how to fasten them.',
+    safety_notes: [],
+  }));
+  return plan;
+}
+
+/** Hand-built desktop arm served when that demo photo is uploaded. */
+export function getMechanicalArmPlan(): BuildPlan {
+  return demoPlan(rawMechanicalArm);
 }
 
 export function getSourcedRoverPlan(): BuildPlan {

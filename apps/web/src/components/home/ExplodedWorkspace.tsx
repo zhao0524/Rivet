@@ -1,21 +1,21 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { getSourcedCatalog, getSourcedRoverPlan } from '../../lib/fixtures';
+import { getMechanicalArmPlan } from '../../lib/fixtures';
 import { useThemeMode } from '../system/ThemeToggle';
 import { RoverScene } from '../three/RoverScene';
 
 /**
- * "See every part" visual: the saved example rover in a small 3D workspace. It turns slowly on its
- * own and can be dragged to orbit (zoom stays off, so it never fights the page scroll), and every few
- * seconds it pulls apart into the exploded view and back, with the view switch following along.
- * The canvas only mounts and runs while the card is on screen.
+ * "See every part" visual: the hand-built mechanical arm (the model an uploaded arm photo opens)
+ * in a small 3D workspace. It turns slowly on its own and can be dragged to orbit (zoom stays off,
+ * so it never fights the page scroll), and every few seconds it pulls apart into the exploded view
+ * and back, with the view switch following along. The canvas only mounts and runs while the card is on screen.
  */
 const HOLD_MS = 2600;
 
 export function ExplodedWorkspace() {
-  const plan = useMemo(() => getSourcedRoverPlan(), []);
-  const catalog = useMemo(() => getSourcedCatalog(), []);
+  const plan = useMemo(() => getMechanicalArmPlan(), []);
+  const catalog = useMemo(() => plan.concept_catalog ?? [], [plan]);
   const themeMode = useThemeMode();
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);

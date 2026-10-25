@@ -19,7 +19,7 @@ export function reviewBlockers(plan: BuildPlan, catalog: readonly CatalogCompone
   const known = new Set(catalog.map((c) => c.catalog_id));
   const list: Blocker[] = blockers(plan).map((finding) => ({
     key: `${finding.rule_id}:${finding.affected_instance_ids.join(',')}`,
-    kind: isSafety(finding) ? 'safety' : NEEDS_PART.test(finding.rule_id) ? 'needs-part' : 'wont-work',
+    kind: isSafety(finding) ? 'safety' : NEEDS_PART.test(finding.rule_id) ? 'needs-part' : finding.result === 'UNKNOWN' ? 'unverified' : 'wont-work',
     finding,
   }));
   for (const c of plan.components) {
@@ -35,7 +35,7 @@ export function reviewBlockers(plan: BuildPlan, catalog: readonly CatalogCompone
     list.push({ key: `${finding.rule_id}:${c.instance_id}`, kind: 'needs-part', finding });
   }
   // Safety first, then anything that needs a part, then the rest.
-  const rank: Record<Blocker['kind'], number> = { safety: 0, 'needs-part': 1, 'wont-work': 2 };
+  const rank: Record<Blocker['kind'], number> = { safety: 0, 'needs-part': 1, 'wont-work': 2, unverified: 3 };
   return list.sort((a, b) => rank[a.kind] - rank[b.kind]);
 }
 
@@ -129,7 +129,7 @@ export function ReviewStep() {
       title="Review"
       purpose="First, sort out anything that would stop this robot from working or make it unsafe. Smaller warnings wait for you in Parts."
       primary={{
-        label: 'Looks good, continue to Parts',
+        label: n > 0 ? 'Review parts and open checks' : 'Continue to Parts',
         onClick: next,
         disabled: !ready || Boolean(pending),
         waitingFor,
@@ -138,6 +138,9 @@ export function ReviewStep() {
       overflow={overflow}
       testId="review-step"
     >
+      {ready && store.dataSource.mode === 'fixture' ? (
+        <p className="ui-notice" data-testid="review-saved-example">Saved example — explore the parts, wiring and assembly. Changes require a new live build; open checks remain visible.</p>
+      ) : null}
       {error ? <BuildError message={error} /> : null}
       {ready && trust?.isSaved ? (
         <p className="ui-small ui-muted" style={{ margin: '0 0 12px' }} data-testid="review-saved-note">
@@ -177,6 +180,7 @@ export function ReviewStep() {
                   attempt={attempts[b.key] ?? null}
                   busy={busyKey !== null && busyKey !== b.key}
                   onFix={(bl) => void fix(bl)}
+                  canFix={store.dataSource.mode !== 'fixture'}
                   partsHref={`${projectPath(project.id, 'parts')}${
                     b.finding.affected_instance_ids[0] ? `?part=${encodeURIComponent(focusFor(b, plan))}` : ''
                   }`}

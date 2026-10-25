@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import type { BuildPlan } from '../../../lib/rivet/types';
 import { SIM_SCENARIOS, SimView, extractSimPlan } from '../../sim';
+import { Icon } from '../../system/Icon';
 import { Modal } from '../../system/Modal';
 
 export interface SimulationModalProps {
@@ -87,7 +88,14 @@ export function SimulationModal({ plan, open, onClose }: SimulationModalProps) {
         ) : run > 0 ? (
           <SimView key={`${scenarioId}-${run}`} plan={plan} initialScenarioId={scenarioId} autoPlay height={340} />
         ) : (
-          <div className="viewport viewport--sm" aria-hidden="true" />
+          <div className="viewport viewport--sm p1-sim__idle" data-testid="sim-idle">
+            <span className="p1-sim__idle-icon" aria-hidden="true">
+              <Icon name="play" size={18} />
+            </span>
+            <p>
+              Press <strong>Run</strong> to drive the robot through the <strong>{scenario.label}</strong> course.
+            </p>
+          </div>
         )}
 
         {/* Once running, SimView lists the same limitations under the stage. */}

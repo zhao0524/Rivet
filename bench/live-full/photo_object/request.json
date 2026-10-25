@@ -1,0 +1,14 @@
+{
+ "allow_cached": false,
+ "candidate_count": 3,
+ "constraints": {},
+ "generation_budget_usd": 9.0,
+ "input": {
+  "image_asset_id": "asset-3f3d885b9750e349839aa5f093a2b15b3d0ff40803045cb71082af83c03315a8",
+  "user_text": ""
+ },
+ "mode": "concept_only",
+ "quality": "full",
+ "review_rounds": 2,
+ "visual_target": 8.0
+}

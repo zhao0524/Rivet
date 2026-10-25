@@ -4,7 +4,7 @@ import json
 import re
 from pathlib import Path
 
-from rivet_api.concept.model import CONCEPT_SYSTEM_PROMPT, ConceptModel, clean_concept, floating_parts
+from rivet_api.concept.model import CONCEPT_SYSTEM_PROMPT, MAX_PARTS, ConceptModel, clean_concept, floating_parts
 from rivet_api.concept.plan import CONCEPT_PREFIX, build_concept_plan, is_concept_plan
 from rivet_api.errors import ApiError
 from rivet_api.models.requests import GenerateRequest
@@ -127,10 +127,12 @@ def concept_from_backend(
         else:
             message += "\nNo image is attached. Build the object the text describes."
     best: ConceptModel | None = None
+    # An edit keeps a hand-built model that is larger than a fresh reply may be.
+    max_parts = max(MAX_PARTS, len(current.parts)) if current is not None else MAX_PARTS
     for attempt in (1, 2):
         reply = backend.complete_json(CONCEPT_SYSTEM_PROMPT, message, image)
         try:
-            concept = clean_concept(ConceptModel.model_validate(json.loads(_FENCE_RE.sub("", reply.strip()).strip())))
+            concept = clean_concept(ConceptModel.model_validate(json.loads(_FENCE_RE.sub("", reply.strip()).strip())), max_parts)
         except ValueError as exc:  # JSONDecodeError and ValidationError
             if attempt == 2:
                 break

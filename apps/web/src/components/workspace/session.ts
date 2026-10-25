@@ -14,6 +14,7 @@ import {
   type ProjectRecord,
 } from '../../lib/flow/projects';
 import { takePendingImage } from '../../lib/flow/pending-image';
+import { RivetError } from '../../lib/rivet/errors';
 import { isConceptPlan, summarizeBom } from '../../lib/rivet/honesty';
 import type { BuildPlan, CatalogComponent, EditOperation, InterpretResponse } from '../../lib/rivet/types';
 import type { useFlowStore } from '../flow/FlowProvider';
@@ -43,6 +44,7 @@ const reading = new Set<string>();
 let jobOwner: { key: string; stale: unknown } | null = null;
 
 const QUESTION_ORDER: readonly ChatQuestion[] = ['use', 'budget', 'size'];
+const EXPIRED_INTENT = new Set(['INTENT_NOT_FOUND', 'INTENT_INPUT_MISMATCH']);
 
 let seq = 0;
 function entryId(kind: string): string {
@@ -151,6 +153,8 @@ export interface WorkspaceSession {
   stageText: string;
   errorMessage: string | null;
   editPending: boolean;
+  /** The saved reading was rejected, so Try again reads the prompt again instead of reusing it. */
+  reread: boolean;
   answer: (question: ChatQuestion, value: number | string | null) => void;
   retry: () => void;
   retryReading: () => void;
@@ -167,6 +171,7 @@ export function useWorkspaceSession(): WorkspaceSession {
   const own = jobOwner?.key === runKey && store.job !== null && store.job !== jobOwner.stale;
   const job = own ? store.job : null;
   const [startError, setStartError] = useState<string | null>(null);
+  const [reread, setReread] = useState(false);
   const [interpreting, setInterpreting] = useState(false);
   const fixture = store.dataSource.mode === 'fixture';
   const jobRef = useRef(store.job);
@@ -186,9 +191,23 @@ export function useWorkspaceSession(): WorkspaceSession {
       jobOwner = { key, stale: jobRef.current };
       try {
         await store.startGeneration(generateRequest(fresh));
+        setReread(false);
       } catch (err) {
         startedRuns.delete(key);
-        setStartError(err instanceof Error && err.message ? err.message : 'Rivet could not start.');
+        const message = err instanceof Error && err.message ? err.message : 'Rivet could not start.';
+        if (err instanceof RivetError && EXPIRED_INTENT.has(err.code)) {
+          setReread(true);
+          mutate(id, (c) => {
+            const gen = latestGeneration(c);
+            return {
+              intentId: null,
+              ...(gen ? { chat: patchEntry(c, gen.id, { failed: message }) } : {}),
+            };
+          });
+          return;
+        }
+        setReread(false);
+        setStartError(message);
       }
     },
     [id, store],
@@ -391,12 +410,22 @@ export function useWorkspaceSession(): WorkspaceSession {
   const retry = useCallback(() => {
     startedRuns.delete(runKey);
     setStartError(null);
+    if (reread) {
+      setReread(false);
+      mutate(id, (c) => ({
+        intentId: null,
+        reading: null,
+        phase: 'clarify',
+        chat: { ...c, log: c.log.filter((e) => !(e.kind === 'generation' && e.failed)) },
+      }));
+      return;
+    }
     // Clearing `failed` puts the run back in progress; the effect above starts it again.
     mutate(id, (c) => {
       const gen = latestGeneration(c);
       return gen ? { phase: 'generating', chat: patchEntry(c, gen.id, { failed: undefined }) } : null;
     });
-  }, [id, runKey]);
+  }, [id, runKey, reread]);
 
   const retryReading = useCallback(() => {
     mutate(id, (c) => ({ chat: { ...c, log: c.log.filter((e) => e.kind !== 'reading-error') } }));
@@ -478,6 +507,7 @@ export function useWorkspaceSession(): WorkspaceSession {
     stageText,
     errorMessage: gen?.failed ?? failure ?? null,
     editPending: store.editPending,
+    reread,
     answer,
     retry,
     retryReading,

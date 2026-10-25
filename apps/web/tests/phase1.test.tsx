@@ -82,7 +82,15 @@ beforeEach(() => {
 afterEach(() => cleanup());
 
 describe('Review', () => {
-  it('shows only blocking checks on the sourced rover, each with one fix button', async () => {
+  it('shows recovery actions when a saved project refers to an unavailable build', async () => {
+    seedProject({ exampleId: null, buildId: 'missing-build' });
+    render(<Shell><ReviewStep /></Shell>);
+    const error = await screen.findByTestId('project-load-error');
+    expect(within(error).getByRole('button', { name: 'Try again' })).toBeDefined();
+    expect(within(error).getByRole('link', { name: 'Back to projects' }).getAttribute('href')).toBe('/projects');
+    expect(screen.queryByTestId('review-primary')).toBeNull();
+  });
+  it('keeps unknown fit checks visible and offers inspection for the saved example', async () => {
     seedProject();
     render(
       <Shell>
@@ -96,8 +104,9 @@ describe('Review', () => {
     await waitFor(() => expect(screen.getAllByTestId('review-blocker')).toHaveLength(expected.length));
     const cards = screen.getAllByTestId('review-blocker');
     for (const card of cards) {
-      expect(within(card).getAllByTestId('review-fix')).toHaveLength(1);
-      expect(within(card).getByText("Won't work")).toBeDefined();
+      expect(within(card).queryByTestId('review-fix')).toBeNull();
+      expect(within(card).getByTestId('review-inspect')).toBeDefined();
+      expect(within(card).getByText('Needs verification')).toBeDefined();
     }
     // Advisory warnings (e.g. motor brown-out) never appear on Review.
     expect(screen.queryByText(/brown-out/)).toBeNull();
@@ -141,7 +150,7 @@ describe('Review', () => {
     expect(list.some((b) => b.kind === 'needs-part' && b.finding.rule_id === 'parts.missing_catalog_entry')).toBe(true);
   });
 
-  it('keeps a failed fix on screen with the engine reason and a manual swap link', async () => {
+  it('sends the saved example to its real part details instead of offering a doomed edit', async () => {
     seedProject();
     render(
       <Shell>
@@ -150,18 +159,11 @@ describe('Review', () => {
     );
     await waitFor(() => expect(screen.getAllByTestId('review-blocker').length).toBeGreaterThan(0));
     const [first] = screen.getAllByTestId('review-blocker');
-    fireEvent.click(within(first!).getByTestId('review-fix'));
-    await waitFor(() => expect(within(first!).getByTestId('review-fix-failed')).toBeDefined());
-    expect(within(first!).getByTestId('review-fix-failed').textContent).toContain(
-      "Changes need Rivet's live engine, which isn't connected right now.",
-    );
-    // The engine's own reason stays on screen as the detail line.
-    expect(within(first!).getByText(/edits cannot be validated in fixture mode/)).toBeDefined();
-    const link = within(first!).getByTestId('review-swap-manually');
+    const link = within(first!).getByTestId('review-inspect');
     expect(link.getAttribute('href')).toBe(`/p/${PROJECT_ID}/parts?part=motor-left-1`);
     // The card is still there with its one button.
     expect(screen.getAllByTestId('review-blocker').length).toBe(2);
-    expect(within(first!).getByTestId('review-fix').textContent).toBe('Try the fix again');
+    expect(within(first!).queryByTestId('review-fix')).toBeNull();
   });
 
   it('shows a concept model as a 3D view with what it is, not as an unfixable blocker', async () => {
@@ -219,8 +221,14 @@ describe('Parts', () => {
     expect(screen.getByTestId('parts-group-drive')).toBeDefined();
     expect(screen.getByTestId('parts-group-control')).toBeDefined();
     // Hidden accessories (jumper wires, batteries) are not placed parts, so they do not get rows.
-    const visible = partRows(getSourcedRoverPlan(), getSourcedCatalog());
+    const plan = getSourcedRoverPlan();
+    const visible = partRows(plan, getSourcedCatalog());
     expect(screen.getAllByTestId(/^parts-row-/).length).toBe(visible.length);
+    // The count says where those accessories went, so Parts, Buy and Done do not look like they disagree.
+    const hidden = plan.components.length - visible.length;
+    expect(hidden).toBeGreaterThan(0);
+    expect(screen.getByTestId('parts-hidden-note').textContent).toContain(`plus ${hidden} small items`);
+    expect(screen.getByTestId('parts-hidden-note').textContent).toContain('listed in Buy');
     // Every sourced part is a procedural shape, so every row says so.
     expect(screen.getAllByText(/Simple 3D shape/).length).toBe(visible.length);
     // Plain group names, and the source-tag legend.
@@ -301,7 +309,10 @@ describe('Wiring & code', () => {
     const modal = await screen.findByTestId('sim-modal');
     expect(within(modal).getByTestId('sim-approximate')).toBeDefined();
     expect(within(modal).getByTestId('sim-limits')).toBeDefined();
+    // Before the first Run the stage says what it is waiting for instead of sitting empty.
+    expect(within(modal).getByTestId('sim-idle').textContent).toMatch(/Press Run/);
     fireEvent.click(within(modal).getByTestId('sim-run'));
     expect(await within(modal).findByTestId('sim-view-container')).toBeDefined();
+    expect(within(modal).queryByTestId('sim-idle')).toBeNull();
   });
 });

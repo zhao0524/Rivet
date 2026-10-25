@@ -1,0 +1,22 @@
+## Latest page snapshot
+uid=93_0 RootWebArea "Rivet: hardware designed and built with AI" url="http://localhost:3000/new?draft=p_4595b42d68"
+  uid=93_161 alert atomic live="assertive" relevant="additions text"
+  uid=95_0 banner
+    uid=95_1 link "Rivet home" url="http://localhost:3000/"
+    uid=95_2 link "Projects" url="http://localhost:3000/projects"
+    uid=95_4 button "Switch to light theme"
+  uid=95_5 main
+    uid=95_6 heading "What do you want to build?" level="1"
+    uid=95_7 "Describe it in a sentence or two. A picture of a similar robot helps too."
+    uid=95_8 form
+      uid=95_9 "Describe what you want to build"
+      uid=95_10 textbox "Describe what you want to build" focusable focused multiline value="A desk rover that avoids obstacles"
+      uid=95_11 button "Attach a picture" value="No file chosen"
+      uid=95_12 button "Attach a picture"
+      uid=95_13 button "Build it"
+    uid=95_14 button "Build a small rover that avoids obstacles"
+    uid=95_15 button "A two-wheel ESP32 robot that stops 40 cm from a wall"
+    uid=95_16 button "A cheap indoor rover with a distance sensor on the front"
+    uid=95_17 button "An obstacle-avoiding robot I can build on my desk this weekend"
+    uid=95_18 "Want fully generated geometry with three design candidates? "
+    uid=95_19 link "Generate a 3D design" url="http://localhost:3000/design"

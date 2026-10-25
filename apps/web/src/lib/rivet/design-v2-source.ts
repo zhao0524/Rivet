@@ -92,15 +92,27 @@ export function latestPreview(events: DesignEvent[], candidateId: string | null)
     .sort((a, b) => (b.snapshot!.preview_revision - a.snapshot!.preview_revision) || b.event_id - a.event_id)[0];
 }
 export class DesignSource {
+  private sessionRequest: Promise<void> | null = null;
   async request(path: string, body?: unknown, signal?: AbortSignal): Promise<unknown> {
     const response = await fetch(`/api/v2${path}`, { method: body === undefined ? 'GET' : 'POST', credentials: 'include',
       headers: body instanceof FormData ? undefined : { 'Content-Type': 'application/json' },
       body: body === undefined ? undefined : body instanceof FormData ? body : JSON.stringify(body), signal });
     const value: unknown = await response.json();
-    if (!response.ok) { const error = object(value, 'error').error as { message?: string; code?: string } | undefined; throw new Error(`${error?.code ?? response.status}: ${error?.message ?? 'Request failed'}`); }
+    if (!response.ok) {
+      if (path === '/session' && response.status === 404) throw new Error('3D generation is unavailable on this server. Try again later or explore a saved example.');
+      const error = object(value, 'error').error as { message?: string; code?: string } | undefined;
+      throw new Error(`${error?.code ?? response.status}: ${error?.message ?? 'Request failed'}`);
+    }
     return value;
   }
-  async session() { await this.request('/session'); }
+  async session() {
+    // Concurrent callers must share the cookie handshake; competing sessions orphan jobs.
+    this.sessionRequest ??= this.request('/session').then(() => undefined).catch((error) => {
+      this.sessionRequest = null;
+      throw error;
+    });
+    await this.sessionRequest;
+  }
   async upload(file: File) { const data = new FormData(); data.append('file', file); const result = object(await this.request('/assets/images', data), 'upload'); string(result.asset_id, 'asset ID'); designAssetUrl(result.preview_url); return result as { asset_id: string; preview_url: string; sha256: string }; }
   async generate(request: DesignRequest) { return job(await this.request('/generations', request)); }
   async status(id: string) { return job(await this.request(`/generations/${encodeURIComponent(id)}`)); }
