@@ -34,7 +34,7 @@ import {
   getCombinedFixtureCatalog,
   getSyntheticRoverPlan,
 } from './fixtures';
-import type { GenerateRequest as IntakeGenerateRequest } from '../components/studio/intake/types';
+import type { GenerateRequest as IntakeGenerateRequest } from './generate-request';
 
 export type StudioActionMode = 'design' | 'inspect' | 'wiring' | 'assemble' | 'simulate';
 
@@ -495,6 +495,7 @@ export function useStudioPlanStore(options: UseStudioPlanStoreOptions = {}) {
         requirements: {
           max_budget: normalizedBudget,
           currency: request.requirements.currency,
+          ...(request.requirements.max_length_mm ? { max_length_mm: request.requirements.max_length_mm } : {}),
         },
       };
 

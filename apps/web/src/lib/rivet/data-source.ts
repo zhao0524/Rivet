@@ -17,8 +17,6 @@ import type {
   UploadedImageAsset,
 } from "./types";
 import type { RivetError } from "./errors";
-import type { OfferListParams, OfferSearchRequest, OfferSet } from "../offers/types";
-import type { Resolution, ResolveJob, ResolveRequest, ResolveStartResponse } from "../resolve/types";
 
 export interface RequestOptions {
   signal?: AbortSignal;
@@ -60,21 +58,4 @@ export interface RivetDataSource {
   getEstelleStatus?(options?: RequestOptions): Promise<EstelleStatusResponse>;
   groundSymbol?(request: EstelleGroundRequest, options?: RequestOptions): Promise<EstelleGroundResponse>;
   getExportUrl?(buildId: string, kind: ExportArtifactKind, revision?: number): string | null;
-  /**
-   * Offers (contracts/api.md "Offers"). `GET /api/parts/{catalog_id}/offers`: where a
-   * catalog part can be bought, sorted and filtered server-side. A `demo.*` part rejects
-   * with a 422 `EXPORT_REFUSED_SYNTHETIC` RivetError (kind `unsupported`); nothing is
-   * searched for synthetic placeholders. Results are validated with `parseOfferSet`.
-   */
-  getPartOffers?(catalogId: string, params?: OfferListParams, options?: RequestOptions): Promise<OfferSet>;
-  /** `POST /api/offers/search`; resolves after any 202 job has finished and the set was fetched. */
-  searchOffers?(request: OfferSearchRequest, options?: RequestOptions): Promise<OfferSet>;
-  /** `GET /api/offers/{offer_set_id}`. */
-  getOfferSet?(offerSetId: string, options?: RequestOptions): Promise<OfferSet>;
-  /** `POST /api/resolve`: identify a product and trace its parts. Poll the job for `resolution_id`. */
-  resolveProduct?(request: ResolveRequest, options?: RequestOptions): Promise<ResolveStartResponse>;
-  /** `GET /api/jobs/{id}` for a resolve job (its stages are not the generate pipeline's). */
-  getResolveJob?(jobId: string, options?: RequestOptions): Promise<ResolveJob>;
-  /** `GET /api/resolutions/{id}`, validated before it is returned. */
-  getResolution?(resolutionId: string, options?: RequestOptions): Promise<Resolution>;
 }

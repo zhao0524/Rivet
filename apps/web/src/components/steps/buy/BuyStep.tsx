@@ -1,0 +1,287 @@
+'use client';
+
+import { useMemo, useState } from 'react';
+import '../../../styles/phase2.css';
+import { buyLines, formatCheckedAt, formatMoney, type BuyLine } from '../../../lib/flow/derive';
+import { buildBomCsvClientSide } from '../../../lib/plan-store';
+import { useProjectContext } from '../../flow/ProjectShell';
+import { StepLayout } from '../../flow/StepLayout';
+import { Icon } from '../../system/Icon';
+import type { OverflowItem } from '../../system/OverflowMenu';
+import { CartModal } from './CartModal';
+import { NO_VENDOR, buyTotals, groupByVendor, isOwned, regionForCurrency, stockLabel, unknownPriceNote, type VendorGroup } from './buy-model';
+import { downloadTextFile } from './download';
+
+const PURPOSE = 'Get every part in one pass: confirm the currency, tick what you already own, then open the vendor links.';
+
+/** Step 4 Buy: total, vendor groups, out-of-stock parts, and the cart of verified links. */
+export function BuyStep() {
+  const { project, update, build, goTo, openIterate } = useProjectContext();
+  const { plan, catalog } = build.store;
+  const [cartOpen, setCartOpen] = useState(false);
+
+  const lines = useMemo(() => (build.ready ? buyLines(plan, catalog) : []), [build.ready, plan, catalog]);
+  const owned = project.ownedCatalogIds;
+  const currency = plan.bom.currency || 'USD';
+  const totals = useMemo(() => buyTotals(lines, owned), [lines, owned]);
+  const groups = useMemo(() => groupByVendor(lines, owned), [lines, owned]);
+  const fabricated = lines.filter((l) => l.fabricated);
+  const outOfStock = lines.filter((l) => l.inStock === 'out_of_stock' && !isOwned(l, owned));
+  const everythingOwned = build.ready && totals.toBuy === 0;
+
+  function toggleOwned(catalogId: string, next: boolean) {
+    const set = new Set(owned);
+    if (next) set.add(catalogId);
+    else set.delete(catalogId);
+    update({ ownedCatalogIds: Array.from(set) });
+  }
+
+  const overflow: OverflowItem[] = [
+    {
+      id: 'csv',
+      label: 'Export CSV',
+      disabled: !build.ready,
+      testId: 'buy-export-csv',
+      onSelect: () => downloadTextFile(`${plan.build_id}-bom.csv`, buildBomCsvClientSide(plan), 'text/csv'),
+    },
+    {
+      id: 'vendor',
+      label: (
+        <span>
+          Choose vendor per line
+          <br />
+          <span className="ui-small ui-subtle">Each part has one known listing right now</span>
+        </span>
+      ),
+      disabled: true,
+      onSelect: () => undefined,
+    },
+    { id: 'iterate', label: 'Change something', onSelect: openIterate, testId: 'buy-iterate' },
+  ];
+
+  if (!build.ready) {
+    return (
+      <StepLayout
+        title="Buy"
+        purpose={PURPOSE}
+        primary={{ label: 'Open cart', onClick: () => undefined, disabled: true, waitingFor: build.error ? undefined : 'Loading the parts list', testId: 'buy-primary' }}
+        overflow={overflow}
+        testId="buy-step"
+      >
+        {build.error ? (
+          <p className="ui-notice ui-notice--danger" role="alert" data-testid="buy-error">
+            <Icon name="alert" aria-hidden="true" /> {build.error}
+          </p>
+        ) : (
+          <div className="p2-grid" aria-busy="true" aria-label="Loading the parts list">
+            <div className="p2-skeleton-lines">
+              <div className="ui-skeleton" style={{ height: 56 }} />
+              <div className="ui-skeleton" style={{ height: 56 }} />
+              <div className="ui-skeleton" style={{ height: 56 }} />
+            </div>
+            <div className="p2-skeleton-lines">
+              <div className="ui-skeleton" style={{ height: 120 }} />
+              <div className="ui-skeleton" style={{ height: 88 }} />
+            </div>
+          </div>
+        )}
+      </StepLayout>
+    );
+  }
+
+  const region = regionForCurrency(currency);
+  const unknownNote = unknownPriceNote(totals.unknownPriceCount);
+
+  return (
+    <StepLayout
+      title="Buy"
+      purpose={PURPOSE}
+      primary={
+        everythingOwned
+          ? { label: 'Start building', onClick: () => goTo('build'), testId: 'buy-primary' }
+          : { label: 'Open cart', onClick: () => setCartOpen(true), testId: 'buy-primary' }
+      }
+      overflow={overflow}
+      testId="buy-step"
+    >
+      <div className="p2-grid">
+        <div className="p2-stack">
+          <ul className="list" data-testid="buy-vendors">
+            {groups.map((group) => (
+              <VendorRow key={group.vendor} group={group} currency={currency} owned={owned} onToggleOwned={toggleOwned} />
+            ))}
+          </ul>
+
+          {outOfStock.length > 0 ? (
+            <section className="buy-oos" aria-labelledby="buy-oos-title" data-testid="buy-out-of-stock">
+              <h2 id="buy-oos-title" className="ui-h3">
+                Out of stock right now
+              </h2>
+              {outOfStock.map((line) => (
+                <article key={line.catalogId} className="buy-oos__card">
+                  <div className="buy-oos__head">
+                    <Icon name="alert" aria-hidden="true" style={{ color: 'var(--ui-warn)', flex: 'none', marginTop: 2 }} />
+                    <div className="list__main">
+                      <span className="list__title">{line.name}</span>
+                      <span className="list__meta">
+                        {line.vendor} · {formatCheckedAt(line.checkedAt)}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="p2-note">No in-stock alternative found yet. It doesn&apos;t block the build: buy the rest now and check this listing again later.</p>
+                </article>
+              ))}
+            </section>
+          ) : null}
+
+          {fabricated.length > 0 ? (
+            <section className="ui-island" aria-labelledby="buy-fab-title" data-testid="buy-fabricated">
+              <h2 id="buy-fab-title" className="ui-h3">
+                Fabricated parts
+              </h2>
+              <p className="p2-note">These are printed, not bought. Print files come with the build export.</p>
+              <ul className="build__parts" style={{ marginTop: 10 }}>
+                {fabricated.map((line) => (
+                  <li key={line.catalogId} className="build__part">
+                    <Icon name="cube" aria-hidden="true" />
+                    <span className="build__part-name">{line.name}</span>
+                    <span className="ui-small ui-muted">×{line.quantity} · print file</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+        </div>
+
+        <aside className="p2-grid__side">
+          <section className="ui-island" aria-labelledby="buy-total-title" data-testid="buy-total">
+            <h2 id="buy-total-title" className="ui-eyebrow">
+              Total to buy
+            </h2>
+            <p className="p2-amount" style={{ margin: '6px 0 0' }} aria-live="polite" data-testid="buy-total-amount">
+              {everythingOwned ? formatMoney(0, currency) : formatMoney(totals.total, currency)}
+            </p>
+            <p className="p2-note" aria-live="polite">
+              {everythingOwned
+                ? 'You own everything on the list. Nothing to buy.'
+                : `${totals.toBuy} ${totals.toBuy === 1 ? 'part' : 'parts'} to buy${totals.owned > 0 ? `, ${totals.owned} owned` : ''}.`}
+              {unknownNote ? (
+                <>
+                  {' '}
+                  <span data-testid="buy-unknown-prices">{unknownNote}, so the real total is higher.</span>
+                </>
+              ) : null}
+            </p>
+          </section>
+
+          <section className="ui-island" aria-labelledby="buy-region-title" data-testid="buy-region">
+            <div className="p2-kv">
+              <h2 id="buy-region-title" className="ui-eyebrow">
+                Region and currency
+              </h2>
+              <span className="ui-badge ui-badge--ok">
+                <Icon name="check" size={12} aria-hidden="true" /> Confirmed
+              </span>
+            </div>
+            <p style={{ margin: '6px 0 0', fontWeight: 500 }}>{region ? `${region} · ${currency}` : currency}</p>
+            <p className="p2-note">Prices were quoted in {currency} by the vendors listed. Changing region needs a live re-quote, which isn&apos;t available offline.</p>
+          </section>
+        </aside>
+      </div>
+
+      <CartModal open={cartOpen} onClose={() => setCartOpen(false)} lines={lines} ownedIds={owned} currency={currency} onContinue={() => goTo('build')} />
+    </StepLayout>
+  );
+}
+
+function VendorRow({
+  group,
+  currency,
+  owned,
+  onToggleOwned,
+}: {
+  group: VendorGroup;
+  currency: string;
+  owned: readonly string[];
+  onToggleOwned: (catalogId: string, next: boolean) => void;
+}) {
+  const [open, setOpen] = useState(group.vendor === NO_VENDOR);
+  const panelId = `buy-vendor-${group.vendor.replace(/\s+/g, '-').toLowerCase()}`;
+  const noVendor = group.vendor === NO_VENDOR;
+  return (
+    <li data-testid={`buy-vendor-${group.vendor}`}>
+      <button type="button" className="buy-vendor__row" aria-expanded={open} aria-controls={panelId} onClick={() => setOpen((o) => !o)}>
+        <Icon name="arrowRight" className="buy-vendor__caret" aria-hidden="true" />
+        <span className="list__main">
+          <span className="list__title">{group.vendor}</span>
+          <span className="list__meta">
+            {group.lines.length} {group.lines.length === 1 ? 'item' : 'items'}
+            {noVendor ? ' · no product page to link' : ''}
+            {group.allOwned ? ' · all owned' : ''}
+          </span>
+        </span>
+        <span className="buy-vendor__sub">
+          {group.unknownPriceCount >= group.lines.length ? (
+            <span className="ui-muted">Price unknown</span>
+          ) : (
+            <>
+              {formatMoney(group.subtotal, currency)}
+              {group.unknownPriceCount > 0 ? <span className="ui-small ui-muted"> + {group.unknownPriceCount} unknown</span> : null}
+            </>
+          )}
+        </span>
+      </button>
+      {open ? (
+        <ul id={panelId} className="buy-lines">
+          {noVendor ? (
+            <li className="buy-line" style={{ paddingLeft: 14 }}>
+              <p className="p2-note" style={{ margin: 0 }}>
+                Rivet found no verified product page for {group.lines.length === 1 ? 'this part' : 'these parts'}. Any price here comes from the catalog, not a live product page.
+              </p>
+            </li>
+          ) : null}
+          {group.lines.map((line) => (
+            <BuyLineRow key={line.catalogId} line={line} currency={currency} owned={isOwned(line, owned)} onToggleOwned={onToggleOwned} />
+          ))}
+        </ul>
+      ) : null}
+    </li>
+  );
+}
+
+function BuyLineRow({
+  line,
+  currency,
+  owned,
+  onToggleOwned,
+}: {
+  line: BuyLine;
+  currency: string;
+  owned: boolean;
+  onToggleOwned: (catalogId: string, next: boolean) => void;
+}) {
+  const dot = line.inStock === 'in_stock' ? 'ui-dot ui-dot--ok' : line.inStock === 'out_of_stock' ? 'ui-dot ui-dot--warn' : 'ui-dot';
+  return (
+    <li className="buy-line" data-owned={owned} data-testid={`buy-line-${line.catalogId}`}>
+      <div className="list__main">
+        <span className="buy-line__name">{line.name}</span>
+        <span className="buy-line__meta">
+          <span>Qty {line.quantity}</span>
+          <span className="buy-line__stock">
+            <span className={dot} aria-hidden="true" /> {stockLabel(line.inStock)}
+          </span>
+          <span>{formatCheckedAt(line.checkedAt)}</span>
+        </span>
+      </div>
+      <div className="buy-line__right">
+        <span className="buy-line__price">
+          {line.unitPrice === null ? 'Price unknown' : `${formatMoney(line.unitPrice, currency)}${line.quantity > 1 ? ' each' : ''}`}
+        </span>
+        <label className="p2-check-inline">
+          <input type="checkbox" checked={owned} onChange={(e) => onToggleOwned(line.catalogId, e.target.checked)} data-testid={`buy-own-${line.catalogId}`} />
+          I own this<span className="ui-sr-only"> ({line.name})</span>
+        </label>
+      </div>
+    </li>
+  );
+}
