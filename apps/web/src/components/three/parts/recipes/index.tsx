@@ -8,6 +8,7 @@ import { Esp32BoardRecipe } from './Esp32Board';
 import { GenericPartRecipe, UnknownPartRecipe } from './Fallback';
 import { MotorDriverBoardRecipe } from './MotorDriverBoard';
 import { BatteryPackRecipe, UsbPowerBankRecipe } from './PowerPack';
+import { TofSensorRecipe } from './TofSensor';
 import { TTMotorRecipe } from './TTMotor';
 import { UltrasonicSensorRecipe } from './UltrasonicSensor';
 import { WheelRecipe } from './Wheel';
@@ -19,6 +20,7 @@ export type RecipeId =
   | 'caster'
   | 'esp32_devkit'
   | 'tb6612_driver'
+  | 'tof_sensor'
   | 'ultrasonic_sensor'
   | 'battery_pack'
   | 'usb_power_bank'
@@ -33,6 +35,7 @@ export const RECIPES: Record<RecipeId, ComponentType<RecipeProps>> = {
   caster: CasterRecipe,
   esp32_devkit: Esp32BoardRecipe,
   tb6612_driver: MotorDriverBoardRecipe,
+  tof_sensor: TofSensorRecipe,
   ultrasonic_sensor: UltrasonicSensorRecipe,
   battery_pack: BatteryPackRecipe,
   usb_power_bank: UsbPowerBankRecipe,
@@ -42,10 +45,22 @@ export const RECIPES: Record<RecipeId, ComponentType<RecipeProps>> = {
 };
 
 /** Explicit catalog_id → recipe bindings; take precedence over category matching. */
-export const CATALOG_RECIPES: Readonly<Record<string, RecipeId>> = {};
+export const CATALOG_RECIPES: Readonly<Record<string, RecipeId>> = {
+  'sensor.adafruit_vl53l0x_3317': 'tof_sensor',
+  'sensor.adafruit_vl53l1x_3967': 'tof_sensor',
+  'board.esp32_devkitc_v4_wroom32e': 'esp32_devkit',
+  'driver.adafruit_tb6612_2448': 'tb6612_driver',
+  'motor.adafruit_tt_bimetal_1to90_3801': 'tt_motor',
+  'motor.adafruit_tt_gearbox_200rpm_3777': 'tt_motor',
+  'wheel.adafruit_tt_wheel_3766': 'wheel',
+  'caster.sparkfun_shadow_nub': 'caster',
+  'chassis.sparkfun_shadow_rob13301': 'chassis_2wd',
+};
 
 export const UNKNOWN_PART_SIZE: Size3 = { x: 20, y: 20, z: 20 };
 
+/** Category/role fallbacks for uncatalogued parts. Only an explicit ultrasonic/sonar part gets
+ * the twin-transducer visual; other range sensors fall back to the flat ToF breakout. */
 const CATEGORY_RECIPES: ReadonlyArray<[RegExp, RecipeId]> = [
   [/chassis|frame|base_plate/, 'chassis_2wd'],
   [/motor_driver|driver|h_bridge/, 'tb6612_driver'],
@@ -53,7 +68,8 @@ const CATEGORY_RECIPES: ReadonlyArray<[RegExp, RecipeId]> = [
   [/wheel|tire|tyre/, 'wheel'],
   [/caster/, 'caster'],
   [/controller|microcontroller|mcu|board/, 'esp32_devkit'],
-  [/distance|ultrasonic|range|sonar/, 'ultrasonic_sensor'],
+  [/ultrasonic|sonar|hc[-_]?sr04/, 'ultrasonic_sensor'],
+  [/distance|range|tof|time_of_flight|lidar/, 'tof_sensor'],
 ];
 
 export function resolveRecipe(component: PlanComponentOccurrence, item: PartCatalogItem | undefined): RecipeId {
@@ -63,6 +79,8 @@ export function resolveRecipe(component: PlanComponentOccurrence, item: PartCata
   if (explicit) return explicit;
   const category = `${item.identity?.category ?? ''}`.toLowerCase();
   const role = `${component.role ?? ''}`.toLowerCase();
+  const model = `${item.identity?.model ?? ''}`.toLowerCase();
+  if (/ultrasonic|sonar|hc-?sr04/.test(model)) return 'ultrasonic_sensor';
   for (const probe of [category, role]) {
     if (!probe) continue;
     if (/power|battery/.test(probe)) return powerVariant(item, component);
