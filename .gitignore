@@ -13,6 +13,7 @@ node_modules/
 .pnpm-store/
 dist/
 .next/
+.next-*/
 out/
 *.tsbuildinfo
 .turbo/

@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "query": {
+    "sku": "ROB-13302",
+    "mpn": "ROB-13302",
+    "gtin": null,
+    "manufacturer": "SparkFun",
+    "catalog_id": null,
+    "normalized_key": "rob-13302|rob-13302||sparkfun"
+  },
+  "outcome": "found",
+  "provider_mode": "recorded",
+  "synthetic": false,
+  "generated_at": "2026-10-24T23:00:00Z",
+  "offers": [
+    {
+      "offer_id": "sparkfun:d6d922c63133ad31",
+      "sku": "ROB-13302",
+      "mpn": "ROB-13302",
+      "gtin": null,
+      "vendor": {
+        "id": "sparkfun",
+        "name": "SparkFun Electronics",
+        "tier": "manufacturer",
+        "domain": "sparkfun.com"
+      },
+      "url": "https://www.sparkfun.com/hobby-gearmotor-140-rpm-pair.html",
+      "price_amount": "7.50",
+      "currency": "USD",
+      "availability": "unknown",
+      "min_order_qty": 1,
+      "pack": {
+        "quantity": 1,
+        "unit_price_basis": "per_unit"
+      },
+      "shipping": null,
+      "rating": null,
+      "match": {
+        "kind": "exact_sku",
+        "confidence": 1.0,
+        "evidence_quote": "\"sku\":\"ROB-13302\""
+      },
+      "fetched_at": "2026-10-24T18:52:15Z",
+      "evidence_level": "verified",
+      "link_status": "pass",
+      "reliability": {
+        "score": 0.95,
+        "factors": [
+          {
+            "key": "vendor_tier",
+            "weight": 0.3,
+            "value": 1.0,
+            "note": ""
+          },
+          {
+            "key": "match_exactness",
+            "weight": 0.25,
+            "value": 1.0,
+            "note": ""
+          },
+          {
+            "key": "freshness",
+            "weight": 0.15,
+            "value": 1.0,
+            "note": ""
+          },
+          {
+            "key": "link_status",
+            "weight": 0.15,
+            "value": 1.0,
+            "note": ""
+          },
+          {
+            "key": "rating",
+            "weight": 0.05,
+            "value": 0.0,
+            "note": "no rating on page"
+          },
+          {
+            "key": "price_outlier",
+            "weight": 0.1,
+            "value": 1.0,
+            "note": ""
+          }
+        ]
+      },
+      "status": "ok",
+      "source_sha256": "b2f6360cfaae487561608a7b196f8f707cce541c74eb045d0b59bb42faaf09de"
+    }
+  ],
+  "possible_matches": [],
+  "alternatives": [],
+  "ledger": [
+    {
+      "source": "adafruit",
+      "url": null,
+      "status": "skipped",
+      "reason": "identifier shape not handled by this adapter",
+      "checked_at": null
+    },
+    {
+      "source": "sparkfun",
+      "url": "https://www.sparkfun.com/products/13302",
+      "status": "skipped",
+      "reason": "not recorded (offline)",
+      "checked_at": null
+    },
+    {
+      "source": "mouser-api",
+      "url": null,
+      "status": "needs_api_key",
+      "reason": "MOUSER_API_KEY not set",
+      "checked_at": null
+    },
+    {
+      "source": "digikey-api",
+      "url": null,
+      "status": "needs_api_key",
+      "reason": "DIGIKEY_CLIENT_ID not set",
+      "checked_at": null
+    },
+    {
+      "source": "octopart-api",
+      "url": null,
+      "status": "needs_api_key",
+      "reason": "NEXAR_CLIENT_ID not set",
+      "checked_at": null
+    },
+    {
+      "source": "element14-api",
+      "url": null,
+      "status": "needs_api_key",
+      "reason": "ELEMENT14_API_KEY not set",
+      "checked_at": null
+    },
+    {
+      "source": "brave-search",
+      "url": null,
+      "status": "skipped",
+      "reason": "recorded mode: no web search",
+      "checked_at": null
+    },
+    {
+      "source": "recorded-search",
+      "url": null,
+      "status": "not_found",
+      "reason": "no results for the identifiers",
+      "checked_at": "2026-10-24T23:00:00Z"
+    },
+    {
+      "source": "sparkfun",
+      "url": "https://www.sparkfun.com/hobby-gearmotor-140-rpm-pair.html",
+      "status": "offer",
+      "reason": "JSON-LD sku ROB-13302; price 7.50 USD; no availability field",
+      "checked_at": "2026-10-24T18:52:15Z"
+    }
+  ],
+  "notices": [
+    "Stock status was not stated on the vendor page.",
+    "Prices and stock are as of the check time and may have changed. Rivet does not sell parts."
+  ]
+}
