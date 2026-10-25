@@ -139,6 +139,9 @@ describe('samples data', () => {
     expect(thumbnailFor({ prompt: 'a drone', phase: 'ready', buildId: 'x', exampleId: null })).toBe('/projects/obstacle-rover.webp');
     expect(thumbnailFor({ prompt: 'a quadcopter drone', phase: 'clarify', buildId: null, exampleId: null })).toBe('/projects/quadcopter.webp');
     expect(thumbnailFor({ prompt: '', phase: 'ready', buildId: 'x', exampleId: null, imagePreviewUrl: '/api/assets/a1/preview' })).toBe('/api/assets/a1/preview');
+    // A project started from a featured community build shows that build's card, built or not.
+    expect(thumbnailFor({ prompt: 'A camera on a pan-tilt mount that can turn to look around the room', phase: 'ready', buildId: 'x', exampleId: null })).toBe('/projects/camera-turret.webp');
+    expect(thumbnailFor({ prompt: 'a desk robot arm with a gripper that can pick up small blocks.', phase: 'ready', buildId: 'x', exampleId: null })).toBe('/projects/robot-arm.webp');
     expect(thumbnailFor({ prompt: '', phase: 'ready', buildId: 'x', exampleId: null, imageThumbnail: 'data:image/jpeg;base64,AA', imagePreviewUrl: '/api/assets/a1/preview' })).toBe('data:image/jpeg;base64,AA');
   });
 });

@@ -5,6 +5,8 @@
  * card says plainly that Rivet will build the closest rover instead. No build data is invented.
  */
 
+import { FEATURED_BUILDS } from './community';
+
 /** What a sample is a picture of. Only `rover` is a family Rivet builds today. */
 export type SampleFamily =
   | 'rover'
@@ -168,10 +170,23 @@ const FAMILY_WORDS: [SampleFamily, RegExp][] = [
   ['rc_car', /\b(rc car|electric car|toy car)\b/i],
 ];
 
+const promptKey = (text: string) => text.toLowerCase().replace(/[^a-z0-9\s-]/g, ' ').split(/\s+/).filter(Boolean).join(' ');
+
+/**
+ * The featured community build this prompt starts, if any. The API builds these prompts as their
+ * hand-built models (`services/api/rivet_api/concept/demo`), so the build looks like the card.
+ */
+function communitySample(prompt: string): SampleProject | null {
+  const key = promptKey(prompt);
+  if (!key) return null;
+  return SAMPLE_PROJECTS.find((s) => FEATURED_BUILDS.some((f) => f.sampleId === s.id) && promptKey(s.prompt) === key) ?? null;
+}
+
 /**
  * Picture for one of the user's projects. The picture the user built from comes first, so projects
- * started from different pictures look different. Otherwise anything Rivet has built (or will build)
- * is a rover; a prompt that names another kind of project shows that kind's sample picture until it is built.
+ * started from different pictures look different, then the card picture of a community build the
+ * project was started from. Otherwise anything Rivet has built (or will build) is a rover; a prompt
+ * that names another kind of project shows that kind's sample picture until it is built.
  */
 export function thumbnailFor(project: {
   prompt: string;
@@ -183,6 +198,8 @@ export function thumbnailFor(project: {
 }): string {
   const picture = project.imageThumbnail || project.imagePreviewUrl;
   if (picture) return picture;
+  const community = communitySample(project.prompt);
+  if (community) return community.thumbnail;
   if (project.phase === 'ready' || project.buildId || project.exampleId) return ROVER_THUMBNAIL;
   const hit = FAMILY_WORDS.find(([, re]) => re.test(project.prompt));
   const sample = hit ? SAMPLE_PROJECTS.find((s) => s.family === hit[0]) : null;
