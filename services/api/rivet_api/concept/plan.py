@@ -2,8 +2,12 @@
 
 Concept plans are appearance-only. They never go through the engineering engine, so
 they carry their own catalog (`concept_catalog`) of `concept.*` entries that are not
-products: no SKU, no price, no purchase link, `bounds_verified` false. Status is always
+products: no SKU, no purchase link, `bounds_verified` false. Status is always
 `needs_review` with a blocking UNKNOWN finding that says nothing was engineered.
+
+Parts that fill a common role (flight controller, microcontroller, motor, ...) get a
+hand-picked real product from `reference_parts`: its page as the entry's reference URL and
+the BOM line's `manufacturer_reference_only` link, its price per piece, labelled as a suggestion.
 """
 
 import math
@@ -12,6 +16,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from rivet_api.concept.model import ConceptModel, ConceptPart, part_bounds
+from rivet_api.concept.reference_parts import CHECKED_AT, ReferencePart, suggest
 
 CONCEPT_PREFIX = "concept."
 CONCEPT_CATALOG_VERSION = "CONCEPT-1.0"
@@ -47,9 +52,9 @@ def _bounds(parts: list[ConceptPart]) -> tuple[list[float], list[float]]:
     return lo, hi
 
 
-def _catalog_entry(catalog_id: str, part: ConceptPart, name: str) -> dict[str, Any]:
+def _catalog_entry(catalog_id: str, part: ConceptPart, name: str, ref: ReferencePart | None = None) -> dict[str, Any]:
     x, y, z = (round(v, 1) for v in part.size_mm)
-    return {
+    entry = {
         "schema_version": "1.0",
         "catalog_id": catalog_id,
         "identity": {"manufacturer": CONCEPT_MANUFACTURER, "model": name, "sku": None, "category": part.category},
@@ -84,6 +89,18 @@ def _catalog_entry(catalog_id: str, part: ConceptPart, name: str) -> dict[str, A
             ],
         },
     }
+    if ref is not None:
+        entry["identity"]["model"] = f"{name}: {ref.title}"
+        entry["identity"]["manufacturer"] = f"Suggested part from {ref.vendor}"
+        entry["sourcing"].update(
+            manufacturer_reference_url=ref.url,
+            price_amount=ref.unit_price(1),  # set per BOM line once the part count is known
+            price_currency=ref.currency,
+            price_checked_at=CHECKED_AT,
+        )
+        entry["evidence"]["price"] = "unverified"
+        entry["evidence"]["notes"].append(ref.note)
+    return entry
 
 
 def _wire_entry(catalog_id: str, kind: str, thickness: float) -> dict[str, Any]:
@@ -114,6 +131,7 @@ def build_concept_plan(
     shift = [-(lo[0] + hi[0]) / 2, -lo[1], -(lo[2] + hi[2]) / 2]
 
     catalog: dict[tuple, dict[str, Any]] = {}
+    refs: dict[str, ReferencePart] = {}
     components: list[dict[str, Any]] = []
     used_ids: set[str] = set()
     for part in parts:
@@ -124,7 +142,10 @@ def build_concept_plan(
             catalog_id, n = base, 2
             while any(e["catalog_id"] == catalog_id for e in catalog.values()):
                 catalog_id, n = f"{base}-{n}", n + 1
-            catalog[key] = _catalog_entry(catalog_id, part, name)
+            ref = suggest(concept.object_type, name, part.category)
+            catalog[key] = _catalog_entry(catalog_id, part, name, ref)
+            if ref is not None:
+                refs[catalog_id] = ref
         instance_base = _slug(part.name)
         instance_id, n = f"{instance_base}-1", 1
         while instance_id in used_ids:
@@ -224,6 +245,15 @@ def build_concept_plan(
         )
         item["quantity"] += 1
         item["instance_ids"].append(c["instance_id"])
+    by_catalog_id = {e["catalog_id"]: e for e in catalog.values()}
+    for item in bom_items.values():
+        ref = refs.get(item["catalog_id"])
+        if ref is not None:
+            price = ref.unit_price(item["quantity"])
+            by_catalog_id[item["catalog_id"]]["sourcing"]["price_amount"] = price
+            item.update(unit_price_amount=price, purchase_url=ref.url, link_status="manufacturer_reference_only")
+    priced = [i for i in bom_items.values() if i["unit_price_amount"] is not None]
+    known_subtotal = f"{sum(float(i['unit_price_amount']) * i['quantity'] for i in priced):.2f}" if priced else None
 
     all_ids = [c["instance_id"] for c in components]
     size = [round(hi[i] - lo[i]) for i in range(3)]
@@ -280,7 +310,12 @@ def build_concept_plan(
             ],
         },
         "assembly_steps": steps,
-        "bom": {"currency": "USD", "known_subtotal_amount": None, "total_status": "not_available", "items": list(bom_items.values())},
+        "bom": {
+            "currency": "USD",
+            "known_subtotal_amount": known_subtotal,
+            "total_status": "incomplete" if priced else "not_available",
+            "items": list(bom_items.values()),
+        },
         "behavior": None,
         "simulation": {
             "kind": "none",

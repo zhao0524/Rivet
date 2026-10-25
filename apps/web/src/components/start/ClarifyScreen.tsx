@@ -45,6 +45,9 @@ export function ClarifyScreen() {
     mm: project.clarify.max_length_mm ? String(project.clarify.max_length_mm) : '',
   }));
   const requested = useRef<string | null>(null);
+  const [unsupportedChoice, setUnsupportedChoice] = useState<UnsupportedChoice>(() =>
+    project.clarify.interpretation_choice === 'closest_supported_rover' ? 'closest_supported_rover' : 'concept_model',
+  );
 
   const interpret = useCallback(async () => {
     setInterp({ status: 'loading' });
@@ -56,6 +59,11 @@ export function ClarifyScreen() {
     try {
       const data = await source.interpret({ input: requestInput(project), requirements: { currency: 'USD' } });
       setInterp({ status: 'ok', data });
+      // A toy car is closest to the engineered rover (real parts, wiring, firmware); anything else
+      // becomes a 3D model of the photo. An explicit earlier choice is kept.
+      if (!data.supported && !project.clarify.interpretation_choice) {
+        setUnsupportedChoice(data.intent.project_family === 'rc_car' ? 'closest_supported_rover' : 'concept_model');
+      }
       update({ intentId: data.intent_id, assumptions: data.intent.assumptions });
     } catch (err) {
       setInterp({ status: 'error', message: err instanceof Error && err.message ? err.message : "Rivet couldn't read the prompt." });
@@ -70,7 +78,7 @@ export function ClarifyScreen() {
   }, [project.id, interpret]);
 
   const interpretationChoice: ClarifyAnswers['interpretation_choice'] =
-    interp.status === 'ok' && !interp.data.supported ? 'closest_supported_rover' : 'as_interpreted';
+    interp.status === 'ok' && !interp.data.supported ? unsupportedChoice : 'as_interpreted';
 
   const budgetValue = (): number | null => {
     if (budget.choice === '50') return 50;
@@ -116,6 +124,12 @@ export function ClarifyScreen() {
   }
 
   const busy = interp.status === 'loading';
+  // Families the build flow refuses (drones, arms…) can still get a v2 geometry-first design.
+  const designParams = new URLSearchParams();
+  if (project.prompt.trim()) designParams.set('prompt', project.prompt.trim());
+  if (project.imageAssetId) designParams.set('ref', project.imageAssetId);
+  const designQuery = designParams.toString();
+  const designHref = designQuery ? `/design?${designQuery}` : '/design';
   const isLast = card === CARD_COUNT - 1;
   // Card 1 waits for the reading; a custom amount must be a number before moving on.
   const nextDisabled =
@@ -138,7 +152,13 @@ export function ClarifyScreen() {
 
       <section className="ui-card q__card" aria-labelledby="clarify-title">
         {card === 0 ? (
-          <UnderstoodCard state={interp} onRetry={() => void interpret()} />
+          <UnderstoodCard
+            state={interp}
+            onRetry={() => void interpret()}
+            designHref={designHref}
+            choice={unsupportedChoice}
+            onChoice={setUnsupportedChoice}
+          />
         ) : card === 1 ? (
           <BudgetCard value={budget} onChange={setBudget} />
         ) : (
@@ -167,7 +187,34 @@ export function ClarifyScreen() {
 
 /* ── Card 1: what Rivet understood ─────────────────────── */
 
-function UnderstoodCard({ state, onRetry }: { state: InterpretState; onRetry: () => void }) {
+type UnsupportedChoice = 'concept_model' | 'closest_supported_rover';
+
+const UNSUPPORTED_OPTIONS: readonly (ChoiceOption & { id: UnsupportedChoice })[] = [
+  {
+    id: 'concept_model',
+    label: 'Build a 3D model of this',
+    hint: 'Its parts, with suggested real products and vendor links. Fit and wiring are not checked.',
+  },
+  {
+    id: 'closest_supported_rover',
+    label: 'Use the closest supported rover',
+    hint: 'A fully engineered indoor rover: verified parts, wiring, simulation and firmware.',
+  },
+];
+
+function UnderstoodCard({
+  state,
+  onRetry,
+  designHref,
+  choice,
+  onChoice,
+}: {
+  state: InterpretState;
+  onRetry: () => void;
+  designHref: string;
+  choice: UnsupportedChoice;
+  onChoice: (choice: UnsupportedChoice) => void;
+}) {
   if (state.status === 'loading') {
     return (
       <div className="q__body" aria-busy="true" data-testid="clarify-skeleton">
@@ -239,16 +286,27 @@ function UnderstoodCard({ state, onRetry }: { state: InterpretState; onRetry: ()
 
       {!data.supported ? (
         <>
-          <p className="ui-notice ui-notice--danger" style={{ margin: 0 }} data-testid="clarify-limitation">
+          <p className="ui-notice ui-notice--warn" style={{ margin: 0 }} data-testid="clarify-limitation">
             <Icon name="alert" style={{ flex: 'none', marginTop: 3 }} />
-            <span>{data.limitation?.message ?? 'This kind of robot is not supported yet.'}</span>
+            <span>
+              {(data.limitation?.message ?? 'This kind of robot is not supported yet').replace(/\.?$/, '.')} Rivet can only
+              engineer rovers with real parts so far.
+            </span>
           </p>
           <ChoiceList
             label="How should Rivet continue?"
-            options={[{ id: 'closest', label: 'Use the closest supported rover', hint: 'An indoor rover with the parts that fit your request best.' }]}
-            value="closest"
-            onChange={() => undefined}
+            options={UNSUPPORTED_OPTIONS}
+            value={choice}
+            onChange={(id) => onChoice(id as UnsupportedChoice)}
+            testId="clarify-unsupported"
           />
+          <p className="ui-small ui-muted" style={{ margin: 0 }}>
+            Need engineered geometry with three candidates?{' '}
+            <a href={designHref} data-testid="clarify-design-v2-link">
+              Generate a 3D design
+            </a>{' '}
+            from the same prompt and photo.
+          </p>
         </>
       ) : null}
     </div>

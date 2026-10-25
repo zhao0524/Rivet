@@ -5,6 +5,7 @@ import type {
   PlanComponent,
   VerificationFinding,
 } from '../rivet/types';
+import { isConceptPlan } from '../rivet/honesty';
 
 /* ── Part groups (Parts step) ─────────────────────────── */
 
@@ -182,12 +183,14 @@ export function safeHttpUrl(url: string | null): string | null {
   }
 }
 
+const VENDOR_NAMES: Record<string, string> = { racedayquads: 'RaceDayQuads', sparkfun: 'SparkFun', digikey: 'DigiKey' };
+
 export function vendorFromUrl(url: string | null): string {
   if (!url) return 'No verified vendor';
   try {
     const host = new URL(url).hostname.replace(/^www\./, '');
     const name = host.split('.').slice(-2, -1)[0] ?? host;
-    return name.charAt(0).toUpperCase() + name.slice(1);
+    return VENDOR_NAMES[name] ?? name.charAt(0).toUpperCase() + name.slice(1);
   } catch {
     return 'No verified vendor';
   }
@@ -203,14 +206,19 @@ export interface BuyLine {
   inStock: 'in_stock' | 'out_of_stock' | 'unknown';
   checkedAt: string | null;
   fabricated: boolean;
+  /** A hand-picked product for a concept part's role: a real listing, not checked against the design. */
+  suggested: boolean;
 }
 
 export function buyLines(plan: BuildPlan, catalog: readonly CatalogComponent[]): BuyLine[] {
   const byId = catalogIndex(catalog);
+  const concept = isConceptPlan(plan);
   return plan.bom.items.map((item) => {
     const cat = byId.get(item.catalog_id) ?? null;
-    // Only a verified product listing counts as a buy link; references never pose as one.
-    const url = item.link_status === 'verified_product' ? safeHttpUrl(item.purchase_url) : null;
+    // Only a verified product listing counts as a buy link; references never pose as one. A concept
+    // plan's suggested parts are the exception, shown as suggestions.
+    const suggested = concept && item.link_status === 'manufacturer_reference_only';
+    const url = item.link_status === 'verified_product' || suggested ? safeHttpUrl(item.purchase_url) : null;
     const stock = cat?.sourcing.availability_status;
     return {
       catalogId: item.catalog_id,
@@ -222,6 +230,7 @@ export function buyLines(plan: BuildPlan, catalog: readonly CatalogComponent[]):
       inStock: stock === 'in_stock' ? 'in_stock' : stock === 'out_of_stock' ? 'out_of_stock' : 'unknown',
       checkedAt: cat?.sourcing.price_checked_at ?? null,
       fabricated: /printed|fabricat|3d.?print/i.test(`${cat?.identity.category ?? ''} ${item.catalog_id}`),
+      suggested: suggested && url !== null,
     };
   });
 }

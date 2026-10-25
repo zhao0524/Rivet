@@ -5,6 +5,7 @@ checks the result is structurally coherent (contract guard), stamps provenance
 honestly, and stores whatever the engine said, status and findings untouched.
 """
 
+import re
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -13,7 +14,9 @@ from pydantic import ValidationError
 from rivet_api.agents.editor import EditSelector, parse_edit
 from rivet_api.agents.intent_sanitizer import sanitize_intent
 from rivet_api.agents.vision import MockVisionProvider, VisionPort, ensure_supported, support_limitation
-from rivet_api.concept import CONCEPT_PREFIX, build_concept_plan, concept_from_plan, is_concept_plan
+from rivet_api.concept import CONCEPT_PREFIX, build_concept_plan, concept_from_plan, fixture_concept, is_concept_plan
+from rivet_api.concept.model import ConceptModel
+from rivet_api.concept.reference_parts import REFERENCE_URLS
 from rivet_api.adapters.engineering import EngineeringPort
 from rivet_api.config import Settings
 from rivet_api.contract import ContractViolation, assert_build_plan_contract
@@ -112,7 +115,8 @@ CONCEPT_FALLBACK_NOTE = "A 3D concept of the upload could not be built, so this 
 
 def check_concept_plan(plan: Any) -> BuildPlan:
     """Concept plans skip the engine: check structure against their own concept catalog and
-    that nothing in them claims to be a sourced, priced or verified product."""
+    that nothing in them claims to be a verified product. The only links allowed are hand-picked
+    suggestions from `reference_parts`, labelled `manufacturer_reference_only`."""
     try:
         model = BuildPlan.model_validate(plan)
     except ValidationError as exc:
@@ -121,7 +125,19 @@ def check_concept_plan(plan: Any) -> BuildPlan:
     catalog = plan.get("concept_catalog") or []
     errors = [f"{c['catalog_id']}: not a concept entry" for c in catalog if not c["catalog_id"].startswith(CONCEPT_PREFIX)]
     errors += [f"{c['catalog_id']}: carries sourcing" for c in catalog if c["identity"]["sku"] or c["sourcing"]["purchase_url"]]
-    errors += [f"bom {i['catalog_id']}: claims {i['link_status']}" for i in plan["bom"]["items"] if i["link_status"] != "not_available"]
+    errors += [
+        f"{c['catalog_id']}: reference URL is not a curated suggestion"
+        for c in catalog
+        if c["sourcing"]["manufacturer_reference_url"] not in (None, *REFERENCE_URLS)
+    ]
+    for item in plan["bom"]["items"]:
+        url, status = item["purchase_url"], item["link_status"]
+        if status == "verified_product":
+            errors.append(f"bom {item['catalog_id']}: claims verified_product")
+        elif status == "manufacturer_reference_only" and url not in REFERENCE_URLS:
+            errors.append(f"bom {item['catalog_id']}: link is not a curated suggestion")
+        elif status == "not_available" and url is not None:
+            errors.append(f"bom {item['catalog_id']}: has a link but link_status not_available")
     if plan["status"] != "needs_review":
         errors.append(f"status {plan['status']!r} is not needs_review")
     try:
@@ -133,12 +149,31 @@ def check_concept_plan(plan: Any) -> BuildPlan:
     return model
 
 
-def generate_concept(req: GenerateRequest, deps: Deps, job_id: str, image: tuple[bytes, str] | None) -> tuple[str, int]:
-    """Any image (or description) rebuilt as shaped parts. Appearance only; no engine run."""
+DRONE_FALLBACK_NOTE = "The vision model could not rebuild the upload, so this is the saved example quadcopter"
+_DRONE_WORDS = re.compile(r"\b(drone|quad-?copter|multi-?rotor|fpv)s?\b", re.I)
+
+
+def wants_drone(req: GenerateRequest, stored: StoredIntent | None) -> bool:
+    """Whether the request is for a drone, from the user's words or the confirmed interpretation."""
+    return bool(_DRONE_WORDS.search(req.input.user_text or "")) or (stored is not None and stored.intent.project_family == "drone")
+
+
+def generate_concept(
+    req: GenerateRequest,
+    deps: Deps,
+    job_id: str,
+    image: tuple[bytes, str] | None,
+    saved: ConceptModel | None = None,
+) -> tuple[str, int]:
+    """Any image (or description) rebuilt as shaped parts. Appearance only; no engine run.
+
+    `saved` replaces the vision call with a saved concept (the drone fallback), labelled `fallback`."""
     jobs = deps.jobs
     jobs.emit(job_id, "understand", "vision", "running", "Breaking the image into parts")
-    concept = deps.vision.concept(req, image)
-    vision_mode = deps.vision.mode
+    if saved is None:
+        concept, vision_mode = deps.vision.concept(req, image), deps.vision.mode
+    else:
+        concept, vision_mode = saved, "fallback"
     jobs.emit(
         job_id,
         "understand",
@@ -148,11 +183,22 @@ def generate_concept(req: GenerateRequest, deps: Deps, job_id: str, image: tuple
     )
     mode = "live" if vision_mode == "live" else "fixture" if vision_mode == "fixture" else "fallback"
     plan = build_concept_plan(concept, f"concept-{job_id}"[:80], req.input.kind, mode)
-    if vision_mode != "live":
+    if saved is not None:
+        plan["provenance"]["notes"].append(DRONE_FALLBACK_NOTE)
+    elif vision_mode != "live":
         plan["provenance"]["notes"].append(f"Concept came from the {vision_mode} vision provider, not a live model")
     check_concept_plan(plan)
     jobs.emit(job_id, "assembly", "engineer", "ok", f"Placed {len(plan['components'])} concept parts")
-    jobs.emit(job_id, "validate", "validator", "warning", "Concept model: appearance only, nothing engineered or sourced")
+    suggested = sum(1 for i in plan["bom"]["items"] if i["link_status"] == "manufacturer_reference_only")
+    jobs.emit(
+        job_id,
+        "validate",
+        "validator",
+        "warning",
+        f"Concept model: not engineered; {suggested} parts have a suggested real product, not checked against this design"
+        if suggested
+        else "Concept model: appearance only, nothing engineered or sourced",
+    )
     saved = deps.store.create(plan)
     jobs.complete(job_id, saved["build_id"], saved["revision"])
     return saved["build_id"], saved["revision"]
@@ -231,6 +277,10 @@ def generate_project(
         try:
             return generate_concept(req, deps, job_id, image)
         except ApiError as err:
+            if wants_drone(req, stored):
+                # A drone is nothing like the rover: the saved quadcopter is the closer fallback.
+                jobs.emit(job_id, "understand", "system", "warning", f"Could not build a 3D concept ({err.code}); using the saved quadcopter")
+                return generate_concept(req, deps, job_id, image, saved=fixture_concept())
             # The rover template is the fallback: always buildable, and labelled as such.
             fallback_from = err
             jobs.emit(
