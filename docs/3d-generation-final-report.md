@@ -84,3 +84,18 @@ Before: [`3d-capability-audit.md`](3d-capability-audit.md). After, with code pat
 ## 8. Links
 
 Local only; nothing pushed. Create the PR with `gh pr create` when ready.
+
+## Live visual benchmark (2026-10-25)
+
+Fresh, uncached runs of `scripts/visual_benchmark.py` through the real HTTP API: design model `gpt-5`, critic `gpt-4o`, image model `gpt-image-1-mini`, renderer `chromium` (Chromium/three.js from the real GLB), visual target 8.0/10, up to 2 refinement rounds, one natural-language revision per case. The photograph case used a real Wikimedia Commons photo of a hand-crank coffee grinder (`Kuechengeraet_004_2022_05_18.jpg`); the other five started from text and a generated concept image. Evidence (references, three candidates with DesignSpec/GLB/six renders/visual review/mechanical report/revision history, final exports, provider trace) is in the delivered `bench/` directories (`live-full`, `live-full-d`). Two of the six cases produced no result: the curved game-console enclosure hung the geometry kernel for over 13 minutes on its second body and was killed, and the articulated desk lamp crashed the API process (exit 139) during compile in both attempts, the second time right after building a `sweep` body. Both are kernel-robustness blockers recorded in `docs/context.md` §6, not visual-quality results.
+
+| Case | Status | Candidates (strategy: score, feasible, bodies) | Visual target | Provider calls carrying images | Revision | Est. spend |
+|---|---|---|---|---|---|---|
+| animal | needs_review | closest_to_reference: 5.7/10, feasible, 2 bodies<br>simpler_manufacture: 3.7/10, feasible, 2 bodies<br>signature_geometry: 3.7/10, feasible, 6 bodies | NOT met (5.7/8.0, 0 critical, 2 rounds) | 18/23 (110 images) | kept; geometry changed; 5.0/10 after | $3.60 |
+| future_vehicle | needs_review | closest_to_reference: 5.3/10, feasible, 20 bodies<br>simpler_manufacture: 4.0/10, feasible, 15 bodies<br>signature_geometry: 3.7/10, not feasible, 14 bodies | NOT met (5.3/8.0, 1 critical, 2 rounds) | 22/27 (144 images) | kept; geometry changed; 6.0/10 after | $3.96 |
+| photo_object | needs_review | closest_to_reference: 6.8/10, feasible, 25 bodies<br>simpler_manufacture: 5.5/10, feasible, 23 bodies<br>signature_geometry: 5.0/10, not feasible, 29 bodies | NOT met (6.8/8.0, 0 critical, 2 rounds) | 26/29 (151 images) | kept; geometry changed; 5.0/10 after | $4.96 |
+| asymmetric | needs_review | closest_to_reference: failed<br>simpler_manufacture: 6.8/10, feasible, 13 bodies<br>signature_geometry: 6.0/10, feasible, 14 bodies | NOT met (6.8/8.0, 0 critical, 2 rounds) | 11/16 (64 images) | kept; geometry changed; 7.0/10 after | $2.52 |
+
+Distinct geometry digests across completed candidates: 11/11. Visual target met in 0/4 cases; every below-target bundle is `needs_review` with `visual_quality.achieved=false` and the statement in `provenance.limitations`. Total estimated spend $15.04 (ledger estimates, conservative for gpt-5).
+
+What this does and does not show: image bytes reach authoring, critique and revision calls (every `vision` call in `trace.json` lists its image count); the models are recognisable objects built from 14-29 semantic bodies with profiles, lofts, revolves, booleans and tubes rather than three boxes; the matched-view critic and the model critic both score below the 8/10 target, so no result is presented as a verified success. The remaining gap is authoring fidelity (proportions and fine detail) and revision acceptance, not plumbing.
