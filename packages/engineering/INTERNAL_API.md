@@ -200,3 +200,29 @@ carried in a single `provenance.notes` entry starting `engine_state: ` followed 
   `synthetic.driver_high_current`, `synthetic.motor_high_stall`, `synthetic.motor_unrated`,
   `synthetic.motor_eur`, `synthetic.controller_few_pins`, `synthetic.battery_18v`.
 - `substitute(plan_dict, instance_ids, catalog_id)` — copy with swapped parts and BOM.
+
+### E1 — `rivet_engine/ecommerce/` (offers; `docs/e-commerce-layer/plan.md`)
+
+```python
+def normalize_query(sku: str | None = None, mpn: str | None = None, gtin: str | None = None,
+                    manufacturer: str | None = None, catalog_id: str | None = None) -> OfferQuery   # InvalidIdentifier
+def find_offers(query: OfferQuery, *, mode: Literal["stub", "recorded", "live"] = "stub",
+                fetcher: Fetcher | None = None, now: datetime | None = None,
+                link_checks: Mapping[str, str] | Callable[[str], str | None] | None = None,
+                search_provider: SearchProvider | None = None,
+                structured_providers: Sequence[StructuredApiProvider] | None = None,
+                candidate_urls: Sequence[str] = ()) -> OfferSet                                    # OffersProviderError
+def rank(offers: Sequence[Offer], sort: SortKey = "reliability", *, currency: str | None = None) -> list[Offer]
+def filter_offers(offers: Sequence[Offer], *, vendor_tier=None, in_stock=None, min_rating=None,
+                  max_price=None, currency=None) -> list[Offer]
+def score_offers(offers: Sequence[Offer], *, now: datetime | None = None) -> list[Offer]
+def canonical_url(url: str) -> str                                                                  # InvalidUrl
+def offer_id(vendor_id: str, url: str) -> str                                                       # "<vendor.id>:<sha256(canonical_url)[:16]>"
+def vendor_for_url(url: str) -> Vendor
+def offer_set_from_dict(doc: dict) -> OfferSet; def to_dict(model) -> dict
+class OffersProviderError(Exception): code; ProviderQuota, ProviderAuth, ProviderUnavailable
+```
+
+- `OfferSet.to_wire()` validates against `contracts/offer.schema.json`; `offers` never holds a `fuzzy` match.
+- Pure and offline for `stub` and `recorded`; `now` is injectable for deterministic freshness.
+- `canonical_url` keeps `www.` (so `offer_id` matches `fixtures/offers`); duplicate detection folds it.

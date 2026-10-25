@@ -42,6 +42,12 @@ def _is_https_url(url: str) -> bool:
     return parsed.scheme == "https" and bool(parsed.netloc)
 
 
+def verified_purchase_url(entry: dict[str, Any]) -> str | None:
+    """The catalog's verified https purchase link, or None when there is no verified link."""
+    link = _verified_link(entry)
+    return link if link and _is_https_url(link) else None
+
+
 def is_verified_product(catalog_id: str, catalog: list[dict[str, Any]]) -> bool:
     """Same bar as a `verified_product` BOM row: a SKU and a verified https purchase link."""
     for entry in catalog:

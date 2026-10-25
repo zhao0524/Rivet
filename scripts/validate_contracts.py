@@ -18,6 +18,7 @@ Usage (from the repo root):
   uv run scripts/validate_contracts.py --plan P.json --catalog C.json [--catalog C2.json]
   uv run scripts/validate_contracts.py --intent I.json
   uv run scripts/validate_contracts.py --component C.json
+  uv run scripts/validate_contracts.py --offers O.json
 
 Without uv: `pip install "jsonschema>=4.18,<5"` and run with python3.
 Exits 0 when everything validates and every invalid sample is rejected, else 1.
@@ -44,6 +45,7 @@ SCHEMA_FILES = {
     "component": "component.schema.json",
     "plan": "build-plan.schema.json",
     "error": "errors.schema.json",
+    "offers": "offer.schema.json",
 }
 
 # Checked-in fixture copies, validated when present. Shared fixtures/ (INT-2) come
@@ -76,6 +78,14 @@ KNOWN_CATALOGS = (
     "packages/engineering/rivet_engine/data/components.json",
 )
 KNOWN_ERRORS = ("contracts/examples/error-unsupported-project-family.json",)
+KNOWN_OFFER_SETS = (
+    "fixtures/offers/adafruit-3801.json",
+    "fixtures/offers/sparkfun-rob-13301.json",
+    "fixtures/offers/not-found-9999999.json",
+    "fixtures/offers/synthetic-multivendor.json",
+    "fixtures/offers/refused-synthetic-demo-part.json",
+)
+INVALID_OFFER_SET = "contracts/examples/invalid/offer-set-javascript-url-zero-price.json"
 SHAPE_ONLY_PLAN = "contracts/examples/invalid/section-3.3-shape-only-plan.json"
 
 
@@ -255,6 +265,36 @@ def validate_known(validators: dict[str, Draft202012Validator], report: Report) 
         report.result(f"plan       {plan_path}", check_plan(validators, load_json(path), [load_json(c) for c in catalogs]))
     for path in present(KNOWN_ERRORS):
         report.result(f"error      {rel(path)}", schema_errors(validators["error"], load_json(path)))
+    for path in present(KNOWN_OFFER_SETS):
+        report.result(f"offers     {rel(path)}", check_offer_set(validators, load_json(path)))
+
+
+def check_offer_set(validators: dict[str, Draft202012Validator], doc: Any) -> list[str]:
+    """Offer schema plus the plan.md 3.1 rules JSON Schema cannot express."""
+    errors = schema_errors(validators["offers"], doc)
+    if errors:
+        return errors
+    listed = [("offers", o) for o in doc["offers"]] + [("possible_matches", o) for o in doc["possible_matches"]]
+    ids = [o["offer_id"] for _, o in listed] + [o["offer_id"] for o in doc["alternatives"]]
+    if len(set(ids)) != len(ids):
+        errors.append("duplicate offer_id across offers/possible_matches/alternatives")
+    for where, o in listed:
+        if where == "offers" and o["match"]["kind"] == "fuzzy":
+            errors.append(f"{o['offer_id']}: fuzzy match must be in possible_matches, not offers")
+        if where == "possible_matches" and o["match"]["kind"] != "fuzzy":
+            errors.append(f"{o['offer_id']}: possible_matches holds fuzzy matches only")
+        if o["evidence_level"] == "verified" and not (o["sku"] or o["mpn"] or o["gtin"]):
+            errors.append(f"{o['offer_id']}: verified offer without any identifier")
+        host = o["url"].split("/")[2].lower().removeprefix("www.")
+        if not (host == o["vendor"]["domain"] or host.endswith("." + o["vendor"]["domain"])):
+            errors.append(f"{o['offer_id']}: url host {host} is not under vendor.domain {o['vendor']['domain']}")
+        if o["vendor"]["domain"].endswith(".example") and not doc["synthetic"]:
+            errors.append(f"{o['offer_id']}: *.example vendor in a set not marked synthetic")
+    if doc["outcome"] in ("not_found", "refused") and doc["offers"]:
+        errors.append(f"outcome {doc['outcome']} with non-empty offers")
+    if doc["outcome"] in ("found", "partial") and not doc["offers"]:
+        errors.append(f"outcome {doc['outcome']} with no offers")
+    return errors
 
 
 Mutation = Callable[[dict[str, Any]], None]
@@ -528,6 +568,46 @@ def check_rejections(validators: dict[str, Draft202012Validator], report: Report
         mutate(doc)
         expect_rejected(label, schema_errors(validators[kind], doc), expected)
 
+    invalid_offers = REPO_ROOT / INVALID_OFFER_SET
+    if invalid_offers.exists():
+        expect_rejected("offer set with javascript: URL and zero price", check_offer_set(validators, load_json(invalid_offers)), "does not match")
+    good = REPO_ROOT / KNOWN_OFFER_SETS[0]
+    if good.exists():
+        for label, mutate, expected in OFFER_REJECTIONS:
+            doc = load_json(good)
+            mutate(doc)
+            expect_rejected(label, check_offer_set(validators, doc), expected)
+
+
+def _offer_price_without_currency(doc: dict[str, Any]) -> None:
+    doc["offers"][0]["currency"] = None
+
+
+def _offer_fuzzy_in_ranked_list(doc: dict[str, Any]) -> None:
+    doc["offers"][0]["match"]["kind"] = "fuzzy"
+    doc["offers"][0]["evidence_level"] = "inferred"
+
+
+def _offer_verified_without_quote(doc: dict[str, Any]) -> None:
+    doc["offers"][0]["match"]["evidence_quote"] = None
+
+
+def _offer_rating_count_zero(doc: dict[str, Any]) -> None:
+    doc["offers"][0]["rating"] = {"value": 5.0, "count": 0, "scale": 5, "source": "jsonld_aggregate_rating"}
+
+
+def _offer_host_not_vendor(doc: dict[str, Any]) -> None:
+    doc["offers"][0]["url"] = "https://evil.example/product/3801"
+
+
+OFFER_REJECTIONS: tuple[tuple[str, Mutation, str], ...] = (
+    ("offer price without currency", _offer_price_without_currency, "currency"),
+    ("fuzzy match in ranked offers", _offer_fuzzy_in_ranked_list, "fuzzy"),
+    ("exact match without evidence quote", _offer_verified_without_quote, "evidence_quote"),
+    ("rating with zero reviews", _offer_rating_count_zero, "count"),
+    ("offer url outside vendor domain", _offer_host_not_vendor, "vendor.domain"),
+)
+
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
@@ -536,13 +616,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--intent", type=Path, action="append", default=[], help="IntentSpec JSON to validate")
     parser.add_argument("--component", type=Path, action="append", default=[], help="catalog file to validate")
     parser.add_argument("--error", type=Path, action="append", default=[], help="API error envelope to validate")
+    parser.add_argument("--offers", type=Path, action="append", default=[], help="OfferSet JSON to validate")
     args = parser.parse_args(argv)
     if args.catalog and not args.plan:
         parser.error("--catalog only resolves --plan references; use --component to validate a catalog file")
 
     validators = load_validators()
     report = Report()
-    explicit = args.plan or args.intent or args.component or args.error
+    explicit = args.plan or args.intent or args.component or args.error or args.offers
     if not explicit:
         validate_known(validators, report)
         check_shared_fixtures(report)
@@ -553,6 +634,8 @@ def main(argv: list[str] | None = None) -> int:
         report.result(f"catalog    {rel(path)}", check_catalog(validators, load_json(path)))
     for path in args.error:
         report.result(f"error      {rel(path)}", schema_errors(validators["error"], load_json(path)))
+    for path in args.offers:
+        report.result(f"offers     {rel(path)}", check_offer_set(validators, load_json(path)))
     catalog_docs = [load_json(p) for p in args.catalog]
     for path in args.plan:
         report.result(f"plan       {rel(path)}", check_plan(validators, load_json(path), catalog_docs))

@@ -114,11 +114,12 @@ def normalize(text: str) -> str:
 
 
 def text_supports(matched_text: str | None, value: str) -> bool:
-    """The quoted page text must literally contain the claimed value (whitespace/case-insensitive)."""
+    """The quoted page text must contain the claimed value as a whole token (whitespace/case-insensitive):
+    `AB-12` is not found inside `AB-123`. Same rule as the API's `resolution/evidence.py:_contains`."""
     if not matched_text:
         return False
     needle = normalize(value)
-    return bool(needle) and needle in normalize(matched_text)
+    return bool(needle) and re.search(rf"(?<![0-9a-z]){re.escape(needle)}(?![0-9a-z])", normalize(matched_text)) is not None
 
 
 def parse_utc(ts: str) -> datetime:
@@ -126,7 +127,8 @@ def parse_utc(ts: str) -> datetime:
 
 
 def is_fresh(ev: Evidence, now: datetime) -> bool:
-    return parse_utc(ev.fetched_at) + timedelta(days=ev.ttl_days) > now
+    # Stale only once strictly older than the TTL, as in the API (`now - fetched > ttl`).
+    return now - parse_utc(ev.fetched_at) <= timedelta(days=ev.ttl_days)
 
 
 def _usable(ev: Evidence, now: datetime) -> tuple[bool, str]:

@@ -1,0 +1,8 @@
+{
+  "vendor_tier": 0.3,
+  "match_exactness": 0.25,
+  "freshness": 0.15,
+  "link_status": 0.15,
+  "rating": 0.05,
+  "price_outlier": 0.1
+}

@@ -41,6 +41,7 @@ class JobSnapshot:
     build_id: str | None
     revision: int | None
     resolution_id: str | None = None
+    offer_set_id: str | None = None
 
 
 @dataclass
@@ -54,6 +55,7 @@ class _Job:
     build_id: str | None = None
     revision: int | None = None
     resolution_id: str | None = None
+    offer_set_id: str | None = None
     events: list[JobEvent] = field(default_factory=list)
 
     @property
@@ -80,6 +82,7 @@ class _Job:
             "build_id": self.build_id,
             "revision": self.revision,
             "resolution_id": self.resolution_id,
+            "offer_set_id": self.offer_set_id,
             "events": [e.model_dump(mode="json") for e in self.events],
         }
 
@@ -123,6 +126,7 @@ class JobManager:
             build_id=raw.get("build_id"),
             revision=raw.get("revision"),
             resolution_id=raw.get("resolution_id"),
+            offer_set_id=raw.get("offer_set_id"),
             events=[JobEvent.model_validate(e) for e in raw.get("events", [])],
         )
         if not job.terminal:
@@ -202,6 +206,17 @@ class JobManager:
             self._persist(job)
             self._cond.notify_all()
 
+    def complete_offer_set(self, job_id: str, offer_set_id: str) -> None:
+        with self._cond:
+            job = self._lookup(job_id)
+            if job.terminal:
+                raise ValueError(f"job {job_id} is already {job.status}")
+            self._append(job, "complete", "system", "ok", "Offers ready")
+            job.status = "complete"
+            job.offer_set_id = offer_set_id
+            self._persist(job)
+            self._cond.notify_all()
+
     def fail(self, job_id: str, error: ApiError) -> None:
         with self._cond:
             job = self._lookup(job_id)
@@ -255,4 +270,5 @@ class JobManager:
             build_id=job.build_id,
             revision=job.revision,
             resolution_id=job.resolution_id,
+            offer_set_id=job.offer_set_id,
         )

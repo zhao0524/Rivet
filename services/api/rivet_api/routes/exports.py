@@ -30,7 +30,7 @@ def export_bom(build_id: str, request: Request, revision: int | None = Query(def
     deps = request.app.state.deps
     plan, catalog = deps.store.get(build_id, revision), deps.engine.get_catalog()
     refuse_if_synthetic(plan, catalog, "EXPORT_REFUSED_SYNTHETIC", "A BOM export")
-    return _download(bom_to_csv(plan), "text/csv", f"{build_id}-r{plan['revision']}-bom.csv", plan, catalog)
+    return _download(bom_to_csv(plan, catalog), "text/csv", f"{build_id}-r{plan['revision']}-bom.csv", plan, catalog)
 
 
 @router.get("/api/projects/{build_id}/exports/build.json")

@@ -47,6 +47,8 @@ class Deps:
 
     resolver: Any = None  # ProductResolver (resolution/resolver.py)
     resolutions: Any = None  # ResolutionStore
+    offers_provider: Any = None  # OffersProvider (offers/provider.py)
+    offer_sets: Any = None  # OfferSetStore
 
 
 _VALIDATE_STATUS = {

@@ -21,7 +21,7 @@ build-backend = "setuptools.build_meta"
 include = ["rivet_engine*"]
 
 [tool.setuptools.package-data]
-rivet_engine = ["data/**/*.json", "data/**/*.md"]
+rivet_engine = ["data/**/*.json", "data/**/*.md", "ecommerce/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -48,10 +48,12 @@ The API reads only the process environment, never a `.env` file: export the vari
 | `BACKBOARD_LLM_PROVIDER` | `openai` | `backboard` only: which LLM provider Backboard routes the request to |
 | `BACKBOARD_BASE_URL` | `https://app.backboard.io/api` | `backboard` only: Backboard API base URL |
 | `RIVET_RESOLVER` | `stub` | Product resolver. Only `stub` exists until lane B's resolver lands; it is labeled a saved example and is refused in `RIVET_MODE=live` |
+| `RIVET_OFFERS_PROVIDER` | `stub` | Where-to-buy offers provider: `stub` (canned fixtures, never a live lookup), `recorded` (engine replays saved pages) or `live` (engine fetches the web). `recorded`/`live` need `rivet_engine.ecommerce`; any other value fails at startup. See [Offers](#offers) |
 | `RIVET_ENABLE_ESTELLE` | `false` | Turn on the Estelle grounding client |
 | `RIVET_ESTELLE_MODE` | `cli` | `cli` works; `mcp` always reports unavailable (tool parameters are undocumented) |
 | `RIVET_ESTELLE_REPO` | this repo | Repository Estelle should ground against |
 | `RIVET_LIVE_VISION_TEST` | unset | Tests only: `1` enables the paid, opt-in `tests/test_live_vision_provider.py` (see [Prove the model sees the image](#prove-the-model-sees-the-image)) |
+| `RIVET_LIVE_OFFERS_TEST` | unset | Tests only: `1` enables the opt-in `tests/test_live_offers_provider.py`, which fetches real vendor pages through the live offers provider (see [Offers](#offers)) |
 
 A missing model, key or `openai` package for the selected provider fails at startup with a message that names it. (`RIVET_CATALOG_PATH` in the root `.env.example` is not read by this API.) The `openai` SDK also honors its own variables such as `OPENAI_BASE_URL`, `OPENAI_ORG_ID` and `OPENAI_PROJECT_ID` if they are set; this API never sets or reads them.
 
@@ -140,11 +142,14 @@ Errors always use `{"error": {"code", "message", "details", "retryable"}}`.
 | POST | `/api/resolve` | 202 `{job_id, status: "queued", resolution_id: null}`; body `{input: {kind, image_asset_id?, user_text?}}`. Poll `GET /api/jobs/{job_id}` until it carries `resolution_id`. 503 `RESOLVER_UNAVAILABLE` in live mode without a live resolver |
 | GET | `/api/resolutions/{resolution_id}` | The stored resolution: `outcome` (`exact_match`, `partial_match`, `no_match_with_alternatives`, `unsupported`), per-part status (`verified`, `inferred`, `not_found`, `stale`, `conflict`, `unavailable`), typical-for-category parts kept in their own list, and the evidence ledger |
 | GET | `/api/resolutions/{resolution_id}/evidence` | Only the ledger: every record the resolver returned, with what the gates concluded about it |
+| GET | `/api/parts/{catalog_id}/offers` | `OfferSet` for the part's catalog SKU; `?sort=&vendor_tier=&in_stock=&min_rating=&max_price=&currency=`. 404 `PART_NOT_FOUND`; 422 `EXPORT_REFUSED_SYNTHETIC` for `demo.*` parts (no provider call); 202 `{job_id, status, offer_set_id: null}` only when the `live` provider has no cached answer |
+| POST | `/api/offers/search` | `{sku?, mpn?, gtin?, manufacturer?}` (at least one of `sku`/`mpn`/`gtin`) plus the same sort/filter fields. 200 `OfferSet` from `stub`, `recorded` or the cache; 202 job for a live miss (poll `GET /api/jobs/{job_id}` until it carries `offer_set_id`). 400 `INVALID_IDENTIFIER` for an empty identifier or a GTIN with a bad check digit |
+| GET | `/api/offers/{offer_set_id}` | The stored, unfiltered `OfferSet` (default `reliability` order). 404 `OFFER_SET_NOT_FOUND` |
 | GET | `/api/projects/examples` | The saved build, labeled `fixture` |
 | GET | `/api/projects/{build_id}` | `?revision=` optional |
 | GET | `/api/projects/{build_id}/revisions` | Revision summaries |
 | POST | `/api/projects/{build_id}/edits` | `{base_revision, operation, instruction?}`; 409 on a stale `base_revision`; 422 `UNSUPPORTED_EDIT` for anything but the five allowed operations |
-| GET | `/api/projects/{build_id}/exports/bom.csv` | Null prices stay empty cells; the subtotal is the engine's, never computed here. 422 `EXPORT_REFUSED_SYNTHETIC` for a plan built from synthetic demo parts |
+| GET | `/api/projects/{build_id}/exports/bom.csv` | Null prices stay empty cells; the subtotal is the engine's, never computed here. Trailing `sku`, `vendor`, `offer_url` columns come from the catalog entry (empty when unknown; `offer_url` only when the purchase link is verified). 422 `EXPORT_REFUSED_SYNTHETIC` for a plan built from synthetic demo parts |
 | GET | `/api/projects/{build_id}/exports/build.json` | The stored revision; every export carries `X-Rivet-Synthetic: true\|false` |
 | GET | `/api/projects/{build_id}/exports/firmware.zip` | `?revision=`, `?compile=true`; header `X-Rivet-Compile-Status`. 422 `FIRMWARE_REFUSED` for synthetic or unbuildable plans |
 | GET | `/api/estelle/status` | Enabled/available, plus the output of `estelle doctor` when reachable |
@@ -185,6 +190,35 @@ Verified by the automated tests (offline, fake backends): the whole API contract
 - An offline or blocked resolver fails the job (`RESOLVER_OFFLINE` 503, `RESOLVER_BLOCKED` 502) and nothing is stored. Live mode with a non-live resolver is refused up front, and a resolver that reports itself live but returns sample data (reserved or documentation hosts such as `*.invalid`, `*.test`, `example.com`, IP addresses, or `STUB-`/`synthetic` values) fails the job with `SYNTHETIC_EVIDENCE_IN_LIVE_RESOLUTION` 502 and stores nothing. In fixture mode the stub works, and the stored `provenance.saved_example` is true with a banner.
 
 Errors: `RESOLVER_UNAVAILABLE`, `RESOLVER_OFFLINE`, `RESOLVER_BLOCKED`, `RESOLVER_FAILED`, `RESOLVER_CONTRACT_VIOLATION`, `SYNTHETIC_EVIDENCE_IN_LIVE_RESOLUTION`, `VISION_PARSE_FAILED`, `RESOLUTION_NOT_FOUND`. Resolutions are written once to `<data root>/resolutions/`.
+
+## Offers
+
+The where-to-buy layer of `docs/e-commerce-layer/plan.md`: given a SKU/MPN, list verified vendor offers, sort and filter them, and hand the user a link. Rivet does not sell parts, carry a cart or use affiliate links. Bodies are `OfferSet` from `contracts/offer.schema.json` (pydantic mirror in `rivet_api/offers/models.py`, strict: a price needs a currency, an exact match needs an evidence quote, a verified offer is never fuzzy, URLs are https only, `"0"` is not a price). Reference fixtures live in `fixtures/offers/`; the packaged copies in `rivet_api/data/fixtures/offers/` are drift-tested against them.
+
+Providers (`RIVET_OFFERS_PROVIDER`, built by `rivet_api/offers/factory.py`):
+
+| Provider | What answers | Label |
+|---|---|---|
+| `stub` (default) | The packaged fixtures, matched on the normalised `sku\|mpn\|gtin\|manufacturer` key (or on SKU alone when unambiguous); anything else is `outcome: not_found` with a ledger entry saying no search was made | Every set says `provider_mode: "stub"` and carries a "not a live lookup" notice |
+| `recorded` | `rivet_engine.ecommerce.find_offers(..., mode="recorded")` replaying saved pages | `provider_mode: "recorded"` |
+| `live` | `rivet_engine.ecommerce.find_offers(..., mode="live")`; a cache miss runs as a job (202) because it fetches the web | `provider_mode: "live"`; a live set with synthetic `*.example` vendors is refused with 502 `SYNTHETIC_OFFERS_IN_LIVE_SET` |
+
+The API re-validates whatever a provider returns; a malformed set (non-https or `javascript:` link, price without currency, fuzzy match in `offers`) is 502 `PROVIDER_ERROR`, never a response. Engine failures map by exception class: `ProviderQuota` 429 `PROVIDER_QUOTA` (retryable), `ProviderAuth` 502 `PROVIDER_AUTH`, `ProviderUnavailable` 503 `PROVIDER_UNAVAILABLE` (retryable), `InvalidIdentifier` 400 `INVALID_IDENTIFIER`. Sets are kept in memory (bounded, per process) under an `offer_set_id`, with a 15 minute cache on the normalised query key, so whitespace and case variants of one SKU share an answer.
+
+Sorting and filtering (`rivet_api/offers/ranking.py`) are server-side and deterministic, and apply to `offers` only (`possible_matches` and `alternatives` are returned as stored):
+
+- `sort`: `reliability` (default), `price_asc`, `price_desc`, `rating`, `availability`, `newest`. Unknown prices and ratings sort last in both price directions and in `rating`; every order ends with `offer_id`.
+- Prices are compared only inside one currency: `?currency=` if given, else the majority currency among priced offers. Other currencies follow in `offer_id` order; there is no conversion. A `per_pack` price is compared per unit (`price_amount / pack.quantity`).
+- Filters: `vendor_tier` (repeatable), `in_stock=true`, `min_rating` (0..5, on a five-point scale; offers with `rating: null` are excluded), `max_price` (within the comparison currency; unknown prices are excluded because they cannot be shown to satisfy it), `currency`. An empty result after filtering is `200` with `offers: []` and the original `outcome`.
+- `status: stale` and `status: demoted` offers stay in the list with their label; nothing is removed silently.
+
+Codes: `PART_NOT_FOUND` 404, `OFFER_SET_NOT_FOUND` 404, `INVALID_IDENTIFIER` 400, `EXPORT_REFUSED_SYNTHETIC` 422 (reused for `demo.*` parts), `PROVIDER_QUOTA` 429, `PROVIDER_AUTH` 502, `PROVIDER_ERROR` 502, `SYNTHETIC_OFFERS_IN_LIVE_SET` 502, `PROVIDER_UNAVAILABLE` 503.
+
+Tests: `tests/test_offers_*.py` run offline against the stub and fake providers. The opt-in live smoke is skipped unless the flag is set and `rivet_engine.ecommerce` is importable:
+
+```bash
+RIVET_LIVE_OFFERS_TEST=1 .venv/bin/python -m pytest -q tests/test_live_offers_provider.py -rs
+```
 
 ## Real products only
 
