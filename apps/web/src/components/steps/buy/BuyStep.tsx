@@ -24,7 +24,8 @@ export function BuyStep() {
   const concept = build.ready && isConceptPlan(plan);
   const allLines = useMemo(() => (build.ready ? buyLines(plan, catalog) : []), [build.ready, plan, catalog]);
   // A concept's body shapes and wires are part of the 3D model, not things to buy.
-  const lines = useMemo(() => (concept ? allLines.filter((l) => l.url) : allLines), [concept, allLines]);
+  const lines = useMemo(() => allLines.filter((l) => !l.included && (!concept || l.url)), [concept, allLines]);
+  const included = allLines.filter((l) => l.included);
   const shapes = concept ? allLines.filter((l) => !l.url) : [];
   const owned = project.ownedCatalogIds;
   const currency = plan.bom.currency || 'USD';
@@ -137,11 +138,18 @@ export function BuyStep() {
               <VendorRow key={group.vendor} group={group} currency={currency} owned={owned} onToggleOwned={toggleOwned} />
             ))}
           </ul>
+          {included.length > 0 ? (
+            <section className="ui-island" aria-label="Included in kits" data-testid="buy-included">
+              <h2 className="ui-h3">Included in kits</h2>
+              <p className="p2-note">These parts come with a kit already in the parts list. No separate purchase is needed.</p>
+              <ul>{included.map((line) => <li key={line.catalogId}>{line.name} · Qty {line.quantity}</li>)}</ul>
+            </section>
+          ) : null}
 
           {outOfStock.length > 0 ? (
             <section className="buy-oos" aria-labelledby="buy-oos-title" data-testid="buy-out-of-stock">
               <h2 id="buy-oos-title" className="ui-h3">
-                Out of stock right now
+                Out of stock when checked
               </h2>
               {outOfStock.map((line) => (
                 <article key={line.catalogId} className="buy-oos__card">
@@ -154,7 +162,7 @@ export function BuyStep() {
                       </span>
                     </div>
                   </div>
-                  <p className="p2-note">No in-stock alternative found yet. It doesn&apos;t block the build: buy the rest now and check this listing again later.</p>
+                  <p className="p2-note">Check the vendor for current availability. You will need this part or a compatible replacement before assembling the build.</p>
                 </article>
               ))}
             </section>

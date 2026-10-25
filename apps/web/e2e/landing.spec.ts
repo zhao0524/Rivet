@@ -4,7 +4,7 @@ import { expectUrl, ACCOUNT_KEY, DRAFT_KEY, EXAMPLE_ID, readJson, readProjects, 
 const PROMPT = 'A two-wheel ESP32 robot that stops 40 cm from a wall';
 
 test.describe('Landing', () => {
-  test('Build it previews, Save and continue stores a local account and hands the draft to /new', async ({ page }) => {
+  test('Build it previews and hands the draft to /new without requiring an account', async ({ page }) => {
     const errors = watchPageErrors(page);
     await page.goto('/');
     await expect(page.getByTestId('home-page')).toBeVisible();
@@ -21,31 +21,17 @@ test.describe('Landing', () => {
     expect(await readProjects(page)).toEqual([]);
 
     await page.getByTestId('preview-continue').click();
-    const save = page.getByTestId('save-modal');
-    await expect(save).toBeVisible();
+    await expect(page.getByTestId('save-modal')).toHaveCount(0);
     await expect(preview).toBeHidden();
-
-    // A bad email is refused in place.
-    await page.getByTestId('save-email').fill('not-an-email');
-    await page.getByTestId('save-continue-email').click();
-    await expect(save.getByRole('alert')).toContainText('Enter an email address');
-    await expect(save).toBeVisible();
-
-    await page.getByTestId('save-email').fill('becca@example.edu');
-    await page.getByTestId('save-continue-email').click();
 
     await expectUrl(page, /\/new\?draft=p_[a-z0-9]+$/);
     const draftId = new URL(page.url()).searchParams.get('draft')!;
     const stored = await readJson<{ id: string; text: string }>(page, DRAFT_KEY);
     expect(stored).toEqual({ id: draftId, text: PROMPT });
-    expect(await readJson<{ email: string; provider: string }>(page, ACCOUNT_KEY)).toMatchObject({
-      email: 'becca@example.edu',
-      provider: 'email',
-    });
+    expect(await readJson(page, ACCOUNT_KEY)).toBeNull();
 
     // The app prompt restores the same text under the same draft id and submits it as that project.
     await expect(page.getByTestId('new-prompt-input')).toHaveValue(PROMPT);
-    await expect(page.getByLabel('Saved as becca@example.edu')).toBeVisible();
     await page.getByTestId('new-prompt-submit').click();
     await expectUrl(page, `/p/${draftId}/clarify`);
     const [project] = await readProjects(page);
@@ -54,7 +40,7 @@ test.describe('Landing', () => {
     expect(errors).toEqual([]);
   });
 
-  test('a saved account skips the save modal next time', async ({ page }) => {
+  test('a legacy saved account does not interrupt the draft handoff', async ({ page }) => {
     const errors = watchPageErrors(page);
     await page.addInitScript(
       ([key, json]) => window.localStorage.setItem(key, json),

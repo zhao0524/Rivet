@@ -1,6 +1,6 @@
 'use client';
 
-import { formatMoney, makerLabel, PART_GROUP_HINT, PART_GROUP_LABEL, roleLabel, type PartGroup, type PartRow } from '../../../lib/flow/derive';
+import { formatMoney, isIncludedKitPart, makerLabel, PART_GROUP_HINT, PART_GROUP_LABEL, roleLabel, type PartGroup, type PartRow } from '../../../lib/flow/derive';
 
 export interface PartListProps {
   groups: ReadonlyArray<{ group: PartGroup; rows: PartRow[] }>;
@@ -69,7 +69,7 @@ export function PartList({ groups, selectedId, collapsed, currency, onToggleGrou
                         ) : null}
                         {price !== null && price !== undefined ? (
                           <span className="p1-part__price">
-                            {formatMoney(Number(price), row.catalog?.sourcing.price_currency ?? currency)}
+                            {isIncludedKitPart(row.catalog) ? 'Included in kit' : formatMoney(Number(price), row.catalog?.sourcing.price_currency ?? currency)}
                           </span>
                         ) : (
                           <span className="p1-part__price p1-part__price--none">No price</span>

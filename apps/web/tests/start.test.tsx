@@ -11,6 +11,7 @@ import { getSyntheticRoverIntent } from '../src/lib/fixtures';
 import { createProjectRecord, getProject, saveProject, writeDraft } from '../src/lib/flow/projects';
 import { STEPS } from '../src/lib/flow/steps';
 import { useStudioPlanStore } from '../src/lib/plan-store';
+import { RivetError } from '../src/lib/rivet/errors';
 
 const nav = { push: vi.fn(), replace: vi.fn(), pathname: '/', search: '' };
 
@@ -284,6 +285,20 @@ describe('A3 Generate', () => {
     fireEvent.click(screen.getByTestId('generate-cancel'));
     expect(getProject('p_gen3')?.phase).toBe('clarify');
     expect(nav.push).toHaveBeenCalledWith('/p/p_gen3/clarify');
+  });
+
+  it('returns an expired interpretation to Clarify instead of retrying the same rejected id', async () => {
+    startOverride = () => Promise.reject(new RivetError({ kind: 'not_found', code: 'INTENT_NOT_FOUND', message: 'Interpret the input again' }));
+    saveProject(createProjectRecord({ id: 'p_expired', prompt: 'rover', phase: 'generating', intentId: 'expired-id' }));
+    nav.pathname = '/p/p_expired/generate';
+    await renderIn(<ProjectShell id="p_expired"><GenerateScreen /></ProjectShell>);
+    await screen.findByTestId('generate-error');
+    const retry = screen.getByTestId('generate-resume');
+    expect(retry.textContent).toBe('Review request');
+    fireEvent.click(retry);
+    expect(getProject('p_expired')?.intentId).toBeNull();
+    expect(nav.push).toHaveBeenCalledWith('/p/p_expired/clarify');
+    expect(startGeneration).toHaveBeenCalledTimes(1);
   });
 
   it('shows the done state without starting a job when the project is already ready', async () => {

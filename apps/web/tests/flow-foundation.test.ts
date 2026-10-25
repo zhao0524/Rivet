@@ -53,6 +53,8 @@ describe('derivations on the saved rovers', () => {
     expect(groups.every((g) => g.rows.length > 0)).toBe(true);
     expect(partGroup('chassis')).toBe('frame');
     expect(partGroup('sensor')).toBe('sensing');
+    expect(partGroup('motor_driver', 'motor_driver')).toBe('control');
+    expect(partGroup('battery_holder', 'motor_power')).toBe('power');
   });
 
   it('shows only failing or safety checks as blockers', () => {
@@ -77,6 +79,21 @@ describe('derivations on the saved rovers', () => {
     }
     const synthetic = buyLines(getSyntheticRoverPlan(), getSyntheticCatalog());
     expect(synthetic.every((l) => l.unitPrice === null || Number.isFinite(l.unitPrice))).toBe(true);
+  });
+
+  it('recognizes explicitly documented kit contents without treating arbitrary zero prices as included', () => {
+    const lines = buyLines(plan, catalog);
+    expect(lines.find((l) => l.catalogId === 'caster.sparkfun_shadow_nub')?.included).toBe(true);
+    const withoutKit = structuredClone(plan);
+    // A kit component without its parent in the order must remain visible as a procurement gap.
+    const kitId = catalog.find((c) => c.identity.sku === 'ROB-13301')!.catalog_id;
+    withoutKit.bom.items = withoutKit.bom.items.filter((item) => item.catalog_id !== kitId);
+    expect(buyLines(withoutKit, catalog).find((l) => l.catalogId === 'caster.sparkfun_shadow_nub')?.included).toBe(false);
+    const changed = structuredClone(catalog);
+    const board = changed.find((c) => c.catalog_id === 'board.esp32_devkitc_v4_wroom32e')!;
+    board.sourcing.price_amount = '0.00';
+    board.evidence.notes = ['No price evidence available'];
+    expect(buyLines(plan, changed).find((l) => l.catalogId === board.catalog_id)?.included).not.toBe(true);
   });
 
   it('links the hand-picked parts of a concept as suggestions, never as verified listings', () => {

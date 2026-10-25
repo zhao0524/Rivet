@@ -134,7 +134,8 @@ describe('Step 4 Buy', () => {
       expect(a.getAttribute('target')).toBe('_blank');
       expect(a.getAttribute('rel')).toBe('noopener noreferrer');
     }
-    expect(within(dialog).getByTestId('buy-cart-no-vendor').textContent).toContain('nub caster');
+    expect(within(dialog).queryByTestId('buy-cart-no-vendor')).toBeNull();
+    expect(screen.getByTestId('buy-included').textContent).toContain('nub caster');
     expect(within(dialog).queryByText(/Open all/)).toBeNull();
     fireEvent.click(within(dialog).getByTestId('buy-cart-continue'));
     expect(push).toHaveBeenCalledWith('/p/p1/build');
@@ -145,7 +146,7 @@ describe('Step 4 Buy', () => {
     await renderStep('buy', <BuyStep />);
     const oos = await screen.findByTestId('buy-out-of-stock', {}, { timeout: 8000 });
     expect(oos.textContent).toContain('ESP32-DevKitC');
-    expect(oos.textContent).toContain('No in-stock alternative found yet');
+    expect(oos.textContent).toContain('Check the vendor for current availability');
   });
 });
 
@@ -233,45 +234,21 @@ describe('Done', () => {
     expect(screen.getByTestId('done-missing').textContent).toContain('nub caster');
     expect(screen.getByTestId('done-blockers').textContent).toContain('The left motor may not fit the frame');
     expect(screen.getByTestId('done-blockers').textContent).toContain('Not confirmed');
-    expect(screen.getByTestId('done-primary').textContent).toBe('Share');
+    expect(screen.getByTestId('done-primary').textContent).toBe('Export build');
   });
 });
 
 describe('Iterate modal', () => {
-  it('shows the engine reason when the edit is not accepted and keeps the text', async () => {
+  it('offers a new project instead of submitting unsupported edits to the saved example', async () => {
     seed();
     await renderStep('buy', <BuyStep />);
     await screen.findByTestId('buy-vendors', {}, { timeout: 8000 });
     fireEvent.click(screen.getByTestId('step-overflow'));
     fireEvent.click(screen.getByTestId('buy-iterate'));
     const dialog = await screen.findByTestId('iterate');
-    const apply = within(dialog).getByTestId('iterate-apply') as HTMLButtonElement;
-    expect(apply.disabled).toBe(true);
-    fireEvent.click(within(dialog).getAllByTestId('iterate-example')[0]!);
-    const stop = 'Increase obstacle stop distance to 0.40 m';
-    expect((within(dialog).getByTestId('iterate-text') as HTMLTextAreaElement).value).toBe(stop);
-    expect(within(dialog).getAllByTestId('iterate-example')[0]!.getAttribute('aria-pressed')).toBe('true');
-    expect(apply.disabled).toBe(false);
-    const edit = vi.spyOn(FixtureSource.prototype, 'edit');
-    fireEvent.click(apply);
-    await waitFor(() => expect(edit).toHaveBeenCalled());
-    expect(edit.mock.calls[0]![1]).toMatchObject({
-      instruction: stop,
-      operation: { op: 'set_behavior_parameter', name: 'obstacle_stop_distance_m', value: 0.4 },
-    });
-    const reason = await screen.findByTestId('iterate-reason', {}, { timeout: 8000 });
-    // Plain words first; the engine's own message stays under Details.
-    expect(reason.textContent).toContain("Changes need Rivet's live engine, which isn't connected right now.");
-    expect(reason.querySelector('details')!.textContent).toContain('edits cannot be validated in fixture mode');
-    expect(reason.textContent).toContain(stop);
-    // The trace shows the real outcome, timed from send to answer, and stays open.
-    const trace = screen.getByTestId('iterate-thinking');
-    expect(trace.querySelectorAll('li')).toHaveLength(1);
-    expect(trace.textContent).toContain("Rivet didn't make this change");
-    expect(screen.getByTestId('iterate-thinking-label').textContent).toMatch(/^Answered in \d/);
-    expect(screen.getByTestId('iterate-thinking-toggle').getAttribute('aria-expanded')).toBe('true');
-    expect(screen.getByTestId('iterate')).toBeDefined();
-    expect((screen.getByTestId('iterate-text') as HTMLTextAreaElement).value).toBe(stop);
+    expect(within(dialog).queryByTestId('iterate-apply')).toBeNull();
+    expect(within(dialog).getByText(/cannot be edited/)).toBeDefined();
+    expect(within(dialog).getByRole('link', { name: 'Start a new build' }).getAttribute('href')).toBe('/new');
     expect(push).not.toHaveBeenCalledWith('/p/p1/review');
   });
 });

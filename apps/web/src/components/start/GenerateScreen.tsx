@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { partRows } from '../../lib/flow/derive';
 import { projectPath } from '../../lib/flow/steps';
 import type { BuildPlan, CatalogComponent } from '../../lib/rivet/types';
+import { RivetError } from '../../lib/rivet/errors';
 import { useProjectContext } from '../flow/ProjectShell';
 import type { useFlowStore } from '../flow/FlowProvider';
 import { Icon } from '../system/Icon';
@@ -52,6 +53,7 @@ export function GenerateScreen() {
   const store = build.store;
   const { plan, catalog } = store;
   const [startError, setStartError] = useState<string | null>(null);
+  const [needsInterpretation, setNeedsInterpretation] = useState(false);
   const [starting, setStarting] = useState(false);
   const alreadyReady = project.phase === 'ready';
   const fixture = store.dataSource.mode === 'fixture';
@@ -80,12 +82,14 @@ export function GenerateScreen() {
 
   async function start() {
     setStartError(null);
+    setNeedsInterpretation(false);
     setStarting(true);
     jobOwner = project.id;
     try {
       await store.startGeneration(requestRef.current);
     } catch (err) {
       startedProjects.delete(project.id);
+      setNeedsInterpretation(err instanceof RivetError && ['INTENT_NOT_FOUND', 'INTENT_INPUT_MISMATCH'].includes(err.code));
       setStartError(err instanceof Error && err.message ? err.message : 'Rivet could not start.');
     } finally {
       setStarting(false);
@@ -129,7 +133,7 @@ export function GenerateScreen() {
   function cancel() {
     if (job) store.cancelJob(job.job_id);
     startedProjects.delete(project.id);
-    update({ phase: 'clarify' });
+    update({ phase: 'clarify', intentId: null });
     router.push(projectPath(project.id, 'clarify'));
   }
 
@@ -176,8 +180,8 @@ export function GenerateScreen() {
               <Icon name="arrowRight" />
             </button>
           ) : failed ? (
-            <button type="button" className="ui-btn ui-btn--primary ui-btn--lg" onClick={resume} disabled={starting} data-testid="generate-resume">
-              Resume
+            <button type="button" className="ui-btn ui-btn--primary ui-btn--lg" onClick={needsInterpretation ? cancel : resume} disabled={starting} data-testid="generate-resume">
+              {needsInterpretation ? 'Review request' : 'Resume'}
             </button>
           ) : null}
         </div>

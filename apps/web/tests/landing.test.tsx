@@ -33,7 +33,7 @@ function typePrompt(text: string) {
   fireEvent.click(screen.getByTestId('home-prompt-submit'));
 }
 
-describe('Landing page (M1, Guest preview, M2)', () => {
+describe('Landing page and guest preview', () => {
   it('renders the shared PromptBox in the hero: plain example prompts, a picture upload and "Build it"', () => {
     render(<HomePage />);
     expect(screen.getByTestId('home-page')).toBeDefined();
@@ -52,7 +52,7 @@ describe('Landing page (M1, Guest preview, M2)', () => {
     expect(screen.getByTestId('theme-toggle')).toBeDefined();
   });
 
-  it('Build it opens the guest preview, Save and continue opens M2, email continues to /new?draft=<id>', async () => {
+  it('continues with the saved draft without asking for an account or email', async () => {
     render(<HomePage />);
     typePrompt('A desk rover that stops before a wall');
 
@@ -66,18 +66,7 @@ describe('Landing page (M1, Guest preview, M2)', () => {
     expect(push).not.toHaveBeenCalled();
 
     fireEvent.click(screen.getByTestId('preview-continue'));
-    const save = await screen.findByTestId('save-modal');
-    expect(save.textContent).toMatch(/saved in this browser/i);
-    expect(save.textContent).toMatch(/not live yet/i);
-
-    // Invalid email shows an inline error and does not navigate.
-    fireEvent.change(screen.getByTestId('save-email'), { target: { value: 'nope' } });
-    fireEvent.click(screen.getByTestId('save-continue-email'));
-    expect(screen.getByRole('alert').textContent).toMatch(/email/i);
-    expect(push).not.toHaveBeenCalled();
-
-    fireEvent.change(screen.getByTestId('save-email'), { target: { value: 'becca@umich.edu' } });
-    fireEvent.click(screen.getByTestId('save-continue-email'));
+    expect(screen.queryByTestId('save-modal')).toBeNull();
 
     await waitFor(() => expect(push).toHaveBeenCalledTimes(1));
     const href = push.mock.calls[0]![0] as string;
@@ -85,19 +74,10 @@ describe('Landing page (M1, Guest preview, M2)', () => {
     const draft = JSON.parse(window.localStorage.getItem('rivet.draft.v1')!) as { id: string; text: string };
     expect(href).toBe(`/new?draft=${draft.id}`);
     expect(draft.text).toBe('A desk rover that stops before a wall');
-    expect(readAccount()).toMatchObject({ email: 'becca@umich.edu', provider: 'email' });
+    expect(readAccount()).toBeNull();
   });
 
-  it('Continue with Google stores a google account and continues', async () => {
-    render(<HomePage />);
-    typePrompt('Rover');
-    fireEvent.click(await screen.findByTestId('preview-continue'));
-    fireEvent.click(await screen.findByTestId('save-continue-google'));
-    await waitFor(() => expect(push).toHaveBeenCalledTimes(1));
-    expect(readAccount()).toMatchObject({ email: 'Google account', provider: 'google' });
-  });
-
-  it('skips M2 when a local account already exists', async () => {
+  it('still opens the draft when a legacy local account exists', async () => {
     saveAccount({ email: 'x@y.z', provider: 'email', savedAt: new Date().toISOString() });
     render(<HomePage />);
     typePrompt('Rover');
@@ -122,12 +102,13 @@ describe('Landing page (M1, Guest preview, M2)', () => {
     expect(push).toHaveBeenCalledWith(`/p/${p.id}/review`);
   });
 
-  it('shows one 3D scene in the scroll demo, with a six-step build overview', () => {
+  it('shows the sourced example with its unresolved fit clearly labelled', () => {
     render(<HomePage />);
     const section = screen.getByTestId('home-assembly-scroll');
     expect(screen.getByTestId('home-hero-stage')).toBeDefined();
     expect(section.querySelectorAll('[data-testid="rover-scene"]')).toHaveLength(1);
     expect(section.querySelectorAll('.mk-build__step')).toHaveLength(6);
+    expect(screen.getByText('Saved example · sourced parts · fit needs review')).toBeDefined();
   });
 
   it('shows three gallery samples, each tagged and honest about what Rivet builds', () => {

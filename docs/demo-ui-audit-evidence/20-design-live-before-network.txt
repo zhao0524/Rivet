@@ -1,0 +1,18 @@
+## Network requests
+Showing 1-16 of 16 (Page 1 of 1).
+reqid=111 GET http://localhost:3000/design?prompt=A%20small%20orange%20two-wheel%20rover [200]
+reqid=120 GET http://localhost:3000/api/projects/examples [200]
+reqid=121 GET http://localhost:3000/api/estelle/status [net::ERR_ABORTED]
+reqid=122 GET http://localhost:3000/api/projects/examples [200]
+reqid=123 GET http://localhost:3000/api/estelle/status [200]
+reqid=124 GET http://localhost:3000/api/v2/session [200]
+reqid=125 GET http://localhost:3000/api/v2/session [200]
+reqid=126 POST http://localhost:3000/api/v2/generations [202]
+reqid=127 POST http://localhost:3000/api/v2/generations [202]
+reqid=128 GET http://localhost:3000/api/v2/generations/gen-71c36a9c43e2f824fb6eeef1/events?last_event_id=0 [404]
+reqid=129 GET http://localhost:3000/api/v2/generations/gen-d5fc1c22c433c804e8c06a7b/events?last_event_id=0 [200]
+reqid=130 GET http://localhost:3000/api/v2/generations/gen-71c36a9c43e2f824fb6eeef1 [404]
+reqid=131 GET http://localhost:3000/api/v2/generations/gen-d5fc1c22c433c804e8c06a7b [200]
+reqid=135 GET http://localhost:3000/api/v2/assets/asset-e9c7e58d34268a4d9f83bbd38780a1d1b1408691e996782e042ccf075fff526f [200]
+reqid=136 GET http://localhost:3000/api/v2/projects/design-f2184d054fb2f79ac8dcc39f/design [200]
+reqid=137 GET http://localhost:3000/api/v2/projects/design-f2184d054fb2f79ac8dcc39f/revisions [200]

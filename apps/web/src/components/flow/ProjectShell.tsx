@@ -99,7 +99,19 @@ export function ProjectShell({ id, children }: { id: string; children: ReactNode
     <ProjectContext.Provider value={value}>
       <AppHeader center={<span data-testid="project-title">{project.title}</span>} />
       {showStepper ? <Stepper projectId={project.id} current={segment as StepId} furthest={project.furthestStep} /> : null}
-      <main className="app-main">{pendingStep(pendingNav?.path, project.id, segment) ? <StepSkeleton /> : children}</main>
+      <main className="app-main">
+        {project.phase === 'ready' && build.error && !build.ready ? (
+          <section className="ui-card ui-card--pad" role="alert" data-testid="project-load-error">
+            <h1 className="ui-h2">This build could not be loaded</h1>
+            <p className="ui-muted">Your project is still saved on this device. The build may be unavailable or the connection may have been interrupted.</p>
+            <details><summary>Error details</summary><p>{build.error}</p></details>
+            <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
+              <button type="button" className="ui-btn ui-btn--primary" onClick={() => window.location.reload()}>Try again</button>
+              <Link href="/projects" className="ui-btn ui-btn--secondary">Back to projects</Link>
+            </div>
+          </section>
+        ) : pendingStep(pendingNav?.path, project.id, segment) ? <StepSkeleton /> : children}
+      </main>
       <IterateModal open={iterateOpen} onClose={() => setIterateOpen(false)} />
     </ProjectContext.Provider>
   );

@@ -1,14 +1,11 @@
 'use client';
 
 import { useAppRouter } from '../system/Navigation';
-import { useState, type FormEvent, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
   createProjectRecord,
-  readAccount,
-  saveAccount,
   saveProject,
   type Draft,
-  type LocalAccount,
 } from '../../lib/flow/projects';
 import { setPendingImage } from '../../lib/flow/pending-image';
 import { projectPath } from '../../lib/flow/steps';
@@ -64,18 +61,15 @@ const EXAMPLE_PROMPTS = [
   'Help me build a drone from scratch',
 ] as const;
 
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 /**
- * Landing hero flow (M1 → Guest preview → M2). The shared PromptBox keeps the draft in the
+ * The shared PromptBox keeps the draft in the
  * browser under a stable id; "Build it" previews what Rivet will make without generating
- * anything, "Save and continue" stores a local account (or skips when one exists) and hands
- * the draft id to the app prompt at `/new?draft=<id>`.
+ * anything, then hands the draft to `/new?draft=<id>`. No account is needed for local projects.
  */
 export function HeroFlow() {
   const router = useAppRouter();
   const [draft, setDraft] = useState<Draft | null>(null);
-  const [stage, setStage] = useState<'idle' | 'preview' | 'save'>('idle');
+  const [stage, setStage] = useState<'idle' | 'preview'>('idle');
 
   function openApp(draftId: string) {
     router.push(`/new?draft=${encodeURIComponent(draftId)}`);
@@ -83,13 +77,6 @@ export function HeroFlow() {
 
   function continueFromPreview() {
     if (!draft) return;
-    if (readAccount()) openApp(draft.id);
-    else setStage('save');
-  }
-
-  function saveAndContinue(account: LocalAccount) {
-    if (!draft) return;
-    saveAccount(account);
     openApp(draft.id);
   }
 
@@ -114,7 +101,6 @@ export function HeroFlow() {
         onClose={() => setStage('idle')}
         onContinue={continueFromPreview}
       />
-      <SaveModal open={stage === 'save'} onClose={() => setStage('preview')} onSave={saveAndContinue} />
     </div>
   );
 }
@@ -136,12 +122,12 @@ function GuestPreview({
       open={open}
       onClose={onClose}
       title="Here is what Rivet will make"
-      description="Nothing is generated yet. Save the project to continue in the app."
+      description="Nothing is generated yet. Continue to confirm the request. Your project is saved in this browser."
       testId="guest-preview"
       initialFocus="[data-testid='preview-continue']"
       footer={
         <button type="button" className="ui-btn ui-btn--primary" onClick={onContinue} data-testid="preview-continue">
-          Save and continue
+          Continue to build
           <Icon name="arrowRight" />
         </button>
       }
@@ -183,90 +169,6 @@ function GuestPreview({
           ))}
         </ul>
       </div>
-    </Modal>
-  );
-}
-
-/** M2 Save your project. Hackathon scope: both paths store a local account; nothing is sent. */
-function SaveModal({
-  open,
-  onClose,
-  onSave,
-}: {
-  open: boolean;
-  onClose: () => void;
-  onSave: (account: LocalAccount) => void;
-}) {
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState<string | null>(null);
-
-  function submitEmail(e: FormEvent) {
-    e.preventDefault();
-    const value = email.trim();
-    if (!EMAIL.test(value)) {
-      setError('Enter an email address like you@school.edu.');
-      return;
-    }
-    onSave({ email: value, provider: 'email', savedAt: new Date().toISOString() });
-  }
-
-  return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      title="Save your project"
-      description="So you can come back to it and share it."
-      testId="save-modal"
-    >
-      <form className="mk-save" onSubmit={submitEmail} noValidate>
-        <div className="ui-field">
-          <label htmlFor="save-email" className="ui-label">
-            Email
-          </label>
-          <input
-            id="save-email"
-            className="ui-input"
-            type="email"
-            autoComplete="email"
-            inputMode="email"
-            placeholder="you@school.edu"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setError(null);
-            }}
-            aria-invalid={error ? true : undefined}
-            aria-describedby={error ? 'save-email-err' : undefined}
-            data-testid="save-email"
-          />
-          {error ? (
-            <p id="save-email-err" role="alert" className="mk-save__error">
-              {error}
-            </p>
-          ) : null}
-        </div>
-        <button type="submit" className="ui-btn ui-btn--primary ui-btn--block" data-testid="save-continue-email">
-          Continue with email
-        </button>
-        <div className="mk-save__or" aria-hidden="true">
-          or
-        </div>
-        <button
-          type="button"
-          className="ui-btn ui-btn--secondary ui-btn--block"
-          data-testid="save-continue-google"
-          onClick={() => onSave({ email: 'Google account', provider: 'google', savedAt: new Date().toISOString() })}
-        >
-          Continue with Google
-        </button>
-        <p className="mk-save__note">
-          <Icon name="info" />
-          <span>
-            Hackathon build: the project is saved in this browser only. Accounts are not live yet, so no email is sent
-            and nothing leaves this device.
-          </span>
-        </p>
-      </form>
     </Modal>
   );
 }

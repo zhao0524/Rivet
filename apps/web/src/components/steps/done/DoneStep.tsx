@@ -21,7 +21,7 @@ function finishedLabel(iso: string | null): string | null {
   return `Finished ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
 }
 
-/** Done: calm summary of the finished build with Share as the one primary action. */
+/** Done: summary and a portable build export; projects themselves only exist in this browser. */
 export function DoneStep() {
   const { project, build, openIterate } = useProjectContext();
   const { plan, catalog, dataSource } = build.store;
@@ -37,21 +37,6 @@ export function DoneStep() {
   const nicknames = useMemo(() => partNicknames(plan, catalog), [plan, catalog]);
   const missing = project.missingCatalogIds.map((id) => byId.get(id)?.identity.model ?? id);
 
-  async function share() {
-    const url = typeof window !== 'undefined' ? window.location.href : '';
-    try {
-      if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
-        await navigator.share({ title: project.title, url });
-        setStatus('Shared. The link opens on this device only, because projects are saved in this browser.');
-        return;
-      }
-      await navigator.clipboard.writeText(url);
-      setStatus('Link copied. It opens on this device only, because projects are saved in this browser.');
-    } catch {
-      setStatus(`Copy this link yourself: ${url}. It opens on this device only, because projects are saved in this browser.`);
-    }
-  }
-
   function exportBuild() {
     const url = dataSource.getExportUrl?.(plan.build_id, 'build.json', plan.revision) ?? null;
     if (url) {
@@ -64,7 +49,6 @@ export function DoneStep() {
 
   const overflow: OverflowItem[] = [
     { id: 'iterate', label: 'Change something', onSelect: openIterate, testId: 'done-iterate' },
-    { id: 'export', label: 'Download the design file (build.json)', disabled: !build.ready, onSelect: exportBuild, testId: 'done-export' },
     ...(printFiles.spec
       ? [
           {
@@ -81,7 +65,7 @@ export function DoneStep() {
 
   if (!build.ready) {
     return (
-      <StepLayout title="Done" purpose={PURPOSE} primary={{ label: 'Share', onClick: () => undefined, disabled: true, waitingFor: build.error ? undefined : 'Loading your robot…', testId: 'done-primary' }} overflow={overflow} testId="done-step">
+      <StepLayout title="Done" purpose={PURPOSE} primary={{ label: 'Export build', onClick: () => undefined, disabled: true, waitingFor: build.error ? undefined : 'Loading your robot…', testId: 'done-primary' }} overflow={overflow} testId="done-step">
         {build.error ? (
           <p className="ui-notice ui-notice--danger" role="alert" data-testid="done-error">
             <Icon name="alert" aria-hidden="true" /> {build.error}
@@ -102,7 +86,9 @@ export function DoneStep() {
   const finished = finishedLabel(project.completedAt);
 
   return (
-    <StepLayout title="Built" purpose={PURPOSE} primary={{ label: 'Share', onClick: () => void share(), testId: 'done-primary' }} overflow={overflow} testId="done-step">
+    <StepLayout title={dataSource.mode === 'fixture' ? 'Example complete' : 'Built'}
+      purpose={dataSource.mode === 'fixture' ? 'You have walked through the saved assembly. Review the open checks before building hardware.' : PURPOSE}
+      primary={{ label: 'Export build', onClick: exportBuild, testId: 'done-primary' }} overflow={overflow} testId="done-step">
       <div className="p2-grid">
         <div className="p2-stack">
           <div className="viewport viewport--sm" data-testid="done-viewport">
@@ -150,7 +136,7 @@ export function DoneStep() {
               Parts marked missing
             </h2>
             {missing.length === 0 ? (
-              <p className="p2-note">None. Every part was on hand.</p>
+              <p className="p2-note">No parts were marked missing.</p>
             ) : (
               <ul className="done__list" style={{ marginTop: 10 }}>
                 {missing.map((name) => (

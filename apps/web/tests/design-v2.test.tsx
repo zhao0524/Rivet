@@ -4,10 +4,31 @@ import { CATALOG_RECIPES, resolveRecipe } from '../src/components/three/parts/re
 import { growBounds } from '../src/components/three/generation/GeneratedAssembly';
 import { CandidateCompare } from '../src/components/three/generation/CandidateCompare';
 import { DesignStart } from '../src/components/studio/generation/DesignStart';
-import { latestPreview, mergeDesignEvents, parseDesignBundle, parseDesignEvent } from '../src/lib/rivet/design-v2-source';
+import { DesignSource, latestPreview, mergeDesignEvents, parseDesignBundle, parseDesignEvent } from '../src/lib/rivet/design-v2-source';
 import type { DesignCandidate, DesignEvent } from '../src/lib/rivet/design-v2-types';
 
 const occurrence = { instance_id: 'sensor-1', catalog_id: 'sensor.adafruit_vl53l0x_3317', role: 'distance_sensor', pose: { position_mm: [0, 0, 0], rotation_deg: [0, 0, 0] } } as never;
+
+describe('design session', () => {
+  it('shares the cookie handshake across concurrent starts so one job cannot invalidate another', async () => {
+    const source = new DesignSource();
+    let resolve!: (value: unknown) => void;
+    const request = vi.spyOn(source, 'request').mockImplementation(() => new Promise((done) => { resolve = done; }));
+    const first = source.session();
+    const second = source.session();
+    expect(request).toHaveBeenCalledTimes(1);
+    resolve({});
+    await Promise.all([first, second]);
+    request.mockRestore();
+  });
+  it('permits a retry after the session service recovers', async () => {
+    const source = new DesignSource();
+    const request = vi.spyOn(source, 'request').mockRejectedValueOnce(new Error('unavailable')).mockResolvedValue({});
+    await expect(source.session()).rejects.toThrow('unavailable');
+    await expect(source.session()).resolves.toBeUndefined();
+    expect(request).toHaveBeenCalledTimes(2);
+  });
+});
 
 describe('purchased part recipes', () => {
   it('binds the VL53L0X by exact catalog id to the ToF breakout, never the ultrasonic drums', () => {

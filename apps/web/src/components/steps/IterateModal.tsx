@@ -6,6 +6,7 @@ import '../../styles/phase2.css';
 import { useProjectContext } from '../flow/ProjectShell';
 import { Modal } from '../system/Modal';
 import { Thinking, formatElapsed, type ThinkingStep } from '../system/Thinking';
+import Link from 'next/link';
 
 /** What happened to the last change sent: real outcome only, timed from send to answer. */
 interface Trace {
@@ -134,6 +135,16 @@ export function IterateModal({ open, onClose }: { open: boolean; onClose: () => 
   }
 
   const canApply = text.trim().length > 0 && !pending && ready;
+
+  if (store.dataSource.mode === 'fixture') {
+    return (
+      <Modal open={open} onClose={onClose} title="Start your own build" testId="iterate"
+        description="This saved example can be explored, but it cannot be edited."
+        footer={<Link href="/new" className="ui-btn ui-btn--primary">Start a new build</Link>}>
+        <p className="ui-muted">Describe what you want to change in a new project. The example and its checks will stay available.</p>
+      </Modal>
+    );
+  }
 
   return (
     <Modal

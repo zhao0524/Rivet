@@ -3,7 +3,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { getSyntheticCatalog, getSyntheticRoverPlan } from '../../lib/fixtures';
+import { getSourcedCatalog, getSourcedRoverPlan } from '../../lib/fixtures';
 import { scrubToStep } from '../three/assembly';
 import { useThemeMode } from '../system/ThemeToggle';
 import { RoverScene } from '../three/RoverScene';
@@ -19,19 +19,19 @@ const STEP_LABELS = [
   'Build the frame',
   'Add the motors',
   'Put on the wheels',
-  'Add the brains',
-  'Mount the sensor',
+  'Mount the electronics',
   'Power it up',
+  'Connect the controls',
 ] as const;
 
 /**
- * Scroll demo: the saved synthetic rover assembles itself as the section is scrolled.
+ * Scroll demo: the saved sourced rover assembles itself as the section is scrolled.
  * GSAP pins the section and scrubs a timeline position in [0, stepCount], which the
  * assembly engine turns into the current step and its seat-in progress.
  */
 export function AssemblyScroll() {
-  const plan = useMemo(() => getSyntheticRoverPlan(), []);
-  const catalog = useMemo(() => getSyntheticCatalog(), []);
+  const plan = useMemo(() => getSourcedRoverPlan(), []);
+  const catalog = useMemo(() => getSourcedCatalog(), []);
   const steps = useMemo(
     () => [...plan.assembly_steps].sort((a, b) => a.step - b.step).slice(0, STEP_LABELS.length),
     [plan],
@@ -121,6 +121,7 @@ export function AssemblyScroll() {
               Describe an ideal build or upload an image, and Rivet will guide you on how to build your
               project from beginning to finish.
             </p>
+            <p className="ui-small mk-dim">Saved example · sourced parts · fit needs review</p>
             <ol className="mk-build__steps">
               {steps.map((s, i) => (
                 <li

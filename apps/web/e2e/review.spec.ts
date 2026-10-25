@@ -5,7 +5,7 @@ import { expectUrl, pickOverflow, readProject, seedExample, SOURCED_PLAN, watchP
 const EXPECTED_BLOCKERS = blockers(SOURCED_PLAN);
 
 test.describe('Review', () => {
-  test('shows only the blocking checks; a fix fails offline with the engine reason; continuing unlocks Parts', async ({ page }) => {
+  test('keeps unresolved checks visible and offers inspection for saved examples', async ({ page }) => {
     const errors = watchPageErrors(page);
     const record = await seedExample(page);
     await page.goto(`/p/${record.id}/review`);
@@ -18,7 +18,9 @@ test.describe('Review', () => {
       const card = cards.nth(i);
       await expect(card).toHaveAttribute('data-rule', /./);
       await expect(card).toContainText(finding.message);
-      await expect(card.getByTestId('review-fix')).toHaveCount(1);
+      await expect(card.getByTestId('review-fix')).toHaveCount(0);
+      await expect(card.getByTestId('review-inspect')).toHaveCount(1);
+      await expect(card).toContainText('Needs verification');
     }
     // Advisory warnings stay off this screen.
     await expect(page.getByTestId('review-step')).not.toContainText('brown-out');
@@ -26,6 +28,7 @@ test.describe('Review', () => {
     await expect(page.getByTestId('stepper-parts')).toHaveAttribute('data-state', 'locked');
     const primary = page.getByTestId('review-primary');
     await expect(primary).toBeEnabled();
+    await expect(primary).toHaveText('Review parts and open checks');
     await expect(page.getByTestId('review-step')).toContainText(`${EXPECTED_BLOCKERS.length} problems are still open`);
     await expect(page.getByTestId('review-assumptions')).toContainText('What Rivet assumed (1)');
     // Plain headlines lead each card; no rule-id title reaches the screen.
@@ -33,24 +36,14 @@ test.describe('Review', () => {
     await expect(page.getByTestId('review-step')).not.toContainText('Fit evidence');
     await expect(page.getByTestId('review-saved-note')).toContainText("Rivet didn't design it from your words");
 
-    // Fix this → offline fixtures cannot validate edits, and the card says so instead of pretending.
+    // Saved examples offer inspection instead of an edit that always fails.
     const first = cards.first();
     const rule = await first.getAttribute('data-rule');
-    await first.getByTestId('review-fix').click();
-    const failed = first.getByTestId('review-fix-failed');
-    await expect(failed).toBeVisible();
-    await expect(failed).toContainText("Couldn't fix this automatically.");
-    await expect(failed).toContainText("Changes need Rivet's live engine, which isn't connected right now.");
-    await expect(failed).toContainText('edits cannot be validated in fixture mode');
-    await expect(first.getByTestId('review-fix')).toHaveText('Try the fix again');
     await expect(cards).toHaveCount(EXPECTED_BLOCKERS.length);
-    const swap = first.getByTestId('review-swap-manually');
+    const swap = first.getByTestId('review-inspect');
     const affected = EXPECTED_BLOCKERS[0]!.affected_instance_ids.find((id) => id !== 'chassis-1')!;
     await expect(swap).toHaveAttribute('href', `/p/${record.id}/parts?part=${affected}`);
     expect(rule).toBe(EXPECTED_BLOCKERS[0]!.rule_id);
-
-    // The scene focuses the blocker's part.
-    await expect(page.getByTestId('review-viewport')).toContainText('Showing');
 
     await primary.click();
     await expectUrl(page, `/p/${record.id}/parts`);
@@ -62,7 +55,7 @@ test.describe('Review', () => {
     expect(errors).toEqual([]);
   });
 
-  test('"Change something" shows the engine reason when the edit is not accepted', async ({ page }) => {
+  test('"Change something" on an example offers a new project without sending an unsupported edit', async ({ page }) => {
     const errors = watchPageErrors(page);
     const record = await seedExample(page);
     await page.goto(`/p/${record.id}/review`);
@@ -71,20 +64,12 @@ test.describe('Review', () => {
     await pickOverflow(page, 'overflow-iterate');
     const modal = page.getByTestId('iterate');
     await expect(modal).toBeVisible();
-    await page.getByTestId('iterate-example').first().click();
-    await expect(page.getByTestId('iterate-text')).toHaveValue('Increase obstacle stop distance to 0.40 m');
-    await page.getByTestId('iterate-apply').click();
-
-    const reason = page.getByTestId('iterate-reason');
-    await expect(reason).toBeVisible();
-    await expect(reason).toContainText('edits cannot be validated in fixture mode');
-    await expect(reason).toContainText('Increase obstacle stop distance to 0.40 m');
-    // The text stays so it can be retried on the live engine; the modal did not close.
-    await expect(page.getByTestId('iterate-text')).toHaveValue('Increase obstacle stop distance to 0.40 m');
-    await expect(modal).toBeVisible();
+    await expect(modal).toContainText('cannot be edited');
+    await expect(page.getByTestId('iterate-apply')).toHaveCount(0);
+    await expect(modal.getByRole('link', { name: 'Start a new build' })).toHaveAttribute('href', '/new');
     expect((await readProject(page, record.id)).revision).toBeNull();
 
-    await page.getByTestId('iterate-discard').click();
+    await page.keyboard.press('Escape');
     await expect(modal).toHaveCount(0);
     expect(errors).toEqual([]);
   });
