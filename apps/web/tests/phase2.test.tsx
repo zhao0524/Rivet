@@ -11,6 +11,7 @@ import { DoneStep } from '../src/components/steps/done/DoneStep';
 import { getConceptExamplePlan, getSourcedCatalog, getSourcedRoverPlan, SOURCED_ROVER_BUILD_ID } from '../src/lib/fixtures';
 import { buyLines, type BuyLine } from '../src/lib/flow/derive';
 import { createProjectRecord, getProject, type ProjectRecord } from '../src/lib/flow/projects';
+import { FixtureSource } from '../src/lib/rivet';
 
 const push = vi.fn();
 let pathname = '/p/p1/buy';
@@ -230,7 +231,8 @@ describe('Done', () => {
     expect(parts.textContent).toBe(String(plan.components.length));
     expect(screen.getByTestId('done-step-count').textContent).toBe('11');
     expect(screen.getByTestId('done-missing').textContent).toContain('nub caster');
-    expect(screen.getByTestId('done-blockers').textContent).toContain('Fit evidence');
+    expect(screen.getByTestId('done-blockers').textContent).toContain('The left motor may not fit the frame');
+    expect(screen.getByTestId('done-blockers').textContent).toContain('Not confirmed');
     expect(screen.getByTestId('done-primary').textContent).toBe('Share');
   });
 });
@@ -246,14 +248,30 @@ describe('Iterate modal', () => {
     const apply = within(dialog).getByTestId('iterate-apply') as HTMLButtonElement;
     expect(apply.disabled).toBe(true);
     fireEvent.click(within(dialog).getAllByTestId('iterate-example')[0]!);
-    expect((within(dialog).getByTestId('iterate-text') as HTMLTextAreaElement).value).toBe('Make it cheaper');
+    const stop = 'Increase obstacle stop distance to 0.40 m';
+    expect((within(dialog).getByTestId('iterate-text') as HTMLTextAreaElement).value).toBe(stop);
+    expect(within(dialog).getAllByTestId('iterate-example')[0]!.getAttribute('aria-pressed')).toBe('true');
     expect(apply.disabled).toBe(false);
+    const edit = vi.spyOn(FixtureSource.prototype, 'edit');
     fireEvent.click(apply);
+    await waitFor(() => expect(edit).toHaveBeenCalled());
+    expect(edit.mock.calls[0]![1]).toMatchObject({
+      instruction: stop,
+      operation: { op: 'set_behavior_parameter', name: 'obstacle_stop_distance_m', value: 0.4 },
+    });
     const reason = await screen.findByTestId('iterate-reason', {}, { timeout: 8000 });
-    expect(reason.textContent).toContain('edits cannot be validated in fixture mode');
-    expect(reason.textContent).toContain('Make it cheaper');
+    // Plain words first; the engine's own message stays under Details.
+    expect(reason.textContent).toContain("Changes need Rivet's live engine, which isn't connected right now.");
+    expect(reason.querySelector('details')!.textContent).toContain('edits cannot be validated in fixture mode');
+    expect(reason.textContent).toContain(stop);
+    // The trace shows the real outcome, timed from send to answer, and stays open.
+    const trace = screen.getByTestId('iterate-thinking');
+    expect(trace.querySelectorAll('li')).toHaveLength(1);
+    expect(trace.textContent).toContain("Rivet didn't make this change");
+    expect(screen.getByTestId('iterate-thinking-label').textContent).toMatch(/^Answered in \d/);
+    expect(screen.getByTestId('iterate-thinking-toggle').getAttribute('aria-expanded')).toBe('true');
     expect(screen.getByTestId('iterate')).toBeDefined();
-    expect((screen.getByTestId('iterate-text') as HTMLTextAreaElement).value).toBe('Make it cheaper');
+    expect((screen.getByTestId('iterate-text') as HTMLTextAreaElement).value).toBe(stop);
     expect(push).not.toHaveBeenCalledWith('/p/p1/review');
   });
 });

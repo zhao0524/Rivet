@@ -1,6 +1,6 @@
 'use client';
 
-import { formatMoney, PART_GROUP_LABEL, type PartGroup, type PartRow } from '../../../lib/flow/derive';
+import { formatMoney, makerLabel, PART_GROUP_HINT, PART_GROUP_LABEL, roleLabel, type PartGroup, type PartRow } from '../../../lib/flow/derive';
 
 export interface PartListProps {
   groups: ReadonlyArray<{ group: PartGroup; rows: PartRow[] }>;
@@ -32,6 +32,9 @@ export function PartList({ groups, selectedId, collapsed, currency, onToggleGrou
             >
               <span>
                 {PART_GROUP_LABEL[group]} <span className="p1-count">({rows.length})</span>
+                <span className="ui-small ui-muted" style={{ display: 'block', fontWeight: 400 }}>
+                  {PART_GROUP_HINT[group]}
+                </span>
               </span>
             </summary>
             <ul className="list">
@@ -51,16 +54,16 @@ export function PartList({ groups, selectedId, collapsed, currency, onToggleGrou
                       <span className="list__main">
                         <span className="list__title">{row.name}</span>
                         <span className="list__meta">
-                          {row.role.replace(/_/g, ' ')} · {row.manufacturer}
-                          {row.standIn ? <span className="p1-standin"> · Stand-in shape</span> : null}
+                          {roleLabel(row.role)} · {makerLabel(row.manufacturer)}
+                          {row.standIn ? <span className="p1-standin"> · Simple 3D shape</span> : null}
                         </span>
                       </span>
                       <span className="p1-part__flags">
                         {row.warnings.length > 0 ? (
-                          <span title={`${row.warnings.length} warning${row.warnings.length === 1 ? '' : 's'}`}>
+                          <span title={`${row.warnings.length} thing${row.warnings.length === 1 ? '' : 's'} to double-check`}>
                             <span className="ui-dot ui-dot--warn" aria-hidden="true" />
                             <span className="ui-sr-only">
-                              {row.warnings.length} warning{row.warnings.length === 1 ? '' : 's'}
+                              {row.warnings.length} thing{row.warnings.length === 1 ? '' : 's'} to double-check
                             </span>
                           </span>
                         ) : null}

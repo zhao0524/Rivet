@@ -1,0 +1,140 @@
+/* Thinking trace and Tree view (adapted from Bencho's `thinking` and `tree-view` blocks).
+ * Colors come only from the --ui-* tokens in system.css; decoration mixes them. */
+
+/* ── Thinking ─────────────────────────────────────────── */
+.thk {
+  --thk-mute: var(--ui-muted);
+  --thk-line: color-mix(in srgb, var(--ui-text) 14%, var(--ui-surface));
+  --thk-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  font-family: var(--ui-font);
+  color: var(--ui-text);
+  min-width: 0;
+}
+.thk__head { display: flex; align-items: center; min-height: 26px; }
+.thk__title {
+  display: inline-flex; align-items: center; gap: 4px; margin: 0; padding: 2px 4px 2px 0; border: 0; background: none;
+  color: inherit; font: inherit; font-size: 14px; font-weight: 500; letter-spacing: -0.01em; cursor: pointer; border-radius: 6px;
+}
+.thk__title:focus-visible { outline: 2px solid var(--ui-accent-text); outline-offset: 2px; }
+.thk__chev { color: var(--thk-mute); transition: rotate 420ms var(--thk-ease); }
+.thk__chev[data-open] { rotate: 90deg; }
+
+/* The light across the word: a gradient clipped to the text, only while it works. */
+.thk[data-thinking] .thk__word {
+  background: linear-gradient(90deg, var(--thk-mute) 0%, var(--thk-mute) 35%, var(--ui-text) 50%, var(--thk-mute) 65%, var(--thk-mute) 100%) 0 0 / 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: thk-shine 1.6s linear infinite;
+}
+.thk__wait { margin: 6px 0 0; font-size: 13px; color: var(--thk-mute); }
+
+/* Height eases between 0 and the steps' own height. */
+.thk__body {
+  display: grid; grid-template-rows: 0fr; visibility: hidden;
+  transition: grid-template-rows 420ms var(--thk-ease), visibility 0s linear 420ms;
+}
+.thk__body[data-open] { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows 420ms var(--thk-ease), visibility 0s; }
+.thk__clip { min-height: 0; overflow: hidden; }
+
+/* The steps on a thread: a dot each, a dotted line joining them. */
+.thk__steps { list-style: none; margin: 0; padding: 8px 0 2px 2px; }
+.thk__steps li {
+  position: relative; display: grid; gap: 2px; padding: 0 0 12px 20px; font-size: 13px; line-height: 19px; color: var(--thk-mute);
+  transition: color 420ms ease; animation: thk-in 460ms var(--thk-ease) both;
+}
+.thk__steps li:last-child { padding-bottom: 4px; }
+.thk__steps li::before {
+  content: ''; position: absolute; left: 1px; top: 6.5px; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--thk-line); transition: background-color 420ms ease;
+}
+.thk__steps li:not(:last-child)::after {
+  content: ''; position: absolute; left: 3.5px; top: 15px; bottom: -5px; width: 0;
+  border-left: 1px dotted color-mix(in srgb, var(--ui-text) 28%, transparent);
+}
+.thk__steps li[data-now] { color: var(--ui-text); }
+.thk__steps li[data-now]::before { background: var(--ui-text); }
+.thk__steps li[data-status='warning']::before { background: var(--ui-warn); }
+.thk__steps li[data-status='failed']::before { background: var(--ui-danger); }
+.thk__text { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; font-weight: 500; }
+.thk__steps li:not([data-now]) .thk__text { font-weight: 400; }
+.thk__detail { font-size: 12px; line-height: 17px; color: var(--ui-subtle); overflow-wrap: anywhere; }
+.thk__flag { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; }
+.thk__flag svg { align-self: center; }
+.thk__flag[data-status='warning'] { color: var(--ui-warn); }
+.thk__flag[data-status='failed'] { color: var(--ui-danger); }
+
+.thk__again {
+  display: inline-flex; align-items: center; gap: 8px; height: 32px; margin-top: 12px; padding: 0 14px 0 11px;
+  border: 1px solid var(--ui-border); border-radius: 999px; background: var(--ui-surface); color: var(--ui-text);
+  font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; opacity: 0; translate: 0 4px;
+  transition: opacity 220ms ease, translate 420ms var(--thk-ease), scale 160ms ease, border-color 150ms ease;
+}
+.thk__again[data-on] { opacity: 1; translate: 0 0; }
+.thk__again:hover:not(:disabled) { border-color: var(--ui-border-strong); }
+.thk__again:active { scale: 0.96; }
+.thk__again:disabled { cursor: default; }
+.thk__again:focus-visible { outline: 2px solid var(--ui-accent-text); outline-offset: 2px; }
+
+@keyframes thk-shine { from { background-position: 100% 0; } to { background-position: -150% 0; } }
+@keyframes thk-in { from { opacity: 0; translate: 0 6px; } }
+
+/* ── Tree view ────────────────────────────────────────── */
+.tv {
+  --tv-mute: var(--ui-muted);
+  --tv-wash: color-mix(in srgb, var(--ui-text) 6%, transparent);
+  --tv-pick: color-mix(in srgb, var(--ui-accent) 12%, transparent);
+  --tv-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  font-family: var(--ui-font);
+  color: var(--ui-text);
+  min-width: 0;
+}
+.tv, .tv ul, .tv li { list-style: none; margin: 0; padding: 0; }
+.tv-item { outline: none; min-width: 0; }
+.tv-row {
+  display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 10px 0 8px; border-radius: 8px; cursor: pointer;
+  color: color-mix(in srgb, var(--ui-text) 82%, var(--ui-surface)); font-size: 13px; user-select: none;
+  transition: background-color 160ms ease, color 160ms ease; min-width: 0;
+}
+.tv-row:hover { background: var(--tv-wash); }
+.tv-item[aria-selected='true'] > .tv-row { background: var(--tv-pick); color: var(--ui-text); font-weight: 500; }
+.tv-item:focus-visible > .tv-row { outline: 2px solid var(--ui-accent-text); outline-offset: -2px; }
+.tv-chev, .tv-mark { display: grid; place-items: center; flex: none; color: var(--tv-mute); }
+.tv-chev { width: 14px; height: 14px; transition: rotate 220ms var(--tv-ease); }
+.tv-chev[data-open] { rotate: 90deg; }
+.tv-mark { width: 16px; height: 16px; }
+.tv-item[aria-selected='true'] > .tv-row .tv-mark { color: var(--ui-accent-text); }
+.tv-name { flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tv-detail { flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ui-subtle); font-size: 12px; font-weight: 400; }
+.tv-status { display: inline-grid; place-items: center; flex: none; width: 16px; height: 16px; margin-left: auto; }
+.tv-status[data-status='done'] { color: var(--ui-ok); }
+.tv-status[data-status='warning'] { color: var(--ui-warn); }
+.tv-status[data-status='failed'] { color: var(--ui-danger); }
+.tv-status[data-status='running'] { color: var(--ui-accent-text); }
+.tv-status[data-status='pending'] { color: var(--ui-subtle); }
+.tv-spin { animation: tv-spin 0.9s linear infinite; }
+
+/* Children slide open under their folder: height first, then the rows a beat apart. */
+.tv-kids {
+  display: grid; grid-template-rows: 0fr; visibility: hidden;
+  transition: grid-template-rows 420ms var(--tv-ease), visibility 0s linear 420ms;
+}
+.tv-kids[data-open] { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows 420ms var(--tv-ease), visibility 0s; }
+.tv-group { position: relative; min-height: 0; overflow: hidden; }
+.tv-kids[data-open] > .tv-group > .tv-item { animation: tv-in 220ms var(--tv-ease) both; animation-delay: calc(30ms + var(--i, 0) * 30ms); }
+/* One hairline per open folder, down from under its chevron. */
+.tv-group[data-guides]::before {
+  content: ''; position: absolute; left: var(--tv-x); top: 2px; bottom: 6px; width: 1px;
+  background: color-mix(in srgb, var(--ui-text) 14%, transparent);
+}
+
+@keyframes tv-in { from { opacity: 0; translate: 0 -4px; } }
+@keyframes tv-spin { to { rotate: 360deg; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .thk[data-thinking] .thk__word { animation: none; color: var(--ui-text); background: none; }
+  .thk__steps li, .tv-kids[data-open] > .tv-group > .tv-item { animation: none; }
+  .thk__body, .thk__body[data-open], .tv-kids, .tv-kids[data-open] { transition: none; }
+  .tv-spin { animation-duration: 2.4s; }
+}

@@ -1,14 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState, type FormEvent } from 'react';
+import { useAppRouter } from '../system/Navigation';
+import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import {
   createProjectRecord,
   deleteProject,
   duplicateProject,
   saveProject,
-  titleFromPrompt,
   updateProject,
   useProjects,
   type ProjectRecord,
@@ -18,20 +17,24 @@ import { AppHeader } from '../flow/AppHeader';
 import { Icon } from '../system/Icon';
 import { Modal } from '../system/Modal';
 import { OverflowMenu } from '../system/OverflowMenu';
-import { EXAMPLE_PROJECT, relativeTime, whereIs } from './shared';
+import { CardSkeletons, ProjectCard } from './gallery/ProjectCards';
+import { EXAMPLE_PROJECT } from './shared';
 import '../../styles/start.css';
+import '../../styles/gallery.css';
 
 /**
- * A0 Projects: every project saved in this browser. One primary CTA (New project); per card the
- * only decisions are opening it and its overflow (Rename, Duplicate, Delete).
+ * A0 Projects: every project saved in this browser, newest first, as the same Edge-light cards the
+ * /new gallery uses. One primary CTA (New project); per card the only decisions are opening it and
+ * its overflow (Rename, Duplicate, Delete).
  */
 export function ProjectsScreen() {
-  const router = useRouter();
+  const router = useAppRouter();
   const projects = useProjects();
   const [mounted, setMounted] = useState(false);
   const [renaming, setRenaming] = useState<ProjectRecord | null>(null);
   const [deleting, setDeleting] = useState<ProjectRecord | null>(null);
   const [now, setNow] = useState(() => Date.now());
+  const sorted = useMemo(() => [...projects].sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt)), [projects]);
 
   // useSyncExternalStore returns the empty list on the server and the first client pass;
   // don't show the empty state until the stored list has been read.
@@ -70,15 +73,11 @@ export function ProjectsScreen() {
         </div>
 
         {!mounted ? (
-          <ul className="start-grid" aria-busy="true" aria-label="Loading projects">
-            {[0, 1, 2].map((i) => (
-              <li key={i} className="ui-card start-skel">
-                <span className="ui-skeleton" style={{ height: 18, width: '70%' }} />
-                <span className="ui-skeleton" style={{ height: 14, width: '90%' }} />
-                <span className="ui-skeleton" style={{ height: 14, width: '40%', marginTop: 'auto' }} />
-              </li>
-            ))}
-          </ul>
+          <div className="gal__clip">
+            <ul className="gal-grid" aria-busy="true" aria-label="Loading projects">
+              <CardSkeletons count={4} />
+            </ul>
+          </div>
         ) : projects.length === 0 ? (
           <ul className="start-grid">
             <li className="ui-card pc pc--empty" data-testid="projects-empty">
@@ -98,31 +97,30 @@ export function ProjectsScreen() {
             </li>
           </ul>
         ) : (
-          <ul className="start-grid" data-testid="projects-list">
-            {projects.map((p) => (
-              <li key={p.id} className="ui-card pc" data-testid={`projects-card-${p.id}`}>
-                <Link href={projectPath(p.id)} className="pc__link" aria-label={`Open ${p.title}`}>
-                  <h2 className="pc__title">{p.title}</h2>
-                  {p.prompt && titleFromPrompt(p.prompt) !== p.title ? <p className="pc__prompt">{p.prompt}</p> : null}
-                  <div className="pc__foot">
-                    <span className={p.phase === 'ready' ? 'ui-badge ui-badge--accent' : 'ui-badge'}>{whereIs(p)}</span>
-                    <span>Updated {relativeTime(p.updatedAt, now)}</span>
-                  </div>
-                </Link>
-                <div className="pc__menu">
-                  <OverflowMenu
-                    label={`More actions for ${p.title}`}
-                    testId={`projects-menu-${p.id}`}
-                    items={[
-                      { id: 'rename', label: 'Rename', onSelect: () => setRenaming(p), testId: 'projects-rename' },
-                      { id: 'duplicate', label: 'Duplicate', onSelect: () => duplicateProject(p.id), testId: 'projects-duplicate' },
-                      { id: 'delete', label: 'Delete', danger: true, onSelect: () => setDeleting(p), testId: 'projects-delete' },
-                    ]}
+          <div className="gal__clip">
+            <ul className="gal-grid" data-testid="projects-list">
+              {sorted.map((p, i) => (
+                <li key={p.id}>
+                  <ProjectCard
+                    project={p}
+                    now={now}
+                    index={i}
+                    menu={
+                      <OverflowMenu
+                        label={`More actions for ${p.title}`}
+                        testId={`projects-menu-${p.id}`}
+                        items={[
+                          { id: 'rename', label: 'Rename', onSelect: () => setRenaming(p), testId: 'projects-rename' },
+                          { id: 'duplicate', label: 'Duplicate', onSelect: () => duplicateProject(p.id), testId: 'projects-duplicate' },
+                          { id: 'delete', label: 'Delete', danger: true, onSelect: () => setDeleting(p), testId: 'projects-delete' },
+                        ]}
+                      />
+                    }
                   />
-                </div>
-              </li>
-            ))}
-          </ul>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
       </main>
 

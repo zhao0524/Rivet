@@ -8,12 +8,14 @@ export interface MissingPartModalProps {
   open: boolean;
   onClose: () => void;
   parts: readonly StepPart[];
+  /** instance_id → everyday nickname ("left motor"), shown under each name. */
+  nicknames?: ReadonlyMap<string, string>;
   alreadyMissing: readonly string[];
   onMark: (catalogId: string) => void;
 }
 
 /** Pick one part from the current step to mark as missing. The note lands on the step; buying stays in Buy. */
-export function MissingPartModal({ open, onClose, parts, alreadyMissing, onMark }: MissingPartModalProps) {
+export function MissingPartModal({ open, onClose, parts, nicknames, alreadyMissing, onMark }: MissingPartModalProps) {
   const [choice, setChoice] = useState<string | null>(null);
   const options = parts.filter((p) => !alreadyMissing.includes(p.catalogId));
   return (
@@ -50,7 +52,7 @@ export function MissingPartModal({ open, onClose, parts, alreadyMissing, onMark 
               <input type="radio" name="missing-part" value={p.catalogId} checked={choice === p.catalogId} onChange={() => setChoice(p.catalogId)} data-testid={`build-missing-${p.instanceId}`} />
               <span className="list__main">
                 <span className="list__title">{p.name}</span>
-                <span className="list__meta">{p.instanceId}</span>
+                <span className="list__meta">{nicknames?.get(p.instanceId) ?? p.role.replace(/_/g, ' ')}</span>
               </span>
             </label>
           ))}

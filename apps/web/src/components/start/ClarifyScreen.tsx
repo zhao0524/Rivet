@@ -1,12 +1,13 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useAppRouter } from '../system/Navigation';
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import type { ClarifyAnswers } from '../../lib/flow/projects';
 import { projectPath } from '../../lib/flow/steps';
 import type { InterpretResponse } from '../../lib/rivet/types';
 import { useProjectContext } from '../flow/ProjectShell';
 import { Icon } from '../system/Icon';
+import { Thinking, formatElapsed, type ThinkingStep } from '../system/Thinking';
 import { requestInput, summarizeIntent } from './shared';
 import '../../styles/start.css';
 
@@ -14,8 +15,8 @@ const CARD_COUNT = 3;
 
 type InterpretState =
   | { status: 'loading' }
-  | { status: 'error'; message: string }
-  | { status: 'ok'; data: InterpretResponse };
+  | { status: 'error'; message: string; ms: number }
+  | { status: 'ok'; data: InterpretResponse; ms: number };
 
 type BudgetChoice = 'none' | '50' | '100' | 'custom';
 type SizeChoice = 'none' | 'max';
@@ -34,7 +35,7 @@ function budgetChoiceFrom(answers: ClarifyAnswers): { choice: BudgetChoice; cust
  * straight to Generate with the defaults.
  */
 export function ClarifyScreen() {
-  const router = useRouter();
+  const router = useAppRouter();
   const { project, update, build } = useProjectContext();
   const store = build.store;
   const [card, setCard] = useState(0);
@@ -52,13 +53,14 @@ export function ClarifyScreen() {
   const interpret = useCallback(async () => {
     setInterp({ status: 'loading' });
     const source = store.dataSource;
+    const t0 = performance.now();
     if (!source.interpret) {
-      setInterp({ status: 'error', message: 'This data source cannot interpret prompts.' });
+      setInterp({ status: 'error', message: "Rivet can't read ideas right now. Try again once it's connected.", ms: 0 });
       return;
     }
     try {
       const data = await source.interpret({ input: requestInput(project), requirements: { currency: 'USD' } });
-      setInterp({ status: 'ok', data });
+      setInterp({ status: 'ok', data, ms: performance.now() - t0 });
       // A toy car is closest to the engineered rover (real parts, wiring, firmware); anything else
       // becomes a 3D model of the photo. An explicit earlier choice is kept.
       if (!data.supported && !project.clarify.interpretation_choice) {
@@ -66,7 +68,11 @@ export function ClarifyScreen() {
       }
       update({ intentId: data.intent_id, assumptions: data.intent.assumptions });
     } catch (err) {
-      setInterp({ status: 'error', message: err instanceof Error && err.message ? err.message : "Rivet couldn't read the prompt." });
+      setInterp({
+        status: 'error',
+        message: err instanceof Error && err.message ? err.message : "Rivet couldn't read your idea.",
+        ms: performance.now() - t0,
+      });
     }
   }, [store.dataSource, project, update]);
 
@@ -187,6 +193,47 @@ export function ClarifyScreen() {
 
 /* ── Card 1: what Rivet understood ─────────────────────── */
 
+/** The real outcome of the interpret call as one step; nothing while it is still running. */
+function readingSteps(state: InterpretState): ThinkingStep[] {
+  if (state.status === 'loading') return [];
+  if (state.status === 'error') return [{ id: 'read', text: "Couldn't read your idea", detail: state.message, status: 'failed' }];
+  const { data } = state;
+  if (data.vision_mode === 'fixture' || data.vision_mode === 'fallback') {
+    return [
+      {
+        id: 'read',
+        text: 'Used a saved example instead of reading your words',
+        detail: "Rivet's live reader isn't connected, so your words and picture weren't read.",
+        status: 'warning',
+      },
+    ];
+  }
+  return [{ id: 'read', text: summarizeIntent(data.intent).headline, status: 'done' }];
+}
+
+function ReadingTrace({ state }: { state: InterpretState }) {
+  const ms = state.status === 'loading' ? null : state.ms;
+  return (
+    <Thinking
+      title="Reading your idea"
+      running={state.status === 'loading'}
+      steps={readingSteps(state)}
+      elapsedMs={ms}
+      doneLabel={
+        ms === null
+          ? undefined
+          : state.status === 'error'
+            ? `Stopped after ${formatElapsed(ms)}`
+            : state.status === 'ok' && state.data.vision_mode === 'live'
+              ? `Read in ${formatElapsed(ms)}`
+              : `Answered in ${formatElapsed(ms)}`
+      }
+      replayable={false}
+      testId="clarify-thinking"
+    />
+  );
+}
+
 type UnsupportedChoice = 'concept_model' | 'closest_supported_rover';
 
 const UNSUPPORTED_OPTIONS: readonly (ChoiceOption & { id: UnsupportedChoice })[] = [
@@ -218,9 +265,10 @@ function UnderstoodCard({
   if (state.status === 'loading') {
     return (
       <div className="q__body" aria-busy="true" data-testid="clarify-skeleton">
-        <h1 id="clarify-title" className="ui-h2">
-          Reading your prompt…
+        <h1 id="clarify-title" className="ui-sr-only">
+          Reading your idea
         </h1>
+        <ReadingTrace state={state} />
         <div className="q__skel">
           <span className="ui-skeleton" style={{ height: 18, width: '85%' }} />
           <span className="ui-skeleton" style={{ height: 14, width: '60%' }} />
@@ -232,8 +280,9 @@ function UnderstoodCard({
   if (state.status === 'error') {
     return (
       <div className="q__body">
+        <ReadingTrace state={state} />
         <h1 id="clarify-title" className="ui-h2">
-          Rivet couldn&apos;t read the prompt
+          Rivet couldn&apos;t read your idea
         </h1>
         <p className="ui-notice ui-notice--danger" role="alert" style={{ margin: 0 }} data-testid="clarify-error">
           {state.message}
@@ -248,14 +297,23 @@ function UnderstoodCard({
   }
 
   const { data } = state;
-  const summary = summarizeIntent(data.intent);
   const offline = data.vision_mode === 'fixture' || data.vision_mode === 'fallback';
+  const read = summarizeIntent(data.intent);
+  // Offline nothing was read: describe the saved example, not "what Rivet read".
+  const summary = offline
+    ? {
+        ...read,
+        headline: read.headline.replace(/^Rivet read this as /, 'The saved example is '),
+        facts: read.facts.filter((f) => !f.startsWith('From the picture')),
+      }
+    : read;
 
   return (
     <div className="q__body" data-testid="clarify-understood">
+      <ReadingTrace state={state} />
       <div>
         <p className="ui-eyebrow" style={{ marginBottom: 8 }}>
-          Here&apos;s what Rivet understood
+          {offline ? 'What Rivet will use' : "Here's what Rivet understood"}
         </p>
         <h1 id="clarify-title" className="ui-h2">
           {summary.headline}
@@ -266,7 +324,7 @@ function UnderstoodCard({
         <p className="ui-notice ui-notice--warn" style={{ margin: 0 }} data-testid="clarify-offline">
           <Icon name="info" style={{ flex: 'none', marginTop: 3 }} />
           <span>
-            Offline mode: your description and picture weren&apos;t actually read. A saved example rover will be used instead.
+            This is a saved example. Rivet didn&apos;t read your words or picture, so it will use a rover that was saved earlier.
           </span>
         </p>
       ) : null}
@@ -280,18 +338,15 @@ function UnderstoodCard({
       ) : null}
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
-        <span className="ui-badge">{summary.confidence}</span>
+        {!offline ? <span className="ui-badge">{summary.confidence}</span> : null}
         {summary.unknowns ? <span className="ui-small ui-subtle">{summary.unknowns}</span> : null}
       </div>
 
       {!data.supported ? (
         <>
-          <p className="ui-notice ui-notice--warn" style={{ margin: 0 }} data-testid="clarify-limitation">
+          <p className="ui-notice ui-notice--danger" style={{ margin: 0 }} data-testid="clarify-limitation">
             <Icon name="alert" style={{ flex: 'none', marginTop: 3 }} />
-            <span>
-              {(data.limitation?.message ?? 'This kind of robot is not supported yet').replace(/\.?$/, '.')} Rivet can only
-              engineer rovers with real parts so far.
-            </span>
+            <span>{data.limitation?.message ?? 'This kind of robot is not supported yet.'}</span>
           </p>
           <ChoiceList
             label="How should Rivet continue?"
@@ -328,7 +383,7 @@ function BudgetCard({
         Do you have a budget?
       </h1>
       <p className="ui-muted" style={{ margin: 0 }}>
-        Rivet picks the cheapest verified parts either way; a limit just rules some out.
+        A limit tells Rivet to leave out parts that would push the total over it.
       </p>
       <ChoiceList
         label="Budget"

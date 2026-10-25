@@ -10,8 +10,7 @@ test('prompt to three real candidates, streamed geometry, choice and a targeted 
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => { if (m.type() === 'error') console.log('CONSOLE-ERROR', m.text().slice(0, 300)); });
   page.on('pageerror', (e) => console.log('PAGE-ERROR', e.message.slice(0, 300)));
-  await page.goto('/new');
-  await page.getByTestId('new-design-v2-link').click();
+  await page.goto('/design');
   await expect(page.locator('[data-testid="design-start"][data-hydrated="true"]')).toBeVisible({ timeout: 120_000 });
   await expect(async () => {
     await page.getByLabel('Describe the design').fill('a small orange rover that avoids obstacles');

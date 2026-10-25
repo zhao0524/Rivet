@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import '../../../styles/phase2.css';
-import { catalogIndex } from '../../../lib/flow/derive';
+import { catalogIndex, partNicknames, plainInstructions, roleLabel } from '../../../lib/flow/derive';
 import { useProjectContext } from '../../flow/ProjectShell';
 import { StepLayout } from '../../flow/StepLayout';
 import { Icon } from '../../system/Icon';
@@ -12,8 +12,9 @@ import { RoverScene } from '../../three/RoverScene';
 import { clampStep, firmwareStep, needsSafetyAck, orderedSteps, stepParts } from './build-model';
 import { FlashFirmwareCard } from './FlashFirmwareCard';
 import { MissingPartModal } from './MissingPartModal';
+import { PrintedBodyCard } from './PrintedBodyCard';
 
-const PURPOSE = 'One assembly step at a time. The parts for this step light up in the model; everything later stays ghosted.';
+const PURPOSE = 'Put it together one step at a time. Parts for this step are solid in the model; later ones are see-through.';
 const SEAT_MS = 650;
 
 /** 0 → 1 over SEAT_MS whenever `key` changes, so the step's parts seat into place. Reduced motion jumps to 1. */
@@ -58,6 +59,8 @@ export function BuildStep() {
   const parts = useMemo(() => (step ? stepParts(step, plan, catalog) : []), [step, plan, catalog]);
   const fwStep = useMemo(() => (build.ready ? firmwareStep(plan, catalog) : null), [build.ready, plan, catalog]);
   const byId = useMemo(() => catalogIndex(catalog), [catalog]);
+  const nicknames = useMemo(() => partNicknames(plan, catalog), [plan, catalog]);
+  const synthetic = build.ready && build.store.trust?.isSynthetic === true;
   const progress = useSeatIn(current);
 
   const needsAck = step ? needsSafetyAck(step, parts) : false;
@@ -105,7 +108,7 @@ export function BuildStep() {
       <StepLayout
         title="Build"
         purpose={PURPOSE}
-        primary={{ label: 'Next step', onClick: () => undefined, disabled: true, waitingFor: build.error || empty ? undefined : 'Loading the assembly steps', testId: 'build-primary' }}
+        primary={{ label: 'Next step', onClick: () => undefined, disabled: true, waitingFor: build.error || empty ? undefined : 'Loading the build steps…', testId: 'build-primary' }}
         overflow={overflow}
         bleed
         testId="build-step"
@@ -117,10 +120,10 @@ export function BuildStep() {
             </p>
           ) : empty ? (
             <p className="ui-notice" data-testid="build-empty">
-              This plan has no assembly steps yet, so there is nothing to guide. Change something to regenerate it.
+              This design has no build steps yet, so there&apos;s nothing to guide you through. Use Change something to ask for a new version.
             </p>
           ) : (
-            <div className="build" aria-busy="true" aria-label="Loading the assembly steps">
+            <div className="build" aria-busy="true" aria-label="Loading the build steps">
               <div className="ui-skeleton build__stage" style={{ borderRadius: 0 }} />
               <div className="p2-skeleton-lines" style={{ padding: 20 }}>
                 <div className="ui-skeleton" style={{ height: 14, width: 90 }} />
@@ -134,6 +137,7 @@ export function BuildStep() {
     );
   }
 
+  const plainText = plainInstructions(step.instructions, nicknames);
   const firmwareUrl = dataSource.getExportUrl?.(plan.build_id, 'firmware.zip', plan.revision) ?? null;
 
   return (
@@ -164,7 +168,7 @@ export function BuildStep() {
             showGrid={false}
           />
           <span className="build__stage-label" aria-hidden="true">
-            <Icon name="cube" size={14} /> Step {current}: parts for this step are solid, later ones ghosted
+            <Icon name="cube" size={14} /> Step {current}: solid parts go on now, see-through ones come later
           </span>
         </div>
 
@@ -177,15 +181,29 @@ export function BuildStep() {
               <Icon name="arrowLeft" aria-hidden="true" /> Back
             </button>
           </div>
-          <div className="build__progress" role="progressbar" aria-valuemin={1} aria-valuemax={count} aria-valuenow={current} aria-label="Assembly progress">
+          <div className="build__progress" role="progressbar" aria-valuemin={1} aria-valuemax={count} aria-valuenow={current} aria-label="Build progress">
             <span style={{ width: `${(current / count) * 100}%` }} />
           </div>
           <h2 id="build-step-title" className="ui-h2">
             {step.title}
           </h2>
+          {synthetic ? (
+            <p className="ui-notice" data-testid="build-placeholder-note">
+              This is a practice example made of placeholder parts. Follow along on screen, but don&apos;t wire real parts from
+              it.
+            </p>
+          ) : null}
           <p className="build__instructions" data-testid="build-instructions">
-            {step.instructions}
+            {plainText}
           </p>
+          {plainText !== step.instructions ? (
+            <details className="p2-details">
+              <summary className="ui-small">Show the exact pin and part names</summary>
+              <p className="p2-details__body ui-small ui-muted" data-testid="build-instructions-original">
+                {step.instructions}
+              </p>
+            </details>
+          ) : null}
 
           {parts.length > 0 ? (
             <section aria-labelledby="build-parts-title">
@@ -199,7 +217,9 @@ export function BuildStep() {
                     <li key={p.instanceId} className="build__part" data-testid={`build-part-${p.instanceId}`}>
                       <span className="build__part-name">{p.name}</span>
                       {missing ? <span className="ui-badge ui-badge--warn">Missing</span> : null}
-                      <span className="build__part-id">{p.instanceId}</span>
+                      <span className="build__part-id" title={p.instanceId} style={{ fontFamily: 'var(--ui-font)' }}>
+                        {nicknames.get(p.instanceId) && nicknames.get(p.instanceId) !== p.name ? nicknames.get(p.instanceId) : roleLabel(p.role)}
+                      </span>
                     </li>
                   );
                 })}
@@ -229,7 +249,7 @@ export function BuildStep() {
                       ))}
                     </ul>
                   ) : (
-                    <p style={{ margin: '4px 0 0' }}>This step handles power parts. Keep every supply disconnected until the plan says to connect it.</p>
+                    <p style={{ margin: '4px 0 0' }}>This step uses batteries or other power parts. Keep them unplugged until a later step says to connect them.</p>
                   )}
                 </div>
               </div>
@@ -240,9 +260,11 @@ export function BuildStep() {
             </div>
           ) : null}
 
+          {current === 1 ? <PrintedBodyCard plan={plan} catalog={catalog} synthetic={synthetic} /> : null}
+
           {fwStep === step.step ? <FlashFirmwareCard firmware={plan.firmware} downloadUrl={firmwareUrl} /> : null}
 
-          {byId.size === 0 ? <p className="p2-note">Part names are catalog ids until the catalog loads.</p> : null}
+          {byId.size === 0 ? <p className="p2-note">Part names show as codes until the parts list loads.</p> : null}
         </aside>
       </div>
 
@@ -250,6 +272,7 @@ export function BuildStep() {
         open={missingOpen}
         onClose={() => setMissingOpen(false)}
         parts={parts}
+        nicknames={nicknames}
         alreadyMissing={project.missingCatalogIds}
         onMark={(catalogId) => update({ missingCatalogIds: Array.from(new Set([...project.missingCatalogIds, catalogId])) })}
       />

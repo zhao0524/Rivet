@@ -1,13 +1,13 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useAppRouter } from '../../../../components/system/Navigation';
 import { useEffect } from 'react';
 import { getProject } from '../../../../lib/flow/projects';
 import { projectPath } from '../../../../lib/flow/steps';
 
 /** `/p/:id` resumes where the project left off. */
 export default function ProjectIndex({ params }: { params: { id: string } }) {
-  const router = useRouter();
+  const router = useAppRouter();
   useEffect(() => {
     const project = getProject(params.id);
     if (!project) router.replace('/projects');

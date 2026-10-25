@@ -22,6 +22,14 @@ const PATHS = {
   bolt: 'M9 1.5 3 9h4.5L7 14.5 13 7H8.5L9 1.5Z',
   play: 'M5 3.5v9l7-4.5-7-4.5Z',
   edit: 'M10.5 2.5l3 3L6 13H3v-3l7.5-7.5Z',
+  chevronRight: 'M6 3.5 10.5 8 6 12.5',
+  chevronDown: 'M3.5 6 8 10.5 12.5 6',
+  folder: 'M1.75 4.25a1 1 0 0 1 1-1h3.5l1.5 1.75h5.5a1 1 0 0 1 1 1v6.75a1 1 0 0 1-1 1h-10.5a1 1 0 0 1-1-1V4.25Z',
+  folderOpen: 'M1.75 12V4.25a1 1 0 0 1 1-1h3.5l1.5 1.75h4.5a1 1 0 0 1 1 1V7M1.75 12l1.9-4.3a1 1 0 0 1 .9-.6h9.2a.6.6 0 0 1 .55.85L12.6 12.4a1 1 0 0 1-.9.6H2.6a.85.85 0 0 1-.85-1Z',
+  file: 'M4 1.75h5l3 3v9.5H4V1.75ZM9 1.75v3h3',
+  spinner: 'M8 2a6 6 0 1 0 6 6',
+  replay: 'M2.5 3v3.5H6M2.9 9.5A5.25 5.25 0 1 0 3.6 5L2.5 6.5',
+  minus: 'M3.5 8h9',
 } as const;
 
 export type IconName = keyof typeof PATHS;

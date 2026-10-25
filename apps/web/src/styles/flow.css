@@ -67,7 +67,7 @@ a.stepper__step:hover { background: var(--ui-raised); color: var(--ui-text); }
   position: relative; min-height: 420px; height: min(62vh, 640px); border-radius: var(--ui-r-lg); overflow: hidden;
   background: var(--ui-sunken); border: 1px solid var(--ui-border);
 }
-.viewport--sm { min-height: 240px; height: 300px; }
+.viewport--sm { min-height: 320px; height: 320px; } /* RoverScene's own min height is 320px */
 .viewport > [data-testid='rover-scene'], .viewport > div:first-child { position: absolute; inset: 0; }
 .viewport__label {
   position: absolute; left: 12px; bottom: 12px; z-index: 2; padding: 4px 10px; border-radius: 999px;
@@ -76,23 +76,79 @@ a.stepper__step:hover { background: var(--ui-raised); color: var(--ui-text); }
 
 /* ── PromptBox ────────────────────────────────────────── */
 .pb { width: 100%; }
+/* The field's rim catches light near the pointer: the gallery cards' Edge light (gallery.css),
+   its hue swept from orange to lavender by --pb-lav, which PromptBox sets from the angle. */
 .pb__field {
-  position: relative; isolation: isolate; border-radius: 16px; background: var(--ui-surface);
-  box-shadow: 0 10px 30px color-mix(in srgb, var(--ui-accent) 14%, transparent);
+  --pb-r: 16px;
+  --pb-orange: color-mix(in srgb, var(--ui-orange) 82%, var(--ui-text));
+  --pb-lavender: color-mix(in srgb, var(--ui-lavender) 82%, var(--ui-text));
+  --pb-c: color-mix(in oklab, var(--pb-lavender) var(--pb-lav, 50%), var(--pb-orange));
+  --pb-m: var(--ui-text);
+  position: relative; isolation: isolate; border-radius: var(--pb-r); background: var(--ui-surface);
+  box-shadow: 0 0 0 1px var(--ui-border);
 }
-.pb__field::before {
-  content: ''; position: absolute; inset: -2px; z-index: -1; border-radius: 18px; background: var(--ui-grad);
+[data-theme='dark'] .pb__field {
+  --pb-orange: color-mix(in srgb, var(--ui-orange) 72%, var(--ui-text));
+  --pb-lavender: color-mix(in srgb, var(--ui-lavender-text) 72%, var(--ui-text));
 }
-.pb__field::after { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: 16px; background: var(--ui-surface); }
+.pb__rim {
+  position: absolute; inset: 0; z-index: 2; border: 1px solid var(--pb-c); border-radius: inherit; pointer-events: none;
+  opacity: 0; transition: opacity 750ms ease-in-out;
+  -webkit-mask-image: conic-gradient(from var(--pb-a, 45deg) at center, var(--pb-m) 25%, transparent 40%, transparent 60%, var(--pb-m) 75%);
+  mask-image: conic-gradient(from var(--pb-a, 45deg) at center, var(--pb-m) 25%, transparent 40%, transparent 60%, var(--pb-m) 75%);
+}
+.pb__glow {
+  position: absolute; inset: -40px; z-index: 2; border-radius: calc(var(--pb-r) + 40px); pointer-events: none;
+  opacity: 0; transition: opacity 750ms ease-in-out;
+  -webkit-mask-image: conic-gradient(from var(--pb-a, 45deg) at center, var(--pb-m) 2.5%, transparent 10%, transparent 90%, var(--pb-m) 97.5%);
+  mask-image: conic-gradient(from var(--pb-a, 45deg) at center, var(--pb-m) 2.5%, transparent 10%, transparent 90%, var(--pb-m) 97.5%);
+}
+[data-theme='dark'] .pb__glow { mix-blend-mode: plus-lighter; }
+.pb__glow > span {
+  position: absolute; inset: 40px; border-radius: var(--pb-r);
+  box-shadow:
+    inset 0 0 0 1px var(--pb-c),
+    inset 0 0 1px 0 color-mix(in srgb, var(--pb-c) 96%, transparent),
+    inset 0 0 3px 0 color-mix(in srgb, var(--pb-c) 80%, transparent),
+    inset 0 0 6px 0 color-mix(in srgb, var(--pb-c) 64%, transparent),
+    inset 0 0 15px 0 color-mix(in srgb, var(--pb-c) 48%, transparent),
+    inset 0 0 25px 2px color-mix(in srgb, var(--pb-c) 32%, transparent),
+    inset 0 0 50px 2px color-mix(in srgb, var(--pb-c) 16%, transparent),
+    0 0 1px 0 color-mix(in srgb, var(--pb-c) 96%, transparent),
+    0 0 3px 0 color-mix(in srgb, var(--pb-c) 80%, transparent),
+    0 0 6px 0 color-mix(in srgb, var(--pb-c) 64%, transparent),
+    0 0 15px 0 color-mix(in srgb, var(--pb-c) 48%, transparent),
+    0 0 25px 2px color-mix(in srgb, var(--pb-c) 32%, transparent),
+    0 0 50px 2px color-mix(in srgb, var(--pb-c) 16%, transparent);
+}
+/* pointer: the arc facing the pointer, fading in fast and out slow */
+.pb__field[data-lit='true'] .pb__rim { opacity: var(--pb-rim, 0); transition: opacity 250ms ease-out; }
+.pb__field[data-lit='true'] .pb__glow { opacity: var(--pb-glow, 0); transition: opacity 250ms ease-out; }
+/* typing: a gentle light all the way round, in both hues */
+.pb__field:focus-within .pb__rim {
+  opacity: 1; -webkit-mask-image: none; mask-image: none; transition: opacity 250ms ease-out;
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--pb-lavender), var(--pb-orange)) border-box;
+  -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+.pb__field:focus-within .pb__glow { opacity: 0.35; -webkit-mask-image: none; mask-image: none; transition: opacity 250ms ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  .pb__rim, .pb__glow { transition: none !important; }
+}
 .pb__input {
   display: block; width: 100%; min-height: 64px; max-height: 220px; padding: 16px 18px 4px; border: 0; outline: 0; resize: none;
   background: transparent; color: var(--ui-text); font-size: 16px; line-height: 1.5;
 }
 .pb__input::placeholder { color: var(--ui-subtle); }
-.pb__field:focus-within { box-shadow: 0 0 0 3px var(--ui-accent-soft), 0 10px 40px color-mix(in srgb, var(--ui-accent) 22%, transparent); }
 .pb__bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 8px 8px 12px; }
 .pb__bar > :first-child { margin-right: auto; }
 .pb__go { min-height: 42px; border-radius: 10px; }
+.pb__attach { display: flex; align-items: center; gap: 4px; min-width: 0; }
+.pb__upload { max-width: 100%; }
+.pb__upload-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
+.pb__examples { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 18px; }
+.pb__example { min-height: 40px; padding: 0 16px; font-size: 14px; color: var(--ui-text); }
 .pb__error { margin: 10px 0 0; font-size: 13px; color: var(--ui-danger); }
 .pb__foot { margin-top: 12px; font-size: 13px; color: var(--ui-muted); }
 

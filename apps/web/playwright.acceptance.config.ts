@@ -26,11 +26,22 @@ const PYTHON = process.env.RIVET_PYTHON || 'python3';
 const ENGINE_DIR = path.join(REPO_ROOT, 'packages', 'engineering');
 const REPORT_DIR = 'playwright-report/acceptance';
 
+/**
+ * Where `next dev` runs. Defaults to this app. Point it at a copy of apps/web when another
+ * `next dev` already serves this directory: two dev servers share one `.next/` and corrupt it.
+ */
+const WEB_CWD = process.env.E2E_ACCEPTANCE_WEB_CWD || __dirname;
+
+/** Opt-in browser channel (`E2E_CHANNEL=chrome`), as in `playwright.config.ts`. */
+const CHANNEL = process.env.E2E_CHANNEL?.trim() || undefined;
+const CHANNEL_ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'];
+
 export default defineConfig({
   testDir: './e2e-acceptance',
   outputDir: './test-results/acceptance',
   // The whole flow is one ordered story against shared servers: one worker, no retries.
-  timeout: 120_000,
+  // Generation, eleven assembly steps with the 3D scene, downloads and an edit: ten minutes.
+  timeout: 600_000,
   expect: { timeout: 15_000 },
   fullyParallel: false,
   workers: 1,
@@ -44,6 +55,7 @@ export default defineConfig({
     baseURL: WEB_URL,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
+    ...(CHANNEL ? { channel: CHANNEL, launchOptions: { args: CHANNEL_ARGS } } : {}),
   },
   projects: [
     {
@@ -76,11 +88,14 @@ export default defineConfig({
     },
     {
       name: 'web',
-      command: `pnpm exec next dev --port ${WEB_PORT}`,
-      url: `${WEB_URL}/studio`,
+      // `npx` so the run does not depend on pnpm being on PATH (same as playwright.config.ts).
+      command: `npx next dev --port ${WEB_PORT}`,
+      cwd: WEB_CWD,
+      url: `${WEB_URL}/new`,
       reuseExistingServer: false,
       timeout: 180_000,
       env: {
+        // HTTP mode: the app talks to the API above instead of the checked-in fixtures.
         NEXT_PUBLIC_RIVET_USE_FIXTURES: 'false',
         RIVET_NEXT_DIST_DIR: '.next-acceptance',
         // next.config.mjs rewrites /api/* to this origin; the browser stays same-origin.

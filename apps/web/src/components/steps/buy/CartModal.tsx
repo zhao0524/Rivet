@@ -30,8 +30,8 @@ export function CartModal({ open, onClose, lines, ownedIds, currency, onContinue
     <Modal
       open={open}
       onClose={onClose}
-      title="Your cart, by vendor"
-      description="Each link opens the vendor's product page in a new tab. Rivet has no checkout of its own, so open the buy links one by one."
+      title="Your shopping list, by store"
+      description="Each link opens that store's page for the part in a new tab. Rivet can't check out for you, so open them one at a time."
       testId="buy-cart"
       footer={
         <button type="button" className="ui-btn ui-btn--primary" onClick={onContinue} data-testid="buy-cart-continue">
@@ -41,7 +41,7 @@ export function CartModal({ open, onClose, lines, ownedIds, currency, onContinue
     >
       {vendors.length === 0 ? (
         <p className="ui-muted" data-testid="buy-cart-empty">
-          Nothing left to buy from a verified vendor.
+          Nothing left to buy from a store Rivet has checked.
         </p>
       ) : null}
       {vendors.map((group) => (
@@ -81,7 +81,7 @@ export function CartModal({ open, onClose, lines, ownedIds, currency, onContinue
             {NO_VENDOR}
           </h3>
           <p className="p2-note">
-            Rivet has no verified product page for {unverified.length === 1 ? 'this part' : 'these parts'}, so there is no link to open:{' '}
+            Rivet has no store page it trusts for {unverified.length === 1 ? 'this part' : 'these parts'}, so there&apos;s no link to open:{' '}
             {unverified.map((l) => l.name).join(', ')}.
           </p>
         </section>

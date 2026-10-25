@@ -1,10 +1,11 @@
 'use client';
 
-import { formatCheckedAt, formatMoney, safeHttpUrl, specRows, type PartRow, type SpecSource } from '../../../lib/flow/derive';
+import { formatCheckedAt, formatMoney, makerLabel, partNicknames, plainCheck, roleLabel, safeHttpUrl, specRows, type PartRow, type SpecSource } from '../../../lib/flow/derive';
 import { isConceptPlan } from '../../../lib/rivet/honesty';
 import type { BuildPlan } from '../../../lib/rivet/types';
 import { Icon } from '../../system/Icon';
 import { Modal } from '../../system/Modal';
+import { MoreDetails } from '../phase1/shared';
 
 export interface SpecDrawerProps {
   row: PartRow | null;
@@ -18,6 +19,27 @@ const SRC_CLASS: Record<SpecSource, string> = {
   Checked: 'src src--checked',
   'AI estimate': 'src src--ai',
 };
+
+/** What each source tag means, in one line each. */
+export const SOURCE_MEANING: Record<SpecSource, string> = {
+  Datasheet: "from the maker's spec sheet",
+  Checked: 'confirmed from another trusted source',
+  'AI estimate': 'a best guess, so double-check it',
+};
+
+/** One-line legend for the source tags, shown above the parts list and in the spec drawer. */
+export function SourceLegend() {
+  return (
+    <p className="ui-small ui-muted" style={{ margin: 0, display: 'flex', flexWrap: 'wrap', gap: '4px 12px', alignItems: 'center' }} data-testid="spec-legend">
+      <span>Where numbers come from:</span>
+      {(Object.keys(SOURCE_MEANING) as SpecSource[]).map((s) => (
+        <span key={s} style={{ display: 'inline-flex', gap: 6, alignItems: 'center' }}>
+          <span className={SRC_CLASS[s]}>{s}</span> {SOURCE_MEANING[s]}
+        </span>
+      ))}
+    </p>
+  );
+}
 
 /** Where a value came from: Datasheet, Checked, or AI estimate. */
 export function SourceTag({ source }: { source: SpecSource }) {
@@ -54,7 +76,7 @@ export function SpecDrawer({ row, plan, open, onClose }: SpecDrawerProps) {
       onClose={onClose}
       variant="drawer"
       title={row.name}
-      description={`${row.manufacturer} · ${row.role.replace(/_/g, ' ')}`}
+      description={`${makerLabel(row.manufacturer)} · ${roleLabel(row.role)}`}
       testId="spec-drawer"
       footer={
         <button type="button" className="ui-btn ui-btn--primary" onClick={onClose} data-testid="spec-close">
@@ -69,20 +91,12 @@ export function SpecDrawer({ row, plan, open, onClose }: SpecDrawerProps) {
             <dd>{quantity}</dd>
           </div>
           <div>
-            <dt>Catalog id</dt>
-            <dd className="ui-mono">{row.catalogId}</dd>
-          </div>
-          {cat?.identity.sku ? (
-            <div>
-              <dt>SKU</dt>
-              <dd className="ui-mono">{cat.identity.sku}</dd>
-            </div>
-          ) : null}
-          <div>
             <dt>Shape in the 3D view</dt>
-            <dd>{row.standIn ? 'Stand-in shape, not the real part' : 'Modelled from the catalog asset'}</dd>
+            <dd>{row.standIn ? "A simple stand-in shape, not the real part's look" : 'Modelled on the real part'}</dd>
           </div>
         </dl>
+
+        <SourceLegend />
 
         {suggestion ? (
           <section className="ui-island" data-testid="spec-suggested">
@@ -101,7 +115,7 @@ export function SpecDrawer({ row, plan, open, onClose }: SpecDrawerProps) {
         ) : null}
 
         <table className="p1-spec__table" data-testid="spec-table">
-          <caption className="ui-sr-only">Specifications with their source</caption>
+          <caption className="ui-sr-only">Specs, with where each value came from</caption>
           <tbody>
             {rows.map((r) => (
               <tr key={r.label} data-testid={`spec-row-${r.label.toLowerCase()}`}>
@@ -127,13 +141,16 @@ export function SpecDrawer({ row, plan, open, onClose }: SpecDrawerProps) {
         {row.warnings.length > 0 ? (
           <section aria-labelledby="spec-warnings-title">
             <h3 id="spec-warnings-title" className="ui-h3" style={{ marginBottom: 8 }}>
-              Warnings
+              Worth double-checking
             </h3>
             <ul className="p1-spec__warnings" data-testid="spec-warnings">
               {row.warnings.map((w, i) => (
                 <li key={`${w.rule_id}-${i}`} className="ui-notice ui-notice--warn">
                   <span className="ui-dot ui-dot--warn" aria-hidden="true" style={{ marginTop: 6 }} />
-                  <span>{w.message}</span>
+                  <span>
+                    <strong style={{ display: 'block' }}>{plainCheck(w, partNicknames(plan, cat ? [cat] : [])).title}</strong>
+                    <span className="ui-small ui-muted">{w.message}</span>
+                  </span>
                 </li>
               ))}
             </ul>
@@ -142,7 +159,7 @@ export function SpecDrawer({ row, plan, open, onClose }: SpecDrawerProps) {
 
         {cat?.evidence.notes.length ? (
           <details className="p1-details">
-            <summary>Catalog notes</summary>
+            <summary>Notes from Rivet&apos;s parts catalog</summary>
             <div className="p1-details__body">
               <ul className="ui-small ui-muted" style={{ margin: 0, paddingLeft: 18 }}>
                 {cat.evidence.notes.map((note, i) => (
@@ -164,6 +181,25 @@ export function SpecDrawer({ row, plan, open, onClose }: SpecDrawerProps) {
             No datasheet on file for this part.
           </p>
         )}
+
+        <MoreDetails testId="spec-ids">
+          <dl className="p1-spec__meta" style={{ margin: 0 }}>
+            <div>
+              <dt>Catalog id</dt>
+              <dd className="ui-mono">{row.catalogId}</dd>
+            </div>
+            <div>
+              <dt>Part id in this design</dt>
+              <dd className="ui-mono">{row.instanceId}</dd>
+            </div>
+            {cat?.identity.sku ? (
+              <div>
+                <dt>Store part number (SKU)</dt>
+                <dd className="ui-mono">{cat.identity.sku}</dd>
+              </div>
+            ) : null}
+          </dl>
+        </MoreDetails>
       </div>
     </Modal>
   );

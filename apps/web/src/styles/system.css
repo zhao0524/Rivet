@@ -25,11 +25,11 @@
   --ui-subtle: #62626a;
 
   /* Accent */
-  --ui-accent: #5a3ff0;
-  --ui-accent-hover: #4a2fd6;
+  --ui-accent: #7a1f2e;
+  --ui-accent-hover: #631827;
   --ui-on-accent: #ffffff;
-  --ui-accent-text: #4a2fd6;
-  --ui-accent-soft: #ebe7ff;
+  --ui-accent-text: #7a1f2e;
+  --ui-accent-soft: #f6e5e8;
 
   /* Status: text color, tinted background */
   --ui-danger: #b42318;
@@ -43,7 +43,10 @@
   /* Brand decoration (never used for text) */
   --ui-orange: #ff5a1f;
   --ui-pink: #ff5c9a;
-  --ui-grad: linear-gradient(90deg, #ff5a1f, #ff5c9a 45%, #5a3ff0);
+  /* The earlier violet, kept for the prompt box's edge light and the scroll demo's progress. */
+  --ui-lavender: #5a3ff0;
+  --ui-lavender-text: #4a2fd6;
+  --ui-grad: linear-gradient(90deg, #ff5a1f, #ff5c9a 45%, #7a1f2e);
 
   --ui-shadow: 0 1px 2px rgba(13, 13, 15, 0.06), 0 8px 24px rgba(13, 13, 15, 0.06);
   --ui-shadow-lg: 0 24px 64px rgba(13, 13, 15, 0.18);
@@ -67,11 +70,11 @@
   --ui-muted: #b8b8c0;
   --ui-subtle: #9d9da6;
 
-  --ui-accent: #6650f5;
-  --ui-accent-hover: #5a43e6;
+  --ui-accent: #9b2a3e;
+  --ui-accent-hover: #862236;
   --ui-on-accent: #ffffff;
-  --ui-accent-text: #a99bff;
-  --ui-accent-soft: #241f45;
+  --ui-accent-text: #f2a0ae;
+  --ui-accent-soft: #3a1820;
 
   --ui-danger: #ff8f86;
   --ui-danger-bg: #3a1715;
@@ -83,7 +86,9 @@
 
   --ui-orange: #ff6a33;
   --ui-pink: #ff6fa8;
-  --ui-grad: linear-gradient(90deg, #ff6a33, #ff6fa8 45%, #7561ff);
+  --ui-lavender: #6650f5;
+  --ui-lavender-text: #a99bff;
+  --ui-grad: linear-gradient(90deg, #ff6a33, #ff6fa8 45%, #b8354d);
 
   --ui-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
   --ui-shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.55);
@@ -147,6 +152,46 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .ui-btn:disabled, .ui-btn[aria-disabled='true'] { opacity: 0.55; cursor: not-allowed; }
 .ui-btn--primary { background: var(--ui-accent); color: var(--ui-on-accent); }
 .ui-btn--primary:hover:not(:disabled) { background: var(--ui-accent-hover); }
+
+/* Primary buttons carry Bencho's Sweep (bencho.dev, Pro licence), recoloured for maroon: warm
+   glows parked round the edge, shown only where a turning cone lets them through, and a bright
+   band riding the rim just behind it. One registered angle turns both layers, so they never
+   drift apart; both sit under the label and over the fill. */
+@property --ui-sweep-turn { syntax: '<angle>'; inherits: true; initial-value: 0deg; }
+@keyframes ui-sweep-turn { to { --ui-sweep-turn: 360deg; } }
+.ui-btn--primary {
+  --ui-sweep-a: 0.55;
+  position: relative; isolation: isolate; overflow: hidden;
+  animation: ui-sweep-turn 4.5s linear infinite;
+}
+.ui-btn--primary::before,
+.ui-btn--primary::after {
+  content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+}
+.ui-btn--primary::before {
+  background:
+    radial-gradient(40% 120% at 20% 0%, rgba(255, 110, 150, var(--ui-sweep-a)), transparent 75%),
+    radial-gradient(40% 120% at 80% 0%, rgba(255, 150, 90, var(--ui-sweep-a)), transparent 75%),
+    radial-gradient(40% 120% at 80% 100%, rgba(200, 120, 255, var(--ui-sweep-a)), transparent 75%),
+    radial-gradient(40% 120% at 20% 100%, rgba(255, 90, 110, var(--ui-sweep-a)), transparent 75%);
+  -webkit-mask-image: conic-gradient(from var(--ui-sweep-turn), transparent 0deg, transparent 120deg, #000 200deg, #000 250deg, transparent 330deg);
+  mask-image: conic-gradient(from var(--ui-sweep-turn), transparent 0deg, transparent 120deg, #000 200deg, #000 250deg, transparent 330deg);
+  filter: saturate(1.3);
+}
+.ui-btn--primary::after {
+  padding: 1.5px;
+  background: conic-gradient(from var(--ui-sweep-turn),
+    transparent 0deg, transparent 190deg,
+    rgba(255, 170, 120, 0.6) 215deg, rgba(255, 200, 215, 0.95) 230deg, rgba(220, 160, 255, 0.6) 245deg,
+    transparent 270deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.ui-btn--primary:disabled { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ui-btn--primary { animation: none; }
+}
 .ui-btn--dark { background: var(--ui-inverse); color: var(--ui-on-inverse); }
 .ui-btn--secondary { background: var(--ui-surface); color: var(--ui-text); border-color: var(--ui-border-strong); }
 .ui-btn--secondary:hover:not(:disabled) { background: var(--ui-raised); }
@@ -226,6 +271,25 @@ button.ui-chip:hover { border-color: var(--ui-border-strong); color: var(--ui-te
 .ui-switch[aria-checked='true'] .ui-switch__track::after { transform: translateX(14px); }
 
 /* ── Skeleton, spinner ────────────────────────────────── */
+/* Page transitions (components/system/PageTransition.tsx): each route fades in, rising slightly in the
+   app. The wrapper passes its parent's flex column through, so pages lay out as if it were not there. */
+.ui-page { display: flex; flex-direction: column; flex: 1 0 auto; min-width: 0; }
+.ui-page-enter--rise { animation: ui-page-rise 320ms var(--ui-ease) both; }
+.ui-page-enter--fade { animation: ui-page-fade 280ms var(--ui-ease) both; }
+@keyframes ui-page-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes ui-page-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .ui-page-enter--rise, .ui-page-enter--fade { animation: ui-page-fade 120ms linear both; }
+}
+/* Loading skeletons (components/system/PageSkeletons.tsx). */
+/* Shown over the old page while a slow navigation is on its way (components/system/Navigation.tsx). */
+.ui-nav-cover { position: fixed; inset: 0; z-index: 50; overflow: hidden; background: var(--ui-bg); animation: ui-page-fade 160ms var(--ui-ease) both; }
+.ui-page-skeleton__split { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px; }
+.ui-page-skeleton__stage { display: block; min-height: 420px; border-radius: var(--ui-r-lg); }
+@media (max-width: 900px) {
+  .ui-page-skeleton__split { grid-template-columns: 1fr; }
+  .ui-page-skeleton__stage { min-height: 280px; }
+}
 .ui-skeleton { border-radius: var(--ui-r-sm); background: linear-gradient(90deg, var(--ui-raised), var(--ui-sunken), var(--ui-raised)); background-size: 200% 100%; animation: ui-shimmer 1.4s linear infinite; }
 @keyframes ui-shimmer { to { background-position: -200% 0; } }
 .ui-spinner { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--ui-border); border-top-color: var(--ui-accent-text); animation: ui-spin 0.8s linear infinite; }

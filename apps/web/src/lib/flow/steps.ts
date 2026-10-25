@@ -5,8 +5,8 @@
 
 export const STEPS = [
   { id: 'review', n: 1, label: 'Review', phase: 1, cta: 'Looks good, continue to Parts' },
-  { id: 'parts', n: 2, label: 'Parts', phase: 1, cta: 'Continue to Wiring' },
-  { id: 'wiring', n: 3, label: 'Wiring & firmware', phase: 1, cta: 'Continue to Buy' },
+  { id: 'parts', n: 2, label: 'Parts', phase: 1, cta: 'Continue to Wiring & code' },
+  { id: 'wiring', n: 3, label: 'Wiring & code', phase: 1, cta: 'Continue to Buy' },
   { id: 'buy', n: 4, label: 'Buy', phase: 2, cta: 'Open cart' },
   { id: 'build', n: 5, label: 'Build', phase: 2, cta: 'Next step' },
 ] as const;
@@ -14,7 +14,7 @@ export const STEPS = [
 export type StepId = (typeof STEPS)[number]['id'] | 'done';
 
 export const PHASES = [
-  { n: 1, label: 'Review parts, wiring and firmware' },
+  { n: 1, label: 'Check the design' },
   { n: 2, label: 'Buy and build' },
 ] as const;
 

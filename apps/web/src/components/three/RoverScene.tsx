@@ -18,6 +18,7 @@ import {
   usePartSelection,
   type PartSelectionApi,
 } from './interactions';
+import { computeEnclosure, EnclosureMesh } from './enclosure';
 import { PartAssembly, type PartSelectEvent, type PartVisibility, type PoseOverride } from './parts';
 import {
   DEFAULT_VIEW,
@@ -74,6 +75,17 @@ export interface RoverSceneProps {
   cameraView?: CameraView;
   /** Signal to reset/re-fit camera. */
   resetSignal?: unknown;
+  /** Drag-to-rotate only (no zoom or pan), for embeds inside scroll-driven pages. */
+  orbitOnly?: boolean;
+  /**
+   * The printed body (a 3D-printable shell over the electronics, plus standoffs under the boards).
+   * `ghost` shows it see-through, `solid` as printed plastic, `none` leaves it out. Never shown exploded.
+   */
+  enclosure?: 'ghost' | 'solid' | 'none';
+  /** Turn slowly around the model on its own, for showcase embeds. */
+  autoRotate?: boolean;
+  /** Share of the frame kept free around the model (the stage's default when omitted). */
+  framePadding?: number;
   /** Pause WebGL render loop when hidden or when the Simulator canvas is active. */
   active?: boolean;
   /** How non-isolated parts are rendered when an instance is isolated (`ghost` or `hide`). */
@@ -108,6 +120,10 @@ export function RoverScene({
   themeOverrides,
   cameraView = DEFAULT_VIEW,
   resetSignal,
+  orbitOnly = false,
+  enclosure = 'ghost',
+  autoRotate = false,
+  framePadding,
   active = true,
   isolatedOutBehavior = 'ghost',
   xray = false,
@@ -165,6 +181,10 @@ export function RoverScene({
     [plan, dimensionsByCatalogId],
   );
   const explodeTarget = computedView.mode === 'exploded' ? easeAssembly(computedView.progress) : 0;
+  const enclosureSpec = useMemo(
+    () => (enclosure === 'none' ? null : computeEnclosure(plan.components, catalog)),
+    [enclosure, plan.components, catalog],
+  );
 
   const [wireHighlightedIds, setWireHighlightedIds] = useState<string[]>([]);
   const [hoveredWire, setHoveredWire] = useState<WireRoute | null>(null);
@@ -356,6 +376,9 @@ export function RoverScene({
         <RivetStage
           boundsMm={boundsMm}
           resetSignal={resetSignal}
+          orbitOnly={orbitOnly}
+          autoRotate={autoRotate}
+          padding={framePadding}
           active={active}
           showGrid={showGrid}
           view={cameraView}
@@ -379,6 +402,9 @@ export function RoverScene({
               onHover={handlePartHover}
             />
           </ExplodeAnimator>
+          {enclosureSpec && enclosure !== 'none' && explodeTarget === 0 ? (
+            <EnclosureMesh spec={enclosureSpec} visibility={visibilityMap} shell={enclosure} themeMode={themeMode} />
+          ) : null}
           <SelectionOutline
             selectedInstanceId={selection.selectedInstanceId}
             hoveredInstanceId={selection.hoveredInstanceId}

@@ -1,0 +1,130 @@
+/* Project gallery (/new "Recent projects", /projects): Edge-light cards, adapted from Bencho's
+ * Edge light block. Colours come only from --ui-* tokens; the rim light is a token hue pushed
+ * toward --ui-text, so it goes deeper on the light theme and brighter on the dark one. */
+
+/* ── Section and grid ─────────────────────────────────── */
+.gal { display: grid; gap: 16px; margin-top: clamp(40px, 8vh, 72px); }
+.gal__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.gal__head .ui-h2 { font-size: 20px; }
+.gal__lede { margin: 2px 0 0; font-size: 14px; color: var(--ui-muted); }
+.gal__live { min-height: 0; }
+/* The glow spills ~40px past each card. Let it paint into the page gutter (20px, 16px on phones)
+   but no further, so it never adds sideways scroll; wide screens have room for all of it. */
+.gal__clip { overflow: clip; overflow-clip-margin: 20px; }
+@media (min-width: 1340px) { .gal__clip { overflow-clip-margin: 48px; } }
+.gal-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 248px), 1fr)); gap: 22px 18px;
+  list-style: none; margin: 0; padding: 0;
+}
+.gal-grid > li { min-width: 0; display: grid; }
+
+/* ── The card ─────────────────────────────────────────── */
+.elc {
+  --elc-r: var(--ui-r-xl);
+  --elc-hue: var(--ui-lavender);
+  --elc-c: color-mix(in srgb, var(--elc-hue) 82%, var(--ui-text));
+  /* masks read alpha only; any opaque token works as the "on" stop */
+  --elc-m: var(--ui-text);
+  position: relative; isolation: isolate; display: grid; border-radius: var(--elc-r);
+  transform: perspective(900px) rotateX(var(--elc-rx, 0deg)) rotateY(var(--elc-ry, 0deg));
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.elc[data-mode='pointer'] { transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1); }
+.elc[data-glow='pink'] { --elc-hue: var(--ui-pink); }
+.elc[data-glow='orange'] { --elc-hue: var(--ui-orange); }
+[data-theme='dark'] .elc { --elc-c: color-mix(in srgb, var(--elc-hue) 72%, var(--ui-text)); }
+[data-theme='dark'] .elc[data-glow='accent'] { --elc-hue: var(--ui-lavender-text); }
+
+.elc__slab {
+  position: relative; display: grid; border-radius: inherit; background: var(--ui-surface); color: var(--ui-text);
+  box-shadow: 0 0 0 1px var(--ui-border);
+  transition: box-shadow 250ms var(--ui-ease);
+}
+.elc[data-lit='true'] .elc__slab { box-shadow: 0 0 0 1px var(--ui-border), var(--ui-shadow); }
+
+.elc__hit {
+  display: flex; flex-direction: column; width: 100%; min-width: 0; margin: 0; padding: 8px; border: 0; border-radius: inherit;
+  background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; user-select: none; -webkit-user-select: none;
+}
+.elc__hit:focus-visible { outline-offset: 3px; border-radius: var(--elc-r); }
+
+.elc__photo {
+  position: relative; display: block; aspect-ratio: 1; width: 100%; overflow: hidden;
+  border-radius: calc(var(--elc-r) - 8px); background: var(--ui-raised);
+}
+.elc__photo img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.elc__tag {
+  position: absolute; top: 10px; left: 10px; display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px;
+  border-radius: 999px; border: 1px solid var(--ui-border); background: var(--ui-surface); color: var(--ui-muted);
+  font-size: 12px; font-weight: 500; line-height: 1.4;
+}
+
+.elc__cap { display: grid; gap: 3px; padding: 12px 6px 6px; min-width: 0; }
+.elc__row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; min-width: 0; }
+.elc__title { min-width: 0; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.elc__time { flex: none; font-size: 12px; color: var(--ui-subtle); white-space: nowrap; }
+.elc__meta { font-size: 13px; line-height: 1.4; color: var(--ui-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.elc__note { display: flex; align-items: flex-start; gap: 6px; margin-top: 4px; font-size: 12px; line-height: 1.4; color: var(--ui-subtle); }
+.elc__note svg { flex: none; margin-top: 1px; }
+
+.elc__menu { position: absolute; top: 14px; right: 14px; z-index: 3; }
+.elc__menu .ui-btn--icon { background: var(--ui-surface); border-color: var(--ui-border); }
+.elc__menu .ui-btn--icon:hover { background: var(--ui-raised); }
+
+/* ── The light ────────────────────────────────────────── */
+/* the 1px rim, over the slab's own edge: the wider arc */
+.elc__rim {
+  position: absolute; inset: 0; z-index: 2; border: 1px solid var(--elc-c); border-radius: inherit; pointer-events: none;
+  opacity: 0; transition: opacity 750ms ease-in-out;
+  -webkit-mask-image: conic-gradient(from var(--elc-a, 45deg) at center, var(--elc-m) 25%, transparent 40%, transparent 60%, var(--elc-m) 75%);
+  mask-image: conic-gradient(from var(--elc-a, 45deg) at center, var(--elc-m) 25%, transparent 40%, transparent 60%, var(--elc-m) 75%);
+}
+/* the glow: a card-sized box inside a wider one, so the narrow cone that cuts it has room for the spill */
+.elc__glow {
+  position: absolute; inset: -40px; z-index: 2; border-radius: calc(var(--elc-r) + 40px); pointer-events: none;
+  opacity: 0; transition: opacity 750ms ease-in-out;
+  -webkit-mask-image: conic-gradient(from var(--elc-a, 45deg) at center, var(--elc-m) 2.5%, transparent 10%, transparent 90%, var(--elc-m) 97.5%);
+  mask-image: conic-gradient(from var(--elc-a, 45deg) at center, var(--elc-m) 2.5%, transparent 10%, transparent 90%, var(--elc-m) 97.5%);
+}
+[data-theme='dark'] .elc__glow { mix-blend-mode: plus-lighter; }
+/* the reference's shadow stack at glow 80 (alphas x1.6, capped at 100) */
+.elc__glow > span {
+  position: absolute; inset: 40px; border-radius: var(--elc-r);
+  box-shadow:
+    inset 0 0 0 1px var(--elc-c),
+    inset 0 0 1px 0 color-mix(in srgb, var(--elc-c) 96%, transparent),
+    inset 0 0 3px 0 color-mix(in srgb, var(--elc-c) 80%, transparent),
+    inset 0 0 6px 0 color-mix(in srgb, var(--elc-c) 64%, transparent),
+    inset 0 0 15px 0 color-mix(in srgb, var(--elc-c) 48%, transparent),
+    inset 0 0 25px 2px color-mix(in srgb, var(--elc-c) 32%, transparent),
+    inset 0 0 50px 2px color-mix(in srgb, var(--elc-c) 16%, transparent),
+    0 0 1px 0 color-mix(in srgb, var(--elc-c) 96%, transparent),
+    0 0 3px 0 color-mix(in srgb, var(--elc-c) 80%, transparent),
+    0 0 6px 0 color-mix(in srgb, var(--elc-c) 64%, transparent),
+    0 0 15px 0 color-mix(in srgb, var(--elc-c) 48%, transparent),
+    0 0 25px 2px color-mix(in srgb, var(--elc-c) 32%, transparent),
+    0 0 50px 2px color-mix(in srgb, var(--elc-c) 16%, transparent);
+}
+
+/* pointer: the arc facing the pointer, strength by how near the edge it is; fades in fast, out slow */
+.elc[data-mode='pointer'] .elc__rim { opacity: var(--elc-rim, 0); transition: opacity 250ms ease-out; }
+.elc[data-mode='pointer'] .elc__glow { opacity: var(--elc-glow, 0); transition: opacity 250ms ease-out; }
+/* keyboard focus: a gentle light all the way round instead of an arc */
+.elc[data-mode='focus'] .elc__rim { opacity: 1; -webkit-mask-image: none; mask-image: none; transition: opacity 250ms ease-out; }
+.elc[data-mode='focus'] .elc__glow { opacity: 0.35; -webkit-mask-image: none; mask-image: none; transition: opacity 250ms ease-out; }
+
+/* ── Skeleton and small screens ───────────────────────── */
+.elc-skel { display: grid; gap: 10px; padding: 8px 8px 14px; border-radius: var(--ui-r-xl); background: var(--ui-surface); box-shadow: 0 0 0 1px var(--ui-border); }
+.elc-skel .ui-skeleton:first-child { aspect-ratio: 1; height: auto; border-radius: calc(var(--ui-r-xl) - 8px); }
+
+@media (max-width: 900px) { .gal__clip { overflow-clip-margin: 16px; } }
+@media (max-width: 560px) {
+  .elc__photo { aspect-ratio: 4 / 3; }
+  .elc-skel .ui-skeleton:first-child { aspect-ratio: 4 / 3; }
+  .gal-grid { gap: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elc, .elc[data-mode='pointer'] { transform: none; transition: none; }
+  .elc__rim, .elc__glow, .elc[data-mode] .elc__rim, .elc[data-mode] .elc__glow { transition: none !important; }
+}

@@ -101,13 +101,18 @@ describe('Review', () => {
     }
     // Advisory warnings (e.g. motor brown-out) never appear on Review.
     expect(screen.queryByText(/brown-out/)).toBeNull();
-    // The TT motor fit finding renders with a readable title and its evidence link.
-    expect(screen.getAllByText('Fit evidence').length).toBe(2);
+    // The TT motor fit finding leads with a plain headline naming the part; the engine's message stays as detail.
+    expect(screen.getByText('The left motor may not fit the frame')).toBeDefined();
+    expect(screen.getByText('The right motor may not fit the frame')).toBeDefined();
+    for (const f of expected) expect(screen.getAllByText(f.message, { exact: false }).length).toBeGreaterThan(0);
+    expect(screen.queryByText('Fit evidence')).toBeNull();
     expect(screen.getAllByText('learn.sparkfun.com').length).toBe(2);
     // CTA stays enabled but says what is unresolved.
     const cta = screen.getByTestId('review-primary');
     expect(cta.hasAttribute('disabled')).toBe(false);
-    expect(screen.getByText(/2 checks are unresolved/)).toBeDefined();
+    expect(screen.getByText(/2 problems are still open/)).toBeDefined();
+    // Offline honesty, in plain words.
+    expect(screen.getByTestId('review-saved-note').textContent).toContain("Rivet didn't design it from your words");
   });
 
   it('with no blockers, confirms it in one line and the CTA is the only action', async () => {
@@ -122,7 +127,7 @@ describe('Review', () => {
     );
     await waitFor(() => expect(screen.getByTestId('review-empty')).toBeDefined());
     expect(screen.queryAllByTestId('review-blocker')).toHaveLength(0);
-    expect(screen.queryByText(/unresolved/)).toBeNull();
+    expect(screen.queryByText(/still open/)).toBeNull();
     fireEvent.click(screen.getByTestId('review-primary'));
     expect(nav.push).toHaveBeenCalledWith(`/p/${PROJECT_ID}/parts`);
     const saved = JSON.parse(window.localStorage.getItem('rivet.projects.v1')!)[0] as ProjectRecord;
@@ -147,6 +152,10 @@ describe('Review', () => {
     const [first] = screen.getAllByTestId('review-blocker');
     fireEvent.click(within(first!).getByTestId('review-fix'));
     await waitFor(() => expect(within(first!).getByTestId('review-fix-failed')).toBeDefined());
+    expect(within(first!).getByTestId('review-fix-failed').textContent).toContain(
+      "Changes need Rivet's live engine, which isn't connected right now.",
+    );
+    // The engine's own reason stays on screen as the detail line.
     expect(within(first!).getByText(/edits cannot be validated in fixture mode/)).toBeDefined();
     const link = within(first!).getByTestId('review-swap-manually');
     expect(link.getAttribute('href')).toBe(`/p/${PROJECT_ID}/parts?part=motor-left-1`);
@@ -213,7 +222,11 @@ describe('Parts', () => {
     const visible = partRows(getSourcedRoverPlan(), getSourcedCatalog());
     expect(screen.getAllByTestId(/^parts-row-/).length).toBe(visible.length);
     // Every sourced part is a procedural shape, so every row says so.
-    expect(screen.getAllByText(/Stand-in shape/).length).toBe(visible.length);
+    expect(screen.getAllByText(/Simple 3D shape/).length).toBe(visible.length);
+    // Plain group names, and the source-tag legend.
+    expect(screen.getByTestId('parts-group-drive').textContent).toContain('Wheels & motors');
+    expect(screen.getByTestId('parts-group-control').textContent).toContain('Brains');
+    expect(screen.getByTestId('spec-legend').textContent).toContain('AI estimate');
 
     fireEvent.click(screen.getByTestId('parts-row-controller-1'));
     const drawer = await screen.findByTestId('spec-drawer');
@@ -243,7 +256,7 @@ describe('Parts', () => {
   });
 });
 
-describe('Wiring & firmware', () => {
+describe('Wiring & code', () => {
   it('lists connections, switches tabs, and disables the download with a reason offline', async () => {
     seedProject();
     nav.pathname = `/p/${PROJECT_ID}/wiring`;
@@ -256,13 +269,19 @@ describe('Wiring & firmware', () => {
     const plan = getSourcedRoverPlan();
     const electrical = plan.connections.filter((c) => c.kind === 'electrical').length;
     expect(screen.getAllByTestId(/^wiring-row-/).length).toBe(electrical);
-    expect(screen.getAllByText('Approximate wiring visualization').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Wire positions are approximate').length).toBeGreaterThan(0);
+    // Rows lead with what the wire does; pin names sit in the secondary line.
+    expect(screen.getByTestId('wiring-row-wire-motor-left-pwm').textContent).toContain('how fast to spin the left motor');
+    expect(screen.getByTestId('wiring-row-wire-motor-left-pwm').textContent).toContain('gpio25');
+    expect(screen.getByTestId('wiring-row-wire-i2c-sda').textContent).toContain('Reads distance from the distance sensor');
 
     fireEvent.click(screen.getByTestId('wiring-tab-firmware'));
     expect(screen.getByTestId('wiring-tab-firmware').getAttribute('aria-selected')).toBe('true');
     expect(screen.getByTestId('firmware-pinmap')).toBeDefined();
     expect(screen.getByText('i2c_sda')).toBeDefined();
-    expect(screen.getByTestId('firmware-compile-status').textContent).toMatch(/Not compiled yet/);
+    expect(screen.getByTestId('firmware-pin-motor_left_pwm').textContent).toContain('Left motor speed');
+    expect(screen.getByTestId('firmware-compile-status').textContent).toMatch(/Not checked yet/);
+    expect(screen.getByTestId('firmware-details').textContent).toContain(plan.firmware.target);
     const download = screen.getByTestId('firmware-download');
     expect(download.hasAttribute('disabled')).toBe(true);
     expect(screen.getByTestId('firmware-download-reason').textContent).toMatch(/live engine/);
