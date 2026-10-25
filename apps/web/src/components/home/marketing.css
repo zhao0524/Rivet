@@ -80,6 +80,14 @@
   position: relative; display: flex; flex-direction: column; align-items: center;
   padding: 88px 24px 112px; text-align: center;
 }
+/* Faint dot grid behind everything in the hero, fading out toward the edges. */
+.mk-hero::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--ui-text) 16%, transparent) 1px, transparent 1.5px);
+  background-size: 22px 22px; background-position: center top;
+  -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 45%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 65% at 50% 45%, #000 30%, transparent 100%);
+}
 .mk-hero__copy { position: relative; z-index: 2; max-width: 760px; }
 .mk-pill {
   display: inline-flex; align-items: center; gap: 10px; margin: 0 0 24px;
