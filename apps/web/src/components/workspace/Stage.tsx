@@ -7,6 +7,7 @@ import { Icon } from '../system/Icon';
 import { RoverScene } from '../three/RoverScene';
 import type { PartSelectionApi } from '../three/interactions';
 import { BUILD_PHASES, partNames, phaseStates, rolePlain } from '../start/shared';
+import { BuildingPreview } from './BuildingPreview';
 import type { SessionStatus } from './session';
 
 export type StageMode = 'assembled' | 'exploded' | 'step';
@@ -19,7 +20,10 @@ export interface StageView {
   body: boolean;
 }
 
-const MIN_LOADING_MS = 1400;
+const MIN_LOADING_MS = 3000;
+
+/** A clearer floor grid than the default, to read sizes against. */
+const WORKSPACE_THEME = { gridCell: '#2c323b', gridSection: '#48505c' } as const;
 
 export const DEFAULT_VIEW: StageView = { mode: 'assembled', step: 1, wires: false, body: true };
 
@@ -29,6 +33,7 @@ export const DEFAULT_VIEW: StageView = { mode: 'assembled', step: 1, wires: fals
  * under the same progress. A new build plays its assembly once, then settles assembled.
  */
 export function Stage({
+  prompt,
   plan,
   catalog,
   status,
@@ -42,6 +47,8 @@ export function Stage({
   onRetry,
   retryLabel = 'Try again',
 }: {
+  /** The project's prompt, to pick which example the loading view assembles. */
+  prompt: string;
   plan: BuildPlan | null;
   catalog: readonly CatalogComponent[];
   status: SessionStatus;
@@ -95,12 +102,13 @@ export function Stage({
             showWiring={view.wires && mode !== 'exploded'}
             enclosure={view.body ? 'ghost' : 'none'}
             showGrid
+            themeOverrides={WORKSPACE_THEME}
             resetSignal={reset}
           />
         </div>
       ) : null}
 
-      {drafting ? <DraftingTable status={status} stageText={stageText} events={events} live={live} names={names} /> : null}
+      {drafting ? <DraftingTable prompt={prompt} status={status} stageText={stageText} events={events} live={live} names={names} /> : null}
       {busy && !drafting ? (
         <div className="ws-stage__veil" role="status" aria-live="polite" data-testid="workspace-rebuilding">
           <span className="ws-spin" aria-hidden="true" />
@@ -267,15 +275,17 @@ function useReplay(plan: BuildPlan | null, busy: boolean): number | null {
   return state.key === key ? state.step : null;
 }
 
-/* ── Loading: a drafting table with the job's real progress ── */
+/* ── Loading: an example build assembling itself, under the job's real progress ── */
 
 function DraftingTable({
+  prompt,
   status,
   stageText,
   events,
   live,
   names,
 }: {
+  prompt: string;
   status: SessionStatus;
   stageText: string;
   events: readonly StageEvent[];
@@ -288,19 +298,7 @@ function DraftingTable({
   );
   return (
     <div className="ws-draft" role="status" aria-live="polite" aria-busy="true" data-testid="workspace-loading">
-      <div className="ws-draft__grid" aria-hidden="true" />
-      <div className="ws-draft__scan" aria-hidden="true" />
-      <svg className="ws-draft__model" viewBox="0 0 240 180" aria-hidden="true">
-        {/* An isometric chassis drawing itself: base plate, wheels, board, sensor. */}
-        <path className="ws-draft__line" style={{ ['--d' as string]: '0s' }} d="M40 100 L120 60 L200 100 L120 140 Z" />
-        <path className="ws-draft__line" style={{ ['--d' as string]: '0.25s' }} d="M40 100 L40 112 L120 152 L200 112 L200 100" />
-        <path className="ws-draft__line" style={{ ['--d' as string]: '0.25s' }} d="M120 140 L120 152" />
-        <ellipse className="ws-draft__line" style={{ ['--d' as string]: '0.6s' }} cx="62" cy="122" rx="12" ry="16" />
-        <ellipse className="ws-draft__line" style={{ ['--d' as string]: '0.7s' }} cx="178" cy="122" rx="12" ry="16" />
-        <path className="ws-draft__line ws-draft__line--accent" style={{ ['--d' as string]: '1s' }} d="M92 92 L124 76 L152 90 L120 106 Z" />
-        <path className="ws-draft__line ws-draft__line--accent" style={{ ['--d' as string]: '1.3s' }} d="M150 72 L170 62 L182 68 L162 78 Z M162 78 L162 86 M150 72 L150 80" />
-        <path className="ws-draft__line ws-draft__line--wire" style={{ ['--d' as string]: '1.6s' }} d="M124 76 C 140 60, 150 58, 166 66" />
-      </svg>
+      <BuildingPreview prompt={prompt} />
       <div className="ws-draft__panel">
         <p className="ws-draft__status">
           <span className="ws-spin" aria-hidden="true" />

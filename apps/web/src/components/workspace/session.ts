@@ -44,7 +44,8 @@ const reading = new Set<string>();
 let jobOwner: { key: string; stale: unknown } | null = null;
 
 const QUESTION_ORDER: readonly ChatQuestion[] = ['use', 'budget', 'size'];
-const EXPIRED_INTENT = new Set(['INTENT_NOT_FOUND', 'INTENT_INPUT_MISMATCH']);
+/** Generate refusals that mean the saved reading is gone or stale, not that the build failed. */
+const STALE_INTENT: readonly string[] = ['INTENT_NOT_FOUND', 'INTENT_INPUT_MISMATCH'];
 
 let seq = 0;
 function entryId(kind: string): string {
@@ -193,21 +194,20 @@ export function useWorkspaceSession(): WorkspaceSession {
         await store.startGeneration(generateRequest(fresh));
         setReread(false);
       } catch (err) {
-        startedRuns.delete(key);
-        const message = err instanceof Error && err.message ? err.message : 'Rivet could not start.';
-        if (err instanceof RivetError && EXPIRED_INTENT.has(err.code)) {
-          setReread(true);
-          mutate(id, (c) => {
-            const gen = latestGeneration(c);
-            return {
-              intentId: null,
-              ...(gen ? { chat: patchEntry(c, gen.id, { failed: message }) } : {}),
-            };
-          });
-          return;
+        // The stored reading has expired or no longer matches the prompt: build from the prompt alone, once.
+        if (err instanceof RivetError && STALE_INTENT.includes(err.code) && fresh.intentId) {
+          updateProject(id, { intentId: null });
+          try {
+            await store.startGeneration(generateRequest({ ...fresh, intentId: null }));
+            setReread(false);
+            return;
+          } catch (retry) {
+            err = retry;
+          }
         }
+        // The run stays marked as started, so nothing restarts it on its own; Try again clears the mark.
         setReread(false);
-        setStartError(message);
+        setStartError(err instanceof Error && err.message ? err.message : 'Rivet could not start.');
       }
     },
     [id, store],

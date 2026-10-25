@@ -191,7 +191,7 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
     await expect(page.getByTestId('workspace-chat-wrap')).toBeVisible();
     expect(generateCount, 'exactly one generate request').toBe(1);
 
-    await page.getByTestId('workspace-guide-review-full').click();
+    await page.goto(`/p/${projectId}/review`);
     await expect(page).toHaveURL(`/p/${projectId}/review`, { timeout: 60_000 });
     expect(await readProject<StoredProject>(page, projectId)).toMatchObject({ phase: 'ready', buildId, revision: 1, furthestStep: 'review' });
   });

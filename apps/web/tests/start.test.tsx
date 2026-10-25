@@ -10,6 +10,8 @@ import { getSyntheticRoverIntent } from '../src/lib/fixtures';
 import { createProjectRecord, getProject, saveProject, writeDraft } from '../src/lib/flow/projects';
 import { STEPS } from '../src/lib/flow/steps';
 import { useStudioPlanStore } from '../src/lib/plan-store';
+import { RivetError } from '../src/lib/rivet/errors';
+import { markNavigating, NavigationWatch } from '../src/components/system/Navigation';
 
 const nav = { push: vi.fn(), replace: vi.fn(), pathname: '/', search: '' };
 
@@ -120,6 +122,33 @@ describe('Workspace', () => {
     );
   }
 
+  it('preserves the current screen when a slow project navigation times out', async () => {
+    saveProject(createProjectRecord({ id: 'p_nav_timeout', prompt: 'rover', phase: 'ready', exampleId: 'rivet-intent-rover-001', buildId: 'rivet-intent-rover-001' }));
+    nav.pathname = '/p/p_nav_timeout/review';
+    await renderIn(
+      <>
+        <NavigationWatch />
+        <ProjectShell id="p_nav_timeout">
+          <input aria-label="Current answer" defaultValue="" />
+        </ProjectShell>
+      </>,
+    );
+    const answer = screen.getByRole('textbox', { name: 'Current answer' }) as HTMLInputElement;
+    fireEvent.change(answer, { target: { value: 'Keep my answer' } });
+    vi.useFakeTimers();
+    try {
+      act(() => markNavigating('/p/p_nav_timeout/parts'));
+      act(() => vi.advanceTimersByTime(150));
+      expect(screen.queryByRole('textbox', { name: 'Current answer' })).toBeNull();
+      expect(answer.isConnected).toBe(true);
+      act(() => vi.advanceTimersByTime(10_000));
+      expect(screen.getByRole('textbox', { name: 'Current answer' })).toBe(answer);
+      expect(answer.value).toBe('Keep my answer');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it('goes straight from the prompt to a build, then asks about budget and size in the chat', async () => {
     seed('p_ws1');
     await open('p_ws1');
@@ -142,9 +171,12 @@ describe('Workspace', () => {
     expect(screen.getByTestId('workspace-chat-offline').textContent).toContain("isn't connected");
     expect(screen.getByTestId('workspace-chat-understood').textContent).not.toMatch(/board\.|esp32_|differential_drive/);
     expect(screen.getByTestId('workspace-chat-built').textContent).toMatch(/Picked \d+ parts/);
-    // The Build tab opens on Review, with later steps locked until reached.
-    expect(screen.getByTestId('workspace-guide-review-toggle').getAttribute('aria-expanded')).toBe('true');
-    expect((screen.getByTestId('workspace-guide-buy-toggle') as HTMLButtonElement).disabled).toBe(true);
+    // The Build tab starts with every step closed; later steps stay locked until reached.
+    expect(screen.getByTestId('workspace-guide-buy-toggle').getAttribute('aria-expanded')).toBe('false');
+    expect((screen.getByTestId('workspace-guide-build-toggle') as HTMLButtonElement).disabled).toBe(true);
+    fireEvent.click(screen.getByTestId('workspace-guide-buy-toggle'));
+    expect(screen.getByTestId('workspace-guide-buy-toggle').getAttribute('aria-expanded')).toBe('true');
+    expect(getProject('p_ws1')?.guideStarted).toBe(true);
 
     // A budget that changes the build starts a new run with it.
     await act(async () => {
@@ -217,6 +249,17 @@ describe('Workspace', () => {
     await waitFor(() => expect(startGeneration).toHaveBeenCalledTimes(2));
   }, 20_000);
 
+  it('an expired reading is dropped and the build retried from the prompt, once', async () => {
+    startOverride = () => Promise.reject(new RivetError({ kind: 'not_found', code: 'INTENT_NOT_FOUND', message: 'Interpret the input again' }));
+    seed('p_expired', { phase: 'generating' });
+    saveProject({ ...getProject('p_expired')!, intentId: 'expired-id' });
+    await open('p_expired');
+    await screen.findByTestId('workspace-chat-failed', {}, { timeout: 8000 });
+    expect(getProject('p_expired')?.intentId).toBeNull();
+    expect(startGeneration).toHaveBeenCalledTimes(2);
+    expect(startGeneration.mock.calls[1][0]).not.toHaveProperty('intent_id');
+  }, 20_000);
+
   it('opens a ready project without generating, and picking a part shows it', async () => {
     seed('p_ws6', { phase: 'ready', exampleId: 'rivet-intent-rover-001', buildId: 'rivet-intent-rover-001' });
     await open('p_ws6');
@@ -224,13 +267,11 @@ describe('Workspace', () => {
     expect(startGeneration).not.toHaveBeenCalled();
     expect(screen.getByTestId('workspace-chat-built').textContent).toMatch(/Picked \d+ parts/);
     expect(screen.queryByTestId('workspace-question-budget')).toBeNull();
-    // Build tab: Review, Buy, Build. Review stacks one card per risk.
-    expect(screen.getAllByTestId('workspace-risk').length).toBeGreaterThan(1);
-    expect(screen.queryByTestId('workspace-guide-parts')).toBeNull();
-    expect(screen.queryByTestId('workspace-guide-wiring')).toBeNull();
-    fireEvent.click(screen.getByTestId('workspace-guide-review-next'));
-    expect(getProject('p_ws6')).toMatchObject({ furthestStep: 'buy', reviewDone: true });
+    // Build tab: step 1 Buy, step 2 Build. No review, parts or wiring steps.
+    for (const gone of ['review', 'parts', 'wiring']) expect(screen.queryByTestId(`workspace-guide-${gone}`)).toBeNull();
+    fireEvent.click(screen.getByTestId('workspace-guide-buy-toggle'));
     expect(screen.getByTestId('workspace-buy-total').textContent).toContain('$110.80');
+    expect(screen.getByTestId('workspace-guide-buy-next').textContent).toBe('Continue to Build');
     // Ticking a part you own takes it off the total.
     fireEvent.click(screen.getAllByRole('checkbox')[0]!);
     expect(getProject('p_ws6')?.ownedCatalogIds).toHaveLength(1);
@@ -277,7 +318,7 @@ describe('A0 Projects', () => {
     saveProject({ ...createProjectRecord({ id: 'p_a', prompt: 'rover one', phase: 'ready', buildId: 'b' }), furthestStep: 'wiring' });
     await renderIn(<ProjectsScreen />);
     const card = await screen.findByTestId('projects-card-p_a');
-    expect(card.textContent).toContain('Step 2 of 3 · Buy');
+    expect(card.textContent).toContain('Step 1 of 2 · Buy');
     fireEvent.click(screen.getByTestId('projects-menu-p_a'));
     fireEvent.click(screen.getByTestId('projects-delete'));
     await screen.findByTestId('projects-delete-modal');

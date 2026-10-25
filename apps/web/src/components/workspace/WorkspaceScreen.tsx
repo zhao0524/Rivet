@@ -2,7 +2,10 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import { isConceptPlan } from '../../lib/rivet/honesty';
+import { handleFromAccount } from '../../lib/flow/community';
+import { formatMoney } from '../../lib/flow/derive';
+import { readAccount } from '../../lib/flow/projects';
+import { isConceptPlan, summarizeBom } from '../../lib/rivet/honesty';
 import { useProjectContext } from '../flow/ProjectShell';
 import { Icon } from '../system/Icon';
 import { usePartSelection } from '../three/interactions';
@@ -128,6 +131,7 @@ export function WorkspaceScreen() {
         </aside>
         <section className="ws-col ws-col--stage" aria-label="3D model">
           <Stage
+            prompt={project.prompt}
             plan={plan}
             catalog={store.catalog}
             status={session.status}
@@ -176,7 +180,15 @@ export function WorkspaceScreen() {
         project={project}
         onClose={() => setPublishing(false)}
         onPublish={async (title) => {
-          await autosave.save({ title, publishedAt: project.publishedAt ?? new Date().toISOString() });
+          // The gallery shows what it costs and who made it, as of publishing.
+          const bom = plan ? summarizeBom(plan) : null;
+          const subtotal = bom?.knownSubtotal != null ? Number(bom.knownSubtotal) : NaN;
+          await autosave.save({
+            title,
+            publishedAt: project.publishedAt ?? new Date().toISOString(),
+            publishedPrice: bom && Number.isFinite(subtotal) ? formatMoney(subtotal, bom.currency) : null,
+            publishedBy: handleFromAccount(readAccount()?.email),
+          });
           setPublishing(false);
           setToast('Saved and published to the community gallery.');
         }}

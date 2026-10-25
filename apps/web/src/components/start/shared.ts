@@ -21,15 +21,14 @@ export const EXAMPLE_PROJECT = {
   prompt: 'Build a small rover that avoids obstacles',
 } as const;
 
-/** Where a project is, in words: "Reading your idea", "Building", "Step 2 of 3 · Buy", "Done". */
+/** Where a project is, in words: "Reading your idea", "Building", "Step 1 of 2 · Buy", "Done". */
 export function whereIs(project: ProjectRecord): string {
   if (project.phase === 'draft') return 'Draft';
   if (project.phase === 'clarify') return 'Reading your idea';
   if (project.phase === 'generating') return 'Building';
   if (project.furthestStep === 'done') return 'Done';
-  // The workspace guide is three steps; Parts and Wiring sit between Review and Buy.
-  const guide = project.furthestStep === 'review' ? 1 : project.furthestStep === 'build' ? 3 : 2;
-  return `Step ${guide} of 3 · ${['Review', 'Buy', 'Build'][guide - 1]}`;
+  // The workspace guide is two steps, Buy then Build; anything before Build counts as buying.
+  return project.furthestStep === 'build' ? 'Step 2 of 2 · Build' : 'Step 1 of 2 · Buy';
 }
 
 /** Relative time for "last updated", falling back to a date for anything older than a week. */

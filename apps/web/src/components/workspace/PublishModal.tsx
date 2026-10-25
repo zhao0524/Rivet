@@ -5,8 +5,8 @@ import type { ProjectRecord } from '../../lib/flow/projects';
 import { Modal } from '../system/Modal';
 
 /**
- * Save and publish: the build goes into the community gallery under a title you choose. Accounts are
- * not live yet, so the gallery is this browser's; the modal says so.
+ * Save and publish: the build goes into the community gallery under a title you choose. (Accounts are
+ * not live yet, so the gallery is this browser's.)
  */
 export function PublishModal({
   open,
@@ -83,10 +83,6 @@ export function PublishModal({
           data-testid="publish-title"
         />
       </div>
-      <p className="ui-small ui-muted" style={{ marginTop: 12 }}>
-        Hackathon build: accounts aren&apos;t live yet, so the gallery lives in this browser. It shows on the Start building
-        page under Community builds.
-      </p>
     </Modal>
   );
 }

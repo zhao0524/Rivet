@@ -114,6 +114,27 @@ describe('Landing page (M1, sign in, workspace)', () => {
     expect(list.textContent).toContain('Featured');
   });
 
+  it('a community card opens a preview over the page; Save for later and Use as template both act', async () => {
+    render(<HomePage />);
+    const card = await screen.findByTestId('home-community-robot-arm');
+    fireEvent.click(within(card).getAllByRole('button')[0]!);
+    const preview = await screen.findByTestId('community-preview');
+    expect(within(preview).getByTestId('community-preview-title').textContent).toBe('Desk robot arm');
+    expect(within(preview).getByTestId('community-preview-price').textContent).toContain('$96');
+    expect(within(preview).getByTestId('community-preview-creator').textContent).toContain('@maya.builds');
+    expect(push).not.toHaveBeenCalled();
+
+    fireEvent.click(within(preview).getByTestId('community-save'));
+    expect(listProjects().map((p) => p.title)).toEqual(['Desk robot arm']);
+    expect(screen.getByTestId('community-saved').textContent).toContain('Saved to');
+
+    // Signed out, using it as a template asks to sign in first, then opens its workspace.
+    fireEvent.click(within(preview).getByTestId('community-template'));
+    fireEvent.click(await screen.findByTestId('save-continue-google'));
+    await waitFor(() => expect(push).toHaveBeenCalledTimes(1));
+    expect(push.mock.calls[0]![0]).toMatch(/^\/p\/p_[a-z0-9]+\/workspace$/);
+  });
+
   it('See an example saves a ready example project and opens its workspace', () => {
     render(<HomePage />);
     fireEvent.click(screen.getByTestId('home-see-example'));

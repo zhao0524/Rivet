@@ -1,37 +1,34 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
-import { buyLines, formatMoney, partNicknames, partRows, plainInstructions } from '../../lib/flow/derive';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
+import { buyLines, formatMoney, partNicknames, plainInstructions } from '../../lib/flow/derive';
 import type { ProjectRecord } from '../../lib/flow/projects';
 import { STEPS, advance, projectPath, type StepId } from '../../lib/flow/steps';
-import { isConceptPlan } from '../../lib/rivet/honesty';
 import type { BuildPlan, CatalogComponent } from '../../lib/rivet/types';
 import { Icon } from '../system/Icon';
-import type { PartSelectionApi } from '../three/interactions';
 import { usePrintFiles } from '../three/enclosure/usePrintFiles';
-import { attentionChecks, partNames } from '../start/shared';
 
 /**
- * The guide's steps. Parts have their own tab, and wiring shows on the model (the Wires toggle), so
- * the guide is review, buy, build.
+ * The guide's steps: buy, then build. Parts have their own tab, wiring shows on the model (the Wires
+ * toggle), and the checks stay on the full Review page.
  */
-const GUIDE = ['review', 'buy', 'build'] as const;
+const GUIDE = ['buy', 'build'] as const;
 type GuideStep = (typeof GUIDE)[number];
 
-/** How far through the guide a project is: 0 = on Review … 3 = built. Older projects may sit on Parts or Wiring. */
+/** How far through the guide a project is: 0 = buying … 2 = built. Earlier steps all count as buying. */
 function reached(furthest: StepId): number {
-  if (furthest === 'review') return 0;
-  if (furthest === 'parts' || furthest === 'wiring' || furthest === 'buy') return 1;
-  if (furthest === 'build') return 2;
-  return 3;
+  if (furthest === 'build') return 1;
+  if (furthest === 'done') return 2;
+  return 0;
 }
 
 const LABEL = Object.fromEntries(STEPS.map((s) => [s.id, s.label])) as Record<GuideStep, string>;
 
 /**
  * The Build tab: from design to a finished robot in the panel. Each step opens in place with what it
- * needs (the risks, a shopping list, the assembly order) and a button to the next one; later steps
+ * needs (a shopping list, then the assembly order) and a button to the next one; later steps
  * unlock in order. Each also links to its full page for the deeper tools.
  */
 export function BuildGuide({
@@ -39,26 +36,36 @@ export function BuildGuide({
   update,
   plan,
   catalog,
-  selection,
   onStep,
 }: {
   project: ProjectRecord;
   update: (patch: Partial<ProjectRecord>) => void;
   plan: BuildPlan;
   catalog: readonly CatalogComponent[];
-  selection: PartSelectionApi;
   onStep: (step: number) => void;
 }) {
   const at = reached(project.furthestStep);
-  const [open, setOpen] = useState<GuideStep | null>(GUIDE[at] ?? null);
+  // A new project starts with every step closed and a hint pointing at Buy; once started (or
+  // already past Buy), the step reached opens.
+  const started = Boolean(project.guideStarted) || project.furthestStep !== 'review';
+  const [open, setOpen] = useState<GuideStep | null>(started ? (GUIDE[at] ?? null) : null);
+  const firstRef = useRef<HTMLButtonElement>(null);
+  const lastAt = useRef(at);
 
   // Moving on (from here or a full page) opens the step reached.
   useEffect(() => {
+    if (lastAt.current === at) return;
+    lastAt.current = at;
     setOpen(GUIDE[at] ?? null);
   }, [at]);
 
+  function toggle(id: GuideStep, isOpen: boolean) {
+    setOpen(isOpen ? null : id);
+    if (!isOpen && !started) update({ guideStarted: true });
+  }
+
   function next(from: GuideStep, patch: Partial<ProjectRecord> = {}) {
-    const to: StepId = from === 'review' ? 'buy' : from === 'buy' ? 'build' : 'done';
+    const to: StepId = from === 'buy' ? 'build' : 'done';
     update({ ...patch, furthestStep: advance(project.furthestStep, to) });
   }
 
@@ -75,7 +82,8 @@ export function BuildGuide({
               className="ws-guide__head"
               aria-expanded={isOpen}
               disabled={!unlocked}
-              onClick={() => setOpen(isOpen ? null : id)}
+              onClick={() => toggle(id, isOpen)}
+              ref={id === GUIDE[0] ? firstRef : undefined}
               data-testid={`workspace-guide-${id}-toggle`}
             >
               <span className="ws-guide__num" aria-hidden="true">
@@ -87,9 +95,7 @@ export function BuildGuide({
             </button>
             {isOpen ? (
               <div className="ws-guide__body">
-                {id === 'review' ? (
-                  <ReviewBody plan={plan} catalog={catalog} selection={selection} onNext={() => next('review', { reviewDone: true })} />
-                ) : id === 'buy' ? (
+                {id === 'buy' ? (
                   <BuyBody project={project} update={update} plan={plan} catalog={catalog} onNext={() => next('buy')} />
                 ) : (
                   <BuildBody
@@ -109,6 +115,7 @@ export function BuildGuide({
           </li>
         );
       })}
+      {!started ? <StartHint anchor={firstRef} /> : null}
       {project.completedAt ? (
         <li className="ws-guide__finished" data-testid="workspace-guide-finished">
           <Icon name="check" size={14} />
@@ -116,6 +123,46 @@ export function BuildGuide({
         </li>
       ) : null}
     </ol>
+  );
+}
+
+/**
+ * "Start here" label beside the first step, bouncing gently until that step is opened. It floats over the edge
+ * of the model, so it is placed from Review's position and drawn inside the workspace (the panel
+ * clips anything that overflows it).
+ */
+function StartHint({ anchor }: { anchor: React.RefObject<HTMLButtonElement> }) {
+  const [spot, setSpot] = useState<{ left: number; top: number } | null>(null);
+  const [host, setHost] = useState<Element | null>(null);
+
+  useLayoutEffect(() => {
+    const el = anchor.current;
+    if (!el) return;
+    setHost(el.closest('.ws'));
+    const place = () => {
+      const r = el.getBoundingClientRect();
+      // Only beside the step when there is room (on a phone the panel fills the screen).
+      setSpot(r.width > 0 && r.right + 14 + 240 <= window.innerWidth ? { left: r.right + 14, top: r.top + r.height / 2 } : null);
+    };
+    place();
+    const scroller = el.closest('.ws-left__scroll');
+    window.addEventListener('resize', place);
+    scroller?.addEventListener('scroll', place, { passive: true });
+    const ro = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(place);
+    ro?.observe(el);
+    return () => {
+      window.removeEventListener('resize', place);
+      scroller?.removeEventListener('scroll', place);
+      ro?.disconnect();
+    };
+  }, [anchor]);
+
+  if (!spot || !host) return null;
+  return createPortal(
+    <div className="ws-hint" style={{ left: spot.left, top: spot.top }} role="note" data-testid="workspace-start-hint">
+      Step 1: Buy. Work your way sequentially through the steps.
+    </div>,
+    host,
   );
 }
 
@@ -128,69 +175,7 @@ function Next({ children, onClick, testId }: { children: ReactNode; onClick: () 
   );
 }
 
-/* ── 1. Review: one card per risk ── */
-
-function ReviewBody({
-  plan,
-  catalog,
-  selection,
-  onNext,
-}: {
-  plan: BuildPlan;
-  catalog: readonly CatalogComponent[];
-  selection: PartSelectionApi;
-  onNext: () => void;
-}) {
-  const names = useMemo(() => partNames(partRows(plan, catalog)), [plan, catalog]);
-  const checks = useMemo(() => attentionChecks(plan, names), [plan, names]);
-  const passed = plan.verification.findings.filter((f) => f.result === 'PASS').length;
-
-  if (isConceptPlan(plan)) {
-    return (
-      <>
-        <p className="ws-guide__text">This is a concept model: it shows how the idea could look. Fit, wiring and power aren&apos;t checked.</p>
-        <Next onClick={onNext} testId="workspace-guide-review-next">
-          Looks good, continue to Buy
-        </Next>
-      </>
-    );
-  }
-
-  return (
-    <>
-      <p className="ws-guide__text">
-        {checks.length === 0
-          ? `All ${passed} checks passed.`
-          : `${passed} of ${plan.verification.findings.length} checks passed. ${checks.length === 1 ? 'One risk' : `${checks.length} risks`} to look at:`}
-      </p>
-      <ul className="ws-risks" data-testid="workspace-risks">
-        {checks.map((c) => {
-          const parts = Array.from(new Set(c.findings.flatMap((f) => f.affected_instance_ids)));
-          return (
-            <li key={c.ruleId} className="ws-risk" data-level={c.blocking ? 'blocking' : 'advisory'} data-testid="workspace-risk">
-              <div className="ws-risk__head">
-                <Icon name={c.blocking ? 'alert' : 'info'} size={14} />
-                <strong>{c.title}</strong>
-              </div>
-              <span className="ws-risk__tag">{c.blocking ? 'Sort out before you build' : 'Worth a look'}</span>
-              <p className="ws-risk__text">{c.detail}</p>
-              {parts.length > 0 ? (
-                <button type="button" className="ws-guide__link" onClick={() => selection.select(parts[0]!, { reason: 'api', reveal: true })}>
-                  Show in the model
-                </button>
-              ) : null}
-            </li>
-          );
-        })}
-      </ul>
-      <Next onClick={onNext} testId="workspace-guide-review-next">
-        Looks good, continue to Buy
-      </Next>
-    </>
-  );
-}
-
-/* ── 2. Buy ── */
+/* ── 1. Buy ── */
 
 function BuyBody({
   project,
@@ -218,7 +203,10 @@ function BuyBody({
 
   return (
     <>
-      <p className="ws-guide__text">Tick what you already have. Links go to the store Rivet checked.</p>
+      <p className="ws-guide__text">
+        This is a list of components you will need for your project. Rivet has gathered the best sources for purchasing these
+        components.
+      </p>
       <ul className="ws-guide__list">
         {lines.map((l) => (
           <li key={l.catalogId} className="ws-guide__buy" data-owned={owned.has(l.catalogId) || undefined}>
@@ -253,13 +241,13 @@ function BuyBody({
         </strong>
       </p>
       <Next onClick={onNext} testId="workspace-guide-buy-next">
-        I have everything, continue to Build
+        Continue to Build
       </Next>
     </>
   );
 }
 
-/* ── 3. Build ── */
+/* ── 2. Build ── */
 
 function BuildBody({
   project,
