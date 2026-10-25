@@ -4,6 +4,8 @@ from fastapi import APIRouter, File, Request, UploadFile
 from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import Response
 
+from rivet_api.concept.demo import match_upload
+
 router = APIRouter()
 
 
@@ -17,6 +19,9 @@ async def upload_image(request: Request, file: UploadFile = File(...)) -> dict[s
         request.client.host if request.client else "anonymous"
     )
     record = await run_in_threadpool(store.save, data, session_id)
+    demo = match_upload(file.filename, data)
+    if demo is not None:
+        store.tag_demo(record.asset_id, demo)
     return {
         "asset_id": record.asset_id,
         "mime_type": record.mime_type,
