@@ -169,10 +169,20 @@ const FAMILY_WORDS: [SampleFamily, RegExp][] = [
 ];
 
 /**
- * Picture for one of the user's projects. Anything Rivet has built (or will build) is a rover;
- * a prompt that names another kind of project shows that kind's sample picture until it is built.
+ * Picture for one of the user's projects. The picture the user built from comes first, so projects
+ * started from different pictures look different. Otherwise anything Rivet has built (or will build)
+ * is a rover; a prompt that names another kind of project shows that kind's sample picture until it is built.
  */
-export function thumbnailFor(project: { prompt: string; phase: string; buildId: string | null; exampleId: string | null }): string {
+export function thumbnailFor(project: {
+  prompt: string;
+  phase: string;
+  buildId: string | null;
+  exampleId: string | null;
+  imageThumbnail?: string | null;
+  imagePreviewUrl?: string | null;
+}): string {
+  const picture = project.imageThumbnail || project.imagePreviewUrl;
+  if (picture) return picture;
   if (project.phase === 'ready' || project.buildId || project.exampleId) return ROVER_THUMBNAIL;
   const hit = FAMILY_WORDS.find(([, re]) => re.test(project.prompt));
   const sample = hit ? SAMPLE_PROJECTS.find((s) => s.family === hit[0]) : null;

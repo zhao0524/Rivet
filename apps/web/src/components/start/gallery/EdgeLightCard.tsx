@@ -19,6 +19,8 @@ export interface EdgeLightCardProps {
   note?: ReactNode;
   /** Picture on the slab. Decorative: the title names the card. */
   image: string;
+  /** Shown instead when `image` fails to load (e.g. an uploaded picture the API no longer has). */
+  fallbackImage?: string;
   /** Small tag over the picture, e.g. "Sample". */
   tag?: ReactNode;
   /** Accessible name of the card's link or button. */
@@ -55,6 +57,7 @@ export function EdgeLightCard({
   time,
   note,
   image,
+  fallbackImage,
   tag,
   label,
   href,
@@ -70,6 +73,8 @@ export function EdgeLightCard({
   const describedBy = note ? `${uid}-meta ${uid}-note` : `${uid}-meta`;
   const [hover, setHover] = useState(false);
   const [focus, setFocus] = useState(false);
+  const [brokenImage, setBrokenImage] = useState<string | null>(null);
+  const shown = brokenImage === image && fallbackImage ? fallbackImage : image;
 
   function move(e: PointerEvent<HTMLDivElement>) {
     const el = ref.current;
@@ -119,7 +124,7 @@ export function EdgeLightCard({
     <>
       <span className="elc__photo">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={image} alt="" width={640} height={640} loading="lazy" decoding="async" draggable={false} />
+        <img src={shown} alt="" onError={() => setBrokenImage(image)} width={640} height={640} loading="lazy" decoding="async" draggable={false} />
         {tag ? <span className="elc__tag">{tag}</span> : null}
       </span>
       <span className="elc__cap">

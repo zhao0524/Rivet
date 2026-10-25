@@ -80,6 +80,8 @@ export interface ProjectRecord {
   prompt: string;
   imageAssetId: string | null;
   imagePreviewUrl: string | null;
+  /** The picked picture, shrunk to a data URL for the gallery card. Missing on older projects. */
+  imageThumbnail?: string | null;
   createdAt: string;
   updatedAt: string;
   phase: ProjectPhase;
@@ -256,7 +258,7 @@ export function updateProject(id: string, patch: Partial<ProjectRecord>): Projec
 export function submitDraftProject(input: {
   id: string;
   prompt: string;
-  image: 'keep' | { assetId: string | null; previewUrl: string | null };
+  image: 'keep' | { assetId: string | null; previewUrl: string | null; thumbnail?: string | null };
 }): ProjectRecord {
   const prompt = input.prompt.trim();
   const title = prompt ? titleFromPrompt(prompt) : 'Robot from a picture';
@@ -270,6 +272,7 @@ export function submitDraftProject(input: {
         title,
         imageAssetId: image?.assetId ?? null,
         imagePreviewUrl: image?.previewUrl ?? null,
+        imageThumbnail: image?.thumbnail ?? null,
         phase: 'clarify',
       }),
     );
@@ -281,6 +284,7 @@ export function submitDraftProject(input: {
     title: keepTitle ? existing.title : title,
     imageAssetId: image ? image.assetId : existing.imageAssetId,
     imagePreviewUrl: image ? image.previewUrl : existing.imagePreviewUrl,
+    imageThumbnail: image ? (image.thumbnail ?? null) : existing.imageThumbnail,
     phase: 'clarify',
     intentId: null,
     assumptions: [],

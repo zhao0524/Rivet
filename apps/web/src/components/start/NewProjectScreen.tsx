@@ -19,6 +19,7 @@ import { projectPath } from '../../lib/flow/steps';
 import { AppHeader } from '../flow/AppHeader';
 import { useFlowStore } from '../flow/FlowProvider';
 import { takePendingImage } from '../../lib/flow/pending-image';
+import { pictureThumbnail } from '../../lib/flow/picture-thumbnail';
 import { PromptBox, type PromptBoxSubmit } from '../flow/PromptBox';
 import { CardSkeletons, ProjectCard, SampleCard } from './gallery/ProjectCards';
 import '../../styles/start.css';
@@ -123,11 +124,13 @@ export function NewProjectScreen() {
     setError(null);
     let imageAssetId: string | null = null;
     let imagePreviewUrl: string | null = null;
+    let thumbnail: string | null = null;
     if (image) {
       try {
         const asset = await store.uploadImage(image);
         imageAssetId = asset.asset_id;
         imagePreviewUrl = asset.preview_url || null;
+        thumbnail = await pictureThumbnail(image);
       } catch (err) {
         setError(err instanceof Error && err.message ? `The picture didn't upload: ${err.message}` : "The picture didn't upload. Try again, or build from the text alone.");
         setBusy(false);
@@ -138,7 +141,7 @@ export function NewProjectScreen() {
     submitDraftProject({
       id: draft.id,
       prompt: draft.text,
-      image: image ? { assetId: imageAssetId, previewUrl: imagePreviewUrl } : 'keep',
+      image: image ? { assetId: imageAssetId, previewUrl: imagePreviewUrl, thumbnail } : 'keep',
     });
     writeDraft(null);
     // Straight into the workspace: Rivet reads the idea, builds it and asks its questions in the chat.

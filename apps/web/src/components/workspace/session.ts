@@ -14,6 +14,7 @@ import {
   type ProjectRecord,
 } from '../../lib/flow/projects';
 import { takePendingImage } from '../../lib/flow/pending-image';
+import { pictureThumbnail } from '../../lib/flow/picture-thumbnail';
 import { RivetError } from '../../lib/rivet/errors';
 import { isConceptPlan, summarizeBom } from '../../lib/rivet/honesty';
 import type { BuildPlan, CatalogComponent, EditOperation, InterpretResponse } from '../../lib/rivet/types';
@@ -250,7 +251,8 @@ export function useWorkspaceSession(): WorkspaceSession {
     if (picture) {
       try {
         const asset = await upload(picture);
-        updateProject(id, { imageAssetId: asset.asset_id, imagePreviewUrl: asset.preview_url || null });
+        const thumbnail = await pictureThumbnail(picture);
+        updateProject(id, { imageAssetId: asset.asset_id, imagePreviewUrl: asset.preview_url || null, imageThumbnail: thumbnail });
       } catch (err) {
         const why = err instanceof Error && err.message ? err.message : 'it could not be sent';
         mutate(id, (c) => ({
