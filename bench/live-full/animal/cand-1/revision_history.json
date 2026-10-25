@@ -1,0 +1,453 @@
+[
+ {
+  "accepted": true,
+  "actions": [
+   {
+    "accepted": true,
+    "body_id": null,
+    "reason": "scale the whole design by 0.581 so it fits its declared 90 x 130 x 130 mm envelope (it measured 151.754 x 159.397 x 90.856 mm)",
+    "round": 0,
+    "score_after": 30,
+    "score_before": 70,
+    "set": {
+     "__scale__": 0.5812
+    }
+   }
+  ],
+  "kind": "deterministic_repair",
+  "score_after": 30,
+  "score_before": 70
+ },
+ {
+  "accepted": false,
+  "changed": {
+   "added": [],
+   "changed": [
+    "base_pad"
+   ],
+   "removed": [],
+   "unchanged": [
+    "ear_left",
+    "ear_right",
+    "front_paws",
+    "haunch_left",
+    "haunch_right",
+    "head",
+    "snout",
+    "tail_curl",
+    "torso"
+   ]
+  },
+  "kind": "model_patch",
+  "score_after": 30,
+  "score_before": 30
+ },
+ {
+  "accepted": true,
+  "blocking_after": [],
+  "blocking_before": [
+   "design is statically unstable"
+  ],
+  "feedback": [
+   "The engine rejected the previous attempt: design is statically unstable.",
+   "Stability unstable: centre of mass lies outside the support polygon Contact parts were ['front_paws'] over 45.16 mm2. Make every intended wheel, foot or base reach the same lowest level and give at least three contact patches that are not in a straight line."
+  ],
+  "kind": "reauthor",
+  "score_after": 5.7,
+  "score_before": 2.5
+ },
+ {
+  "accepted": false,
+  "changed": {
+   "added": [],
+   "changed": [
+    "fox_core"
+   ],
+   "removed": [],
+   "unchanged": [
+    "base_pad"
+   ]
+  },
+  "critical_after": 1,
+  "critical_before": 0,
+  "geometry_digest_after": "0a75980cc8ad885f8d6d0d07a1c279d040dd8c9667c65aa9ca9ac9498e920ecf",
+  "geometry_digest_before": "6316efa6c37b2f7d7df560397673d7b8ce8e44d580c36c16470272d588bbbdfd",
+  "kind": "critic_revision",
+  "patch": {
+   "operations": [
+    {
+     "body": {
+      "anchors": [],
+      "attachment": null,
+      "catalog_id": null,
+      "features": [],
+      "id": "fox_core",
+      "internal": false,
+      "kind": "concept_visual",
+      "manufacturing": "none",
+      "material": {
+       "color": "#D96A2A",
+       "metallic": 0.0,
+       "name": "ceramic_satin",
+       "opacity": 1.0,
+       "roughness": 0.6
+      },
+      "name": "Fox core mass",
+      "parent_id": null,
+      "role": "body",
+      "shape": {
+       "children": [
+        {
+         "dimensions_mm": [
+          58.0,
+          72.0,
+          50.0
+         ],
+         "frame": {
+          "position_mm": [
+           0.0,
+           36.0,
+           0.0
+          ],
+          "rotation_deg": [
+           0.0,
+           0.0,
+           0.0
+          ]
+         },
+         "type": "ellipsoid"
+        },
+        {
+         "dimensions_mm": [
+          46.0,
+          40.0,
+          38.0
+         ],
+         "frame": {
+          "position_mm": [
+           0.0,
+           26.0,
+           10.0
+          ],
+          "rotation_deg": [
+           0.0,
+           0.0,
+           0.0
+          ]
+         },
+         "type": "ellipsoid"
+        },
+        {
+         "axis": "Y",
+         "frame": {
+          "position_mm": [
+           0.0,
+           52.0,
+           2.0
+          ],
+          "rotation_deg": [
+           0.0,
+           0.0,
+           0.0
+          ]
+         },
+         "height_mm": 24.0,
+         "radius_mm": 12.0,
+         "type": "capsule"
+        },
+        {
+         "dimensions_mm": [
+          34.0,
+          28.0,
+          26.0
+         ],
+         "frame": {
+          "position_mm": [
+           0.0,
+           68.0,
+           6.0
+          ],
+          "rotation_deg": [
+           0.0,
+           0.0,
+           0.0
+          ]
+         },
+         "type": "ellipsoid"
+        },
+        {
+         "axis": "Z",
+         "frame": {
+          "position_mm": [
+           0.0,
+           68.0,
+           16.0
+          ],
+          "rotation_deg": [
+           0.0,
+           0.0,
+           0.0
+          ]
+         },
+         "height_mm": 18.0,
+         "radius_mm": 5.2,
+         "type": "capsule"
+        },
+        {
+         "axis": "Z",
+         "frame": {
+          "position_mm": [
+           0.0,
+           68.0,
+           26.0
+          ],
+          "rotation_deg": [
+           0.0,
+           0.0,
+           0.0
+          ]
+         },
+         "height_mm": 22.0,
+         "radius_mm": 5.0,
+         "radius_top_mm": 0.9,
+         "type": "cone"
+        },
+        {
+         "axis": "Y",
+         "frame": {
+          "position_mm": [
+           12.5,
+           88.0,
+           0.0
+          ],
+          "rotation_deg": [
+           -4.0,
+           0.0,
+           8.0
+          ]
+         },
+         "height_mm": 32.0,
+         "radius_mm": 6.0,
+         "radius_top_mm": 1.0,
+         "type": "cone"
+        },
+        {
+         "axis": "Y",
+         "frame": {
+          "position_mm": [
+           -12.5,
+           88.0,
+           0.0
+          ],
+          "rotation_deg": [
+           -4.0,
+           0.0,
+           -8.0
+          ]
+         },
+         "height_mm": 32.0,
+         "radius_mm": 6.0,
+         "radius_top_mm": 1.0,
+         "type": "cone"
+        },
+        {
+         "frame": {
+          "position_mm": [
+           20.0,
+           16.0,
+           -5.0
+          ],
+          "rotation_deg": [
+           0.0,
+           0.0,
+           0.0
+          ]
+         },
+         "radius_mm": 12.0,
+         "type": "sphere"
+        },
+        {
+         "frame": {
+          "position_mm": [
+           -20.0,
+           16.0,
+           -5.0
+          ],
+          "rotation_deg": [
+           0.0,
+           0.0,
+           0.0
+          ]
+         },
+         "radius_mm": 12.0,
+         "type": "sphere"
+        },
+        {
+         "axis": "Y",
+         "frame": {
+          "position_mm": [
+           -7.0,
+           12.0,
+           20.0
+          ],
+          "rotation_deg": [
+           0.0,
+           0.0,
+           0.0
+          ]
+         },
+         "height_mm": 16.0,
+         "radius_mm": 6.0,
+         "type": "capsule"
+        },
+        {
+         "axis": "Y",
+         "frame": {
+          "position_mm": [
+           7.0,
+           12.0,
+           20.0
+          ],
+          "rotation_deg": [
+           0.0,
+           0.0,
+           0.0
+          ]
+         },
+         "height_mm": 16.0,
+         "radius_mm": 6.0,
+         "type": "capsule"
+        },
+        {
+         "axis": "Z",
+         "frame": {
+          "position_mm": [
+           18.0,
+           12.0,
+           0.0
+          ],
+          "rotation_deg": [
+           0.0,
+           -35.0,
+           0.0
+          ]
+         },
+         "height_mm": 26.0,
+         "radius_mm": 12.0,
+         "type": "capsule"
+        },
+        {
+         "axis": "Z",
+         "frame": {
+          "position_mm": [
+           6.0,
+           10.0,
+           12.0
+          ],
+          "rotation_deg": [
+           0.0,
+           -10.0,
+           0.0
+          ]
+         },
+         "height_mm": 28.0,
+         "radius_mm": 10.0,
+         "type": "capsule"
+        },
+        {
+         "axis": "Z",
+         "frame": {
+          "position_mm": [
+           -6.0,
+           10.0,
+           18.0
+          ],
+          "rotation_deg": [
+           0.0,
+           12.0,
+           0.0
+          ]
+         },
+         "height_mm": 26.0,
+         "radius_mm": 9.0,
+         "type": "capsule"
+        },
+        {
+         "frame": {
+          "position_mm": [
+           -18.0,
+           10.0,
+           20.0
+          ],
+          "rotation_deg": [
+           0.0,
+           0.0,
+           0.0
+          ]
+         },
+         "radius_mm": 7.0,
+         "type": "sphere"
+        },
+        {
+         "dimensions_mm": [
+          40.0,
+          18.0,
+          24.0
+         ],
+         "frame": {
+          "position_mm": [
+           -2.0,
+           9.0,
+           14.0
+          ],
+          "rotation_deg": [
+           0.0,
+           0.0,
+           0.0
+          ]
+         },
+         "type": "ellipsoid"
+        }
+       ],
+       "frame": {
+        "position_mm": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "rotation_deg": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "hollow": false,
+       "pitch_mm": 1.8,
+       "smoothing_mm": 6.5,
+       "type": "occupancy"
+      },
+      "tags": [
+       "torso",
+       "head",
+       "ears",
+       "tail",
+       "paws"
+      ]
+     },
+     "body_id": "fox_core",
+     "operation": "replace"
+    }
+   ],
+   "reason": "Improve silhouette and proportions per critic: narrow and refine the snout, round and plump the torso with smoother transitions, make ears taller and sharper, and blend the curled tail smoothly around the front paws while keeping stability on the existing base."
+  },
+  "round": 1,
+  "score_after": 5.5,
+  "score_before": 5.7
+ },
+ {
+  "accepted": false,
+  "kind": "critic_revision",
+  "reason": "patch rejected: 1 validation error for DesignBody\nshape\n  Value error, occupancy children must be primitives: ['box', 'capsule', 'cone', 'cylinder', 'ellipsoid', 'plate', 'rounded_box', 'sphere', 'torus'] [type=value_error, input_value={'type': 'occupancy', 'di...s': 0, 'asset_id': None}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/value_error",
+  "round": 2
+ }
+]

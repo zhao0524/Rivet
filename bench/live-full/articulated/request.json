@@ -1,0 +1,14 @@
+{
+ "allow_cached": false,
+ "candidate_count": 3,
+ "constraints": {},
+ "generation_budget_usd": 9.0,
+ "input": {
+  "image_asset_id": null,
+  "user_text": "An articulated desk lamp: heavy round base, a lower arm and an upper arm joined by a knuckle hinge, a hinged conical shade with a visible bulb opening and a toggle switch on the base"
+ },
+ "mode": "concept_only",
+ "quality": "full",
+ "review_rounds": 2,
+ "visual_target": 8.0
+}

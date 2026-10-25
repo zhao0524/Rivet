@@ -1,0 +1,832 @@
+{
+ "access": {},
+ "blocking": [],
+ "bounds_mm": {
+  "max": [
+   63.5,
+   82.5,
+   29.0
+  ],
+  "min": [
+   -63.5,
+   0.0,
+   -29.0
+  ],
+  "size": [
+   127.0,
+   82.5,
+   58.0
+  ]
+ },
+ "collisions": {
+  "approximate_pairs": [],
+  "broadphase_pairs": 14,
+  "clearance_violations": [],
+  "cosmetic_overlaps": [],
+  "hard_collisions": [],
+  "intended_contacts": [
+   {
+    "a": "body_shell",
+    "b": "lens_mount_ring",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "body_shell",
+    "b": "lens_barrel",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "body_shell",
+    "b": "grip_panel",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "body_shell",
+    "b": "viewfinder_housing",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "body_shell",
+    "b": "top_dial",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "body_shell",
+    "b": "hot_shoe_left_rail",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "body_shell",
+    "b": "hot_shoe_right_rail",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "body_shell",
+    "b": "port_door",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "body_shell",
+    "b": "foot_front",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "body_shell",
+    "b": "foot_rear",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "viewfinder_housing",
+    "b": "viewfinder_glass",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   },
+   {
+    "a": "top_dial",
+    "b": "dial_marker",
+    "depth_mm": 0.0,
+    "exact": true,
+    "gap_mm": 0.0,
+    "kind": "intended_contact",
+    "volume_mm3": 0.0
+   }
+  ],
+  "method": "AABB broadphase + exact mesh boolean narrowphase (manifold3d)",
+  "narrowphase_pairs": 14,
+  "pairs": 91,
+  "unintended_contacts": []
+ },
+ "connectivity": {
+  "connected": true,
+  "max_depth": 2,
+  "note": "every placed body is attached through a named anchor chain to a root",
+  "roots": [
+   "body_shell"
+  ],
+  "standalone": [],
+  "unresolved": []
+ },
+ "counts": {
+  "blocked_access": 0,
+  "blocking_manufacturing_issues": 0,
+  "clearance_violations": 0,
+  "cosmetic_overlaps": 0,
+  "failed_bodies": 0,
+  "failed_required_bodies": 0,
+  "failed_required_features": 0,
+  "floating_bodies": 0,
+  "hard_collisions": 0,
+  "invalid_hierarchy_cycles": 0,
+  "missing_purchased_part_geometry_source": 0,
+  "sweep_collisions": 0,
+  "unresolved_required_mounts": 0
+ },
+ "manufacturing": {
+  "issues": [
+   {
+    "body_id": "lens_mount_ring",
+    "message": "Lens mount ring is a slender unsupported member (length 52 mm, thinnest section 2.0 mm, ratio 26:1); too thin to be self-supporting",
+    "rule": "structure.unsupported_cantilever",
+    "severity": "advisory",
+    "slenderness": 26.0
+   },
+   {
+    "body_id": "grip_panel",
+    "message": "Left rubber grip is a slender unsupported member (length 50 mm, thinnest section 3.5 mm, ratio 14:1); check stiffness",
+    "rule": "structure.unsupported_cantilever",
+    "severity": "advisory",
+    "slenderness": 14.29
+   },
+   {
+    "body_id": "port_door",
+    "message": "Right-side port door is a slender unsupported member (length 50 mm, thinnest section 2.0 mm, ratio 25:1); check stiffness",
+    "rule": "structure.unsupported_cantilever",
+    "severity": "advisory",
+    "slenderness": 25.0
+   },
+   {
+    "body_id": "foot_front",
+    "message": "Front rubber foot is a slender unsupported member (length 50 mm, thinnest section 2.0 mm, ratio 25:1); check stiffness",
+    "rule": "structure.unsupported_cantilever",
+    "severity": "advisory",
+    "slenderness": 25.0
+   },
+   {
+    "body_id": "foot_rear",
+    "message": "Rear rubber foot is a slender unsupported member (length 50 mm, thinnest section 2.0 mm, ratio 25:1); check stiffness",
+    "rule": "structure.unsupported_cantilever",
+    "severity": "advisory",
+    "slenderness": 25.0
+   }
+  ],
+  "parts": [
+   {
+    "bbox_mm": [
+     125.0,
+     73.0,
+     36.0
+    ],
+    "body_id": "body_shell",
+    "checks": [
+     {
+      "message": "fits a 256 x 256 x 256 mm build volume",
+      "result": "PASS",
+      "rule": "print.build_volume"
+     },
+     {
+      "message": "5% of the surface overhangs more than 45 degrees in the current orientation",
+      "result": "PASS",
+      "rule": "print.overhang"
+     }
+    ],
+    "estimate_basis": null,
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "pc-abs",
+    "min_wall_mm": 36.0,
+    "name": "Main body shell",
+    "representation": "brep",
+    "route": "3d_print",
+    "volume_cm3": 319.117,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     52.0,
+     52.0,
+     2.0
+    ],
+    "body_id": "lens_mount_ring",
+    "checks": [
+     {
+      "message": "fits a 256 x 256 x 256 mm build volume",
+      "result": "PASS",
+      "rule": "print.build_volume"
+     },
+     {
+      "message": "11% of the surface overhangs more than 45 degrees in the current orientation",
+      "result": "PASS",
+      "rule": "print.overhang"
+     }
+    ],
+    "estimate_basis": null,
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "magnesium_alloy",
+    "min_wall_mm": 2.0,
+    "name": "Lens mount ring",
+    "representation": "brep",
+    "route": "3d_print",
+    "volume_cm3": 0.628,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     45.0,
+     45.0,
+     18.0
+    ],
+    "body_id": "lens_barrel",
+    "checks": [
+     {
+      "message": "fits a 256 x 256 x 256 mm build volume",
+      "result": "PASS",
+      "rule": "print.build_volume"
+     },
+     {
+      "message": "24% of the surface overhangs more than 45 degrees in the current orientation",
+      "result": "WARN",
+      "rule": "print.overhang"
+     }
+    ],
+    "estimate_basis": null,
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 0.721,
+    "material": "aluminum_black_anodized",
+    "min_wall_mm": null,
+    "name": "Lens barrel",
+    "representation": "brep",
+    "route": "3d_print",
+    "volume_cm3": 0.267,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     34.0,
+     34.0,
+     3.0
+    ],
+    "body_id": "lens_front_glass",
+    "checks": [
+     {
+      "message": "fits a 256 x 256 x 256 mm build volume",
+      "result": "PASS",
+      "rule": "print.build_volume"
+     },
+     {
+      "message": "3% of the surface overhangs more than 45 degrees in the current orientation",
+      "result": "PASS",
+      "rule": "print.overhang"
+     }
+    ],
+    "estimate_basis": null,
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "optical_glass",
+    "min_wall_mm": 34.0,
+    "name": "Front element",
+    "representation": "brep",
+    "route": "3d_print",
+    "volume_cm3": 2.724,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     36.0,
+     50.0,
+     3.5
+    ],
+    "body_id": "grip_panel",
+    "checks": [
+     {
+      "message": "fits a 256 x 256 x 256 mm build volume",
+      "result": "PASS",
+      "rule": "print.build_volume"
+     },
+     {
+      "message": "1% of the surface overhangs more than 45 degrees in the current orientation",
+      "result": "PASS",
+      "rule": "print.overhang"
+     }
+    ],
+    "estimate_basis": null,
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "tpe_rubber",
+    "min_wall_mm": 3.5,
+    "name": "Left rubber grip",
+    "representation": "brep",
+    "route": "3d_print",
+    "volume_cm3": 6.115,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     20.0,
+     14.0,
+     6.0
+    ],
+    "body_id": "viewfinder_housing",
+    "checks": [
+     {
+      "message": "fits a 256 x 256 x 256 mm build volume",
+      "result": "PASS",
+      "rule": "print.build_volume"
+     },
+     {
+      "message": "4% of the surface overhangs more than 45 degrees in the current orientation",
+      "result": "PASS",
+      "rule": "print.overhang"
+     }
+    ],
+    "estimate_basis": null,
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "pc-abs",
+    "min_wall_mm": 6.0,
+    "name": "Viewfinder housing (front)",
+    "representation": "brep",
+    "route": "3d_print",
+    "volume_cm3": 1.553,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     12.0,
+     8.0,
+     2.0
+    ],
+    "body_id": "viewfinder_glass",
+    "checks": [
+     {
+      "message": "fits a 256 x 256 x 256 mm build volume",
+      "result": "PASS",
+      "rule": "print.build_volume"
+     },
+     {
+      "message": "0% of the surface overhangs more than 45 degrees in the current orientation",
+      "result": "PASS",
+      "rule": "print.overhang"
+     }
+    ],
+    "estimate_basis": null,
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "optical_glass",
+    "min_wall_mm": 2.0,
+    "name": "Viewfinder window glass",
+    "representation": "brep",
+    "route": "3d_print",
+    "volume_cm3": 0.192,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     26.0,
+     6.0,
+     26.0
+    ],
+    "body_id": "top_dial",
+    "checks": [
+     {
+      "message": "fits a 256 x 256 x 256 mm build volume",
+      "result": "PASS",
+      "rule": "print.build_volume"
+     },
+     {
+      "message": "0% of the surface overhangs more than 45 degrees in the current orientation",
+      "result": "PASS",
+      "rule": "print.overhang"
+     }
+    ],
+    "estimate_basis": null,
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "anodized_aluminum",
+    "min_wall_mm": 26.0,
+    "name": "Top knurled dial",
+    "representation": "brep",
+    "route": "3d_print",
+    "volume_cm3": 3.16,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     3.0,
+     1.0,
+     3.0
+    ],
+    "body_id": "dial_marker",
+    "checks": [
+     {
+      "message": "fits a 256 x 256 x 256 mm build volume",
+      "result": "PASS",
+      "rule": "print.build_volume"
+     },
+     {
+      "message": "0% of the surface overhangs more than 45 degrees in the current orientation",
+      "result": "PASS",
+      "rule": "print.overhang"
+     }
+    ],
+    "estimate_basis": null,
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "paint",
+    "min_wall_mm": 3.0,
+    "name": "Dial indicator pip",
+    "representation": "brep",
+    "route": "3d_print",
+    "volume_cm3": 0.007,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     2.0,
+     2.5,
+     22.0
+    ],
+    "body_id": "hot_shoe_left_rail",
+    "checks": [
+     {
+      "message": "fits a 256 x 256 x 256 mm build volume",
+      "result": "PASS",
+      "rule": "print.build_volume"
+     },
+     {
+      "message": "0% of the surface overhangs more than 45 degrees in the current orientation",
+      "result": "PASS",
+      "rule": "print.overhang"
+     }
+    ],
+    "estimate_basis": null,
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 0.836,
+    "material": "stainless_steel",
+    "min_wall_mm": 2.0,
+    "name": "Hot shoe rail (left)",
+    "representation": "brep",
+    "route": "3d_print",
+    "volume_cm3": 0.104,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     2.0,
+     2.5,
+     22.0
+    ],
+    "body_id": "hot_shoe_right_rail",
+    "checks": [
+     {
+      "message": "fits a 256 x 256 x 256 mm build volume",
+      "result": "PASS",
+      "rule": "print.build_volume"
+     },
+     {
+      "message": "0% of the surface overhangs more than 45 degrees in the current orientation",
+      "result": "PASS",
+      "rule": "print.overhang"
+     }
+    ],
+    "estimate_basis": null,
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 0.836,
+    "material": "stainless_steel",
+    "min_wall_mm": 2.0,
+    "name": "Hot shoe rail (right)",
+    "representation": "brep",
+    "route": "3d_print",
+    "volume_cm3": 0.104,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     2.0,
+     50.0,
+     24.0
+    ],
+    "body_id": "port_door",
+    "checks": [
+     {
+      "message": "fits a 256 x 256 x 256 mm build volume",
+      "result": "PASS",
+      "rule": "print.build_volume"
+     },
+     {
+      "message": "0% of the surface overhangs more than 45 degrees in the current orientation",
+      "result": "PASS",
+      "rule": "print.overhang"
+     }
+    ],
+    "estimate_basis": null,
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": null,
+    "material": "pc-abs",
+    "min_wall_mm": 2.0,
+    "name": "Right-side port door",
+    "representation": "brep",
+    "route": "3d_print",
+    "volume_cm3": 2.348,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     50.0,
+     2.0,
+     6.0
+    ],
+    "body_id": "foot_front",
+    "checks": [
+     {
+      "message": "fits a 256 x 256 x 256 mm build volume",
+      "result": "PASS",
+      "rule": "print.build_volume"
+     },
+     {
+      "message": "2% of the surface overhangs more than 45 degrees in the current orientation",
+      "result": "PASS",
+      "rule": "print.overhang"
+     }
+    ],
+    "estimate_basis": null,
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 0.673,
+    "material": "rubber",
+    "min_wall_mm": 2.0,
+    "name": "Front rubber foot",
+    "representation": "brep",
+    "route": "3d_print",
+    "volume_cm3": 0.561,
+    "watertight": true
+   },
+   {
+    "bbox_mm": [
+     50.0,
+     2.0,
+     6.0
+    ],
+    "body_id": "foot_rear",
+    "checks": [
+     {
+      "message": "fits a 256 x 256 x 256 mm build volume",
+      "result": "PASS",
+      "rule": "print.build_volume"
+     },
+     {
+      "message": "2% of the surface overhangs more than 45 degrees in the current orientation",
+      "result": "PASS",
+      "rule": "print.overhang"
+     }
+    ],
+    "estimate_basis": null,
+    "estimate_usd": null,
+    "exports": [
+     "step",
+     "stl"
+    ],
+    "mass_g": 0.673,
+    "material": "rubber",
+    "min_wall_mm": 2.0,
+    "name": "Rear rubber foot",
+    "representation": "brep",
+    "route": "3d_print",
+    "volume_cm3": 0.561,
+    "watertight": true
+   }
+  ],
+  "rules": {
+   "min_wall_mm": 1.6,
+   "slender_fail": 25.0,
+   "slender_warn": 12.0
+  }
+ },
+ "report_url": "/api/v2/assets/asset-992ebe619b2722b9f49ade3ca5d6d095c08f8764424ecc193074256e3f89840d",
+ "stability": {
+  "com_mm": [
+   -1.651,
+   39.269,
+   -9.259
+  ],
+  "contact_bodies": [
+   "foot_front",
+   "foot_rear",
+   "grip_panel"
+  ],
+  "known_mass_g": 3.74,
+  "limitations": [
+   "Static check on a flat, level floor; no dynamics, impacts, slopes or motor torque",
+   "Not a structural strength or safety certification"
+  ],
+  "margin_mm": 12.841,
+  "margin_range_mm": [
+   12.831,
+   13.018
+  ],
+  "reason": "centre of mass stays at least 12.8 mm inside the support polygon",
+  "scenarios": {
+   "unknown_heavy": {
+    "com_mm": [
+     -1.688,
+     39.248,
+     -9.269
+    ],
+    "margin_mm": 12.831,
+    "tip_direction_xz": [
+     0.0,
+     -1.0
+    ],
+    "total_mass_g": 1112.02
+   },
+   "unknown_nominal": {
+    "com_mm": [
+     -1.651,
+     39.269,
+     -9.259
+    ],
+    "margin_mm": 12.841,
+    "tip_direction_xz": [
+     0.0,
+     -1.0
+    ],
+    "total_mass_g": 373.17
+   },
+   "unknown_zero": {
+    "com_mm": [
+     3.829,
+     42.381,
+     -7.819
+    ],
+    "margin_mm": 13.018,
+    "tip_direction_xz": [
+     0.1681,
+     0.9858
+    ],
+    "total_mass_g": 3.74
+   }
+  },
+  "support_area_mm2": 2025.1,
+  "support_polygon_xz_mm": [
+   [
+    -62.937,
+    9.575
+   ],
+   [
+    -62.882,
+    9.225
+   ],
+   [
+    -62.68,
+    8.892
+   ],
+   [
+    -62.459,
+    8.593
+   ],
+   [
+    -25.1,
+    -22.1
+   ],
+   [
+    23.1,
+    -22.1
+   ],
+   [
+    23.1,
+    2.1
+   ],
+   [
+    -28.541,
+    10.907
+   ],
+   [
+    -29.075,
+    10.937
+   ],
+   [
+    -61.925,
+    10.937
+   ],
+   [
+    -62.459,
+    10.907
+   ],
+   [
+    -62.68,
+    10.608
+   ],
+   [
+    -62.882,
+    10.275
+   ],
+   [
+    -62.937,
+    9.925
+   ]
+  ],
+  "tip_direction_xz": [
+   0.0,
+   -1.0
+  ],
+  "unknown_mass_bodies": [
+   "body_shell",
+   "lens_mount_ring",
+   "lens_front_glass",
+   "grip_panel",
+   "viewfinder_housing",
+   "viewfinder_glass",
+   "top_dial",
+   "dial_marker",
+   "port_door"
+  ],
+  "verdict": "stable"
+ },
+ "status": "valid",
+ "sweeps": [],
+ "within_max_bounds": true
+}

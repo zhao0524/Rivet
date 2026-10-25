@@ -1,0 +1,151 @@
+{
+ "issues": [
+  {
+   "body_id": "lens_barrel",
+   "observed": "The lens barrel appears slightly misaligned and not distinctly offset to the right as per brief.",
+   "patch": null,
+   "proposed_change": "Reposition and align the lens barrel to clearly offset it to the right of the center.",
+   "severity": "major",
+   "target": "Right-offset cylindrical lens barrel",
+   "view": "front"
+  },
+  {
+   "body_id": "top_dial",
+   "observed": "The presence of two dials is inconsistent with the brief.",
+   "patch": null,
+   "proposed_change": "Remove one of the dials to maintain the single prominent dial design.",
+   "severity": "major",
+   "target": "Large knurled top dial",
+   "view": "top"
+  },
+  {
+   "body_id": "viewfinder_housing",
+   "observed": "The viewfinder window appears slightly oversized.",
+   "patch": null,
+   "proposed_change": "Adjust the size to better match the brief specification for an unobstructed optical viewfinder.",
+   "severity": "minor",
+   "target": "Front viewfinder window at top-left",
+   "view": "front"
+  },
+  {
+   "body_id": "port_door",
+   "observed": "The port door is not prominently detailed.",
+   "patch": null,
+   "proposed_change": "Add more detail to the port door to enhance visibility and functionality.",
+   "severity": "minor",
+   "target": "Right-side hinged port door",
+   "view": "right"
+  },
+  {
+   "body_id": "grip_panel",
+   "observed": "The grip texture lacks distinct definition.",
+   "patch": null,
+   "proposed_change": "Enhance the texture of the grip panel to highlight its high-friction characteristic.",
+   "severity": "minor",
+   "target": "Left-only textured rubber grip panel",
+   "view": "front"
+  }
+ ],
+ "judge_model": "openai:gpt-5+critic:gpt-4o",
+ "metrics": {
+  "deterministic_overall": 8.28,
+  "deterministic_scores": {
+   "colour_and_surface": 10.0,
+   "pose_and_orientation": 8.0,
+   "proportions": 7.0,
+   "reference_consistency": 7.93,
+   "signature_features": 8.99,
+   "silhouette": 7.93
+  },
+  "features_named": {
+   "Centered ISO-518 hot shoe on top plate": true,
+   "Front viewfinder window at top-left": true,
+   "Large knurled top dial": true,
+   "Left-only textured rubber grip panel": true,
+   "Right-offset cylindrical lens barrel": true,
+   "Right-side hinged port door": true
+  },
+  "measured_proportions": {
+   "height_length": 1.417,
+   "length_width": 0.458
+  },
+  "method": "deterministic matched-view silhouette, proportion, outline-detail and palette metrics; names and labels earn no credit",
+  "outline_detail_ratio": {
+   "back": 0.928,
+   "left": 0.773,
+   "perspective": 0.692,
+   "top": 0.601
+  },
+  "reference_silhouette_iou": {
+   "back": 0.852,
+   "left": 0.817,
+   "perspective": 0.762,
+   "top": 0.741
+  },
+  "silhouette_parts": [
+   {
+    "body_id": "lens_mount_ring",
+    "protrudes": false,
+    "volume_share": 0.0164
+   },
+   {
+    "body_id": "lens_barrel",
+    "protrudes": true,
+    "volume_share": 0.1107
+   },
+   {
+    "body_id": "lens_front_glass",
+    "protrudes": true,
+    "volume_share": 0.0105
+   },
+   {
+    "body_id": "grip_panel",
+    "protrudes": true,
+    "volume_share": 0.0192
+   },
+   {
+    "body_id": "viewfinder_housing",
+    "protrudes": true,
+    "volume_share": 0.0051
+   },
+   {
+    "body_id": "viewfinder_glass",
+    "protrudes": true,
+    "volume_share": 0.0006
+   },
+   {
+    "body_id": "top_dial",
+    "protrudes": true,
+    "volume_share": 0.0123
+   },
+   {
+    "body_id": "dial_marker",
+    "protrudes": true,
+    "volume_share": 0.0
+   },
+   {
+    "body_id": "hot_shoe_left_rail",
+    "protrudes": true,
+    "volume_share": 0.0003
+   },
+   {
+    "body_id": "hot_shoe_right_rail",
+    "protrudes": true,
+    "volume_share": 0.0003
+   }
+  ],
+  "target_proportions": {}
+ },
+ "overall": 6.0,
+ "render_digest": "3d6f79cc22116d81a5bc7e398e6e4c106cdd3e78a6d22abfa845d23e8477bcae",
+ "scores": {
+  "colour_and_surface": 6.0,
+  "pose_and_orientation": 7.0,
+  "proportions": 6.0,
+  "reference_consistency": 5.0,
+  "signature_features": 5.0,
+  "silhouette": 7.0
+ },
+ "subjective": true,
+ "summary": "The render captures the general shape and concept of the camera as described in the brief, but there are several inconsistencies and missing details in key areas."
+}
