@@ -1,0 +1,9 @@
+{
+  "_note": "Test manifest for rivet_engine.showcase; every source and part page is recorded under tests/support/recorded_showcase.",
+  "candidates": [
+    {"product_id": "circuit-playground-bike-light", "name": "Circuit Playground Bike Light", "category": "wearable", "source_url": "https://learn.adafruit.com/circuit-playground-bike-light", "notes": "Adafruit Learn guide with five product cards"},
+    {"product_id": "pololu-romi-chassis-kit", "name": "Romi Chassis Kit", "category": "rover", "source_url": "https://www.pololu.com/product/3500", "notes": "Pololu kit page with a Kit contents block"},
+    {"product_id": "nvidia-jetbot", "name": "NVIDIA JetBot", "category": "rover", "source_url": "https://jetbot.org/master/bill_of_materials.html", "notes": "open-source BOM; most rows link to marketplaces"},
+    {"product_id": "sparkfun-redbot-shadow-chassis", "name": "SparkFun RedBot", "category": "rover", "source_url": "https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis", "notes": "SparkFun tutorial with a Materials table; part pages are not recorded"}
+  ]
+}

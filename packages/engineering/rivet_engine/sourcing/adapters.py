@@ -95,6 +95,12 @@ class SparkFunAdapter(_ProductPageAdapter):
         return self.url_template.format(id=m.group(1)) if m else None
 
 
+class PololuAdapter(_ProductPageAdapter):
+    name = "pololu"
+    tier: HostTier = "manufacturer"
+    url_template = "https://www.pololu.com/product/{id}"
+
+
 class MouserAdapter:
     """Mouser Search API (keyed). Without `MOUSER_API_KEY` it reports `needs_api_key`."""
 
@@ -240,7 +246,7 @@ class ManufacturerPageAdapter:
         return LookupResult(self.name, identifier, "found", self.url, evidence)
 
 
-DEFAULT_ADAPTERS: tuple[SourceAdapter, ...] = (AdafruitAdapter(), SparkFunAdapter(), MouserAdapter(), DigiKeyAdapter())
+DEFAULT_ADAPTERS: tuple[SourceAdapter, ...] = (AdafruitAdapter(), SparkFunAdapter(), PololuAdapter(), MouserAdapter(), DigiKeyAdapter())
 
 
 def lookup_all(identifier: str, fetcher: Fetcher, adapters: tuple[SourceAdapter, ...] | list[SourceAdapter] = DEFAULT_ADAPTERS) -> list[LookupResult]:
@@ -256,6 +262,7 @@ __all__ = [
     "LookupStatus",
     "ManufacturerPageAdapter",
     "MouserAdapter",
+    "PololuAdapter",
     "SourceAdapter",
     "SparkFunAdapter",
     "lookup_all",

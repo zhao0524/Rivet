@@ -1,0 +1,92 @@
+{
+  "https://jetbot.org/master/bill_of_materials.html": {
+    "content_sha256": "8eb5f16c7cebddf0a8810afe3be6bae2b141e6f5560dc229c1afc5d70d9d3522",
+    "fetched_at": "2026-10-24T22:55:51Z",
+    "file": "jetbot_org_master_bill_of_materials_html.html",
+    "status": 200
+  },
+  "https://learn.adafruit.com/circuit-playground-bike-light": {
+    "content_sha256": "ca2331afc89ac30b5a684b84c6d8fe2592d53f21bdb8f8117f952691969dc26a",
+    "fetched_at": "2026-10-24T23:00:59Z",
+    "file": "learn_adafruit_com_circuit_playground_bike_light.html",
+    "status": 200
+  },
+  "https://learn.sparkfun.com/tutorials/assembly-guide-for-redbot-with-shadow-chassis": {
+    "content_sha256": "f94d08f0c383a20d225d0065bec584fc735f3cf1535d2e10a5ce3c813045e334",
+    "fetched_at": "2026-10-24T23:03:16Z",
+    "file": "learn_sparkfun_com_tutorials_assembly_guide_for_redbot_with_shadow_chassis.html",
+    "status": 200
+  },
+  "https://www.adafruit.com/product/1578": {
+    "content_sha256": "835d66be29ca609c3685fb9d4cab37213e43bba38ddf85c14e2f8cb5bce0a185",
+    "fetched_at": "2026-10-24T23:13:34Z",
+    "file": "www_adafruit_com_product_1578.html",
+    "status": 200
+  },
+  "https://www.adafruit.com/product/3000": {
+    "content_sha256": "c99c4aa0aa1bf4edb483c5a9f3b172879f2fd716b900a1ed2c37157314270cee",
+    "fetched_at": "2026-10-24T23:13:30Z",
+    "file": "www_adafruit_com_product_3000.html",
+    "status": 200
+  },
+  "https://www.adafruit.com/product/3064": {
+    "content_sha256": "2e49e7c93c4f0acf8c486a507507ced6b04b3e180bff25a34fc628b62f749bc7",
+    "fetched_at": "2026-10-24T23:13:36Z",
+    "file": "www_adafruit_com_product_3064.html",
+    "status": 200
+  },
+  "https://www.adafruit.com/product/3333": {
+    "content_sha256": "03510deb38de4ca4ebebd02ed86a3dc8199d733fa40765f34ff60c4e30faf274",
+    "fetched_at": "2026-10-24T23:13:28Z",
+    "file": "www_adafruit_com_product_3333.html",
+    "status": 200
+  },
+  "https://www.adafruit.com/product/727": {
+    "content_sha256": "e2c6d8d463e479be9fc867a8cbb56e3a00ed06e9805612c0c17834e8a938b529",
+    "fetched_at": "2026-10-24T23:13:32Z",
+    "file": "www_adafruit_com_product_727.html",
+    "status": 200
+  },
+  "https://www.pololu.com/product/1429": {
+    "content_sha256": "ae027a7546f72c6b1abaf7790df8f3a479bc6b13569e68ce5884d340bb182b48",
+    "fetched_at": "2026-10-24T23:13:46Z",
+    "file": "www_pololu_com_product_1429.html",
+    "status": 200
+  },
+  "https://www.pololu.com/product/1520": {
+    "content_sha256": "0de326fe7cbea6378ba5f2dc0e9c5440f41adadc851571b67c159342a14a3e82",
+    "fetched_at": "2026-10-24T23:13:42Z",
+    "file": "www_pololu_com_product_1520.html",
+    "status": 200
+  },
+  "https://www.pololu.com/product/3500": {
+    "content_sha256": "69171ff6d74a1745b74f763a5db60813eeec78df40787749e77a9d7cdb0f24a1",
+    "fetched_at": "2026-10-24T22:51:14Z",
+    "file": "www_pololu_com_product_3500.html",
+    "status": 200
+  },
+  "https://www.pololu.com/product/3510": {
+    "content_sha256": "5eb4ba3be4407f0481a5f00cef0319dc0dcd9db2776a3a95f288e16fd361d9b1",
+    "fetched_at": "2026-10-24T23:13:40Z",
+    "file": "www_pololu_com_product_3510.html",
+    "status": 200
+  },
+  "https://www.pololu.com/product/3520": {
+    "content_sha256": "1efa30c135b4fdae41ea0b02d015a8f6510ee64bc1b5bc7a75fd18d85e8106b5",
+    "fetched_at": "2026-10-24T23:13:44Z",
+    "file": "www_pololu_com_product_3520.html",
+    "status": 200
+  },
+  "https://www.pololu.com/product/3530": {
+    "content_sha256": "b80c42f6672390b0c2e5759c02c1b75ab191fc954c97431d8130e0dc8ce34a5b",
+    "fetched_at": "2026-10-24T23:13:50Z",
+    "file": "www_pololu_com_product_3530.html",
+    "status": 200
+  },
+  "https://www.pololu.com/product/3540": {
+    "content_sha256": "4686e4978b0dd787128b593a25c13a12e5d9e8192a4cbb23caecb9c496046359",
+    "fetched_at": "2026-10-24T23:13:51Z",
+    "file": "www_pololu_com_product_3540.html",
+    "status": 200
+  }
+}

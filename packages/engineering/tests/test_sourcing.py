@@ -250,8 +250,8 @@ class TestAdapters:
         monkeypatch.delenv("MOUSER_API_KEY", raising=False)
         monkeypatch.delenv("DIGIKEY_CLIENT_ID", raising=False)
         results = lookup_all("3801", recorded)
-        assert [r.adapter for r in results] == ["adafruit", "sparkfun", "mouser", "digikey"]
-        assert [r.status for r in results] == ["found", "error", "needs_api_key", "needs_api_key"]
+        assert [r.adapter for r in results] == ["adafruit", "sparkfun", "pololu", "mouser", "digikey"]
+        assert [r.status for r in results] == ["found", "error", "error", "needs_api_key", "needs_api_key"]
 
     def test_mouser_response_parser(self):
         body = json.dumps({"SearchResults": {"Parts": [{"ManufacturerPartNumber": "TB6612FNG,C,8,EL", "MouserPartNumber": "757-TB6612FNGC8EL",
@@ -409,3 +409,34 @@ class TestFetcherAddressGuard:
         req = urllib.request.Request("https://shop.example/start")
         new = _SafeRedirectHandler().redirect_request(req, None, 302, "Found", {}, "https://shop.example/final")
         assert new is not None and new.full_url == "https://shop.example/final"
+
+
+class TestRobotsUnavailable:
+    """A robots.txt that answers 429/5xx is a rate limit, not a refusal, and is asked politely."""
+
+    def _fetcher(self, tmp_path, monkeypatch, robots_code):
+        import socket
+        import urllib.error
+
+        monkeypatch.setattr(socket, "getaddrinfo", lambda *a, **k: [(socket.AF_INET, socket.SOCK_STREAM, 6, "", ("93.184.216.34", 443))])
+        fetcher = PoliteFetcher(tmp_path)
+        throttled: list[str] = []
+        monkeypatch.setattr(fetcher, "_throttle", lambda host: throttled.append(host))
+
+        def open_(req, timeout=None):
+            raise urllib.error.HTTPError(req.full_url, robots_code, "busy", {}, None)
+
+        monkeypatch.setattr(fetcher._opener, "open", open_)
+        return fetcher, throttled
+
+    def test_429_robots_is_reported_with_its_status_not_as_blocked(self, tmp_path, monkeypatch):
+        fetcher, throttled = self._fetcher(tmp_path, monkeypatch, 429)
+        result = fetcher.fetch("https://shop.example/p/1")
+        assert result.status == 429 and not result.blocked and "robots.txt answered HTTP 429" in result.error
+        assert throttled == ["shop.example"]  # the robots request itself waits its turn
+
+    def test_503_robots_is_asked_again_next_time(self, tmp_path, monkeypatch):
+        fetcher, throttled = self._fetcher(tmp_path, monkeypatch, 503)
+        assert fetcher.fetch("https://shop.example/p/1").status == 503
+        assert fetcher.fetch("https://shop.example/p/2").status == 503
+        assert len(throttled) == 2

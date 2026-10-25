@@ -18,6 +18,8 @@ from rivet_api.resolution.store import ResolutionStore
 from rivet_api.routes import exports, health, jobs, projects
 from rivet_api.routes import intents as intents_routes
 from rivet_api.routes import offers as offers_routes
+from rivet_api.routes import showcase as showcase_routes
+from rivet_api.showcase.store import ShowcaseStore
 
 from rivet_api.routes import resolve as resolve_routes
 
@@ -54,6 +56,7 @@ def create_app(
     resolutions: ResolutionStore | None = None,
     offers_provider=None,
     offer_sets: OfferSetStore | None = None,
+    showcase: ShowcaseStore | None = None,
     design=None,
 ) -> FastAPI:
     settings = settings or get_settings()
@@ -70,6 +73,7 @@ def create_app(
         resolutions=resolutions or ResolutionStore(settings.data_root / "resolutions"),
         offers_provider=offers_provider or build_offers_provider(settings),
         offer_sets=offer_sets or OfferSetStore(),
+        showcase=showcase or ShowcaseStore(),
     )
     app.state.settings = settings
     app.state.deps = deps
@@ -85,6 +89,7 @@ def create_app(
     app.include_router(assets_routes.router)
     app.include_router(resolve_routes.router)
     app.include_router(offers_routes.router)
+    app.include_router(showcase_routes.router)
     if design is not False:
         try:
             from rivet_api.design.setup import build_design_services

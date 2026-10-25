@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-10-24T23:00:00Z",
+  "products": [
+    {
+      "product_id": "sample-sparkfun-inventors-kit",
+      "name": "SparkFun Inventor's Kit - v4.1.2 (sample)",
+      "category": "robot",
+      "image": {
+        "url": "https://www.sparkfun.com/media/catalog/product/cache/f8158826193ba5faa8b862a9bd1eb9e9/1/5/15267-SparkFun_Inventor_s_Kit_-_v4.1-01a_1.jpg",
+        "credit": "SparkFun Electronics",
+        "license": "not stated on the page"
+      },
+      "parts_total": 5,
+      "parts_verified": 5,
+      "status": "partial"
+    }
+  ]
+}

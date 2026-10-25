@@ -50,6 +50,7 @@ class Deps:
     resolutions: Any = None  # ResolutionStore
     offers_provider: Any = None  # OffersProvider (offers/provider.py)
     offer_sets: Any = None  # OfferSetStore
+    showcase: Any = None  # ShowcaseStore (showcase/store.py)
 
 
 _VALIDATE_STATUS = {
