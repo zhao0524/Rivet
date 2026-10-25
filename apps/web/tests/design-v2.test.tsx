@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { CATALOG_RECIPES, resolveRecipe } from '../src/components/three/parts/recipes';
 import { growBounds } from '../src/components/three/generation/GeneratedAssembly';
 import { CandidateCompare } from '../src/components/three/generation/CandidateCompare';
-import { BuildIntake } from '../src/components/studio/intake';
+import { DesignStart } from '../src/components/studio/generation/DesignStart';
 import { latestPreview, mergeDesignEvents, parseDesignBundle, parseDesignEvent } from '../src/lib/rivet/design-v2-source';
 import type { DesignCandidate, DesignEvent } from '../src/lib/rivet/design-v2-types';
 
@@ -88,13 +88,14 @@ describe('bundle parsing', () => {
   });
 });
 
-describe('intake', () => {
-  it('starts a v2 generation with the chosen mode and an explicit cache opt-in', () => {
-    const onGenerateDesign = vi.fn();
-    render(<BuildIntake onUpload={vi.fn()} onGenerate={vi.fn()} onGenerateDesign={onGenerateDesign} />);
-    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'a hummingbird' } });
-    fireEvent.change(screen.getByTestId('design-mode-select'), { target: { value: 'engineered' } });
-    fireEvent.click(screen.getByTestId('generate-design-v2'));
-    expect(onGenerateDesign).toHaveBeenCalledWith({ text: 'a hummingbird', image: null, mode: 'engineered', allowCached: false });
+describe('design start', () => {
+  it('offers both modes and an explicit cache opt-in, and needs a prompt or image', () => {
+    render(<DesignStart />);
+    const button = screen.getByTestId('generate-design-v2') as HTMLButtonElement;
+    expect(button.disabled).toBe(true);
+    fireEvent.change(screen.getByLabelText('Describe the design'), { target: { value: 'a hummingbird' } });
+    expect(button.disabled).toBe(false);
+    expect((screen.getByTestId('design-allow-cached') as HTMLInputElement).checked).toBe(false);
+    expect(screen.getByTestId('design-mode-select').querySelectorAll('option')).toHaveLength(2);
   });
 });

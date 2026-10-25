@@ -136,6 +136,9 @@ export function NewProjectScreen() {
               </button>
             ))}
           </div>
+          <p className="ui-hint" style={{ marginTop: 12 }}>
+            Want fully generated geometry with three design candidates? <a href="/design" data-testid="new-design-v2-link">Generate a 3D design</a>
+          </p>
         </div>
       </main>
     </>

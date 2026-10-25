@@ -8,8 +8,15 @@ test('prompt to three real candidates, streamed geometry, choice and a targeted 
   test.setTimeout(300_000);
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
-  await page.goto('/studio?start=describe');
-  await page.locator('[data-rivet="build-intake"] textarea').fill('a small orange rover that avoids obstacles');
+  page.on('console', (m) => { if (m.type() === 'error') console.log('CONSOLE-ERROR', m.text().slice(0, 300)); });
+  page.on('pageerror', (e) => console.log('PAGE-ERROR', e.message.slice(0, 300)));
+  await page.goto('/new');
+  await page.getByTestId('new-design-v2-link').click();
+  await expect(page.locator('[data-testid="design-start"][data-hydrated="true"]')).toBeVisible({ timeout: 120_000 });
+  await expect(async () => {
+    await page.getByLabel('Describe the design').fill('a small orange rover that avoids obstacles');
+    await expect(page.getByTestId('generate-design-v2')).toBeEnabled({ timeout: 1000 });
+  }).toPass({ timeout: 30_000 });
   await page.getByTestId('design-mode-select').selectOption('engineered');
   await page.getByTestId('generate-design-v2').click();
   await expect(page.getByTestId('design-studio')).toBeVisible();
