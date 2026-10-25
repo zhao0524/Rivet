@@ -46,6 +46,9 @@ export interface DesignCandidate {
   manufacturing_assets?: Array<{ body_id: string | null; kind: string; url: string | null; unavailable?: string }>;
   iterations?: Array<Record<string, unknown>>; joints?: Array<Record<string, unknown>>;
 }
+export interface VisualQuality {
+  target: number; achieved: boolean; score: number | null; critical_issues: number; refinement_rounds: number; judge: string; statement: string;
+}
 export interface DesignBundle {
   schema_version: '2.0'; build_id: string; revision: number; job_id: string;
   title: string; mode: DesignMode; status: 'complete' | 'needs_review' | 'unbuildable';
@@ -56,6 +59,8 @@ export interface DesignBundle {
   recommendation?: { candidate_id: string | null; rationale: string }; change?: Record<string, unknown>;
   exports?: Record<string, unknown>; generation_trace_url?: string | null;
   scene_asset_url: string | null; assembly: DesignPart[]; model_versions: Record<string, string>;
+  /** Subjective visual verdict against the configured target; never part of buildability. */
+  visual_quality?: VisualQuality;
   provenance: { generation_mode: 'live' | 'fixture'; cached: boolean; replay_of: string | null; limitations?: string[]; providers?: Record<string, string> };
   budget: { limit_usd: number; spent_usd: number; reserved_usd: number };
   parent_revision: number | null; created_at: string;

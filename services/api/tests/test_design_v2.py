@@ -256,3 +256,97 @@ def test_ledger_counts_spend():
     ledger = CallLedger()
     ledger.record("image", "m", 0.08)
     assert ledger.spent == 0.08
+
+
+class RecordingLive:
+    """A live-shaped provider that authors with the offline rules but records exactly what it was
+    shown, so the tests can prove the image bytes reach authoring and revision calls."""
+    mode, name = "live", "test:recording"
+
+    def __init__(self):
+        self.author_calls: list[dict] = []
+        self.patch_calls: list[dict] = []
+        self.critique_calls = 0
+        self.score = 6.0
+
+    def distill(self, text, image, mode):
+        from rivet_api.design import procedural
+        return procedural.distill(text, image, mode)
+
+    def author(self, brief, strategy, seed, mode, catalog, feedback, references):
+        from rivet_api.design import procedural
+        self.author_calls.append({"strategy": strategy, "seed": seed, "feedback": list(feedback),
+                                  "references": [{k: (len(v) if k == "data" else v) for k, v in r.items()} for r in references],
+                                  "bytes": [r["data"] for r in references]})
+        return procedural.author(brief, strategy, seed, mode)
+
+    def critique(self, brief, references, shots, bodies):
+        self.critique_calls += 1
+        assert all(isinstance(data, bytes) and data[:4] == b"\x89PNG" for _, data in references + shots)
+        return {"scores": {k: self.score for k in ("silhouette", "proportions", "signature_features", "pose_and_orientation", "colour_and_surface", "reference_consistency")},
+                "overall": self.score, "summary": "test critic", "issues": [{"body_id": bodies[0]["body_id"], "view": "front", "severity": "major",
+                                                                              "observed": "too plain", "target": "more detail", "proposed_change": "add a rib"}]}
+
+    def patch(self, spec, instruction, issues, focus, references, renders, review):
+        self.patch_calls.append({"instruction": instruction, "issues": issues, "focus": focus, "references": references, "renders": renders, "review": review})
+        root = next(b for b in spec["bodies"] if b["parent_id"] is None)
+        dims = root["shape"].get("dimensions_mm")
+        if not dims:
+            return {"reason": "no change", "operations": []}
+        return {"reason": "widen", "operations": [{"operation": "update", "body_id": root["id"], "set": {"shape.dimensions_mm": [dims[0] * 1.1, dims[1], dims[2]]}}]}
+
+    def compare_views(self, views):
+        return {"consistent": True, "contradictions": [], "uncertainties": []}
+
+
+def live_app(tmp_path, provider):
+    factory = lambda ledger: (provider, None)  # noqa: E731
+    factory.mode, factory.names = "live", {"design": provider.name}
+    settings = Settings(mode="fixture", data_root=tmp_path)
+    return create_app(settings, design=build_design_services(settings, get_catalog(), provider_factory=factory))
+
+
+def test_authoring_and_revision_receive_the_uploaded_image_bytes(tmp_path):
+    provider = RecordingLive()
+    c = client_for(live_app(tmp_path, provider))
+    photo = png(lambda d: (d.ellipse((60, 90, 340, 230), fill=(40, 120, 200)), d.rectangle((150, 40, 250, 100), fill=(40, 120, 200))))
+    up = c.post("/api/v2/assets/images", files={"file": ("ref.png", photo, "image/png")}).json()
+    photo = c.get(f"/api/v2/assets/{up['asset_id']}").content  # the stored (cleaned, re-encoded) upload is what every call must see
+    _, job = generate(c, "a blue capsule-shaped pod", image=up["asset_id"], review_rounds=1)
+    assert job["status"] == "complete", job
+    assert len(provider.author_calls) == 3
+    for call in provider.author_calls:
+        assert call["references"] and call["references"][0]["authoritative"] is True and call["references"][0]["source"] == "upload"
+        assert call["bytes"][0] == photo, "the authoring model must see the uploaded pixels, not a name or description"
+    assert provider.critique_calls >= 3
+    assert provider.patch_calls, "the critic-guided revision must run when the score is below target"
+    first = provider.patch_calls[0]
+    assert first["references"][0]["data"] == photo and first["references"][0]["authoritative"] is True
+    assert {v for v, _ in first["renders"]} == {"front", "left", "back", "perspective"} and all(d[:4] == b"\x89PNG" for _, d in first["renders"])
+    assert first["review"]["overall"] == 6.0 and first["issues"][0]["severity"] == "major"
+    bundle = c.get(f"/api/v2/projects/{job['build_id']}/design").json()
+    vq = bundle["visual_quality"]
+    assert vq["target"] == 8.0 and vq["achieved"] is False and vq["score"] == 6.0 and "NOT achieved" in vq["statement"]
+    assert bundle["status"] == "needs_review", "a concept below the visual target is never presented as complete"
+    assert any("NOT achieved" in l for l in bundle["provenance"]["limitations"])
+    # The user's own revision also sees the references and the current renders of the chosen candidate.
+    r = c.post(f"/api/v2/projects/{job['build_id']}/revise", json={"base_revision": bundle["revision"], "instruction": "make it wider", "selected_body_ids": []})
+    assert r.status_code == 202, r.text
+    wait(c, r.json()["job_id"])
+    last = provider.patch_calls[-1]
+    assert last["instruction"] == "make it wider" and last["references"][0]["data"] == photo and len(last["renders"]) == 4
+
+
+def test_visual_target_met_completes_without_refinement(tmp_path):
+    provider = RecordingLive()
+    provider.score = 8.5
+    c = client_for(live_app(tmp_path, provider))
+    _, job = generate(c, "a small orange two-wheel rover", review_rounds=2)
+    assert job["status"] == "complete", job
+    bundle = c.get(f"/api/v2/projects/{job['build_id']}/design").json()
+    assert bundle["visual_quality"]["achieved"] is True and bundle["visual_quality"]["refinement_rounds"] == 0
+    assert bundle["status"] == "complete"
+    assert not provider.patch_calls, "no refinement round is spent once the target is met"
+    assert all(call["references"] == [] for call in provider.author_calls), "text-only requests without an image provider author without references"
+    stage = next(s for s in bundle["provenance"]["stages"] if s["stage"] == "refinement")
+    assert "met" in stage["detail"] and "not met" not in stage["detail"]

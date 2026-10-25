@@ -144,8 +144,11 @@ The stored plan is labelled: `provenance.catalog_version` `CONCEPT-1.0`, blockin
 | `RIVET_3D_MODE` | `live` uses real providers and never falls back; anything else runs the offline rule-based author, labelled `fixture` |
 | `RIVET_DESIGN_MODEL` | Chat/vision model for distill, authoring, critique and patches (default: `RIVET_VISION_MODEL`, then `gpt-4o`); needs `OPENAI_API_KEY` |
 | `RIVET_IMAGE_PROVIDER` | `openai` enables concept art and extra views; unset skips those stages with an explicit event |
-| `RIVET_IMAGE_MODEL`, `RIVET_IMAGE_SIZE`, `RIVET_IMAGE_QUALITY` | Image model and settings (defaults `gpt-image-1`, `1024x1024`, `medium`) |
-| `RIVET_RENDERER` | `raster` (default, deterministic CPU renders of the real GLB) or `chromium` (three.js through `apps/web/scripts/render-design.mjs`) |
+| `RIVET_IMAGE_MODEL`, `RIVET_IMAGE_SIZE`, `RIVET_IMAGE_QUALITY` | Image model and settings (defaults `gpt-image-1`, `1024x1024`, `medium`). Keys without `gpt-image-1` access can use `gpt-image-1-mini`; an unavailable model fails the job with the model named in the error, never a fallback |
+| `RIVET_CRITIC_MODEL` | Multimodal model for the visual critic (default: the design model). Lets a reasoning author pair with a faster vision judge |
+| `RIVET_PROVIDER_TIMEOUT_S` | Per-call timeout for the live design/image providers (default `300`; reasoning models need minutes per DesignSpec) |
+| `RIVET_VISUAL_TARGET` | Visual-quality target 0-10 (default `8`). A concept below it, or with an unresolved critical visual finding, is `needs_review` with `visual_quality.achieved=false` and an explicit statement; it is never reported as a verified success |
+| `RIVET_RENDERER` | `raster` (deterministic CPU renders of the real GLB; default in fixture mode) or `chromium` (three.js through `apps/web/scripts/render-design.mjs`; default in live mode, which fails instead of falling back when Chromium is missing) |
 
 | Route | Purpose |
 |---|---|

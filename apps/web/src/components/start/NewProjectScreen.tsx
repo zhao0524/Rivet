@@ -27,9 +27,16 @@ import '../../styles/gallery.css';
 /** How many of the user's own projects the gallery shows before "All projects". */
 const RECENT_LIMIT = 6;
 
+type Target = 'design' | 'rover';
+type DesignMode = 'concept_only' | 'engineered';
+
 /**
  * A1 Prompt: the app's PromptBox with image attachment. Honors `?draft=<id>` (continue that draft)
- * and `?prompt=<text>` (prefill). Submitting creates the project under the draft id and moves on to
+ * and `?prompt=<text>` (prefill).
+ *
+ * The primary path generates real 3D geometry from the prompt and picture (three candidates, renders,
+ * visual review, revisions, exports) and starts it right away on /design. The rover build path keeps
+ * the parts-and-firmware flow: submitting creates the project under the draft id and moves on to
  * Clarify; coming back to the same draft updates the project instead of duplicating it.
  * Below the box, "Recent projects": the user's own projects (newest first), then tagged samples.
  */
@@ -52,6 +59,8 @@ export function NewProjectScreen() {
   const [focusTick, setFocusTick] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [now, setNow] = useState(() => Date.now());
+  const [target, setTarget] = useState<Target>('design');
+  const [designMode, setDesignMode] = useState<DesignMode>('concept_only');
   const projects = useProjects();
   const recent = useMemo(
     () => [...projects].sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt)).slice(0, RECENT_LIMIT),
@@ -135,6 +144,16 @@ export function NewProjectScreen() {
     }
 
     const prompt = draft.text.trim();
+    if (target === 'design') {
+      const query = new URLSearchParams();
+      if (prompt) query.set('prompt', prompt);
+      if (imageAssetId) query.set('ref', imageAssetId);
+      query.set('mode', designMode);
+      query.set('auto', '1');
+      writeDraft(null);
+      router.push(`/design?${query.toString()}`);
+      return;
+    }
     const existing = getProject(draft.id);
     const title = prompt ? titleFromPrompt(prompt) : 'Robot from a picture';
     if (existing) {
@@ -164,7 +183,25 @@ export function NewProjectScreen() {
         <div className="start-prompt">
           <div className="start-prompt__text">
             <h1 className="ui-h1">What do you want to build?</h1>
-            <p className="ui-lede">Describe it in a sentence or two. A picture of a similar robot helps too.</p>
+            <p className="ui-lede">Describe it in a sentence or two, or add a picture of the thing you want. Rivet generates real 3D geometry from it.</p>
+          </div>
+
+          <div className="start-prompt__targets" aria-label="What to make" style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+            <button type="button" aria-pressed={target === 'design'} className="ui-chip" onClick={() => setTarget('design')} data-testid="new-target-design">
+              3D design from the prompt or picture
+            </button>
+            <button type="button" aria-pressed={target === 'rover'} className="ui-chip" onClick={() => setTarget('rover')} data-testid="new-target-rover">
+              Rover build with real parts, wiring and firmware
+            </button>
+            {target === 'design' ? (
+              <label className="ui-hint" style={{ marginLeft: 'auto' }}>
+                Mode{' '}
+                <select value={designMode} onChange={(e) => setDesignMode(e.target.value as DesignMode)} data-testid="new-design-mode" aria-label="Design mode">
+                  <option value="concept_only">Concept only (appearance, not verified)</option>
+                  <option value="engineered">Engineered (real parts and checks)</option>
+                </select>
+              </label>
+            ) : null}
           </div>
 
           {seedId !== undefined ? (
@@ -174,7 +211,7 @@ export function NewProjectScreen() {
               autoFocus
               initialDraftId={seedId}
               initialImage={carriedImage}
-              submitLabel="Build it"
+              submitLabel={target === 'design' ? 'Generate 3D design' : 'Build it'}
               busy={busy}
               onSubmit={(value) => void submit(value)}
               testId="new-prompt"
@@ -194,6 +231,11 @@ export function NewProjectScreen() {
 
           <p className="ui-sr-only" aria-live="polite" data-testid="new-status">
             {status}
+          </p>
+          <p className="ui-hint" style={{ marginTop: 12 }} data-testid="new-target-hint">
+            {target === 'design'
+              ? 'Three candidate designs are authored from your words and picture, built as real geometry, rendered and reviewed against the reference. Concepts are never claimed to be mechanically verified.'
+              : 'The rover build checks real purchasable parts, wiring, firmware and assembly steps for a wheeled robot.'}
           </p>
         </div>
 

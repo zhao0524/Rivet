@@ -97,6 +97,19 @@ def _clamp_shape_dict(shape: dict) -> dict:
         pitch, wall = out.get("pitch_mm"), out.get("wall_mm")
         if isinstance(pitch, (int, float)) and isinstance(wall, (int, float)) and wall < pitch:
             out["wall_mm"] = pitch
+    if t == "loft":
+        sections = out.get("sections")
+        heights = out.get("section_heights_mm")
+        if isinstance(sections, list) and isinstance(heights, list):
+            # Sections with too few points cannot be lofted; drop them while two remain. A model that
+            # lists more heights than sections meant the stations from the first to the last height.
+            polys = [p for p in sections if isinstance(p, list) and len(p) >= 3] or sections
+            numbers = [h for h in heights if isinstance(h, (int, float))]
+            if len(polys) >= 2 and len(numbers) >= 2 and len(numbers) != len(polys):
+                lo, hi = min(numbers), max(numbers)
+                step = (hi - lo) / (len(polys) - 1)
+                out["section_heights_mm"] = [round(lo + i * step, 4) for i in range(len(polys))]
+            out["sections"] = polys
     if isinstance(out.get("children"), list):
         out["children"] = [_clamp_shape_dict(c) for c in out["children"]]
     return out
@@ -115,10 +128,16 @@ def normalize_spec_shapes(spec: dict) -> dict:
     out = dict(spec)
     bodies = out.get("bodies")
     if isinstance(bodies, list):
-        out["bodies"] = [
-            {**b, "shape": _clamp_shape_dict(b["shape"])} if isinstance(b, dict) and isinstance(b.get("shape"), dict) else b
-            for b in bodies
-        ]
+        cleaned = []
+        for b in bodies:
+            if isinstance(b, dict):
+                b = dict(b)
+                if isinstance(b.get("shape"), dict):
+                    b["shape"] = _clamp_shape_dict(b["shape"])
+                if isinstance(b.get("anchors"), list):
+                    b["anchors"] = [a for a in b["anchors"] if not (isinstance(a, dict) and isinstance(a.get("id"), str) and implicit_anchor_axes(a["id"]) is not None)]
+            cleaned.append(b)
+        out["bodies"] = cleaned
     return out
 
 
@@ -528,9 +547,18 @@ def _set_path(target: dict, path: str, value: Any) -> None:
         node[last] = value
 
 
-def apply_patch(spec: DesignSpec | dict, patch: DesignPatch | dict) -> DesignSpec:
-    """Atomic body patches, validated as a whole; no partial mutations on failure."""
+def apply_patch(spec: DesignSpec | dict, patch: DesignPatch | dict, *, normalize: bool = False) -> DesignSpec:
+    """Atomic body patches, validated as a whole; no partial mutations on failure.
+    `normalize` clamps near-miss shape parameters in the patched bodies (see normalize_spec_shapes)
+    before validation, so a model-written patch is judged on its geometry, not a rounding slip."""
     current = DesignSpec.model_validate(spec)
+    if normalize and isinstance(patch, dict):
+        patch = copy.deepcopy(patch)
+        for op in patch.get("operations") or []:
+            if isinstance(op, dict) and isinstance(op.get("body"), dict) and isinstance(op["body"].get("shape"), dict):
+                op["body"]["shape"] = _clamp_shape_dict(op["body"]["shape"])
+            if isinstance(op, dict) and isinstance(op.get("set"), dict) and isinstance(op["set"].get("shape"), dict):
+                op["set"]["shape"] = _clamp_shape_dict(op["set"]["shape"])
     edits = DesignPatch.model_validate(patch)
     raw = copy.deepcopy(current.model_dump(mode="json"))
     order = [b["id"] for b in raw["bodies"]]
@@ -558,6 +586,8 @@ def apply_patch(spec: DesignSpec | dict, patch: DesignPatch | dict) -> DesignSpe
                     raise ValueError(f"cannot set {path!r} on {op.body_id!r}: {exc}") from None
             if old["kind"] == "purchased" and updated.get("catalog_id") != old["catalog_id"]:
                 raise ValueError("purchased part replacement requires an explicit catalog substitution")
+            if normalize and isinstance(updated.get("shape"), dict):
+                updated["shape"] = _clamp_shape_dict(updated["shape"])
             bodies[op.body_id] = DesignBody.model_validate(updated).model_dump(mode="json")
         else:
             assert op.body is not None
@@ -569,6 +599,8 @@ def apply_patch(spec: DesignSpec | dict, patch: DesignPatch | dict) -> DesignSpe
     raw["bodies"] = [bodies[i] for i in order]
     if edits.visual_goal is not None:
         raw["visual_goal"] = edits.visual_goal.model_dump(mode="json")
+    if normalize:
+        raw = normalize_spec_shapes(raw)
     return DesignSpec.model_validate(raw)
 
 

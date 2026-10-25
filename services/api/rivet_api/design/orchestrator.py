@@ -29,7 +29,7 @@ from rivet_api.errors import ApiError
 from . import critic, procedural, render
 from .artifacts import DesignStore, digest, now
 from .models import DistilledIntent
-from .providers import CONCEPT_PROMPT, VIEW_PROMPT, CallLedger, ESTIMATED_USD
+from .providers import CONCEPT_PROMPT, VIEW_PROMPT, CallLedger, estimate_cost, reference_image, reference_pairs
 
 STRATEGIES = ("closest_to_reference", "simpler_manufacture", "signature_geometry")
 KERNEL_LOCK = threading.Lock()  # one geometry compile at a time per process (OCCT safety)
@@ -53,6 +53,7 @@ class DesignServices:
     work_root: Path
     web_root: Path
     renderer: str = "raster"
+    visual_target: float = 8.0
     cancels: dict[str, threading.Event] = field(default_factory=dict)
 
     def catalog_digest(self) -> str:
@@ -134,6 +135,8 @@ def prune_to_schema(model_cls: type[BaseModel], value: Any) -> Any:
 
 
 class Run:
+    shot_renderer = "raster"
+
     def __init__(self, svc: DesignServices, owner: str, job: dict):
         self.svc, self.owner, self.job = svc, owner, job
         self.job_id, self.build_id = job["job_id"], job["build_id"]
@@ -152,7 +155,9 @@ class Run:
         return self.svc.store.emit(self.owner, self.job_id, stage, message, status=status, **kw)
 
     def spend(self, kind: str) -> None:
-        if self.ledger.spent + ESTIMATED_USD[kind] > self.limit:
+        """Refuse a provider call that would take the estimated spend past the job's budget."""
+        model = getattr(self.images, "model", "") if kind == "image" else getattr(self.model, "model", "")
+        if self.ledger.spent + estimate_cost(kind, model) > self.limit:
             raise BudgetExhausted()
 
     def put(self, data: bytes, mime: str) -> dict:
@@ -175,6 +180,54 @@ class Run:
         self.svc.store.input(self.owner, aid)
         path, mime = self.svc.store.asset(self.owner, aid)
         return path.read_bytes(), mime
+
+    def reference_images(self, refs: list[dict]) -> list[dict]:
+        """The stored reference views as raw image bytes (upload first, marked authoritative),
+        for every authoring, critique and revision call."""
+        out = []
+        for r in refs:
+            path, mime = self.svc.store.asset(self.owner, r["image_url"].rsplit("/", 1)[-1])
+            out.append(reference_image(r["view"], path.read_bytes(), source=r["source"], mime=mime,
+                                       authoritative=bool((r.get("provenance") or {}).get("authoritative"))))
+        return sorted(out, key=lambda r: (not r["authoritative"], r["view"] != "perspective"))
+
+    def candidate_renders(self, cand: dict, views: tuple[str, ...] = ("front", "left", "back", "perspective")) -> list[tuple[str, bytes]]:
+        """Current renders of a candidate's geometry, as bytes, for the revision model."""
+        out = []
+        for shot in cand.get("shots") or []:
+            if shot["view"] in views:
+                path, _ = self.svc.store.asset(self.owner, shot["image_url"].rsplit("/", 1)[-1])
+                out.append((shot["view"], path.read_bytes()))
+        return out
+
+    @property
+    def visual_target(self) -> float:
+        return float(self.request.get("visual_target", self.svc.visual_target))
+
+    @staticmethod
+    def critical_issues(cand: dict) -> int:
+        return sum(1 for i in (cand.get("visual") or {}).get("issues", []) if i.get("severity") == "critical")
+
+    def target_met(self, cand: dict) -> bool:
+        return cand.get("status") == "complete" and cand["visual"]["overall"] >= self.visual_target and self.critical_issues(cand) == 0
+
+    @staticmethod
+    def visual_rank(cand: dict) -> tuple:
+        """Better is larger: feasible first, then visual score, then fewer critical and major findings."""
+        issues = (cand.get("visual") or {}).get("issues", [])
+        return (bool(cand.get("feasible")), cand["visual"]["overall"], -sum(i.get("severity") == "critical" for i in issues),
+                -sum(i.get("severity") == "major" for i in issues), -cand["mechanical"]["counts"]["hard_collisions"])
+
+    def pick_renderer(self) -> str:
+        if self.svc.renderer != "chromium":
+            return "raster"
+        if render.chromium_available(self.svc.web_root):
+            return "chromium"
+        if self.model.mode == "live":
+            raise ApiError("RENDERER_UNAVAILABLE", "RIVET_RENDERER=chromium but Node, Playwright or the render script is missing; "
+                           "live generation never falls back to the preview rasterizer", 503)
+        self.emit("intake", "Chromium renderer unavailable; fixture mode renders with the deterministic rasterizer", status="warning", actor="system")
+        return "raster"
 
     # -- stages ---------------------------------------------------------------------
     def distill(self, image) -> dict:
@@ -274,18 +327,19 @@ class Run:
         result["_previews"] = previews
         return result
 
-    def author(self, intent: dict, strategy: str, seed: int, feedback: list[str]) -> dict:
+    def author(self, intent: dict, strategy: str, seed: int, feedback: list[str], refs: list[dict]) -> dict:
         if self.model.mode == "live":
-            self.spend("chat")
-            return self.model.author(intent, strategy, seed, self.request["mode"], self.svc.catalog, feedback)
+            self.spend("vision" if refs else "chat")
+            return self.model.author(intent, strategy, seed, self.request["mode"], self.svc.catalog, feedback, refs)
         return procedural.author(intent, strategy, seed, self.request["mode"])
 
-    def propose(self, intent: dict, strategy: str, index: int, feedback: list[str] | None = None) -> dict:
+    def propose(self, intent: dict, strategy: str, index: int, refs: list[dict], feedback: list[str] | None = None) -> dict:
         from rivet_engine.design_ir import DesignSpec
 
         feedback = list(feedback or [])
-        for attempt in range(2 if self.model.mode == "live" else 1):
-            spec = self.author(intent, strategy, index * 101 + attempt, feedback)
+        for attempt in range(3 if self.model.mode == "live" else 1):
+            # Every attempt, including the retry after a rejected spec, sees the same reference images.
+            spec = self.author(intent, strategy, index * 101 + attempt, feedback, refs)
             spec.update(mode=self.request["mode"], strategy=strategy)
             try:
                 # A shape parameter written just outside its legal range (e.g. a rounded_box
@@ -298,7 +352,9 @@ class Run:
                 feedback = [f"{'.'.join(str(p) for p in e.get('loc', []))}: {e.get('msg')}" for e in errors][:20] or [str(exc)[:300]]
         raise ApiError("CANDIDATE_INVALID", f"{strategy}: the design model did not return a valid DesignSpec", 502, {"errors": feedback})
 
-    def evaluate(self, cid: str, strategy: str, spec: dict, intent: dict, refs: list[tuple[str, bytes]], tag: str, stream: bool) -> dict:
+    def evaluate(self, cid: str, strategy: str, spec: dict, intent: dict, refs: list[dict], tag: str, stream: bool) -> dict:
+        """Compile, repair, render six views of the real GLB and review them against the references.
+        `refs` are reference images (see reference_image): the uploaded photo first, then generated views."""
         result = self.compile(spec, cid, tag, stream)
         iterations = []
         # Repair runs when the geometry is invalid, and also when it is valid but still built from
@@ -317,12 +373,12 @@ class Run:
             issues = result["geometry_report"]["collisions"]["hard_collisions"][:8] + result["geometry_report"]["manufacturing"]["issues"][:6]
             instruction = "Fix these geometry validation issues without changing the design intent."
             try:
-                patched = apply_patch(spec, self.model.patch(spec, instruction, issues, []))
+                patched = apply_patch(spec, self.model.patch(spec, instruction, issues, [], refs, [], None), normalize=True)
             except ValueError as exc:
                 # One retry with the validation error fed back; a rejected patch is otherwise a lost revision.
                 self.spend("chat")
                 try:
-                    patched = apply_patch(spec, self.model.patch(spec, f"{instruction}\nYour previous patch was rejected: {exc}. Return a corrected DesignPatch.", issues, []))
+                    patched = apply_patch(spec, self.model.patch(spec, f"{instruction}\nYour previous patch was rejected: {exc}. Return a corrected DesignPatch.", issues, [], refs, [], None), normalize=True)
                 except (ValueError, ApiError) as retry_exc:
                     iterations.append({"kind": "model_patch", "accepted": False, "error": str(getattr(retry_exc, "message", retry_exc))[:300]})
                     patched = None
@@ -347,18 +403,18 @@ class Run:
                   actor="validator", candidate_id=cid)
         scene = Path(result["scene_asset_path"]).read_bytes()
         scene_asset = self.put(scene, "model/gltf-binary")
-        shots_raw = render.render_six_chromium(scene, self.svc.web_root) if self.svc.renderer == "chromium" and render.chromium_available(self.svc.web_root) else render.render_six(scene)
+        shots_raw = render.render_six_chromium(scene, self.svc.web_root) if self.shot_renderer == "chromium" else render.render_six(scene)
         shots = []
         for s in shots_raw["shots"]:
             a = self.put(s["png"], "image/png")
             shots.append({"view": s["view"], "image_url": a["url"], "camera": s["camera"]})
         self.emit("render_ready", f"{cid}: six camera renders of the generated geometry ({shots_raw['renderer']})", actor="system", candidate_id=cid,
                   references=[{"type": f"shot_{s['view']}", "id": s["image_url"].rsplit("/", 1)[-1], "url": s["image_url"]} for s in shots])
-        review = critic.deterministic_review(intent, spec, result["part_manifest"], shots_raw["shots"], refs, shots_raw["render_digest"])
+        review = critic.deterministic_review(intent, spec, result["part_manifest"], shots_raw["shots"], reference_pairs(refs), shots_raw["render_digest"])
         if self.model.mode == "live":
             self.spend("vision")
             bodies = [{"body_id": p["body_id"], "name": p["name"], "role": p["role"], "kind": p["kind"]} for p in result["part_manifest"]]
-            model_review = self.model.critique(intent, refs[:4], [(s["view"], s["png"]) for s in shots_raw["shots"]], bodies)
+            model_review = self.model.critique(intent, reference_pairs(refs)[:4], [(s["view"], s["png"]) for s in shots_raw["shots"]], bodies)
             review = critic.merge_model_review(model_review, review, {p["body_id"] for p in result["part_manifest"]}, getattr(self.model, "name", "model"))
         critic.validated(review)
         self.emit("visual_review", f"{cid}: visual score {review['overall']}/10 (subjective, {review['judge_model']}); {len(review['issues'])} issues", actor="vision", candidate_id=cid)
@@ -414,7 +470,7 @@ class Run:
         cid = f"cand-{index + 1}"
         self.emit("candidate_started", f"{cid}: authoring a {strategy.replace('_', ' ')} design", actor="planner", candidate_id=cid)
         try:
-            spec = self.propose(intent, strategy, index)
+            spec = self.propose(intent, strategy, index, refs)
             cand = self.evaluate(cid, strategy, spec, intent, refs, "v1", True)
             if not cand["feasible"]:
                 cand = self.reauthor(cand, intent, refs, strategy, index)
@@ -434,7 +490,7 @@ class Run:
             return cand
         self.emit("candidate_started", f"{cand['id']}: re-authoring once with the engine's blocking findings", status="warning", actor="planner", candidate_id=cand["id"])
         try:
-            spec = self.propose(intent, strategy, index, feedback=feedback)
+            spec = self.propose(intent, strategy, index, refs, feedback=feedback)
             retry = self.evaluate(cand["id"], strategy, spec, intent, refs, "reauthor", False)
         except (ApiError, DesignValidationError) as exc:
             cand["iterations"].append({"kind": "reauthor", "accepted": False, "feedback": feedback, "error": str(getattr(exc, "message", exc))[:300]})
@@ -456,30 +512,46 @@ class Run:
         cand["iterations"].append(record)
         return cand
 
-    def refine(self, cand: dict, intent: dict, refs) -> dict:
+    REFINE_INSTRUCTION = ("Improve visual fidelity to the reference images and brief. Compare the current renders with the matching reference views and "
+                          "fix the critic's findings with geometry changes: add missing subassemblies and surface details, remove or reshape wrong parts, "
+                          "correct proportions and placement. Keep what already matches.")
+
+    def refine(self, cand: dict, intent: dict, refs: list[dict], round_no: int = 1) -> dict:
+        """One bounded, critic-guided revision: the model sees the references, the current renders,
+        the spec and the findings; the result is kept only when it is visually better and still valid."""
         review = cand["visual"]
         if self.model.mode == "live":
-            self.spend("chat")
+            self.spend("vision")
+            focus = sorted({i["body_id"] for i in review["issues"] if i.get("body_id")})
             try:
-                raw = self.model.patch(cand["spec"], "Improve visual fidelity to the brief and references; fix the critic issues only.", review["issues"], [])
+                raw = self.model.patch(cand["spec"], self.REFINE_INSTRUCTION, review["issues"], focus, refs, self.candidate_renders(cand), review)
             except ApiError:
                 raw = None
         else:
             raw = procedural.critic_patch(cand["spec"], review["issues"])
         if not raw or not raw.get("operations"):
-            cand["iterations"].append({"kind": "critic_revision", "accepted": False, "reason": "no actionable critic issue"})
+            cand["iterations"].append({"kind": "critic_revision", "round": round_no, "accepted": False, "reason": "no actionable critic issue"})
             self.emit("revision_ready", f"{cand['id']}: critic found no actionable change; kept as is", status="warning", actor="vision", candidate_id=cand["id"])
             return cand
         try:
-            new_spec = apply_patch(cand["spec"], raw).model_dump(mode="json")
+            new_spec = apply_patch(cand["spec"], raw, normalize=True).model_dump(mode="json")
         except ValueError as exc:
-            cand["iterations"].append({"kind": "critic_revision", "accepted": False, "reason": f"patch rejected: {exc}"})
+            cand["iterations"].append({"kind": "critic_revision", "round": round_no, "accepted": False, "reason": f"patch rejected: {exc}"})
             return cand
-        revised = self.evaluate(cand["id"], cand["strategy"], new_spec, intent, refs, "rev1", False)
-        better = revised["feasible"] and (revised["visual"]["overall"] >= review["overall"] or not cand["feasible"])
-        record = {"kind": "critic_revision", "accepted": better, "changed": changed_bodies(cand["spec"], new_spec), "score_before": review["overall"], "score_after": revised["visual"]["overall"],
+        if new_spec == cand["spec"]:
+            cand["iterations"].append({"kind": "critic_revision", "round": round_no, "accepted": False, "reason": "patch changed nothing"})
+            return cand
+        try:
+            revised = self.evaluate(cand["id"], cand["strategy"], new_spec, intent, refs, f"rev{round_no}", False)
+        except (ApiError, DesignValidationError) as exc:
+            cand["iterations"].append({"kind": "critic_revision", "round": round_no, "accepted": False, "reason": f"revision failed: {str(getattr(exc, 'message', exc))[:300]}"})
+            return cand
+        better = revised["feasible"] and self.visual_rank(revised) > self.visual_rank(cand)
+        record = {"kind": "critic_revision", "round": round_no, "accepted": better, "changed": changed_bodies(cand["spec"], new_spec), "score_before": review["overall"],
+                  "score_after": revised["visual"]["overall"], "critical_before": self.critical_issues(cand), "critical_after": self.critical_issues(revised),
                   "geometry_digest_before": cand["geometry_digest"], "geometry_digest_after": revised["geometry_digest"], "patch": raw}
-        self.emit("revision_ready", f"{cand['id']}: critic-guided revision {'kept' if better else 'rolled back'} ({review['overall']} -> {revised['visual']['overall']})",
+        self.emit("revision_ready", f"{cand['id']}: critic-guided revision {round_no} {'kept' if better else 'rolled back (no improvement)'} "
+                  f"({review['overall']} -> {revised['visual']['overall']}, target {self.visual_target})",
                   status="ok" if better else "warning", actor="vision", candidate_id=cand["id"])
         if better:
             revised["iterations"] = cand["iterations"] + revised["iterations"] + [record]
@@ -487,13 +559,29 @@ class Run:
         cand["iterations"].append(record)
         return cand
 
-    def bundle(self, intent, refs, candidates, consistency, selected, rationale, parent=None, change=None, cached=False, replay_of=None) -> dict:
+    def visual_quality(self, chosen: dict | None, rounds: int) -> dict:
+        """The honest visual verdict, kept apart from every engineering claim."""
+        target = self.visual_target
+        if not chosen or chosen.get("status") != "complete":
+            return {"target": target, "achieved": False, "score": None, "critical_issues": 0, "refinement_rounds": rounds, "judge": "",
+                    "statement": "No candidate was completed, so visual quality was not evaluated"}
+        score, critical = chosen["visual"]["overall"], self.critical_issues(chosen)
+        achieved = score >= target and critical == 0
+        statement = (f"Visual quality target met: {score}/10 with no critical findings (subjective, {chosen['visual']['judge_model']})" if achieved else
+                     f"Visual quality target NOT achieved: {score}/10 against a target of {target}/10"
+                     + (f" with {critical} unresolved critical finding(s)" if critical else "") + f" after {rounds} refinement round(s); best result kept, not a verified success")
+        return {"target": target, "achieved": achieved, "score": score, "critical_issues": critical, "refinement_rounds": rounds,
+                "judge": chosen["visual"]["judge_model"], "statement": statement}
+
+    def bundle(self, intent, refs, candidates, consistency, selected, rationale, parent=None, change=None, cached=False, replay_of=None, rounds=0) -> dict:
         chosen = next((c for c in candidates if c["id"] == selected), None)
         feasible = [c for c in candidates if c.get("feasible")]
+        quality = self.visual_quality(chosen, rounds)
         if self.request["mode"] == "engineered":
             status = "needs_review" if feasible else "unbuildable"
         else:
-            status = "complete" if chosen and chosen.get("feasible") else "needs_review"
+            # A concept is complete only when its geometry is valid AND it met the visual target.
+            status = "complete" if chosen and chosen.get("feasible") and quality["achieved"] else "needs_review"
         trace = self.put(json.dumps({"events": self.svc.store.events(self.owner, self.job_id), "stages": self.stages, "calls": self.ledger.calls}, default=str, sort_keys=True).encode(), "application/json")
         exports = {}
         if chosen and chosen["status"] == "complete":
@@ -506,6 +594,8 @@ class Run:
         limitations = list(intent.get("unsupported", [])) + list(intent.get("simplifications", []))
         if self.model.mode != "live":
             limitations.append("Fixture mode: designs authored by Rivet's offline rule-based author; renders and checks are real")
+        if not quality["achieved"]:
+            limitations.append(quality["statement"])
         return {
             "schema_version": "2.0", "build_id": self.build_id, "revision": 0, "job_id": self.job_id, "mode": self.request["mode"], "status": status,
             "title": intent["subject"][:120], "original_request": {"text": self.request["input"]["user_text"], "image_asset_id": self.request["input"].get("image_asset_id")},
@@ -513,7 +603,8 @@ class Run:
             "scene_asset_url": chosen["scene_asset_url"] if chosen and chosen["status"] == "complete" else None, "assembly": assembly, "exports": exports,
             "linked_plan_url": (chosen or {}).get("functional", {}).get("linked_plan_url"), "generation_trace_url": trace["url"],
             "model_versions": {"design_model": getattr(self.model, "name", "?"), "image_model": getattr(self.images, "name", "none") if self.images else "none", **kernel_versions(),
-                               "renderer": self.svc.renderer, "critic": (chosen or {}).get("visual", {}).get("judge_model", "") if chosen else ""},
+                               "renderer": self.shot_renderer, "critic": (chosen or {}).get("visual", {}).get("judge_model", "") if chosen else ""},
+            "visual_quality": quality,
             "provenance": {"generation_mode": "live" if self.model.mode == "live" else "fixture", "cached": cached, "replay_of": replay_of,
                            "input_digest": digest(self.request["input"]), "catalog_digest": self.svc.catalog_digest(), "view_consistency": consistency,
                            "limitations": limitations[:16], "providers": {"design": getattr(self.model, "name", "?"), "images": getattr(self.images, "name", "none") if self.images else "none"},
@@ -528,22 +619,22 @@ class Run:
             return None, "every candidate failed"
         feasible = [c for c in done if c["feasible"]]
         pool = feasible or done
-        best = max(pool, key=lambda c: (c["visual"]["overall"], -c["mechanical"]["counts"]["hard_collisions"]))
+        best = max(pool, key=Run.visual_rank)
         why = (f"highest visual score among {len(feasible)} feasible candidate(s)" if feasible else
                "no candidate passed the hard gates; showing the best visual concept, labelled with its blocking findings")
-        return best["id"], f"{why}: {best['strategy'].replace('_', ' ')} scored {best['visual']['overall']}/10 (subjective)"
+        critical = Run.critical_issues(best)
+        return best["id"], (f"{why}: {best['strategy'].replace('_', ' ')} scored {best['visual']['overall']}/10 (subjective)"
+                            + (f" with {critical} critical visual finding(s)" if critical else ""))
 
     # -- jobs -------------------------------------------------------------------------
     def generate(self) -> None:
         image = self.image_input()
-        self.emit("intake", f"Request accepted ({self.request['mode']}, {self.request['quality']} quality, {self.svc.mode} providers)", actor="system")
-        self.stage("intake", "ok")
+        self.emit("intake", f"Request accepted ({self.request['mode']}, {self.request['quality']} quality, {self.svc.mode} providers, visual target {self.visual_target}/10)", actor="system")
+        self.shot_renderer = self.pick_renderer()
+        self.stage("intake", "ok", f"renderer {self.shot_renderer}")
         intent = self.distill(image)
         refs, consistency = self.references(intent, image)
-        ref_images: list[tuple[str, bytes]] = []
-        for r in refs:
-            path, _ = self.svc.store.asset(self.owner, r["image_url"].rsplit("/", 1)[-1])
-            ref_images.append((r["view"], path.read_bytes()))
+        ref_images = self.reference_images(refs)
         strategies = STRATEGIES[: self.request["candidate_count"]]
         with ThreadPoolExecutor(max_workers=len(strategies)) as pool:
             candidates = list(pool.map(lambda args: self.candidate(intent, ref_images, *args), [(s, i) for i, s in enumerate(strategies)]))
@@ -565,12 +656,19 @@ class Run:
         if selected is None:
             raise ApiError("NO_CANDIDATES", "No design candidate could be generated", 502, {"errors": [c.get("error") for c in candidates]})
         self.emit("choice_requested", f"Recommended {selected}: {why}. You can choose another candidate.", actor="planner", candidate_id=selected)
-        for _ in range(self.request["review_rounds"]):
+        rounds = 0
+        for round_no in range(1, self.request["review_rounds"] + 1):
             idx = next(i for i, c in enumerate(candidates) if c["id"] == selected)
-            candidates[idx] = self.refine(candidates[idx], intent, ref_images)
+            if self.target_met(candidates[idx]):
+                break
+            rounds += 1
+            candidates[idx] = self.refine(candidates[idx], intent, ref_images, round_no)
             selected, why = self.rank(candidates)
-        self.stage("refinement", "ok", f"{self.request['review_rounds']} round(s)")
-        bundle = self.bundle(intent, refs, candidates, consistency, selected, why)
+        chosen = next(c for c in candidates if c["id"] == selected)
+        self.stage("refinement", "ok" if self.target_met(chosen) else "warning",
+                   f"{rounds} round(s); visual target {self.visual_target}/10 {'met' if self.target_met(chosen) else 'not met'}")
+        bundle = self.bundle(intent, refs, candidates, consistency, selected, why, rounds=rounds)
+        self.emit("visual_review", bundle["visual_quality"]["statement"], status="ok" if bundle["visual_quality"]["achieved"] else "warning", actor="vision", candidate_id=selected)
         self.emit("export_ready", f"Exports ready for {selected}: GLB, per-part GLB, STEP/STL where valid, BOM, assembly steps, manifest", actor="system", candidate_id=selected)
         saved = self.svc.store.save_bundle(self.owner, {**bundle, "revision": 1}, None)
         if self.job.get("cache_key"):
@@ -598,9 +696,12 @@ class Run:
     def revise(self, base: dict, instruction: str, focus: list[str]) -> None:
         chosen = next(c for c in base["candidates"] if c["id"] == base["selected_candidate_id"])
         self.emit("intake", f"Revision of {base['build_id']}@{base['revision']}: {instruction[:120]}", actor="system")
+        self.shot_renderer = self.pick_renderer()
+        refs = self.reference_images(base["references"])
+        self.request["visual_target"] = (base.get("visual_quality") or {}).get("target", self.svc.visual_target)
         if self.model.mode == "live":
-            self.spend("chat")
-            raw = self.model.patch(chosen["spec"], instruction, [], focus)
+            self.spend("vision")
+            raw = self.model.patch(chosen["spec"], instruction, [], focus, refs, self.candidate_renders(chosen), chosen.get("visual"))
         else:
             raw = procedural.edit(chosen["spec"], instruction, base["distilled"])
         if not raw or not raw.get("operations"):
@@ -608,15 +709,11 @@ class Run:
             self.svc.store.finish(self.owner, self.job_id, "complete", revision=base["revision"])
             return
         try:
-            new_spec = apply_patch(chosen["spec"], raw).model_dump(mode="json")
+            new_spec = apply_patch(chosen["spec"], raw, normalize=True).model_dump(mode="json")
         except ValueError as exc:
             self.emit("revision_ready", f"Change rejected: {exc}", status="failed", actor="planner")
             self.svc.store.finish(self.owner, self.job_id, "complete", revision=base["revision"])
             return
-        refs = []
-        for r in base["references"]:
-            path, _ = self.svc.store.asset(self.owner, r["image_url"].rsplit("/", 1)[-1])
-            refs.append((r["view"], path.read_bytes()))
         revised = self.evaluate(chosen["id"], chosen["strategy"], new_spec, base["distilled"], refs, f"edit-{base['revision']}", True)
         if revised["mechanical"]["counts"]["hard_collisions"] or revised["mechanical"]["counts"]["unresolved_required_mounts"]:
             self.emit("revision_ready", "Change rejected: it creates collisions or unattached parts that repair could not fix; the last good design is unchanged",
@@ -629,7 +726,8 @@ class Run:
         candidates = [revised if c["id"] == chosen["id"] else c for c in base["candidates"]]
         self.limit = base["budget"]["limit_usd"]
         bundle = self.bundle(base["distilled"], base["references"], candidates, base["provenance"].get("view_consistency", {}), chosen["id"],
-                             base["recommendation"].get("rationale", ""), parent=base["revision"], change={"instruction": instruction, "changed_bodies": diff, "patch_reason": raw.get("reason")})
+                             base["recommendation"].get("rationale", ""), parent=base["revision"], change={"instruction": instruction, "changed_bodies": diff, "patch_reason": raw.get("reason")},
+                             rounds=(base.get("visual_quality") or {}).get("refinement_rounds", 0))
         bundle.update(build_id=base["build_id"], job_id=base["job_id"])
         saved = self.svc.store.save_bundle(self.owner, bundle, base["revision"])
         self.emit("revision_ready", f"Revision {saved['revision']}: changed {', '.join(diff['changed'] + diff['added']) or 'nothing'}; unchanged bodies keep their geometry",

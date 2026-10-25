@@ -304,6 +304,35 @@ def test_near_miss_shape_parameters_are_clamped_not_rejected():
         Shape.model_validate(spec["bodies"][0]["shape"])
 
 
+def test_normalization_drops_colliding_anchors_and_repairs_loft_stations():
+    # A custom anchor named like a bounding-box face is redundant with the implicit one; a loft with
+    # more heights than sections meant stations from the first to the last height.
+    spec = {"bodies": [
+        {"shape": {"type": "box", "dimensions_mm": [20, 10, 40]}, "anchors": [{"id": "top_center", "frame": {}}, {"id": "lens_seat", "frame": {}}]},
+        {"shape": {"type": "loft", "axis": "Y", "sections": [[[0, 0], [10, 0], [10, 10], [0, 10]], [[2, 2], [8, 2], [8, 8], [2, 8]]],
+                   "section_heights_mm": [0, 10, 30, 45, 60]}},
+    ]}
+    fixed = normalize_spec_shapes(spec)
+    assert [a["id"] for a in fixed["bodies"][0]["anchors"]] == ["lens_seat"]
+    loft = fixed["bodies"][1]["shape"]
+    assert loft["section_heights_mm"] == [0, 60] and len(loft["sections"]) == 2
+    Shape.model_validate(loft)
+
+
+def test_apply_patch_can_normalize_near_miss_bodies():
+    spec = {"schema_version": "2.0", "mode": "concept_only", "subject": "t", "seed": 1, "strategy": "closest_to_reference", "constraints": {"max_bounds_mm": [300, 300, 300]},
+            "bodies": [{"id": "chassis", "name": "C", "role": "chassis", "kind": "fabricated", "parent_id": None, "manufacturing": "3d_print", "material": {"name": "pla", "color": "#f08a24"},
+                        "shape": {"type": "rounded_box", "dimensions_mm": [120, 24, 160], "radius_mm": 6}}]}
+    lid = {"id": "lid", "name": "L", "role": "lid", "kind": "fabricated", "parent_id": "chassis", "manufacturing": "3d_print", "material": {"name": "pla", "color": "#f08a24"},
+           "attachment": {"parent_anchor": "top", "child_anchor": "bottom"}, "shape": {"type": "rounded_box", "dimensions_mm": [100, 10, 40], "radius_mm": 5}}
+    patch = {"reason": "r", "operations": [{"operation": "update", "body_id": "chassis", "set": {"shape.dimensions_mm": [100, 10, 40], "shape.radius_mm": 5}},
+                                           {"operation": "add", "body_id": "lid", "body": lid}]}
+    with pytest.raises(ValueError):
+        apply_patch(spec, patch)
+    out = apply_patch(spec, patch, normalize=True)
+    assert [b.id for b in out.bodies] == ["chassis", "lid"] and all(0 < b.shape.radius_mm < 5 for b in out.bodies)
+
+
 def test_stick_thin_arm_is_thickened_by_deterministic_repair(tmp_path):
     spec = load("custom-sensor-housing")
     spec["bodies"].append({"id": "thin_arm", "name": "Thin arm", "role": "arm", "kind": "fabricated", "manufacturing": "3d_print",

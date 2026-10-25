@@ -65,6 +65,12 @@ export function DesignStudio({ request, onExit }: { request: DesignStartRequest 
         <strong data-testid="design-title">{d.bundle?.title ?? request?.text ?? '3D design'}</strong>
         {d.bundle ? <span className={`rv-badge rv-badge--${d.bundle.status === 'complete' ? 'ok' : d.bundle.status === 'unbuildable' ? 'bad' : 'warn'}`} data-testid="design-status">{d.bundle.status.replace(/_/g, ' ')}</span> : null}
         {d.bundle ? <span className="rv-badge" data-testid="design-mode">{d.bundle.mode === 'engineered' ? 'Engineered' : 'Concept only'} · {d.bundle.provenance.generation_mode}{d.bundle.provenance.cached ? ' · cached replay' : ' · fresh'}</span> : null}
+        {d.bundle?.visual_quality ? (
+          <span className={`rv-badge rv-badge--${d.bundle.visual_quality.achieved ? 'ok' : 'warn'}`} data-testid="design-visual-quality" title={d.bundle.visual_quality.statement}>
+            {d.bundle.visual_quality.achieved ? 'Visual target met' : 'Visual target not met'}
+            {d.bundle.visual_quality.score !== null ? ` · ${d.bundle.visual_quality.score}/${d.bundle.visual_quality.target}` : ''}
+          </span>
+        ) : null}
         {d.busy ? <button type="button" className="rv-btn" onClick={() => void d.cancel()} data-testid="design-cancel">Cancel</button> : null}
         {d.error ? <span role="alert" data-testid="design-error" style={{ color: 'var(--rv-danger-text, #f87171)' }}>{d.error}</span> : null}
       </header>
@@ -102,6 +108,7 @@ export function DesignStudio({ request, onExit }: { request: DesignStartRequest 
               <section aria-label="Engineering" className="rv-details" style={{ padding: 10 }} data-testid="design-claims">
                 <p style={{ margin: 0 }}>Buildability: <strong>{chosen.claims?.buildability.replace(/_/g, ' ')}</strong> · geometry {chosen.claims?.geometric_validity} · electrical {chosen.claims?.electrical.replace(/_/g, ' ')} · firmware {chosen.claims?.firmware.replace(/_/g, ' ')}</p>
                 <p className="rv-hint" style={{ margin: '4px 0 0' }}>Visual scores are subjective and never count toward buildability.</p>
+                {d.bundle.visual_quality ? <p className="rv-hint" style={{ margin: '4px 0 0' }} data-testid="design-visual-quality-statement">{d.bundle.visual_quality.statement}</p> : null}
                 {(d.bundle.provenance.limitations ?? []).length ? <ul style={{ margin: '6px 0 0', paddingLeft: 18 }}>{(d.bundle.provenance.limitations ?? []).map((l) => <li key={l} className="rv-hint">{l}</li>)}</ul> : null}
               </section>
             ) : null}

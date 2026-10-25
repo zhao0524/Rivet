@@ -64,6 +64,10 @@ export function parseDesignBundle(value: unknown): DesignBundle {
   }
   const provenance = object(b.provenance, 'provenance');
   if (typeof provenance.cached !== 'boolean' || !['live', 'fixture'].includes(String(provenance.generation_mode))) throw new Error('Invalid provenance');
+  if (b.visual_quality !== undefined) {
+    const vq = object(b.visual_quality, 'visual_quality');
+    if (typeof vq.achieved !== 'boolean' || !Number.isFinite(vq.target) || typeof vq.statement !== 'string') throw new Error('Invalid visual quality');
+  }
   const budget = object(b.budget, 'budget');
   for (const key of ['limit_usd', 'spent_usd', 'reserved_usd']) if (!Number.isFinite(budget[key]) || Number(budget[key]) < 0) throw new Error('Invalid budget');
   return b as unknown as DesignBundle;

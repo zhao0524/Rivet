@@ -13,7 +13,7 @@ from PIL import Image
 
 from .models import VisualReview
 
-DETERMINISTIC_JUDGE = "rivet-deterministic-critic/1"
+DETERMINISTIC_JUDGE = "rivet-deterministic-critic/2"
 
 
 def _norm_mask(mask: np.ndarray, size: int = 64) -> np.ndarray | None:
@@ -52,6 +52,47 @@ def _score_ratio(measured: float, target: float) -> float:
     return 10.0 * math.exp(-2.0 * abs(math.log(max(measured, 1e-6) / max(target, 1e-6))))
 
 
+def _bounds(part: dict) -> tuple[np.ndarray, np.ndarray] | None:
+    b = part.get("bounds_mm")
+    if not isinstance(b, dict) or not b.get("min") or not b.get("max"):
+        return None
+    return np.asarray(b["min"], dtype=float), np.asarray(b["max"], dtype=float)
+
+
+def silhouette_parts(manifest: list[dict], tolerance_mm: float = 2.0) -> list[dict]:
+    """Placed bodies whose geometry changes the outline of the assembly: their bounding box
+    reaches outside the root body's, or they fill at least one percent of its volume. A body
+    only counts for what it adds to the shape; its name, role and tags are never consulted."""
+    placed = [p for p in manifest if p.get("status") == "placed" and _bounds(p) is not None]
+    root = next((p for p in placed if p.get("parent_id") is None), None)
+    if root is None:
+        return []
+    lo, hi = _bounds(root)
+    root_volume = float(np.prod(np.maximum(hi - lo, 1e-6)))
+    visible = []
+    for p in placed:
+        if p is root:
+            continue
+        plo, phi = _bounds(p)
+        protrudes = bool(np.any(plo < lo - tolerance_mm) or np.any(phi > hi + tolerance_mm))
+        volume = float(np.prod(np.maximum(phi - plo, 0.0)))
+        if protrudes or volume >= 0.01 * root_volume:
+            visible.append({"body_id": p["body_id"], "protrudes": protrudes, "volume_share": round(volume / root_volume, 4)})
+    return visible
+
+
+def outline_complexity(mask: np.ndarray) -> float:
+    """Perimeter squared over area of a mask: 4*pi for a disc, larger for shapes with limbs,
+    notches and appendages. Compared between a reference and a render it says whether the model
+    has about as much outline detail as the thing it depicts."""
+    m = mask.astype(bool)
+    area = float(m.sum())
+    if area < 4:
+        return 0.0
+    edges = (m[:, 1:] != m[:, :-1]).sum() + (m[1:, :] != m[:-1, :]).sum()
+    return float(edges) ** 2 / area
+
+
 def deterministic_review(brief: dict, spec: dict, manifest: list[dict], shots: list[dict], references: list[tuple[str, bytes]], render_digest: str) -> dict:
     by_view = {s["view"]: s["mask"] for s in shots}
     width = _extent(by_view["front"])[0]
@@ -73,15 +114,39 @@ def deterministic_review(brief: dict, spec: dict, manifest: list[dict], shots: l
             issues.append({"body_id": root["body_id"], "view": "left" if key == "length_width" else "front", "severity": "major",
                            "observed": f"{key.replace('_', ':')} is {measured[key]:.2f}", "target": f"{target:.2f} from the brief",
                            "proposed_change": f"scale {root['name']} {'length' if axis == 2 else 'height'} by {factor:.2f}", "patch": {"scale_axis": axis, "factor": factor}})
-    words = " ".join(f"{p['name']} {p['role']} {' '.join(p.get('tags') or [])}" for p in body_parts).lower()
     features = brief.get("signature_features") or []
-    present = []
+    # Signature features are scored from geometry only: how many bodies actually change the
+    # outline, and whether the outline carries as much detail as the reference. Part names
+    # are reported for information and earn no credit.
+    visible = silhouette_parts(manifest)
+    words = " ".join(f"{p['name']} {p['role']} {' '.join(p.get('tags') or [])}" for p in body_parts).lower()
+    named = {}
     for f in features:
         tokens = [t for t in re.findall(r"[a-z]+", f.lower()) if len(t) > 3 and t not in ("visible", "front", "with", "large", "small")]
-        hit = any(t.rstrip("s") in words for t in tokens) if tokens else True
-        present.append(hit)
-        if not hit and root is not None:
-            issues.append({"body_id": root["body_id"], "view": "perspective", "severity": "minor", "observed": f"no part reads as '{f}'", "target": f, "proposed_change": f"add or emphasise {f}"})
+        named[f] = any(t.rstrip("s") in words for t in tokens) if tokens else True
+    coverage = min(1.0, len(visible) / max(len(features), 1)) if body_parts else 0.0
+    ious: dict[str, float] = {}
+    complexity: dict[str, float] = {}
+    for label, data in references:
+        ref = reference_mask(data)
+        view = label if label in by_view else None
+        if ref is None or view is None:
+            continue
+        # Matching viewpoints only: a front reference is compared with the front render, never
+        # with whichever camera happens to overlap best.
+        ious[view] = silhouette_iou(ref, by_view[view])
+        ref_c, got_c = outline_complexity(ref), outline_complexity(by_view[view])
+        complexity[view] = min(ref_c, got_c) / max(ref_c, got_c) if ref_c > 0 and got_c > 0 else 0.0
+    detail = float(np.mean(list(complexity.values()))) if complexity else None
+    feature_score = 10.0 * (0.6 * coverage + 0.4 * detail) if detail is not None else 10.0 * coverage
+    if features and len(visible) < len(features) and root is not None:
+        issues.append({"body_id": root["body_id"], "view": "perspective", "severity": "major" if len(visible) < len(features) / 2 else "minor",
+                       "observed": f"only {len(visible)} sub-part(s) change the outline for {len(features)} signature features",
+                       "target": "; ".join(features)[:200], "proposed_change": "add the missing features as their own shaped bodies that protrude from the main body"})
+    if detail is not None and detail < 0.5 and root is not None:
+        issues.append({"body_id": root["body_id"], "view": next(iter(complexity)), "severity": "major",
+                       "observed": f"outline detail is {detail:.2f} of the reference's", "target": "an outline with the reference's appendages and notches",
+                       "proposed_change": "model the limbs, fins, intakes and other protrusions the reference shows instead of a smooth block"})
     palette = [p["hex"] for p in (brief.get("palette") or []) if re.match(r"^#[0-9a-fA-F]{6}$", p.get("hex", ""))]
     colour_score = 7.0
     if palette and fabricated:
@@ -91,16 +156,11 @@ def deterministic_review(brief: dict, spec: dict, manifest: list[dict], shots: l
         if colour_score < 5:
             issues.append({"body_id": biggest["body_id"], "view": "perspective", "severity": "minor", "observed": f"main colour {biggest['material']['color']}",
                            "target": f"palette {palette[0]}", "proposed_change": f"recolour {biggest['name']} to {palette[0]}", "patch": {"color": palette[0]}})
-    ious = {}
-    for label, data in references:
-        ref = reference_mask(data)
-        if ref is not None:
-            ious[label] = max(silhouette_iou(ref, by_view[v]) for v in ("perspective", "front", "left", "right"))
-    silhouette = 10.0 * (max(ious.values()) if ious else 0.6)
+    silhouette = 10.0 * (float(np.mean(list(ious.values()))) if ious else 0.6)
     scores = {
         "silhouette": round(silhouette, 2),
         "proportions": round(float(np.mean(prop_scores)) if prop_scores else 7.0, 2),
-        "signature_features": round(10.0 * (sum(present) / len(present)) if present else 7.0, 2),
+        "signature_features": round(feature_score, 2),
         "pose_and_orientation": 8.0 if all(s["mask"].any() for s in shots) else 2.0,
         "colour_and_surface": round(colour_score, 2),
         "reference_consistency": round(silhouette if ious else 6.0, 2),
@@ -108,11 +168,14 @@ def deterministic_review(brief: dict, spec: dict, manifest: list[dict], shots: l
     overall = round(0.25 * scores["silhouette"] + 0.25 * scores["proportions"] + 0.25 * scores["signature_features"] + 0.1 * scores["pose_and_orientation"] + 0.15 * scores["colour_and_surface"], 2)
     return {
         "scores": scores, "overall": overall, "issues": issues,
-        "summary": f"Measured length:width {measured['length_width']:.2f}, height:length {measured['height_length']:.2f}; {sum(present)}/{len(present)} signature features matched by part names"
-                   + (f"; best reference silhouette overlap {max(ious.values()):.2f}" if ious else "; no reference image to compare silhouettes"),
+        "summary": f"Measured length:width {measured['length_width']:.2f}, height:length {measured['height_length']:.2f}; {len(visible)} sub-part(s) shape the outline "
+                   f"for {len(features)} signature features (part names are not scored)"
+                   + (f"; matched-view silhouette overlap {', '.join(f'{k} {v:.2f}' for k, v in ious.items())}" if ious else "; no reference image to compare silhouettes"),
         "subjective": True, "judge_model": DETERMINISTIC_JUDGE, "render_digest": render_digest,
-        "metrics": {"measured_proportions": {k: round(v, 3) for k, v in measured.items()}, "target_proportions": targets, "features_present": dict(zip(features, present)),
-                    "reference_silhouette_iou": {k: round(v, 3) for k, v in ious.items()}, "method": "deterministic silhouette, proportion, part-name and palette metrics"},
+        "metrics": {"measured_proportions": {k: round(v, 3) for k, v in measured.items()}, "target_proportions": targets, "features_named": named,
+                    "silhouette_parts": visible, "outline_detail_ratio": {k: round(v, 3) for k, v in complexity.items()},
+                    "reference_silhouette_iou": {k: round(v, 3) for k, v in ious.items()},
+                    "method": "deterministic matched-view silhouette, proportion, outline-detail and palette metrics; names and labels earn no credit"},
     }
 
 

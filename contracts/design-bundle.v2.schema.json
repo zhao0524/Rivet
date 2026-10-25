@@ -890,6 +890,11 @@
     "title": {
       "title": "Title",
       "type": "string"
+    },
+    "visual_quality": {
+      "additionalProperties": true,
+      "title": "Visual Quality",
+      "type": "object"
     }
   },
   "required": [
