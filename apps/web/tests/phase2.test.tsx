@@ -11,6 +11,7 @@ import { DoneStep } from '../src/components/steps/done/DoneStep';
 import { getSourcedCatalog, getSourcedRoverPlan, SOURCED_ROVER_BUILD_ID } from '../src/lib/fixtures';
 import { buyLines, type BuyLine } from '../src/lib/flow/derive';
 import { createProjectRecord, getProject, type ProjectRecord } from '../src/lib/flow/projects';
+import { FixtureSource } from '../src/lib/rivet';
 
 const push = vi.fn();
 let pathname = '/p/p1/buy';
@@ -231,14 +232,22 @@ describe('Iterate modal', () => {
     const apply = within(dialog).getByTestId('iterate-apply') as HTMLButtonElement;
     expect(apply.disabled).toBe(true);
     fireEvent.click(within(dialog).getAllByTestId('iterate-example')[0]!);
-    expect((within(dialog).getByTestId('iterate-text') as HTMLTextAreaElement).value).toBe('Make it cheaper');
+    const stop = 'Increase obstacle stop distance to 0.40 m';
+    expect((within(dialog).getByTestId('iterate-text') as HTMLTextAreaElement).value).toBe(stop);
+    expect(within(dialog).getAllByTestId('iterate-example')[0]!.getAttribute('aria-pressed')).toBe('true');
     expect(apply.disabled).toBe(false);
+    const edit = vi.spyOn(FixtureSource.prototype, 'edit');
     fireEvent.click(apply);
+    await waitFor(() => expect(edit).toHaveBeenCalled());
+    expect(edit.mock.calls[0]![1]).toMatchObject({
+      instruction: stop,
+      operation: { op: 'set_behavior_parameter', name: 'obstacle_stop_distance_m', value: 0.4 },
+    });
     const reason = await screen.findByTestId('iterate-reason', {}, { timeout: 8000 });
     expect(reason.textContent).toContain('edits cannot be validated in fixture mode');
-    expect(reason.textContent).toContain('Make it cheaper');
+    expect(reason.textContent).toContain(stop);
     expect(screen.getByTestId('iterate')).toBeDefined();
-    expect((screen.getByTestId('iterate-text') as HTMLTextAreaElement).value).toBe('Make it cheaper');
+    expect((screen.getByTestId('iterate-text') as HTMLTextAreaElement).value).toBe(stop);
     expect(push).not.toHaveBeenCalledWith('/p/p1/review');
   });
 });

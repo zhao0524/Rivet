@@ -1,11 +1,53 @@
 'use client';
 
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
+import type { BuildPlan, EditOperation } from '../../lib/rivet/types';
 import '../../styles/phase2.css';
 import { useProjectContext } from '../flow/ProjectShell';
 import { Modal } from '../system/Modal';
 
-const EXAMPLES = ['Make it cheaper', 'Move the sensor higher', 'Use a bigger battery'] as const;
+interface Preset {
+  id: string;
+  label: string;
+  instruction: string;
+  operation: EditOperation;
+}
+
+/**
+ * Changes the engine can apply directly. The API maps free text to an operation only when an
+ * edit selector is configured, so these presets send one of its five allowed operations.
+ * A preset is offered only when the build has the part it touches.
+ */
+function presetsFor(plan: BuildPlan): Preset[] {
+  const byRole = (re: RegExp) => plan.components.find((c) => re.test(c.role))?.instance_id;
+  const sensor = byRole(/sensor/i);
+  const chassis = byRole(/chassis|frame/i);
+  const list: Preset[] = [
+    {
+      id: 'stop-distance',
+      label: 'Stop at 0.40 m from walls',
+      instruction: 'Increase obstacle stop distance to 0.40 m',
+      operation: { op: 'set_behavior_parameter', name: 'obstacle_stop_distance_m', value: 0.4 },
+    },
+  ];
+  if (sensor) {
+    list.push({
+      id: 'sensor-higher',
+      label: 'Move the sensor 12 mm higher',
+      instruction: 'Move the front sensor 12 mm higher',
+      operation: { op: 'set_mount_offset_within_template', instance_id: sensor, offset_mm: [0, 12, 0] },
+    });
+  }
+  if (chassis) {
+    list.push({
+      id: 'tint-blue',
+      label: 'Tint the chassis blue',
+      instruction: 'Tint the chassis blue',
+      operation: { op: 'change_appearance_color', instance_id: chassis, color: '#2563EB' },
+    });
+  }
+  return list;
+}
 
 /**
  * Iterate: one textarea, "Apply change" sends it to the engine. An accepted edit bumps the project
@@ -15,6 +57,8 @@ export function IterateModal({ open, onClose }: { open: boolean; onClose: () => 
   const { update, build, goTo } = useProjectContext();
   const { store, ready } = build;
   const [text, setText] = useState('');
+  const [preset, setPreset] = useState<Preset | null>(null);
+  const presets = useMemo(() => (ready ? presetsFor(store.plan) : []), [ready, store.plan]);
   const [reason, setReason] = useState<string | null>(null);
   const fieldId = useId();
   const pending = store.editPending;
@@ -26,6 +70,7 @@ export function IterateModal({ open, onClose }: { open: boolean; onClose: () => 
 
   function discard() {
     setText('');
+    setPreset(null);
     setReason(null);
     onClose();
   }
@@ -34,11 +79,14 @@ export function IterateModal({ open, onClose }: { open: boolean; onClose: () => 
     const instruction = text.trim();
     if (!instruction || pending || !ready) return;
     setReason(null);
-    const res = await store.submitEdit(instruction);
+    // A preset sends its operation only while its wording is unchanged.
+    const operation = preset && preset.instruction === instruction ? preset.operation : undefined;
+    const res = await store.submitEdit(instruction, operation);
     if (!res) return; // store.editError carries the failure
     if (res.accepted && typeof res.revision === 'number') {
       update({ revision: res.revision, reviewDone: false });
       setText('');
+      setPreset(null);
       onClose();
       goTo('review');
       return;
@@ -53,7 +101,7 @@ export function IterateModal({ open, onClose }: { open: boolean; onClose: () => 
       open={open}
       onClose={discard}
       title="Change something"
-      description="Describe the change in plain words. Rivet re-plans and re-checks the whole build, then you review it again."
+      description="Pick a change Rivet can apply directly, or describe one. Rivet re-checks the whole build, then you review it again."
       testId="iterate"
       initialFocus="textarea"
       footer={
@@ -76,16 +124,31 @@ export function IterateModal({ open, onClose }: { open: boolean; onClose: () => 
           id={fieldId}
           className="ui-textarea"
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => {
+            setText(e.target.value);
+            if (preset && e.target.value.trim() !== preset.instruction) setPreset(null);
+          }}
           placeholder="e.g. Swap the range sensor for a wider one"
           disabled={pending}
           data-testid="iterate-text"
         />
       </div>
-      <div className="p2-chips iter__chips" aria-label="Examples">
-        {EXAMPLES.map((ex) => (
-          <button key={ex} type="button" className="ui-chip" onClick={() => setText(ex)} data-testid="iterate-example">
-            {ex}
+      <div className="p2-chips iter__chips" role="group" aria-label="Changes Rivet can apply directly">
+        {presets.map((p) => (
+          <button
+            key={p.id}
+            type="button"
+            className="ui-chip"
+            aria-pressed={preset?.id === p.id}
+            onClick={() => {
+              setPreset(p);
+              setText(p.instruction);
+              setReason(null);
+            }}
+            data-testid="iterate-example"
+            data-preset={p.id}
+          >
+            {p.label}
           </button>
         ))}
       </div>
@@ -94,6 +157,11 @@ export function IterateModal({ open, onClose }: { open: boolean; onClose: () => 
         {reason ? (
           <p className="ui-notice ui-notice--warn" data-testid="iterate-reason">
             {reason}
+          </p>
+        ) : null}
+        {store.editError && !preset ? (
+          <p className="ui-small ui-muted" data-testid="iterate-hint">
+            Free-text changes need the engine&apos;s edit assistant. Try one of the changes above.
           </p>
         ) : null}
         {store.editError ? (

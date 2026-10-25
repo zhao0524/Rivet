@@ -67,7 +67,7 @@ a.stepper__step:hover { background: var(--ui-raised); color: var(--ui-text); }
   position: relative; min-height: 420px; height: min(62vh, 640px); border-radius: var(--ui-r-lg); overflow: hidden;
   background: var(--ui-sunken); border: 1px solid var(--ui-border);
 }
-.viewport--sm { min-height: 240px; height: 300px; }
+.viewport--sm { min-height: 320px; height: 320px; } /* RoverScene's own min height is 320px */
 .viewport > [data-testid='rover-scene'], .viewport > div:first-child { position: absolute; inset: 0; }
 .viewport__label {
   position: absolute; left: 12px; bottom: 12px; z-index: 2; padding: 4px 10px; border-radius: 999px;

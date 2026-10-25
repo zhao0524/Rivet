@@ -47,7 +47,7 @@ export function ProjectShell({ id, children }: { id: string; children: ReactNode
 
   // Next scrolls the new segment to the very top, under the sticky header and stepper; start each screen at the top instead.
   useEffect(() => {
-    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
   }, [segment]);
 
   const goTo = useCallback(
