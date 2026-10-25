@@ -3899,7 +3899,7 @@
   ],
   "bom": {
     "currency": "USD",
-    "known_subtotal_amount": "66.75",
+    "known_subtotal_amount": "4148.96",
     "total_status": "incomplete",
     "items": [
       {
@@ -3909,8 +3909,8 @@
           "torso-shell-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.cover",
@@ -3919,8 +3919,8 @@
           "top-cover-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.cover-hatch",
@@ -3929,8 +3929,8 @@
           "top-cover-hatch-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.power-button",
@@ -3939,8 +3939,8 @@
           "power-button-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.belly-pan",
@@ -3949,8 +3949,8 @@
           "belly-pan-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.plate",
@@ -3959,8 +3959,8 @@
           "rear-plate-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.hip-recess",
@@ -3972,8 +3972,8 @@
           "hip-recess-rear-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.side-wordmark",
@@ -3983,8 +3983,8 @@
           "side-wordmark-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.number-decal",
@@ -3994,8 +3994,8 @@
           "number-decal-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.speed-stripe",
@@ -4011,8 +4011,8 @@
           "speed-stripe-8-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.battery-bay",
@@ -4020,8 +4020,8 @@
         "instance_ids": [
           "battery-bay-1"
         ],
-        "unit_price_amount": "7.95",
-        "purchase_url": "https://www.adafruit.com/product/1578",
+        "unit_price_amount": null,
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4031,8 +4031,8 @@
           "battery-latch-slot-1",
           "battery-latch-slot-2-1"
         ],
-        "unit_price_amount": "7.95",
-        "purchase_url": "https://www.adafruit.com/product/1578",
+        "unit_price_amount": null,
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4044,8 +4044,8 @@
           "status-led-3-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.head",
@@ -4054,8 +4054,8 @@
           "head-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.face-panel",
@@ -4064,8 +4064,8 @@
           "face-panel-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.face-camera",
@@ -4074,8 +4074,8 @@
           "face-camera-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.face-camera-ring",
@@ -4084,8 +4084,8 @@
           "face-camera-ring-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.face-sensor",
@@ -4094,8 +4094,8 @@
           "face-sensor-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.face-sensor-ring",
@@ -4104,8 +4104,8 @@
           "face-sensor-ring-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.lidar-dome",
@@ -4113,9 +4113,9 @@
         "instance_ids": [
           "lidar-dome-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "249.00",
+        "purchase_url": "https://shop.unitree.com/products/unitree-4d-lidar-l1",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.lidar-base",
@@ -4124,8 +4124,8 @@
           "lidar-base-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-4d-lidar-l1",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.lidar-rib",
@@ -4141,8 +4141,8 @@
           "lidar-rib-8-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-4d-lidar-l1",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.hip-actuator",
@@ -4153,9 +4153,9 @@
           "rear-left-hip-actuator-1",
           "rear-right-hip-actuator-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "369.00",
+        "purchase_url": "https://shop.unitree.com/products/go1-motor",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.hip-end-cap",
@@ -4167,8 +4167,8 @@
           "rear-right-hip-end-cap-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.hip-cap-ring",
@@ -4180,8 +4180,8 @@
           "rear-right-hip-cap-ring-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.thigh-actuator",
@@ -4192,9 +4192,9 @@
           "rear-left-thigh-actuator-1",
           "rear-right-thigh-actuator-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "369.00",
+        "purchase_url": "https://shop.unitree.com/products/go1-motor",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.thigh-motor-cap",
@@ -4205,8 +4205,8 @@
           "rear-left-thigh-motor-cap-1",
           "rear-right-thigh-motor-cap-1"
         ],
-        "unit_price_amount": "3.75",
-        "purchase_url": "https://www.sparkfun.com/hobby-gearmotor-140-rpm-pair.html",
+        "unit_price_amount": null,
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4219,8 +4219,8 @@
           "rear-right-thigh-cap-rim-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.thigh-cap-screw",
@@ -4232,8 +4232,8 @@
           "rear-right-thigh-cap-screw-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.thigh",
@@ -4245,8 +4245,8 @@
           "rear-right-thigh-upper-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.thigh-2",
@@ -4258,8 +4258,8 @@
           "rear-right-thigh-lower-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.thigh-cover",
@@ -4271,8 +4271,8 @@
           "rear-right-thigh-cover-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.thigh-screw",
@@ -4284,8 +4284,8 @@
           "rear-right-thigh-screw-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.knee-joint",
@@ -4297,8 +4297,8 @@
           "rear-right-knee-joint-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.knee-cap",
@@ -4310,8 +4310,8 @@
           "rear-right-knee-cap-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.shin",
@@ -4323,8 +4323,8 @@
           "rear-right-shin-upper-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.shin-2",
@@ -4336,8 +4336,8 @@
           "rear-right-shin-lower-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.shin-dot",
@@ -4349,8 +4349,8 @@
           "rear-right-shin-dot-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.foot",
@@ -4362,8 +4362,8 @@
           "rear-right-foot-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.foot-collar",
@@ -4375,8 +4375,8 @@
           "rear-right-foot-collar-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.battery-pack",
@@ -4384,8 +4384,8 @@
         "instance_ids": [
           "battery-pack-1"
         ],
-        "unit_price_amount": "7.95",
-        "purchase_url": "https://www.adafruit.com/product/1578",
+        "unit_price_amount": "500.00",
+        "purchase_url": "https://shop.unitree.com/products/go2-battery",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4395,8 +4395,8 @@
           "power-distribution-board-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.motion-control-board",
@@ -4404,8 +4404,8 @@
         "instance_ids": [
           "motion-control-board-1"
         ],
-        "unit_price_amount": "19.95",
-        "purchase_url": "https://www.adafruit.com/product/3405",
+        "unit_price_amount": null,
+        "purchase_url": "https://shop.unitree.com/products/unitree-go2",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4414,9 +4414,9 @@
         "instance_ids": [
           "compute-module-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "399.00",
+        "purchase_url": "https://www.sparkfun.com/nvidia-jetson-orin-nano-developer-kit.html",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.imu",
@@ -4424,9 +4424,9 @@
         "instance_ids": [
           "imu-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "29.50",
+        "purchase_url": "https://www.adafruit.com/product/4754",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.wire-power-3-0",
@@ -4434,9 +4434,9 @@
         "instance_ids": [
           "battery-to-power-board-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "1.49",
+        "purchase_url": "https://www.racedayquads.com/products/silicone-wire-2-ft-red-and-black-pair",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.wire-power-2-0",
@@ -4449,8 +4449,8 @@
           "power-to-rear-right-leg-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.racedayquads.com/products/silicone-wire-2-ft-red-and-black-pair",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.wire-data-1-5",
@@ -4460,9 +4460,9 @@
           "compute-to-lidar-1",
           "compute-to-face-camera-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "5.99",
+        "purchase_url": "https://www.racedayquads.com/products/sh-1-0-silicone-cable-set",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.wire-signal-1-2",
@@ -4471,8 +4471,8 @@
           "compute-to-imu-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.racedayquads.com/products/sh-1-0-silicone-cable-set",
+        "link_status": "manufacturer_reference_only"
       }
     ]
   },
@@ -4510,8 +4510,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.torso-shell",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Torso shell",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Torso shell: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "body"
       },
@@ -4530,7 +4530,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -4544,7 +4544,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -4552,8 +4553,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.cover",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Cover",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Cover: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "body"
       },
@@ -4572,7 +4573,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -4586,7 +4587,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -4594,8 +4596,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.cover-hatch",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Cover hatch",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Cover hatch: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "body"
       },
@@ -4614,7 +4616,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -4628,7 +4630,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -4636,8 +4639,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.power-button",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Power button",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Power button: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "body"
       },
@@ -4656,7 +4659,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -4670,7 +4673,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -4678,8 +4682,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.belly-pan",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Belly pan",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Belly pan: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "body"
       },
@@ -4698,7 +4702,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -4712,7 +4716,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -4720,8 +4725,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.plate",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Plate",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Plate: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "body"
       },
@@ -4740,7 +4745,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -4754,7 +4759,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -4762,8 +4768,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.hip-recess",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Hip recess",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Hip recess: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "body"
       },
@@ -4782,7 +4788,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -4796,7 +4802,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -4804,8 +4811,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.side-wordmark",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Side wordmark",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Side wordmark: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "decal"
       },
@@ -4824,7 +4831,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -4838,7 +4845,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -4846,8 +4854,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.number-decal",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Number decal",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Number decal: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "decal"
       },
@@ -4866,7 +4874,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -4880,7 +4888,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -4888,8 +4897,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.speed-stripe",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Speed stripe",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Speed stripe: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "decal"
       },
@@ -4908,7 +4917,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -4922,7 +4931,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -4930,8 +4940,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.battery-bay",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Battery bay: Lithium Ion Polymer Battery - 3.7v 500mAh",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Battery bay: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "battery"
       },
@@ -4950,22 +4960,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/1578",
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "7.95",
-        "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unverified",
+        "price": "unknown",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Lithium Ion Polymer Battery - 3.7v 500mAh (Adafruit, SKU 1578). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -4973,8 +4983,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.battery-latch-slot",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Battery latch slot: Lithium Ion Polymer Battery - 3.7v 500mAh",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Battery latch slot: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "battery"
       },
@@ -4993,22 +5003,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/1578",
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "7.95",
-        "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unverified",
+        "price": "unknown",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Lithium Ion Polymer Battery - 3.7v 500mAh (Adafruit, SKU 1578). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5016,8 +5026,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.status-led",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Status led",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Status led: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "light"
       },
@@ -5036,7 +5046,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5050,7 +5060,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5058,8 +5069,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.head",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Head",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Head: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "body"
       },
@@ -5078,7 +5089,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5092,7 +5103,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5100,8 +5112,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.face-panel",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Face panel",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Face panel: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "sensor"
       },
@@ -5120,7 +5132,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5134,7 +5146,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5142,8 +5155,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.face-camera",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Face camera",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Face camera: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "camera"
       },
@@ -5162,7 +5175,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5176,7 +5189,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5184,8 +5198,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.face-camera-ring",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Face camera ring",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Face camera ring: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "camera"
       },
@@ -5204,7 +5218,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5218,7 +5232,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5226,8 +5241,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.face-sensor",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Face sensor",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Face sensor: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "sensor"
       },
@@ -5246,7 +5261,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5260,7 +5275,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5268,8 +5284,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.face-sensor-ring",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Face sensor ring",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Face sensor ring: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "sensor"
       },
@@ -5288,7 +5304,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5302,7 +5318,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5310,8 +5327,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.lidar-dome",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Lidar dome",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Lidar dome: Unitree 4D LiDAR L1",
         "sku": null,
         "category": "sensor"
       },
@@ -5330,21 +5347,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-4d-lidar-l1",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "249.00",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the matching part): Unitree 4D LiDAR L1 (Unitree). The 4D LiDAR L1 under the Go2's chin. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5352,8 +5370,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.lidar-base",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Lidar base",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Lidar base: Unitree 4D LiDAR L1",
         "sku": null,
         "category": "sensor"
       },
@@ -5372,7 +5390,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-4d-lidar-l1",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5386,7 +5404,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree 4D LiDAR L1 (Unitree). The 4D LiDAR L1 under the Go2's chin. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5394,8 +5413,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.lidar-rib",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Lidar rib",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Lidar rib: Unitree 4D LiDAR L1",
         "sku": null,
         "category": "sensor"
       },
@@ -5414,7 +5433,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-4d-lidar-l1",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5428,7 +5447,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree 4D LiDAR L1 (Unitree). The 4D LiDAR L1 under the Go2's chin. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5436,8 +5456,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.hip-actuator",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Hip actuator",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Hip actuator: Unitree GO-M8010-6 joint motor",
         "sku": null,
         "category": "motor"
       },
@@ -5456,21 +5476,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/go1-motor",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "369.00",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (a close real equivalent): Unitree GO-M8010-6 joint motor (Unitree, SKU 00.02.07.00002). Unitree's quadruped joint motor. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5478,8 +5499,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.hip-end-cap",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Hip end cap",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Hip end cap: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "motor"
       },
@@ -5498,7 +5519,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5512,7 +5533,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5520,8 +5542,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.hip-cap-ring",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Hip cap ring",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Hip cap ring: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "motor"
       },
@@ -5540,7 +5562,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5554,7 +5576,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5562,8 +5585,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.thigh-actuator",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Thigh actuator",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Thigh actuator: Unitree GO-M8010-6 joint motor",
         "sku": null,
         "category": "motor"
       },
@@ -5582,21 +5605,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/go1-motor",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "369.00",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (a close real equivalent): Unitree GO-M8010-6 joint motor (Unitree, SKU 00.02.07.00002). Unitree's quadruped joint motor. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5604,8 +5628,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.thigh-motor-cap",
       "identity": {
-        "manufacturer": "Suggested part from SparkFun",
-        "model": "Thigh motor cap: Hobby Gearmotor - 140 RPM (Pair)",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Thigh motor cap: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "motor"
       },
@@ -5624,22 +5648,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.sparkfun.com/hobby-gearmotor-140-rpm-pair.html",
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "3.75",
-        "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unverified",
+        "price": "unknown",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Hobby Gearmotor - 140 RPM (Pair) (SparkFun, SKU ROB-13302), sold as 2 in one (7.50 USD); shared across the parts that use it. Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5647,8 +5671,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.thigh-cap-rim",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Thigh cap rim",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Thigh cap rim: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "motor"
       },
@@ -5667,7 +5691,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5681,7 +5705,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5689,8 +5714,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.thigh-cap-screw",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Thigh cap screw",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Thigh cap screw: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "motor"
       },
@@ -5709,7 +5734,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5723,7 +5748,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5731,8 +5757,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.thigh",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Thigh",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Thigh: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "leg"
       },
@@ -5751,7 +5777,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5765,7 +5791,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5773,8 +5800,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.thigh-2",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Thigh",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Thigh: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "leg"
       },
@@ -5793,7 +5820,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5807,7 +5834,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5815,8 +5843,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.thigh-cover",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Thigh cover",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Thigh cover: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "leg"
       },
@@ -5835,7 +5863,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5849,7 +5877,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5857,8 +5886,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.thigh-screw",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Thigh screw",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Thigh screw: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "leg"
       },
@@ -5877,7 +5906,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5891,7 +5920,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5899,8 +5929,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.knee-joint",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Knee joint",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Knee joint: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "leg"
       },
@@ -5919,7 +5949,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5933,7 +5963,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5941,8 +5972,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.knee-cap",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Knee cap",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Knee cap: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "leg"
       },
@@ -5961,7 +5992,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5975,7 +6006,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5983,8 +6015,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.shin",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Shin",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Shin: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "leg"
       },
@@ -6003,7 +6035,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6017,7 +6049,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6025,8 +6058,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.shin-2",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Shin",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Shin: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "leg"
       },
@@ -6045,7 +6078,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6059,7 +6092,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6067,8 +6101,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.shin-dot",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Shin dot",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Shin dot: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "leg"
       },
@@ -6087,7 +6121,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6101,7 +6135,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6109,8 +6144,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.foot",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Foot",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Foot: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "leg"
       },
@@ -6129,7 +6164,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6143,7 +6178,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6151,8 +6187,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.foot-collar",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Foot collar",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Foot collar: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "leg"
       },
@@ -6171,7 +6207,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6185,7 +6221,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6193,8 +6230,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.battery-pack",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Battery pack: Lithium Ion Polymer Battery - 3.7v 500mAh",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Battery pack: Unitree Go2 Battery",
         "sku": null,
         "category": "battery"
       },
@@ -6213,13 +6250,13 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/1578",
+        "manufacturer_reference_url": "https://shop.unitree.com/products/go2-battery",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "7.95",
+        "price_amount": "500.00",
         "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
@@ -6228,7 +6265,7 @@
         "price": "unverified",
         "notes": [
           "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
-          "Suggested real part for this role: Lithium Ion Polymer Battery - 3.7v 500mAh (Adafruit, SKU 1578). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the matching part): Unitree Go2 Battery (Unitree, SKU 02.02.01.01.00028). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6236,8 +6273,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.power-distribution-board",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Power distribution board",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Power distribution board: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "board"
       },
@@ -6256,7 +6293,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6270,7 +6307,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product"
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6278,8 +6316,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.motion-control-board",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Motion control board: Adafruit HUZZAH32 - ESP32 Feather Board",
+        "manufacturer": "Suggested part from Unitree",
+        "model": "Motion control board: Unitree Go2 quadruped robot",
         "sku": null,
         "category": "board"
       },
@@ -6298,22 +6336,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/3405",
+        "manufacturer_reference_url": "https://shop.unitree.com/products/unitree-go2",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "19.95",
-        "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "unknown",
         "electrical": "unknown",
-        "price": "unverified",
+        "price": "unknown",
         "notes": [
           "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
-          "Suggested real part for this role: Adafruit HUZZAH32 - ESP32 Feather Board (Adafruit, SKU 3405). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the product this piece comes with): Unitree Go2 quadruped robot (Unitree, SKU 00.02.01.00321). Shell, legs and boards of the Go2; not sold separately. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6321,8 +6359,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.compute-module",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Compute module",
+        "manufacturer": "Suggested part from SparkFun",
+        "model": "Compute module: NVIDIA Jetson Orin Nano Super Developer Kit",
         "sku": null,
         "category": "board"
       },
@@ -6341,21 +6379,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.sparkfun.com/nvidia-jetson-orin-nano-developer-kit.html",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "399.00",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "unknown",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product"
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
+          "Suggested real part (a close real equivalent): NVIDIA Jetson Orin Nano Super Developer Kit (SparkFun, SKU DEV-22098). Onboard computer, as on the Go2 EDU. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6363,8 +6402,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.imu",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Imu",
+        "manufacturer": "Suggested part from Adafruit",
+        "model": "Imu: Adafruit 9-DOF Orientation IMU Fusion Breakout - BNO085",
         "sku": null,
         "category": "sensor"
       },
@@ -6383,21 +6422,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.adafruit.com/product/4754",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "29.50",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "unknown",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product"
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
+          "Suggested real part (a close real equivalent): Adafruit 9-DOF Orientation IMU Fusion Breakout - BNO085 (Adafruit, SKU 4754). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6405,8 +6445,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.wire-power-3-0",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Power wire, 3 mm",
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Power wire, 3 mm: Silicone Wire (1 ft red, 1 ft black), 22 AWG",
         "sku": null,
         "category": "wire"
       },
@@ -6425,21 +6465,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/silicone-wire-2-ft-red-and-black-pair",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "1.49",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "unknown",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product"
+          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product",
+          "Suggested real part (a close real equivalent): Silicone Wire (1 ft red, 1 ft black), 22 AWG (RaceDayQuads, SKU 6001600577316). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6447,8 +6488,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.wire-power-2-0",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Power wire, 2 mm",
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Power wire, 2 mm: Silicone Wire (1 ft red, 1 ft black), 22 AWG",
         "sku": null,
         "category": "wire"
       },
@@ -6467,7 +6508,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/silicone-wire-2-ft-red-and-black-pair",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6481,7 +6522,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product"
+          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product",
+          "Suggested real part (the product this piece comes with): Silicone Wire (1 ft red, 1 ft black), 22 AWG (RaceDayQuads, SKU 6001600577316). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6489,8 +6531,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.wire-data-1-5",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Data wire, 1.5 mm",
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Data wire, 1.5 mm: DIY Silicone Cable Set, JST-SH only",
         "sku": null,
         "category": "wire"
       },
@@ -6509,21 +6551,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/sh-1-0-silicone-cable-set",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "5.99",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "unknown",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product"
+          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product",
+          "Suggested real part (a close real equivalent): DIY Silicone Cable Set, JST-SH only (RaceDayQuads, SKU AIRB-CableSet-1.0). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6531,8 +6574,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.wire-signal-1-2",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Signal wire, 1.2 mm",
+        "manufacturer": "Suggested part from RaceDayQuads",
+        "model": "Signal wire, 1.2 mm: DIY Silicone Cable Set, JST-SH only",
         "sku": null,
         "category": "wire"
       },
@@ -6551,7 +6594,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.racedayquads.com/products/sh-1-0-silicone-cable-set",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6565,7 +6608,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product"
+          "Typical wiring for this kind of device, inferred; routes are approximate; not a real product",
+          "Suggested real part (the product this piece comes with): DIY Silicone Cable Set, JST-SH only (RaceDayQuads, SKU AIRB-CableSet-1.0). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     }

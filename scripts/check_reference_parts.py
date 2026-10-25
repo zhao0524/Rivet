@@ -1,4 +1,5 @@
-"""Re-check the suggested real parts in `rivet_api/concept/reference_parts.py` against their pages.
+"""Re-check the suggested real parts in `rivet_api/concept/reference_parts.py` and the demo
+tables in `rivet_api/concept/demo/parts/*.json` against their pages.
 
 For each entry: fetch the product page, read its SKU and price (Shopify product JSON for
 Shopify shops, JSON-LD Product otherwise) and report whether the SKU still matches and the
@@ -18,9 +19,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "services" / "api"))
 
-from rivet_api.concept.reference_parts import ALL_PARTS, ReferencePart  # noqa: E402
+from rivet_api.concept.reference_parts import ALL_PARTS, ReferencePart, demo_part_keys, demo_parts  # noqa: E402
 
-UA = "Mozilla/5.0 (compatible; RivetPartCheck/1.0)"
+# Some shops (LCSC, Horizon Hobby) refuse unknown agents, so this reads as a desktop browser.
+UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36"
 _LD = re.compile(r"<script[^>]*ld\+json[^>]*>(.*?)</script>", re.S)
 
 
@@ -30,12 +32,12 @@ def _get(url: str) -> str:
         return resp.read().decode("utf-8", "replace")
 
 
-def page_sku_and_price(part: ReferencePart) -> tuple[str | None, str | None]:
-    if "/products/" in part.url and "racedayquads" in part.url:
-        data = json.loads(_get(part.url + ".js"))
-        variant = data["variants"][0]
-        return str(variant.get("sku") or ""), f"{variant['price'] / 100:.2f}"
-    for block in _LD.findall(_get(part.url)):
+def page_offers(url: str) -> list[tuple[str, str | None]]:
+    """(SKU, price) for each variant on the page: Shopify product JSON, else JSON-LD Product."""
+    if "/products/" in url:  # Shopify shops (RaceDayQuads, Hiwonder, Unitree)
+        data = json.loads(_get(url + ".js"))
+        return [(str(v.get("sku") or ""), f"{v['price'] / 100:.2f}") for v in data["variants"]]
+    for block in _LD.findall(_get(url)):
         try:
             data = json.loads(block)
         except json.JSONDecodeError:
@@ -45,26 +47,41 @@ def page_sku_and_price(part: ReferencePart) -> tuple[str | None, str | None]:
                 offer = node.get("offers")
                 offer = offer[0] if isinstance(offer, list) else offer or {}
                 price = offer.get("price")
-                return str(node.get("sku")), f"{float(price):.2f}" if price is not None else None
-    return None, None
+                return [(str(node.get("sku")), f"{float(price):.2f}" if price is not None else None)]
+    return []
+
+
+def check(label: str, part: ReferencePart) -> bool:
+    """Print one line for the part; False when its page is gone or no longer names its SKU."""
+    try:
+        offers = page_offers(part.url)
+    except (urllib.error.URLError, TimeoutError, OSError, ValueError, KeyError) as exc:
+        print(f"FAIL  {label:30} {part.url}  ({exc})")
+        return False
+    match = next((o for o in offers if o[0] == part.sku), None) if part.sku else (offers[0] if offers else None)
+    if match is None:
+        print(f"FAIL  {label:30} {part.url}  page SKUs {[o[0] for o in offers]!r} lack {part.sku!r}")
+        return False
+    price = match[1]
+    if part.price is not None and price is not None and abs(float(price) - float(part.price)) > 0.011:  # LCSC parts cost fractions of a cent
+        print(f"PRICE {label:30} {part.url}  now {price}, table {part.price}")
+    else:
+        print(f"ok    {label:30} {part.sku or '-'}  {price}")
+    return True
 
 
 def main() -> int:
     failed = 0
     for part in ALL_PARTS:
-        try:
-            sku, price = page_sku_and_price(part)
-        except (urllib.error.URLError, TimeoutError, OSError, ValueError, KeyError) as exc:
-            print(f"FAIL  {part.role:18} {part.url}  ({exc})")
-            failed += 1
-            continue
-        if sku != part.sku:
-            print(f"FAIL  {part.role:18} {part.url}  page SKU {sku!r} != {part.sku!r}")
-            failed += 1
-        elif price != f"{float(part.price):.2f}":
-            print(f"PRICE {part.role:18} {part.url}  now {price}, table {part.price}")
-        else:
-            print(f"ok    {part.role:18} {part.sku}  {price}")
+        failed += not check(part.role, part)
+    # Demo tables name the same product on many lines; check each product page once.
+    seen: set[tuple[str, str]] = set()
+    for key in demo_part_keys():
+        for part in demo_parts(key).values():
+            if (part.url, part.sku) in seen:
+                continue
+            seen.add((part.url, part.sku))
+            failed += not check(f"{key}: {part.role}", part)
     return 1 if failed else 0
 
 

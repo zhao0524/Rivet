@@ -1,0 +1,579 @@
+{
+  "demo": "rc_truck",
+  "checked_at": "2026-10-25T00:00:00Z",
+  "parts": {
+    "hood": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "equivalent",
+      "price": "19.99",
+      "note": "Painted red/black monster-truck body shell."
+    },
+    "hood scoop": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "hood scoop slat": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "hood stripe": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "grille panel": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "grille opening": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "headlight decal": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "headlight decal outline": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "fender": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "fender red stripe": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "side panel": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "side red slash": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "side black slash": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "sponsor badge": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "side decal stripe": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "fender stripe": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "roof panel": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "roof red stripe": {
+      "title": "ARRMA 1/18 Pre-Cut Painted Decaled Monster Truck Body, Red/Camo: GRANITE GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA412002",
+      "url": "https://www.horizonhobby.com/product/ARA412002.html",
+      "match": "parent"
+    },
+    "chassis tub": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "bumper": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "bumper bar": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "bumper lip": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "bumper hole": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "bumper upright": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "bumper slot": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "body clip post": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "body clip": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "cab floor": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "seat": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "cage a-pillar": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "cage roof rail": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "cage post": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "cage door bar": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "cage diagonal": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "cage brace": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "cage window net bar": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "cage hoop": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "cage cross bar": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "cage x brace": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "deck": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "hub carrier": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "drive shaft": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "wheel hub": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "wheel nut": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "axle tip": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "bumper mount": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "motor pinion and spur gear": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "differential": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "tail light": {
+      "title": "ARRMA 1/18 GRANITE GROM 4X4 RTR Brushed Monster Truck",
+      "vendor": "Horizon Hobby",
+      "sku": "ARA2102",
+      "url": "https://www.horizonhobby.com/product/ARA2102.html",
+      "match": "parent",
+      "note": "Chassis, cage and driveline parts of the complete truck."
+    },
+    "skid plate": {
+      "title": "Hot Racing Dirt Guard Chassis Cover 1/18 Granite GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "HRAGRM16CS",
+      "url": "https://www.horizonhobby.com/product/HRAGRM16CS.html",
+      "match": "equivalent",
+      "price": "18.88",
+      "pack_size": 2
+    },
+    "roof light pod": {
+      "title": "Pro-Line 2in Ultra-Slim LED Light Bar Kit 5V-12V",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO635200",
+      "url": "https://www.horizonhobby.com/product/PRO635200.html",
+      "match": "equivalent",
+      "price": "16.99"
+    },
+    "arm": {
+      "title": "Hot Racing Aluminum Rear Upper Arm Set (Short), 1/18 ARRMA GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "HRAGRM57N01",
+      "url": "https://www.horizonhobby.com/product/HRAGRM57N01.html",
+      "match": "equivalent",
+      "price": "21.88",
+      "pack_size": 2
+    },
+    "link": {
+      "title": "Hot Racing Aluminum Steering Links: ARRMA 1/18 GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "HRAGRM49T01",
+      "url": "https://www.horizonhobby.com/product/HRAGRM49T01.html",
+      "match": "equivalent",
+      "price": "13.88",
+      "pack_size": 2
+    },
+    "shock tower": {
+      "title": "Hot Racing Aluminum Shock Tower Brace, 1/18 ARRMA GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "HRAGRM2830M01",
+      "url": "https://www.horizonhobby.com/product/HRAGRM2830M01.html",
+      "match": "equivalent",
+      "price": "12.88",
+      "pack_size": 2
+    },
+    "shock body": {
+      "title": "Pro-Line PowerStroke Front/Rear Oil-Filled Shocks (4): ARRMA GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO642200",
+      "url": "https://www.horizonhobby.com/product/PRO642200.html",
+      "match": "equivalent",
+      "price": "39.99",
+      "pack_size": 4
+    },
+    "shock shaft": {
+      "title": "Pro-Line PowerStroke Front/Rear Oil-Filled Shocks (4): ARRMA GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO642200",
+      "url": "https://www.horizonhobby.com/product/PRO642200.html",
+      "match": "parent"
+    },
+    "shock cap": {
+      "title": "Pro-Line PowerStroke Front/Rear Oil-Filled Shocks (4): ARRMA GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO642200",
+      "url": "https://www.horizonhobby.com/product/PRO642200.html",
+      "match": "parent"
+    },
+    "shock end": {
+      "title": "Pro-Line PowerStroke Front/Rear Oil-Filled Shocks (4): ARRMA GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO642200",
+      "url": "https://www.horizonhobby.com/product/PRO642200.html",
+      "match": "parent"
+    },
+    "spring coil": {
+      "title": "Pro-Line PowerStroke Front/Rear Oil-Filled Shocks (4): ARRMA GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO642200",
+      "url": "https://www.horizonhobby.com/product/PRO642200.html",
+      "match": "parent"
+    },
+    "spring collar": {
+      "title": "Pro-Line PowerStroke Front/Rear Oil-Filled Shocks (4): ARRMA GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO642200",
+      "url": "https://www.horizonhobby.com/product/PRO642200.html",
+      "match": "parent"
+    },
+    "tyre": {
+      "title": "Pro-Line 1/18 Dumont F/R Tires Mounted 12mm Black Raid (4): Granite GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO1031110",
+      "url": "https://www.horizonhobby.com/product/PRO1031110.html",
+      "match": "equivalent",
+      "price": "32.99",
+      "pack_size": 4,
+      "note": "Pre-mounted tyres on wheels."
+    },
+    "tyre shoulder": {
+      "title": "Pro-Line 1/18 Dumont F/R Tires Mounted 12mm Black Raid (4): Granite GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO1031110",
+      "url": "https://www.horizonhobby.com/product/PRO1031110.html",
+      "match": "parent"
+    },
+    "tread block": {
+      "title": "Pro-Line 1/18 Dumont F/R Tires Mounted 12mm Black Raid (4): Granite GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO1031110",
+      "url": "https://www.horizonhobby.com/product/PRO1031110.html",
+      "match": "parent"
+    },
+    "shoulder lug": {
+      "title": "Pro-Line 1/18 Dumont F/R Tires Mounted 12mm Black Raid (4): Granite GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO1031110",
+      "url": "https://www.horizonhobby.com/product/PRO1031110.html",
+      "match": "parent"
+    },
+    "rim": {
+      "title": "Pro-Line 1/18 Dumont F/R Tires Mounted 12mm Black Raid (4): Granite GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO1031110",
+      "url": "https://www.horizonhobby.com/product/PRO1031110.html",
+      "match": "parent"
+    },
+    "rim lip": {
+      "title": "Pro-Line 1/18 Dumont F/R Tires Mounted 12mm Black Raid (4): Granite GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO1031110",
+      "url": "https://www.horizonhobby.com/product/PRO1031110.html",
+      "match": "parent"
+    },
+    "rim spoke": {
+      "title": "Pro-Line 1/18 Dumont F/R Tires Mounted 12mm Black Raid (4): Granite GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO1031110",
+      "url": "https://www.horizonhobby.com/product/PRO1031110.html",
+      "match": "parent"
+    },
+    "brushed drive motor": {
+      "title": "Dynamite Tazer 380 Brushed Motor, 37T",
+      "vendor": "Horizon Hobby",
+      "sku": "DYNS1208",
+      "url": "https://www.horizonhobby.com/product/DYNS1208.html",
+      "match": "equivalent",
+      "price": "10.99"
+    },
+    "esc": {
+      "title": "Spektrum Firma 70A Brushed Smart ESC, 2S-3S",
+      "vendor": "Horizon Hobby",
+      "sku": "SPMXSE1070",
+      "url": "https://www.horizonhobby.com/product/SPMXSE1070.html",
+      "match": "equivalent",
+      "price": "57.99"
+    },
+    "radio receiver": {
+      "title": "Spektrum SR315 DSMR 3-Channel Sport Receiver",
+      "vendor": "Horizon Hobby",
+      "sku": "SPMSR315",
+      "url": "https://www.horizonhobby.com/product/SPMSR315.html",
+      "match": "equivalent",
+      "price": "39.99"
+    },
+    "lipo battery 2s": {
+      "title": "Spektrum 7.4V 2200mAh 2S 30C Smart G2 LiPo Battery: IC2",
+      "vendor": "Horizon Hobby",
+      "sku": "SPMX-3209",
+      "url": "https://www.horizonhobby.com/product/SPMX-3209.html",
+      "match": "equivalent",
+      "price": "32.99"
+    },
+    "steering servo": {
+      "title": "INJORA Aluminum 25T Servo Saver Set & Servo, 1/16 ARRMA GROM",
+      "vendor": "Horizon Hobby",
+      "sku": "INJGROM-11BK-INJS11",
+      "url": "https://www.horizonhobby.com/product/INJGROM-11BK-INJS11.html",
+      "match": "exact",
+      "price": "48.99",
+      "note": "Servo and servo saver made for the GROM."
+    },
+    "power wire, 2.5 mm": {
+      "title": "Silicone Wire (1 ft red, 1 ft black), 22 AWG",
+      "vendor": "RaceDayQuads",
+      "sku": "6001600577316",
+      "url": "https://www.racedayquads.com/products/silicone-wire-2-ft-red-and-black-pair",
+      "match": "equivalent",
+      "price": "1.49"
+    },
+    "signal wire, 1.2 mm": {
+      "title": "DIY Silicone Cable Set, JST-SH only",
+      "vendor": "RaceDayQuads",
+      "sku": "AIRB-CableSet-1.0",
+      "url": "https://www.racedayquads.com/products/sh-1-0-silicone-cable-set",
+      "match": "equivalent",
+      "price": "5.99"
+    }
+  }
+}

@@ -1,0 +1,384 @@
+{
+  "demo": "robot_dog",
+  "checked_at": "2026-10-25T00:00:00Z",
+  "parts": {
+    "torso shell": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "cover": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "cover hatch": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "power button": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "belly pan": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "plate": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "hip recess": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "side wordmark": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "number decal": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "speed stripe": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "battery bay": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "battery latch slot": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "status led": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "head": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "face panel": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "face camera": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "face camera ring": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "face sensor": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "face sensor ring": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "hip end cap": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "hip cap ring": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "thigh motor cap": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "thigh cap rim": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "thigh cap screw": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "thigh": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "thigh cover": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "thigh screw": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "knee joint": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "knee cap": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "shin": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "shin dot": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "foot": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "foot collar": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "power distribution board": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "motion control board": {
+      "title": "Unitree Go2 quadruped robot",
+      "vendor": "Unitree",
+      "sku": "00.02.01.00321",
+      "url": "https://shop.unitree.com/products/unitree-go2",
+      "match": "parent",
+      "note": "Shell, legs and boards of the Go2; not sold separately."
+    },
+    "hip actuator": {
+      "title": "Unitree GO-M8010-6 joint motor",
+      "vendor": "Unitree",
+      "sku": "00.02.07.00002",
+      "url": "https://shop.unitree.com/products/go1-motor",
+      "match": "equivalent",
+      "price": "369.00",
+      "note": "Unitree's quadruped joint motor."
+    },
+    "thigh actuator": {
+      "title": "Unitree GO-M8010-6 joint motor",
+      "vendor": "Unitree",
+      "sku": "00.02.07.00002",
+      "url": "https://shop.unitree.com/products/go1-motor",
+      "match": "equivalent",
+      "price": "369.00",
+      "note": "Unitree's quadruped joint motor."
+    },
+    "lidar dome": {
+      "title": "Unitree 4D LiDAR L1",
+      "vendor": "Unitree",
+      "sku": "",
+      "url": "https://shop.unitree.com/products/unitree-4d-lidar-l1",
+      "match": "exact",
+      "price": "249.00",
+      "note": "The 4D LiDAR L1 under the Go2's chin."
+    },
+    "lidar base": {
+      "title": "Unitree 4D LiDAR L1",
+      "vendor": "Unitree",
+      "sku": "",
+      "url": "https://shop.unitree.com/products/unitree-4d-lidar-l1",
+      "match": "parent",
+      "note": "The 4D LiDAR L1 under the Go2's chin."
+    },
+    "lidar rib": {
+      "title": "Unitree 4D LiDAR L1",
+      "vendor": "Unitree",
+      "sku": "",
+      "url": "https://shop.unitree.com/products/unitree-4d-lidar-l1",
+      "match": "parent",
+      "note": "The 4D LiDAR L1 under the Go2's chin."
+    },
+    "battery pack": {
+      "title": "Unitree Go2 Battery",
+      "vendor": "Unitree",
+      "sku": "02.02.01.01.00028",
+      "url": "https://shop.unitree.com/products/go2-battery",
+      "match": "exact",
+      "price": "500.00"
+    },
+    "compute module": {
+      "title": "NVIDIA Jetson Orin Nano Super Developer Kit",
+      "vendor": "SparkFun",
+      "sku": "DEV-22098",
+      "url": "https://www.sparkfun.com/nvidia-jetson-orin-nano-developer-kit.html",
+      "match": "equivalent",
+      "price": "399.00",
+      "note": "Onboard computer, as on the Go2 EDU."
+    },
+    "imu": {
+      "title": "Adafruit 9-DOF Orientation IMU Fusion Breakout - BNO085",
+      "vendor": "Adafruit",
+      "sku": "4754",
+      "url": "https://www.adafruit.com/product/4754",
+      "match": "equivalent",
+      "price": "29.50"
+    },
+    "power wire, 3 mm": {
+      "title": "Silicone Wire (1 ft red, 1 ft black), 22 AWG",
+      "vendor": "RaceDayQuads",
+      "sku": "6001600577316",
+      "url": "https://www.racedayquads.com/products/silicone-wire-2-ft-red-and-black-pair",
+      "match": "equivalent",
+      "price": "1.49"
+    },
+    "power wire, 2 mm": {
+      "title": "Silicone Wire (1 ft red, 1 ft black), 22 AWG",
+      "vendor": "RaceDayQuads",
+      "sku": "6001600577316",
+      "url": "https://www.racedayquads.com/products/silicone-wire-2-ft-red-and-black-pair",
+      "match": "parent"
+    },
+    "data wire, 1.5 mm": {
+      "title": "DIY Silicone Cable Set, JST-SH only",
+      "vendor": "RaceDayQuads",
+      "sku": "AIRB-CableSet-1.0",
+      "url": "https://www.racedayquads.com/products/sh-1-0-silicone-cable-set",
+      "match": "equivalent",
+      "price": "5.99"
+    },
+    "signal wire, 1.2 mm": {
+      "title": "DIY Silicone Cable Set, JST-SH only",
+      "vendor": "RaceDayQuads",
+      "sku": "AIRB-CableSet-1.0",
+      "url": "https://www.racedayquads.com/products/sh-1-0-silicone-cable-set",
+      "match": "parent"
+    }
+  }
+}

@@ -11,6 +11,8 @@ from rivet_api.concept import build_concept_plan
 from rivet_api.concept import demo as demo_pkg
 from rivet_api.concept.demo import demo_concept, demo_keys, match_prompt, match_upload, normalise_name
 from rivet_api.concept.model import MAX_PARTS, floating_parts
+from rivet_api.concept.plan import _base_name
+from rivet_api.concept.reference_parts import REFERENCE_URLS, demo_part_keys, demo_parts
 from rivet_api.errors import ApiError
 from rivet_api.orchestration.pipeline import COMMUNITY_MODEL_NOTE, DEMO_MODEL_NOTE, check_concept_plan
 
@@ -24,6 +26,8 @@ DEMO_FILES = {
     "raspberry pi camera.jpeg": "pi_camera",
     "Microconstroller.jpeg": "esp32",
 }
+# The demo photos each have a parts table of real products; the community builds do not.
+PHOTO_KEYS = sorted(set(DEMO_FILES.values()))
 
 
 def _png() -> bytes:
@@ -55,6 +59,43 @@ def test_every_demo_model_is_a_detailed_consistent_concept_plan(key):
     check_concept_plan(plan)
     assert plan["status"] == "needs_review" and plan["provenance"]["generation_mode"] == "manual_template"
     assert not floating_parts(concept, gap_mm=1.0), floating_parts(concept, gap_mm=1.0)
+
+
+def test_every_demo_photo_has_a_parts_table():
+    assert demo_part_keys() == PHOTO_KEYS
+
+
+@pytest.mark.parametrize("key", PHOTO_KEYS)
+def test_every_demo_bom_line_links_a_curated_real_part(key):
+    plan = build_concept_plan(demo_concept(key), "intent-demo", "image", "manual_template", demo_key=key)
+    check_concept_plan(plan)
+    items = plan["bom"]["items"]
+    assert items and all(i["link_status"] == "manufacturer_reference_only" for i in items)
+    assert all(i["purchase_url"] in REFERENCE_URLS for i in items)
+    catalog = {c["catalog_id"]: c for c in plan["concept_catalog"]}
+    for item in items:
+        notes = catalog[item["catalog_id"]]["evidence"]["notes"]
+        assert any(n.startswith("Suggested real part") for n in notes), item["catalog_id"]
+        assert catalog[item["catalog_id"]]["sourcing"]["price_amount"] == item["unit_price_amount"]
+    assert plan["bom"]["known_subtotal_amount"] is not None
+
+
+@pytest.mark.parametrize("key", PHOTO_KEYS)
+def test_demo_parts_tables_name_only_real_parts_and_never_price_a_parent(key):
+    concept = demo_concept(key)
+    names = {_base_name(p.name).lower() for p in concept.parts}
+    names |= {f"{w.kind} wire, {round(w.thickness_mm, 1):g} mm" for w in concept.wires}
+    table = demo_parts(key)
+    assert set(table) == names  # no typo'd keys, no part left without a link
+    for part in table.values():
+        assert part.url.startswith("https://") and part.title and part.vendor
+        assert (part.price is None) == (part.match == "parent"), part.role
+
+
+def test_a_product_shared_by_two_shapes_is_counted_once():
+    plan = build_concept_plan(demo_concept("boat"), "intent-demo", "image", "manual_template", demo_key="boat")
+    canopies = [i for i in plan["bom"]["items"] if i["catalog_id"].startswith("concept.canopy") and i["purchase_url"].endswith("PRB-3096.html")]
+    assert [i["unit_price_amount"] for i in canopies].count(None) == len(canopies) - 1
 
 
 def test_demo_wires_all_resolve_to_named_parts():
@@ -116,6 +157,7 @@ def test_upload_of_a_demo_photo_builds_its_hand_built_model(make_client, wait_jo
     assert plan["provenance"]["generation_mode"] == "manual_template" and DEMO_MODEL_NOTE in plan["provenance"]["notes"]
     expected = demo_concept("robot_dog")
     assert len(plan["components"]) == len(expected.parts) + len(expected.wires)
+    assert all(i["purchase_url"] for i in plan["bom"]["items"])  # the demo's own parts table
     events = client.get(f"/api/jobs/{job['job_id']}").json()
     assert "complete" in str(events)
 
@@ -164,6 +206,7 @@ def test_recolor_of_a_demo_model_is_applied_without_the_vision_model(make_client
     body_colors = {c["render_overrides"]["color"] for c in plan["components"] if c["role"] == "body"}
     assert body_colors == {"#2563eb"}
     assert any(c["render_overrides"]["color"] != "#2563eb" for c in plan["components"] if c["role"] == "propeller")
+    assert all(i["purchase_url"] for i in plan["bom"]["items"])  # an edit keeps the demo's links
 
 
 @pytest.mark.parametrize(

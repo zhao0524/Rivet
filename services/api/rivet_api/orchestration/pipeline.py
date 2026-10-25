@@ -229,7 +229,7 @@ def generate_demo(req: GenerateRequest, deps: Deps, job_id: str, key: str) -> tu
     jobs.emit(job_id, "understand", "vision", "running", "Breaking the image into parts" if from_photo else "Reading the request")
     concept = demo_concept(key)
     jobs.emit(job_id, "understand", "vision", "ok", f"Recognised a {concept.object_type} (matched a reference model)")
-    plan = build_concept_plan(concept, f"concept-{job_id}"[:80], req.input.kind, "manual_template")
+    plan = build_concept_plan(concept, f"concept-{job_id}"[:80], req.input.kind, "manual_template", demo_key=key)
     plan["provenance"]["notes"].append(DEMO_MODEL_NOTE if from_photo else COMMUNITY_MODEL_NOTE)
     plan["concept"]["demo"] = key
     check_concept_plan(plan)
@@ -450,7 +450,11 @@ def apply_concept_edit(build_id: str, current: dict[str, Any], req: EditRequest,
         if after == before:
             after = deps.vision.edit_concept(before, instruction)
         plan = build_concept_plan(
-            after, current["source_intent_id"], current["provenance"]["input_mode"], current["provenance"]["generation_mode"]
+            after,
+            current["source_intent_id"],
+            current["provenance"]["input_mode"],
+            current["provenance"]["generation_mode"],
+            demo_key=demo,
         )
         if demo:
             plan["concept"]["demo"] = demo
