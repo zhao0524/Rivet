@@ -11,13 +11,10 @@ import '../../../styles/generation.css';
  * `initialImageAssetId` is a v1 upload (from the build flow's Clarify screen); its bytes are fetched
  * once and re-uploaded to the v2 session when the user generates.
  */
-export function DesignStart({ initialText = '', initialImageAssetId = null, initialMode = 'concept_only', autoStart = false }: {
-  initialText?: string; initialImageAssetId?: string | null; initialMode?: DesignStartRequest['mode']; autoStart?: boolean;
-}) {
+export function DesignStart({ initialText = '', initialImageAssetId = null }: { initialText?: string; initialImageAssetId?: string | null }) {
   const [text, setText] = useState(initialText);
   const [image, setImage] = useState<File | null>(null);
-  const [imageResolved, setImageResolved] = useState(!initialImageAssetId);
-  const [mode, setMode] = useState<DesignStartRequest['mode']>(initialMode);
+  const [mode, setMode] = useState<DesignStartRequest['mode']>('concept_only');
   const [allowCached, setAllowCached] = useState(false);
   const [request, setRequest] = useState<DesignStartRequest | null>(null);
   const [hydrated, setHydrated] = useState(false);
@@ -35,20 +32,12 @@ export function DesignStart({ initialText = '', initialImageAssetId = null, init
         }
       } catch {
         // The photo is optional; the user can pick it again.
-      } finally {
-        if (!cancelled) setImageResolved(true);
       }
     })();
     return () => {
       cancelled = true;
     };
   }, [initialImageAssetId]);
-  // Arriving from /new: the prompt and picture are already chosen, so generation starts at once.
-  useEffect(() => {
-    if (!autoStart || request || !hydrated || !imageResolved) return;
-    if (text.trim().length > 0 || image !== null) setRequest({ text: text.trim(), image, mode, allowCached: false });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoStart, hydrated, imageResolved]);
   if (request) return <DesignStudio request={request} onExit={() => setRequest(null)} />;
   const ready = text.trim().length > 0 || image !== null;
   return (

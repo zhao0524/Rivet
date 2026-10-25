@@ -29,14 +29,11 @@ class Settings(BaseModel):
     # otherwise the offline author runs and every result is labelled fixture.
     design_mode: Literal["fixture", "live"] = "fixture"
     design_model: str = ""
-    critic_model: str = ""
-    provider_timeout_s: float = 300.0
     image_provider: Literal["none", "openai"] = "none"
     image_model: str = "gpt-image-1"
     image_size: str = "1024x1024"
     image_quality: str = "medium"
     renderer: Literal["raster", "chromium"] = "raster"
-    visual_target: float = 8.0
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -49,11 +46,6 @@ class Settings(BaseModel):
         offers_provider = os.environ.get("RIVET_OFFERS_PROVIDER", "stub")
         if offers_provider not in ("stub", "recorded", "live"):
             raise ValueError(f"RIVET_OFFERS_PROVIDER must be 'stub', 'recorded' or 'live', got {offers_provider!r}")
-        design_mode = "live" if os.environ.get("RIVET_3D_MODE") == "live" else "fixture"
-        # Live generation renders with Chromium/Three.js unless told otherwise; fixture and tests keep the deterministic rasterizer.
-        renderer = os.environ.get("RIVET_RENDERER") or ("chromium" if design_mode == "live" else "raster")
-        if renderer not in ("raster", "chromium"):
-            raise ValueError(f"RIVET_RENDERER must be 'raster' or 'chromium', got {renderer!r}")
         return cls(
             mode=mode,
             env=os.environ.get("RIVET_ENV", "development"),
@@ -66,16 +58,13 @@ class Settings(BaseModel):
             enable_estelle=_flag("RIVET_ENABLE_ESTELLE"),
             estelle_mode=estelle_mode,
             estelle_repo_root=Path(os.environ["RIVET_ESTELLE_REPO"]) if os.environ.get("RIVET_ESTELLE_REPO") else None,
-            design_mode=design_mode,
+            design_mode="live" if os.environ.get("RIVET_3D_MODE") == "live" else "fixture",
             design_model=os.environ.get("RIVET_DESIGN_MODEL", ""),
-            critic_model=os.environ.get("RIVET_CRITIC_MODEL", ""),
-            provider_timeout_s=float(os.environ.get("RIVET_PROVIDER_TIMEOUT_S", "300")),
             image_provider="openai" if os.environ.get("RIVET_IMAGE_PROVIDER") == "openai" else "none",
             image_model=os.environ.get("RIVET_IMAGE_MODEL", "gpt-image-1"),
             image_size=os.environ.get("RIVET_IMAGE_SIZE", "1024x1024"),
             image_quality=os.environ.get("RIVET_IMAGE_QUALITY", "medium"),
-            renderer=renderer,
-            visual_target=float(os.environ.get("RIVET_VISUAL_TARGET", "8")),
+            renderer="chromium" if os.environ.get("RIVET_RENDERER") == "chromium" else "raster",
         )
 
 

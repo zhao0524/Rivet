@@ -12,8 +12,6 @@ export default function DesignPage({ searchParams }: { searchParams?: Params }) 
     <DesignStart
       initialText={first(searchParams, 'prompt')?.slice(0, 2000) ?? ''}
       initialImageAssetId={first(searchParams, 'ref') ?? null}
-      initialMode={first(searchParams, 'mode') === 'engineered' ? 'engineered' : 'concept_only'}
-      autoStart={first(searchParams, 'auto') === '1'}
     />
   );
 }

@@ -25,7 +25,7 @@ Rivet is an AI-assisted hardware-building platform for software developers, make
 5. **The rover works end to end before expanding scope.** One convincing tested workflow beats five unfinished hardware categories.
 6. **The 3D interface is a core engineering deliverable.** It must feel precise and delightful even before the external designer finishes visual polish.
 7. **Model/integration provenance is visible.** Clearly label generated, inferred, measured, sourced, validated, simulated, and unverified facts.
-8. **No unlicensed code reuse.** Do not copy source files, UI assets, proprietary imagery, or code from third-party projects without permission or a verified license. Study published designs; implement original code.
+8. **No unlicensed code reuse.** Bricked's public repository has no confirmed root license in the inspected version. Study its design, but don't copy source files, UI assets, proprietary imagery, or code without permission or a verified license.
 
 ---
 
@@ -379,13 +379,13 @@ Implementation details, folder ownership and mock interfaces are binding in `imp
 | External model/network slow or fails | Broken demo | Fast saved build clearly labeled; fixtures, offline fallback, timeouts |
 | Team coordination blocks work | Lost hackathon hours | Contract freeze, file ownership, independent mocks, scheduled integration gates |
 | Generated firmware cannot compile | Product invalidity | Template-based code, PlatformIO target pinned/tested, “not checked” status if not built |
-| Unlicensed copied third-party source | IP and contest eligibility risks | Learn patterns; independently implement new code; permission only for literal reuse |
+| Unlicensed copied Bricked source | IP and contest eligibility risks | Learn patterns; independently implement new code; permission only for literal reuse |
 
 ---
 
 ## 13. References and inspiration
 
-Rivet's architecture (structured briefs, deterministic validation and repair, immutable revisions, structured event streams and render-then-critique loops) is an original implementation. Third-party work is studied for patterns only; **no permission to copy source is asserted** and none is used.
+**Bricked**, Hack the North 2026 finalist, [GuyOnWifi/hack-the-north](https://github.com/GuyOnWifi/hack-the-north): architecture/pattern inspiration only. Specific modules referenced for understanding are `brickify/brickify/pipeline.py`, `bricolage/model.py`, `bricolage/generators.py`, `bricolage/validate.py`, `bricolage/repair.py`, `bricolage/session.py`, `bricolage/sequence.py`, `bricolage/tape.py`, `web/src/components/three/ModelView.tsx`, and `web/src/components/StepStrip.tsx`. **No permission to copy source is asserted.**
 
 Additional authoritative references to verify component/tool behavior:
 

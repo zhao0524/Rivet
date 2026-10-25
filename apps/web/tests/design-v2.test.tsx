@@ -107,23 +107,6 @@ describe('bundle parsing', () => {
     expect(parseDesignBundle(bundle).selected_candidate_id).toBe('cand-1');
     expect(() => parseDesignBundle({ ...bundle, selected_candidate_id: 'cand-9' })).toThrow();
   });
-
-  it('keeps the visual-quality verdict apart from status and refuses a malformed one', () => {
-    const bundle = {
-      schema_version: '2.0', build_id: 'design-1', revision: 1, job_id: 'gen-1', title: 't', created_at: 'now', mode: 'concept_only', status: 'needs_review',
-      candidates: [candidate('cand-1')], references: [], selected_candidate_id: 'cand-1', scene_asset_url: null, assembly: [],
-      distilled: { subject: 's', summary: 's', signature_features: ['a', 'b', 'c'], mechanical_constraints: [], uncertainties: [] },
-      visual_quality: { target: 8, achieved: false, score: 6.5, critical_issues: 1, refinement_rounds: 2, judge: 'j', statement: 'Visual quality target NOT achieved: 6.5/10 against a target of 8/10' },
-      provenance: { generation_mode: 'live', cached: false, replay_of: null }, budget: { limit_usd: 10, spent_usd: 1, reserved_usd: 0 },
-    };
-    const parsed = parseDesignBundle(bundle);
-    expect(parsed.visual_quality?.achieved).toBe(false);
-    expect(parsed.visual_quality?.statement).toContain('NOT achieved');
-    expect(() => parseDesignBundle({ ...bundle, visual_quality: { target: 8 } })).toThrow();
-    // Saved projects from before the verdict existed still load.
-    const { visual_quality: _omit, ...legacy } = bundle;
-    expect(parseDesignBundle(legacy).visual_quality).toBeUndefined();
-  });
 });
 
 describe('design start', () => {

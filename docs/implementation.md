@@ -21,7 +21,7 @@
 7. **All lanes are independently demoable from checked-in fixtures.** API, hardware compiler, and viewer/simulator work separately from minute one.
 8. **No fake sponsor integration.** Actual Estelle calls, code references and compile/test results are captured; absence is shown honestly.
 9. **No pretending robotics simulation guarantees hardware behavior.** Simulation approximations are documented and labeled.
-10. **No copied third-party source unless licensing/permission is confirmed.** Reimplement described algorithms and architecture in original code.
+10. **No copied source from Bricked unless licensing/permission is confirmed.** Reimplement described algorithms and architecture in original code; link to inspiration in documentation.
 11. **Ship the rover flow first.** (Rover acceptance is met; see [0.1](#01-scope-update-any-photo-to-a-3d-concept-model) for the appearance-only concept path that now renders any photo.) Do not make an engineered drone workflow, arbitrary CAD importer, payment processor, 6-DOF simulator, native mobile app, or collaborative editor before the acceptance gates pass.
 12. **Every feature must have a deterministic fixture path.** External API unavailability must never prevent teammates from developing or the saved-build demo from opening.
 
@@ -532,30 +532,31 @@ Developers may each package private fixture copies inside their own folder initi
 
 ---
 
-## 4. Architecture patterns Rivet implements from scratch
+## 4. Reinterpreting Bricked's implementation: reference map, not copy/paste
 
-The patterns below are common to generative build tools; Rivet implements each one in original code, with its own mechanical/firmware model. No third-party source is reused.
+We inspected the following concrete files in [`GuyOnWifi/hack-the-north`](https://github.com/GuyOnWifi/hack-the-north). They demonstrate useful **patterns**, not reusable licensed building blocks. The checked repository did not expose a root license file; request permission before literal copying.
 
-| Pattern | Rivet implementation | Primary owner |
-|---|---|---|
-| Multi-stage idea/image → brief → physical build → check → render → critique pipeline | `services/api/rivet_api/orchestration/pipeline.py` and the v2 design orchestrator; parse `IntentSpec`, call B's engineering compiler, record actual stages and revisions | A |
-| Small structured briefs; the model never emits arbitrary geometry | Structured `IntentSpec` + controlled catalog configuration proposal schema; DesignSpec v2 for geometry | A/B |
-| Immutable part, subassembly, inventory and version objects | Typed catalog and `BuildPlan` with `instance_id`, port/mount IDs, precise provenance | B |
-| Semantic knobs + typed/sized sockets; code computes placements | Robot chassis templates, `mount_id`s, controller deck frames, wheel/motor mounting | B |
-| Deterministic validation report | Mechanical/electrical/budget/reference integrity checks; `PASS/WARN/FAIL/UNKNOWN` | B |
-| Budget-bounded deterministic substitutions before model escalation | Compatible motor-driver/sensor/part selection; repair and rerun gates with bound on attempts | B |
-| Immutable revisions, replay, undo/redo and edit ops | Backend project revisions and optimistic concurrency via `base_revision` | A |
-| Topological step ordering and insertion checks | Build assembly steps from mount graph and wiring order; no false claim of a full robotic insertion planner | B/C |
-| Real-time structured agent-event stream | SSE event schema showing actual reasoning stages and repairs | A |
-| Render → visual critique → optional repair | Image-based critique after verified geometry exists; never a substitute for geometry checks | A |
-| Geometric collision/groundedness checks | B's bounds/mount validation and the v2 geometry kernel checks | B |
-| Part metadata and canonical library lookup | Hardware catalog, product references, dimensions, datasheet provenance | B |
-| Atomic proposed edits; rejected changes do not mutate the accepted design | Versioned, typed partial edits with validation gate and rejection explanation | A/B |
-| Hardware asset resolver and viewer | Three.js hardware asset resolver with local GLB/procedural part meshes; `RoverScene`, `PartMesh`, overlays, camera/explosion/selection systems | C |
-| Scroll-driven assembly timeline | Part/step scrubber synchronized with `assembly_steps` | C |
-| Live progress visual grammar | Rivet engineering timeline with its own styling | Designer + C |
+| Bricked source | Observed design | Rivet implementation to write from scratch | Primary owner |
+|---|---|---|---|
+| `brickify/brickify/pipeline.py` | Multi-stage idea/image → briefs → physical build → check → render → critique | `services/api/rivet_api/orchestration/pipeline.py`; parse `IntentSpec`, call B's engineering compiler, record actual stages and revisions | A |
+| `brickify/BRIEF.md` | Small structured briefs; LLM doesn't emit arbitrary geometry | Structured `IntentSpec` + controlled catalog configuration proposal schema | A/B |
+| `bricolage/model.py` | Immutable part, subassembly, inventory and version objects | Typed catalog and `BuildPlan` with `instance_id`, port/mount IDs, precise provenance | B |
+| `bricolage/generators.py` | Semantic knobs + typed/sized sockets; code computes placements | Robot chassis templates, `mount_id`s, controller deck frames, wheel/motor mounting | B |
+| `bricolage/validate.py` | Deterministic report: overlaps, connectivity, inventory, basic physical checks | Mechanical/electrical/budget/reference integrity checks; `PASS/WARN/FAIL/UNKNOWN` | B |
+| `bricolage/repair.py`, `bricolage/substitute.py` | Budget-bounded deterministic substitutions before LLM escalation | Compatible motor-driver/sensor/part selection; repair and rerun gates with bound on attempts | B |
+| `bricolage/session.py` | Immutable revisions, replay, undo/redo and edit ops | Backend project revisions and optimistic concurrency via `base_revision` | A |
+| `bricolage/sequence.py` | Topological step ordering and insertion checks | Build assembly steps from mount graph and wiring order; no false claim of full robotic insertion planner | B/C |
+| `bricolage/tape.py` | Real-time structured agent-event stream | SSE event schema showing actual reasoning stages and repairs | A |
+| `bricolage/vision.py` | Render → visual critique → optional repair | Optional image-based critique after verified geometry exists; do not substitute for geometry checks | A |
+| `brickify/brickify/check.py` | Geometric collision/groundedness in LEGO parts | B's bounds/mount validation; replace entirely for mechanical interfaces | B |
+| `brickify/brickify/partlib.py` | Part metadata and canonical library lookup | Hardware catalog, product references, dimensions, datasheet provenance | B |
+| `brickify/brickify/edits.py` | Atomic proposed edits; rejected changes do not mutate accepted design | Versioned, typed partial edits with validation gate and rejection explanation | A/B |
+| `web/src/lib/ldraw.ts` | LDraw parsing, thumbnails, step visibility, cache | Fresh Three.js hardware asset resolver; local GLB/procedural part meshes, not LDraw | C |
+| `web/src/components/three/ModelView.tsx` | Camera, highlight, editing ghosts, built-step visibility | Fresh `RoverScene`, `PartMesh`, overlays, camera/explosion/selection systems | C |
+| `web/src/components/StepStrip.tsx` | Scroll-driven assembly timeline | Fresh part/step scrubber synchronized with `assembly_steps` | C |
+| `web/src/components/AgentTape.tsx` | Live progress visual grammar | Distinct Rivet engineering timeline, not LEGO brick styling | Designer + C |
 
-**Out of scope:** toy-brick occupancy cells, brick geometry as generic CAD, brick colour substitution or clutch-stability claims, and any third-party branding or assets. The mechanical/firmware model in Rivet is its own.
+**Do not port:** LEGO occupancy cells, LDraw geometry as generic CAD, studs/anti-studs, LEGO color substitution, LEGO clutch stability claims, brick-looking chips, or Bricked's branding/assets. The mechanical/firmware model in Rivet is fundamentally different.
 
 ---
 
@@ -807,7 +808,7 @@ Overall aggregation:
 
 #### B5. Repair engine
 
-Implement a bounded repair loop with an explicit hierarchy of fixes:
+Implement a bounded repair loop inspired by Bricked's hierarchy without copying it:
 
 ```text
 propose catalog-backed configuration
@@ -1190,7 +1191,7 @@ Designer owns the final **visual system**, not separate engineering deliverables
 
 ### Expected designer outputs
 
-- Name/brand: **Rivet**, cohesive identity, favicon, simple usage-friendly logo/wordmark. No imitation of other products' styling.
+- Name/brand: **Rivet**, cohesive identity, favicon, simple usage-friendly logo/wordmark. No imitation of Bricked's LEGO styling.
 - Screen compositions: home/upload, analyzing, studio, component inspector, BOM/build kit, assembly, simulation, verification status, empty/error.
 - Tokens: colors, text scale, radii, spacing, shadows, motion durations, dark/light approach, accessible contrast.
 - Functional states: loading, unknown price, broken supplier link, unsupported family, verification warnings, simulation limitation, Estelle unavailable.
@@ -1287,7 +1288,7 @@ Separate jobs: (1) shared JSON fixture/schema validation, (2) engineering `pytes
 - [ ] Designer's UI does not break the core 3D model or obscure engineering warnings.
 - [ ] Demo has a **real** live path and a clearly labeled saved-example path.
 - [ ] No claimed general drone support, real-world safety certification, or exact hidden-part inference. Concept models of any photo are labeled appearance-only and their internals inferred.
-- [ ] Teammates have not copied third-party implementation without confirmed permission/license.
+- [ ] Teammates have not copied Bricked implementation without confirmed permission/license.
 - [ ] Automated contract/unit/browser checks pass, and the 3-minute demo is rehearsed.
 
 ---
@@ -1314,7 +1315,7 @@ Separate jobs: (1) shared JSON fixture/schema validation, (2) engineering `pytes
 
 ## 15. Reference URLs and provenance
 
-**Architecture:** section 4 lists the patterns Rivet implements; all logic, geometry, assets and visual identity are original. No third-party source is reused.
+**Architectural inspiration:** [Bricked source repository](https://github.com/GuyOnWifi/hack-the-north). Relevant references are explicitly mapped in section 4, but this project must independently implement its own logic, geometry, assets and visual identity. No license for Bricked source has been established in the inspected repository.
 
 **Tools and hardware documentation:**
 

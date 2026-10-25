@@ -36,8 +36,7 @@ class GenerationRequest(StrictModel):
     mode: Literal["concept_only", "engineered"] = "concept_only"
     quality: Literal["full", "draft"] = "full"
     candidate_count: int = Field(default=3, ge=1, le=3)
-    review_rounds: int = Field(default=2, ge=0, le=4)
-    visual_target: float = Field(default=8.0, ge=0, le=10)
+    review_rounds: int = Field(default=1, ge=0, le=2)
     allow_cached: bool = False
     generation_budget_usd: float = Field(default=10, gt=0, le=100)
     constraints: dict[str, Any] = Field(default_factory=dict)
@@ -223,7 +222,6 @@ class DesignBundle(StrictModel):
     linked_plan_url: str | None = None
     generation_trace_url: str | None = None
     model_versions: dict[str, str]
-    visual_quality: dict[str, Any] = Field(default_factory=dict)
     provenance: DesignProvenance
     budget: BudgetSnapshot
     parent_revision: int | None

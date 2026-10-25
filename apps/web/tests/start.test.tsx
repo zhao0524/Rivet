@@ -80,32 +80,11 @@ async function renderIn(ui: React.ReactElement) {
 }
 
 describe('A1 Prompt', () => {
-  it('starts the geometry-first 3D design from the prompt by default', async () => {
-    writeDraft({ id: 'p_design1', text: 'A six-legged walking lantern' });
-    await renderIn(<NewProjectScreen />);
-    const input = await screen.findByTestId('new-prompt-input');
-    await waitFor(() => expect((input as HTMLTextAreaElement).value).toBe('A six-legged walking lantern'));
-    expect(screen.getByTestId('new-target-design').getAttribute('aria-pressed')).toBe('true');
-    expect(screen.getByTestId('new-prompt-submit').textContent).toContain('Generate 3D design');
-    fireEvent.change(screen.getByTestId('new-design-mode'), { target: { value: 'engineered' } });
-    fireEvent.click(screen.getByTestId('new-prompt-submit'));
-    await waitFor(() => expect(nav.push).toHaveBeenCalledTimes(1));
-    const url = new URL(String(nav.push.mock.calls[0][0]), 'http://rivet.test');
-    expect(url.pathname).toBe('/design');
-    expect(url.searchParams.get('prompt')).toBe('A six-legged walking lantern');
-    expect(url.searchParams.get('mode')).toBe('engineered');
-    expect(url.searchParams.get('auto')).toBe('1');
-    expect(getProject('p_design1')).toBeNull();
-    expect(localStorage.getItem('rivet.draft.v1')).toBeNull();
-  });
-
   it('creates the project under the draft id and goes to clarify', async () => {
     writeDraft({ id: 'p_draft1', text: 'A tiny rover that avoids chairs' });
     await renderIn(<NewProjectScreen />);
     const input = await screen.findByTestId('new-prompt-input');
     await waitFor(() => expect((input as HTMLTextAreaElement).value).toBe('A tiny rover that avoids chairs'));
-    fireEvent.click(screen.getByTestId('new-target-rover'));
-    expect(screen.getByTestId('new-prompt-submit').textContent).toContain('Build it');
     fireEvent.click(screen.getByTestId('new-prompt-submit'));
     await waitFor(() => expect(nav.push).toHaveBeenCalledWith('/p/p_draft1/clarify'));
     const project = getProject('p_draft1');
@@ -121,7 +100,6 @@ describe('A1 Prompt', () => {
     await renderIn(<NewProjectScreen />);
     const input = await screen.findByTestId('new-prompt-input');
     await waitFor(() => expect((input as HTMLTextAreaElement).value).toBe('new prompt'));
-    fireEvent.click(screen.getByTestId('new-target-rover'));
     fireEvent.click(screen.getByTestId('new-prompt-submit'));
     await waitFor(() => expect(nav.push).toHaveBeenCalledWith('/p/p_again/clarify'));
     const all = JSON.parse(localStorage.getItem('rivet.projects.v1') ?? '[]') as unknown[];
