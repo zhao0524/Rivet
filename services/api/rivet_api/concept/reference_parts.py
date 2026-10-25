@@ -7,16 +7,31 @@ role, so the Buy step has somewhere to start. Each entry was fetched from the ve
 re-checks them. Suggestions are labelled `manufacturer_reference_only`, never
 `verified_product`: they were not checked against the concept's sizes, power or wiring.
 
-Only URLs from this table may appear in a concept plan (`check_concept_plan`), so a vision
+The hand-built demo models (`concept/demo`) have their own table per demo in
+`concept/demo/parts/<key>.json`: one entry per part name, each a real vendor page checked the
+same way. `match` says how close it is: the exact part, a close real equivalent, or (for
+markings and sub-pieces never sold alone) the whole product the piece comes with, unpriced.
+
+Only URLs from these tables may appear in a concept plan (`check_concept_plan`), so a vision
 model can never put its own links in front of the user.
 """
 
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import dataclass
+from functools import cache
+from pathlib import Path
 
 CHECKED_AT = "2026-10-24T00:00:00Z"
+DEMO_PARTS_DIR = Path(__file__).resolve().parent / "demo" / "parts"
+
+_MATCH_WORDS = {
+    "exact": "the matching part",
+    "equivalent": "a close real equivalent",
+    "parent": "the product this piece comes with",
+}
 
 
 @dataclass(frozen=True)
@@ -27,21 +42,40 @@ class ReferencePart:
     vendor: str
     sku: str
     url: str
-    price: str
+    price: str | None  # None: a piece that comes with a bigger product, never priced on its own
     pack_size: int = 1
     currency: str = "USD"
+    match: str = "role"  # role (the generic tables) | exact | equivalent | parent (demo tables)
+    detail: str = ""
+    checked_at: str = CHECKED_AT
 
-    def unit_price(self, count: int) -> str:
+    def unit_price(self, count: int) -> str | None:
         """Price per concept part: a 4-pack shared by four props costs a quarter each, but a single
         part drawn as the whole 4-in-1 ESC (or one prop that still needs the pack) costs the whole pack."""
+        if self.price is None:
+            return None
         return f"{float(self.price) / max(1, min(self.pack_size, count)):.2f}"
+
+    @property
+    def _source(self) -> str:
+        return f"{self.vendor}, SKU {self.sku}" if self.sku else self.vendor
 
     @property
     def note(self) -> str:
         pack = f", sold as {self.pack_size} in one ({self.price} {self.currency}); shared across the parts that use it" if self.pack_size > 1 else ""
+        kind = "for this role" if self.match == "role" else f"({_MATCH_WORDS[self.match]})"
+        detail = f" {self.detail}" if self.detail else ""
         return (
-            f"Suggested real part for this role: {self.title} ({self.vendor}, SKU {self.sku}){pack}. "
+            f"Suggested real part {kind}: {self.title} ({self._source}){pack}.{detail} "
             "Hand-picked, not checked against this design's size, power or wiring."
+        )
+
+    @property
+    def included_note(self) -> str:
+        """For a second part linked to the same product: it is counted once, on the first line."""
+        return (
+            f"Suggested real part ({_MATCH_WORDS['parent']}): {self.title} ({self._source}); "
+            "already counted on another line of this parts list. Hand-picked, not checked against this design's size, power or wiring."
         )
 
 
@@ -96,8 +130,39 @@ GADGET_PARTS: tuple[ReferencePart, ...] = (
        "1578", "https://www.adafruit.com/product/1578", "7.95"),
 )
 
+@cache
+def demo_parts(key: str) -> dict[str, ReferencePart]:
+    """A demo's table, by lowercased part name (the BOM line name, positions stripped)."""
+    path = DEMO_PARTS_DIR / f"{key}.json"
+    if not path.is_file():
+        return {}
+    data = json.loads(path.read_text())
+    return {
+        name.lower(): ReferencePart(
+            name,
+            re.compile(re.escape(name), re.I),
+            p["title"],
+            p["vendor"],
+            p["sku"],
+            p["url"],
+            None if p["match"] == "parent" else p["price"],
+            p.get("pack_size", 1),
+            p.get("currency", "USD"),
+            p["match"],
+            p.get("note", ""),
+            data["checked_at"],
+        )
+        for name, p in data["parts"].items()
+    }
+
+
+def demo_part_keys() -> list[str]:
+    return sorted(p.stem for p in DEMO_PARTS_DIR.glob("*.json"))
+
+
 ALL_PARTS: tuple[ReferencePart, ...] = DRONE_PARTS + GADGET_PARTS
-REFERENCE_URLS: frozenset[str] = frozenset(p.url for p in ALL_PARTS)
+DEMO_REFERENCE_PARTS: tuple[ReferencePart, ...] = tuple(p for k in demo_part_keys() for p in demo_parts(k).values())
+REFERENCE_URLS: frozenset[str] = frozenset(p.url for p in ALL_PARTS + DEMO_REFERENCE_PARTS)
 
 _DRONE = re.compile(r"drone|quad-?copter|multi-?rotor|hexa-?copter|uav|fpv", re.I)
 # Shapes that are part of a bigger product and never bought on their own.

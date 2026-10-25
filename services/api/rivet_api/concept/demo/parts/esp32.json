@@ -1,0 +1,346 @@
+{
+  "demo": "esp32",
+  "checked_at": "2026-10-25T00:00:00Z",
+  "parts": {
+    "esp32 board pcb": {
+      "title": "Espressif ESP32 Development Board - Developer Edition (DevKitC)",
+      "vendor": "Adafruit",
+      "sku": "3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "match": "exact",
+      "price": "15.00",
+      "note": "The whole ESP32 DevKit board."
+    },
+    "mounting hole ring": {
+      "title": "Espressif ESP32 Development Board - Developer Edition (DevKitC)",
+      "vendor": "Adafruit",
+      "sku": "3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "match": "parent",
+      "note": "Printed or etched on the DevKit board itself."
+    },
+    "mounting hole": {
+      "title": "Espressif ESP32 Development Board - Developer Edition (DevKitC)",
+      "vendor": "Adafruit",
+      "sku": "3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "match": "parent",
+      "note": "Printed or etched on the DevKit board itself."
+    },
+    "antenna keep-out": {
+      "title": "Espressif ESP32 Development Board - Developer Edition (DevKitC)",
+      "vendor": "Adafruit",
+      "sku": "3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "match": "parent",
+      "note": "Printed or etched on the DevKit board itself."
+    },
+    "usb port opening": {
+      "title": "Espressif ESP32 Development Board - Developer Edition (DevKitC)",
+      "vendor": "Adafruit",
+      "sku": "3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "match": "parent",
+      "note": "Printed or etched on the DevKit board itself."
+    },
+    "en label": {
+      "title": "Espressif ESP32 Development Board - Developer Edition (DevKitC)",
+      "vendor": "Adafruit",
+      "sku": "3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "match": "parent",
+      "note": "Printed or etched on the DevKit board itself."
+    },
+    "boot label": {
+      "title": "Espressif ESP32 Development Board - Developer Edition (DevKitC)",
+      "vendor": "Adafruit",
+      "sku": "3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "match": "parent",
+      "note": "Printed or etched on the DevKit board itself."
+    },
+    "component outline": {
+      "title": "Espressif ESP32 Development Board - Developer Edition (DevKitC)",
+      "vendor": "Adafruit",
+      "sku": "3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "match": "parent",
+      "note": "Printed or etched on the DevKit board itself."
+    },
+    "pin label": {
+      "title": "Espressif ESP32 Development Board - Developer Edition (DevKitC)",
+      "vendor": "Adafruit",
+      "sku": "3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "match": "parent",
+      "note": "Printed or etched on the DevKit board itself."
+    },
+    "regulator marking": {
+      "title": "Espressif ESP32 Development Board - Developer Edition (DevKitC)",
+      "vendor": "Adafruit",
+      "sku": "3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "match": "parent",
+      "note": "Printed or etched on the DevKit board itself."
+    },
+    "cp2102 marking": {
+      "title": "Espressif ESP32 Development Board - Developer Edition (DevKitC)",
+      "vendor": "Adafruit",
+      "sku": "3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "match": "parent",
+      "note": "Printed or etched on the DevKit board itself."
+    },
+    "transistor marking": {
+      "title": "Espressif ESP32 Development Board - Developer Edition (DevKitC)",
+      "vendor": "Adafruit",
+      "sku": "3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "match": "parent",
+      "note": "Printed or etched on the DevKit board itself."
+    },
+    "capacitor polarity band": {
+      "title": "Espressif ESP32 Development Board - Developer Edition (DevKitC)",
+      "vendor": "Adafruit",
+      "sku": "3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "match": "parent",
+      "note": "Printed or etched on the DevKit board itself."
+    },
+    "cp2102 pad ring": {
+      "title": "Espressif ESP32 Development Board - Developer Edition (DevKitC)",
+      "vendor": "Adafruit",
+      "sku": "3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "match": "parent",
+      "note": "Printed or etched on the DevKit board itself."
+    },
+    "header pad": {
+      "title": "Espressif ESP32 Development Board - Developer Edition (DevKitC)",
+      "vendor": "Adafruit",
+      "sku": "3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "match": "parent",
+      "note": "Printed or etched on the DevKit board itself."
+    },
+    "power led": {
+      "title": "Espressif ESP32 Development Board - Developer Edition (DevKitC)",
+      "vendor": "Adafruit",
+      "sku": "3269",
+      "url": "https://www.adafruit.com/product/3269",
+      "match": "parent",
+      "note": "Printed or etched on the DevKit board itself."
+    },
+    "esp-wroom-32 module pcb": {
+      "title": "ESP32 WiFi-Bluetooth MCU Module / ESP-WROOM-32",
+      "vendor": "Adafruit",
+      "sku": "3320",
+      "url": "https://www.adafruit.com/product/3320",
+      "match": "exact",
+      "price": "6.95",
+      "note": "The ESP-WROOM-32 module soldered on the board."
+    },
+    "rf shield": {
+      "title": "ESP32 WiFi-Bluetooth MCU Module / ESP-WROOM-32",
+      "vendor": "Adafruit",
+      "sku": "3320",
+      "url": "https://www.adafruit.com/product/3320",
+      "match": "parent",
+      "note": "Part of the ESP-WROOM-32 module."
+    },
+    "shield etching": {
+      "title": "ESP32 WiFi-Bluetooth MCU Module / ESP-WROOM-32",
+      "vendor": "Adafruit",
+      "sku": "3320",
+      "url": "https://www.adafruit.com/product/3320",
+      "match": "parent",
+      "note": "Part of the ESP-WROOM-32 module."
+    },
+    "shield logo": {
+      "title": "ESP32 WiFi-Bluetooth MCU Module / ESP-WROOM-32",
+      "vendor": "Adafruit",
+      "sku": "3320",
+      "url": "https://www.adafruit.com/product/3320",
+      "match": "parent",
+      "note": "Part of the ESP-WROOM-32 module."
+    },
+    "shield ce mark": {
+      "title": "ESP32 WiFi-Bluetooth MCU Module / ESP-WROOM-32",
+      "vendor": "Adafruit",
+      "sku": "3320",
+      "url": "https://www.adafruit.com/product/3320",
+      "match": "parent",
+      "note": "Part of the ESP-WROOM-32 module."
+    },
+    "shield pin-1 dot": {
+      "title": "ESP32 WiFi-Bluetooth MCU Module / ESP-WROOM-32",
+      "vendor": "Adafruit",
+      "sku": "3320",
+      "url": "https://www.adafruit.com/product/3320",
+      "match": "parent",
+      "note": "Part of the ESP-WROOM-32 module."
+    },
+    "module castellated pad": {
+      "title": "ESP32 WiFi-Bluetooth MCU Module / ESP-WROOM-32",
+      "vendor": "Adafruit",
+      "sku": "3320",
+      "url": "https://www.adafruit.com/product/3320",
+      "match": "parent",
+      "note": "Part of the ESP-WROOM-32 module."
+    },
+    "esp32 chip": {
+      "title": "Espressif ESP32-D0WD-V3 Wi-Fi/Bluetooth SoC (QFN-48)",
+      "vendor": "LCSC",
+      "sku": "C967021",
+      "url": "https://www.lcsc.com/product-detail/C967021.html",
+      "match": "exact",
+      "price": "2.02",
+      "note": "The SoC inside the module's metal shield."
+    },
+    "spi flash": {
+      "title": "Winbond W25Q32JVSSIQ 32Mbit SPI flash",
+      "vendor": "LCSC",
+      "sku": "C179173",
+      "url": "https://www.lcsc.com/product-detail/C179173.html",
+      "match": "exact",
+      "price": "0.97",
+      "note": "4 MB SPI flash, as on the 4 MB WROOM-32."
+    },
+    "mhz crystal": {
+      "title": "SOSET 3225 40MHz 12pF crystal",
+      "vendor": "LCSC",
+      "sku": "C5380316",
+      "url": "https://www.lcsc.com/product-detail/C5380316.html",
+      "match": "exact",
+      "price": "0.04"
+    },
+    "ams1117 regulator": {
+      "title": "AMS1117-3.3 LDO regulator (SOT-223)",
+      "vendor": "LCSC",
+      "sku": "C6186",
+      "url": "https://www.lcsc.com/product-detail/C6186.html",
+      "match": "exact",
+      "price": "0.11"
+    },
+    "regulator tab": {
+      "title": "AMS1117-3.3 LDO regulator (SOT-223)",
+      "vendor": "LCSC",
+      "sku": "C6186",
+      "url": "https://www.lcsc.com/product-detail/C6186.html",
+      "match": "parent"
+    },
+    "regulator lead": {
+      "title": "AMS1117-3.3 LDO regulator (SOT-223)",
+      "vendor": "LCSC",
+      "sku": "C6186",
+      "url": "https://www.lcsc.com/product-detail/C6186.html",
+      "match": "parent"
+    },
+    "cp2102 usb bridge": {
+      "title": "Silicon Labs CP2102-GMR USB-to-UART bridge",
+      "vendor": "LCSC",
+      "sku": "C6568",
+      "url": "https://www.lcsc.com/product-detail/C6568.html",
+      "match": "exact",
+      "price": "1.49"
+    },
+    "micro usb port": {
+      "title": "Micro-USB B receptacle, SMD (920-E52A2021S10100)",
+      "vendor": "LCSC",
+      "sku": "C10418",
+      "url": "https://www.lcsc.com/product-detail/C10418.html",
+      "match": "equivalent",
+      "price": "0.05"
+    },
+    "en button body": {
+      "title": "SMD tactile switch K2-1102SP (EN / BOOT button)",
+      "vendor": "LCSC",
+      "sku": "C127509",
+      "url": "https://www.lcsc.com/product-detail/C127509.html",
+      "match": "equivalent",
+      "price": "0.03"
+    },
+    "boot button body": {
+      "title": "SMD tactile switch K2-1102SP (EN / BOOT button)",
+      "vendor": "LCSC",
+      "sku": "C127509",
+      "url": "https://www.lcsc.com/product-detail/C127509.html",
+      "match": "equivalent",
+      "price": "0.03"
+    },
+    "en button plunger": {
+      "title": "SMD tactile switch K2-1102SP (EN / BOOT button)",
+      "vendor": "LCSC",
+      "sku": "C127509",
+      "url": "https://www.lcsc.com/product-detail/C127509.html",
+      "match": "parent"
+    },
+    "boot button plunger": {
+      "title": "SMD tactile switch K2-1102SP (EN / BOOT button)",
+      "vendor": "LCSC",
+      "sku": "C127509",
+      "url": "https://www.lcsc.com/product-detail/C127509.html",
+      "match": "parent"
+    },
+    "status led": {
+      "title": "KT-0603R red 0603 LED",
+      "vendor": "LCSC",
+      "sku": "C2286",
+      "url": "https://www.lcsc.com/product-detail/C2286.html",
+      "match": "equivalent",
+      "price": "0.01"
+    },
+    "smd resistor": {
+      "title": "UNI-ROYAL 0603 10k resistor (0603WAF1002T5E)",
+      "vendor": "LCSC",
+      "sku": "C25804",
+      "url": "https://www.lcsc.com/product-detail/C25804.html",
+      "match": "equivalent",
+      "price": "0.01",
+      "note": "A 0603 resistor; the board uses a few values."
+    },
+    "smd capacitor": {
+      "title": "YAGEO 0603 100nF X7R capacitor (CC0603KRX7R9BB104)",
+      "vendor": "LCSC",
+      "sku": "C14663",
+      "url": "https://www.lcsc.com/product-detail/C14663.html",
+      "match": "equivalent",
+      "price": "0.01"
+    },
+    "tantalum capacitor": {
+      "title": "Kyocera AVX 10uF 16V tantalum capacitor (TAJA106K016RNJ)",
+      "vendor": "LCSC",
+      "sku": "C7171",
+      "url": "https://www.lcsc.com/product-detail/C7171.html",
+      "match": "equivalent",
+      "price": "0.11"
+    },
+    "sot-23 transistor": {
+      "title": "JSCJ S8050 NPN transistor (SOT-23)",
+      "vendor": "LCSC",
+      "sku": "C2146",
+      "url": "https://www.lcsc.com/product-detail/C2146.html",
+      "match": "equivalent",
+      "price": "0.01",
+      "note": "Auto-reset transistor; same SOT-23 package."
+    },
+    "pin header strip": {
+      "title": "Break-away 0.1in 36-pin strip male header - Black - 10 pack",
+      "vendor": "Adafruit",
+      "sku": "392",
+      "url": "https://www.adafruit.com/product/392",
+      "match": "equivalent",
+      "price": "4.95",
+      "pack_size": 10,
+      "note": "Two 15-pin strips cut from the 36-pin breakaway headers."
+    },
+    "header pin": {
+      "title": "Break-away 0.1in 36-pin strip male header - Black - 10 pack",
+      "vendor": "Adafruit",
+      "sku": "392",
+      "url": "https://www.adafruit.com/product/392",
+      "match": "parent",
+      "note": "Two 15-pin strips cut from the 36-pin breakaway headers."
+    }
+  }
+}

@@ -4091,7 +4091,7 @@
   ],
   "bom": {
     "currency": "USD",
-    "known_subtotal_amount": "127.05",
+    "known_subtotal_amount": "191.87",
     "total_status": "incomplete",
     "items": [
       {
@@ -4101,8 +4101,8 @@
           "base-plate-centre-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.base-plate-arm",
@@ -4114,8 +4114,8 @@
           "base-plate-arm-4-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.base-plate-arm-tip",
@@ -4127,8 +4127,8 @@
           "base-plate-arm-tip-4-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.base-plate-hole",
@@ -4148,8 +4148,8 @@
           "base-plate-hole-12-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.pedestal",
@@ -4158,8 +4158,8 @@
           "pedestal-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.pedestal-band",
@@ -4168,8 +4168,8 @@
           "pedestal-band-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.turntable-ring",
@@ -4178,8 +4178,8 @@
           "turntable-ring-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.turntable",
@@ -4188,8 +4188,8 @@
           "turntable-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.turntable-bearing",
@@ -4198,8 +4198,8 @@
           "turntable-bearing-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.shoulder-servo-block",
@@ -4207,8 +4207,8 @@
         "instance_ids": [
           "shoulder-servo-block-1"
         ],
-        "unit_price_amount": "5.95",
-        "purchase_url": "https://www.adafruit.com/product/169",
+        "unit_price_amount": "3.99",
+        "purchase_url": "https://www.hiwonder.com/products/servo-bracket-compatible-with-lx-15d",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4217,8 +4217,8 @@
         "instance_ids": [
           "shoulder-servo-1"
         ],
-        "unit_price_amount": "5.95",
-        "purchase_url": "https://www.adafruit.com/product/169",
+        "unit_price_amount": "17.99",
+        "purchase_url": "https://www.hiwonder.com/products/lx-225",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4229,8 +4229,8 @@
           "shoulder-side-plate-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.shoulder-plate",
@@ -4240,8 +4240,8 @@
           "shoulder-plate-top-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.shoulder-bearing",
@@ -4251,8 +4251,8 @@
           "shoulder-bearing-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.shoulder-bearing-hub",
@@ -4262,8 +4262,8 @@
           "shoulder-bearing-hub-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.plate-screw",
@@ -4277,8 +4277,8 @@
           "plate-screw-6-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.arm-plate",
@@ -4288,8 +4288,8 @@
           "upper-arm-plate-lower-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.arm-plate-2",
@@ -4299,8 +4299,8 @@
           "upper-arm-plate-upper-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.knee-boss",
@@ -4310,8 +4310,8 @@
           "knee-boss-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.elbow-plate-end",
@@ -4321,8 +4321,8 @@
           "elbow-plate-end-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.arm-spacer",
@@ -4332,8 +4332,8 @@
           "upper-arm-spacer-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.arm-stiffener",
@@ -4342,8 +4342,8 @@
           "upper-arm-stiffener-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.elbow-servo",
@@ -4351,8 +4351,8 @@
         "instance_ids": [
           "elbow-servo-1"
         ],
-        "unit_price_amount": "5.95",
-        "purchase_url": "https://www.adafruit.com/product/169",
+        "unit_price_amount": "17.99",
+        "purchase_url": "https://www.hiwonder.com/products/lx-225",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4361,8 +4361,8 @@
         "instance_ids": [
           "elbow-servo-label-1"
         ],
-        "unit_price_amount": "5.95",
-        "purchase_url": "https://www.adafruit.com/product/169",
+        "unit_price_amount": null,
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4371,8 +4371,8 @@
         "instance_ids": [
           "elbow-servo-label-print-1"
         ],
-        "unit_price_amount": "5.95",
-        "purchase_url": "https://www.adafruit.com/product/169",
+        "unit_price_amount": null,
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4383,8 +4383,8 @@
           "elbow-horn-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.elbow-horn-screw",
@@ -4400,8 +4400,8 @@
           "elbow-horn-screw-8-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.forearm-clamp",
@@ -4410,8 +4410,8 @@
           "forearm-clamp-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.forearm-tube",
@@ -4420,8 +4420,8 @@
           "forearm-tube-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.forearm-end-cap",
@@ -4430,8 +4430,8 @@
           "forearm-end-cap-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.wrist-bracket",
@@ -4440,9 +4440,9 @@
           "wrist-bracket-1",
           "wrist-bracket-back-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "3.99",
+        "purchase_url": "https://www.hiwonder.com/products/servo-bracket-compatible-with-lx-15d",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.wrist-pitch-servo",
@@ -4450,8 +4450,8 @@
         "instance_ids": [
           "wrist-pitch-servo-1"
         ],
-        "unit_price_amount": "5.95",
-        "purchase_url": "https://www.adafruit.com/product/169",
+        "unit_price_amount": "16.99",
+        "purchase_url": "https://www.hiwonder.com/products/lx-15d",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4461,8 +4461,8 @@
           "wrist-horn-plate-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.wrist-bolt",
@@ -4475,8 +4475,8 @@
           "wrist-bolt-5-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.wrist-roll-servo",
@@ -4484,8 +4484,8 @@
         "instance_ids": [
           "wrist-roll-servo-1"
         ],
-        "unit_price_amount": "5.95",
-        "purchase_url": "https://www.adafruit.com/product/169",
+        "unit_price_amount": "16.99",
+        "purchase_url": "https://www.hiwonder.com/products/lx-15d",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4495,8 +4495,8 @@
           "wrist-roll-horn-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.gripper-plate",
@@ -4504,9 +4504,9 @@
         "instance_ids": [
           "gripper-back-plate-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "13.99",
+        "purchase_url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.gripper-plate-slot",
@@ -4515,8 +4515,8 @@
           "gripper-plate-slot-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.gripper-servo",
@@ -4524,8 +4524,8 @@
         "instance_ids": [
           "gripper-servo-1"
         ],
-        "unit_price_amount": "5.95",
-        "purchase_url": "https://www.adafruit.com/product/169",
+        "unit_price_amount": "16.99",
+        "purchase_url": "https://www.hiwonder.com/products/lx-15d",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4536,8 +4536,8 @@
           "gripper-gear-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.gear-tooth",
@@ -4569,8 +4569,8 @@
           "gear-tooth-24-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.gripper-linkage",
@@ -4582,8 +4582,8 @@
           "gripper-linkage-4-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.gripper-finger",
@@ -4593,8 +4593,8 @@
           "gripper-finger-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.gripper-finger-tip",
@@ -4604,8 +4604,8 @@
           "gripper-finger-tip-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.finger-pivot",
@@ -4615,8 +4615,8 @@
           "finger-pivot-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.arm-cable",
@@ -4625,8 +4625,8 @@
           "arm-cable-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.arm-cable-bend",
@@ -4636,8 +4636,8 @@
           "arm-cable-bend-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.arm-cable-2",
@@ -4646,8 +4646,8 @@
           "arm-cable-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.arm-cable-3",
@@ -4656,8 +4656,8 @@
           "arm-cable-3-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.wrist-servo-lead-red",
@@ -4665,8 +4665,8 @@
         "instance_ids": [
           "wrist-servo-lead-red-1"
         ],
-        "unit_price_amount": "5.95",
-        "purchase_url": "https://www.adafruit.com/product/169",
+        "unit_price_amount": null,
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4675,8 +4675,8 @@
         "instance_ids": [
           "wrist-servo-lead-red-bend-1"
         ],
-        "unit_price_amount": "5.95",
-        "purchase_url": "https://www.adafruit.com/product/169",
+        "unit_price_amount": null,
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4685,8 +4685,8 @@
         "instance_ids": [
           "wrist-servo-lead-red-2-1"
         ],
-        "unit_price_amount": "5.95",
-        "purchase_url": "https://www.adafruit.com/product/169",
+        "unit_price_amount": null,
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4695,8 +4695,8 @@
         "instance_ids": [
           "wrist-servo-lead-white-1"
         ],
-        "unit_price_amount": "5.95",
-        "purchase_url": "https://www.adafruit.com/product/169",
+        "unit_price_amount": null,
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4705,8 +4705,8 @@
         "instance_ids": [
           "wrist-servo-lead-white-bend-1"
         ],
-        "unit_price_amount": "5.95",
-        "purchase_url": "https://www.adafruit.com/product/169",
+        "unit_price_amount": null,
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4715,8 +4715,8 @@
         "instance_ids": [
           "wrist-servo-lead-white-2-1"
         ],
-        "unit_price_amount": "5.95",
-        "purchase_url": "https://www.adafruit.com/product/169",
+        "unit_price_amount": null,
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4726,8 +4726,8 @@
           "base-cable-loom-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.base-cable-loom-bend",
@@ -4736,8 +4736,8 @@
           "base-cable-loom-bend-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.base-cable-loom-2",
@@ -4746,8 +4746,8 @@
           "base-cable-loom-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.base-cable-loop",
@@ -4756,8 +4756,8 @@
           "base-cable-loop-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.base-cable-loop-bend",
@@ -4767,8 +4767,8 @@
           "base-cable-loop-bend-2-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.base-cable-loop-2",
@@ -4778,8 +4778,8 @@
           "base-cable-loop-3-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.board-bracket",
@@ -4788,8 +4788,8 @@
           "board-bracket-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.controller-board",
@@ -4797,8 +4797,8 @@
         "instance_ids": [
           "controller-board-1"
         ],
-        "unit_price_amount": "19.95",
-        "purchase_url": "https://www.adafruit.com/product/3405",
+        "unit_price_amount": "39.99",
+        "purchase_url": "https://www.hiwonder.com/products/serial-bus-servo-controller",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4809,8 +4809,8 @@
           "servo-header-2-1",
           "servo-header-3-1"
         ],
-        "unit_price_amount": "5.95",
-        "purchase_url": "https://www.adafruit.com/product/169",
+        "unit_price_amount": null,
+        "purchase_url": "https://www.hiwonder.com/products/serial-bus-servo-controller",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4820,8 +4820,8 @@
           "board-usb-port-1"
         ],
         "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "purchase_url": "https://www.hiwonder.com/products/xarm-1s",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.board-module",
@@ -4829,9 +4829,9 @@
         "instance_ids": [
           "board-module-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "12.99",
+        "purchase_url": "https://www.hiwonder.com/products/bluetooth-module",
+        "link_status": "manufacturer_reference_only"
       },
       {
         "catalog_id": "concept.base-rotation-servo",
@@ -4839,8 +4839,8 @@
         "instance_ids": [
           "base-rotation-servo-1"
         ],
-        "unit_price_amount": "5.95",
-        "purchase_url": "https://www.adafruit.com/product/169",
+        "unit_price_amount": "17.99",
+        "purchase_url": "https://www.hiwonder.com/products/lx-225",
         "link_status": "manufacturer_reference_only"
       },
       {
@@ -4849,9 +4849,9 @@
         "instance_ids": [
           "power-regulator-board-1"
         ],
-        "unit_price_amount": null,
-        "purchase_url": null,
-        "link_status": "not_available"
+        "unit_price_amount": "7.99",
+        "purchase_url": "https://www.hiwonder.com/products/power-supply-adapter-7-5v-3a",
+        "link_status": "manufacturer_reference_only"
       }
     ]
   },
@@ -4889,8 +4889,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.base-plate",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Base plate",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Base plate: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "frame"
       },
@@ -4909,7 +4909,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -4923,7 +4923,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -4931,8 +4932,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.base-plate-arm",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Base plate arm",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Base plate arm: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "frame"
       },
@@ -4951,7 +4952,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -4965,7 +4966,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -4973,8 +4975,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.base-plate-arm-tip",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Base plate arm tip",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Base plate arm tip: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "frame"
       },
@@ -4993,7 +4995,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5007,7 +5009,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5015,8 +5018,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.base-plate-hole",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Base plate hole",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Base plate hole: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "frame"
       },
@@ -5035,7 +5038,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5049,7 +5052,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5057,8 +5061,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.pedestal",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Pedestal",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Pedestal: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "frame"
       },
@@ -5077,7 +5081,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5091,7 +5095,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5099,8 +5104,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.pedestal-band",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Pedestal band",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Pedestal band: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "frame"
       },
@@ -5119,7 +5124,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5133,7 +5138,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5141,8 +5147,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.turntable-ring",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Turntable ring",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Turntable ring: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "frame"
       },
@@ -5161,7 +5167,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5175,7 +5181,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5183,8 +5190,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.turntable",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Turntable",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Turntable: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "frame"
       },
@@ -5203,7 +5210,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5217,7 +5224,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5225,8 +5233,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.turntable-bearing",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Turntable bearing",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Turntable bearing: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "frame"
       },
@@ -5245,7 +5253,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5259,7 +5267,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5267,8 +5276,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.shoulder-servo-block",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Shoulder servo block: Micro servo",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Shoulder servo block: Hiwonder Servo Bracket for the LX-15D Bus Servo",
         "sku": null,
         "category": "motor"
       },
@@ -5287,13 +5296,13 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/169",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/servo-bracket-compatible-with-lx-15d",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "5.95",
+        "price_amount": "3.99",
         "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
@@ -5302,7 +5311,7 @@
         "price": "unverified",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Micro servo (Adafruit, SKU 169). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (a close real equivalent): Hiwonder Servo Bracket for the LX-15D Bus Servo (Hiwonder). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5310,8 +5319,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.shoulder-servo",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Shoulder servo: Micro servo",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Shoulder servo: Hiwonder LX-225 Serial Bus Servo (25kg)",
         "sku": null,
         "category": "motor"
       },
@@ -5330,13 +5339,13 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/169",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/lx-225",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "5.95",
+        "price_amount": "17.99",
         "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
@@ -5345,7 +5354,7 @@
         "price": "unverified",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Micro servo (Adafruit, SKU 169). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (a close real equivalent): Hiwonder LX-225 Serial Bus Servo (25kg) (Hiwonder, SKU 21100038). High-torque bus servo for the heavily loaded joints. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5353,8 +5362,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.shoulder-side-plate",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Shoulder side plate",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Shoulder side plate: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "frame"
       },
@@ -5373,7 +5382,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5387,7 +5396,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5395,8 +5405,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.shoulder-plate",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Shoulder plate",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Shoulder plate: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "frame"
       },
@@ -5415,7 +5425,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5429,7 +5439,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5437,8 +5448,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.shoulder-bearing",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Shoulder bearing",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Shoulder bearing: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "frame"
       },
@@ -5457,7 +5468,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5471,7 +5482,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5479,8 +5491,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.shoulder-bearing-hub",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Shoulder bearing hub",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Shoulder bearing hub: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "frame"
       },
@@ -5499,7 +5511,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5513,7 +5525,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5521,8 +5534,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.plate-screw",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Plate screw",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Plate screw: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "frame"
       },
@@ -5541,7 +5554,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5555,7 +5568,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5563,8 +5577,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.arm-plate",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Arm plate",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Arm plate: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "arm"
       },
@@ -5583,7 +5597,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5597,7 +5611,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5605,8 +5620,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.arm-plate-2",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Arm plate",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Arm plate: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "arm"
       },
@@ -5625,7 +5640,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5639,7 +5654,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5647,8 +5663,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.knee-boss",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Knee boss",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Knee boss: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "arm"
       },
@@ -5667,7 +5683,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5681,7 +5697,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5689,8 +5706,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.elbow-plate-end",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Elbow plate end",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Elbow plate end: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "arm"
       },
@@ -5709,7 +5726,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5723,7 +5740,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5731,8 +5749,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.arm-spacer",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Arm spacer",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Arm spacer: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "arm"
       },
@@ -5751,7 +5769,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5765,7 +5783,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5773,8 +5792,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.arm-stiffener",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Arm stiffener",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Arm stiffener: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "arm"
       },
@@ -5793,7 +5812,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5807,7 +5826,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5815,8 +5835,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.elbow-servo",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Elbow servo: Micro servo",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Elbow servo: Hiwonder LX-225 Serial Bus Servo (25kg)",
         "sku": null,
         "category": "motor"
       },
@@ -5835,13 +5855,13 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/169",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/lx-225",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "5.95",
+        "price_amount": "17.99",
         "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
@@ -5850,7 +5870,7 @@
         "price": "unverified",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Micro servo (Adafruit, SKU 169). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (a close real equivalent): Hiwonder LX-225 Serial Bus Servo (25kg) (Hiwonder, SKU 21100038). High-torque bus servo for the heavily loaded joints. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5858,8 +5878,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.elbow-servo-label",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Elbow servo label: Micro servo",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Elbow servo label: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "panel"
       },
@@ -5878,22 +5898,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/169",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "5.95",
-        "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unverified",
+        "price": "unknown",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Micro servo (Adafruit, SKU 169). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5901,8 +5921,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.elbow-servo-label-print",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Elbow servo label print: Micro servo",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Elbow servo label print: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "panel"
       },
@@ -5921,22 +5941,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/169",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "5.95",
-        "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unverified",
+        "price": "unknown",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Micro servo (Adafruit, SKU 169). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5944,8 +5964,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.elbow-horn",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Elbow horn",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Elbow horn: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "arm"
       },
@@ -5964,7 +5984,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -5978,7 +5998,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -5986,8 +6007,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.elbow-horn-screw",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Elbow horn screw",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Elbow horn screw: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "arm"
       },
@@ -6006,7 +6027,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6020,7 +6041,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6028,8 +6050,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.forearm-clamp",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Forearm clamp",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Forearm clamp: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "arm"
       },
@@ -6048,7 +6070,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6062,7 +6084,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6070,8 +6093,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.forearm-tube",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Forearm tube",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Forearm tube: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "arm"
       },
@@ -6090,7 +6113,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6104,7 +6127,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6112,8 +6136,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.forearm-end-cap",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Forearm end cap",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Forearm end cap: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "arm"
       },
@@ -6132,7 +6156,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6146,7 +6170,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6154,8 +6179,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.wrist-bracket",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Wrist bracket",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Wrist bracket: Hiwonder Servo Bracket for the LX-15D Bus Servo",
         "sku": null,
         "category": "arm"
       },
@@ -6174,21 +6199,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/servo-bracket-compatible-with-lx-15d",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "3.99",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (a close real equivalent): Hiwonder Servo Bracket for the LX-15D Bus Servo (Hiwonder). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6196,8 +6222,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.wrist-pitch-servo",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Wrist pitch servo: Micro servo",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Wrist pitch servo: Hiwonder LX-15D Intelligent Serial Bus Servo",
         "sku": null,
         "category": "motor"
       },
@@ -6216,13 +6242,13 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/169",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/lx-15d",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "5.95",
+        "price_amount": "16.99",
         "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
@@ -6231,7 +6257,7 @@
         "price": "unverified",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Micro servo (Adafruit, SKU 169). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the matching part): Hiwonder LX-15D Intelligent Serial Bus Servo (Hiwonder, SKU 21100031). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6239,8 +6265,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.wrist-horn-plate",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Wrist horn plate",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Wrist horn plate: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "arm"
       },
@@ -6259,7 +6285,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6273,7 +6299,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6281,8 +6308,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.wrist-bolt",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Wrist bolt",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Wrist bolt: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "arm"
       },
@@ -6301,7 +6328,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6315,7 +6342,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6323,8 +6351,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.wrist-roll-servo",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Wrist roll servo: Micro servo",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Wrist roll servo: Hiwonder LX-15D Intelligent Serial Bus Servo",
         "sku": null,
         "category": "motor"
       },
@@ -6343,13 +6371,13 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/169",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/lx-15d",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "5.95",
+        "price_amount": "16.99",
         "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
@@ -6358,7 +6386,7 @@
         "price": "unverified",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Micro servo (Adafruit, SKU 169). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the matching part): Hiwonder LX-15D Intelligent Serial Bus Servo (Hiwonder, SKU 21100031). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6366,8 +6394,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.wrist-roll-horn",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Wrist roll horn",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Wrist roll horn: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "arm"
       },
@@ -6386,7 +6414,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6400,7 +6428,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6408,8 +6437,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.gripper-plate",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Gripper plate",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Gripper plate: Hiwonder Black Aluminum Alloy Gripper",
         "sku": null,
         "category": "gripper"
       },
@@ -6428,21 +6457,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "13.99",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (a close real equivalent): Hiwonder Black Aluminum Alloy Gripper (Hiwonder, SKU 21070010). Geared two-finger aluminium gripper. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6450,8 +6480,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.gripper-plate-slot",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Gripper plate slot",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Gripper plate slot: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "gripper"
       },
@@ -6470,7 +6500,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6484,7 +6514,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6492,8 +6523,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.gripper-servo",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Gripper servo: Micro servo",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Gripper servo: Hiwonder LX-15D Intelligent Serial Bus Servo",
         "sku": null,
         "category": "motor"
       },
@@ -6512,13 +6543,13 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/169",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/lx-15d",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "5.95",
+        "price_amount": "16.99",
         "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
@@ -6527,7 +6558,7 @@
         "price": "unverified",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Micro servo (Adafruit, SKU 169). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the matching part): Hiwonder LX-15D Intelligent Serial Bus Servo (Hiwonder, SKU 21100031). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6535,8 +6566,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.gripper-gear",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Gripper gear",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Gripper gear: Hiwonder Black Aluminum Alloy Gripper",
         "sku": null,
         "category": "gripper"
       },
@@ -6555,7 +6586,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6569,7 +6600,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder Black Aluminum Alloy Gripper (Hiwonder, SKU 21070010). Geared two-finger aluminium gripper. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6577,8 +6609,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.gear-tooth",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Gear tooth",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Gear tooth: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "gripper"
       },
@@ -6597,7 +6629,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6611,7 +6643,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6619,8 +6652,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.gripper-linkage",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Gripper linkage",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Gripper linkage: Hiwonder Black Aluminum Alloy Gripper",
         "sku": null,
         "category": "gripper"
       },
@@ -6639,7 +6672,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6653,7 +6686,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder Black Aluminum Alloy Gripper (Hiwonder, SKU 21070010). Geared two-finger aluminium gripper. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6661,8 +6695,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.gripper-finger",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Gripper finger",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Gripper finger: Hiwonder Black Aluminum Alloy Gripper",
         "sku": null,
         "category": "gripper"
       },
@@ -6681,7 +6715,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6695,7 +6729,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder Black Aluminum Alloy Gripper (Hiwonder, SKU 21070010). Geared two-finger aluminium gripper. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6703,8 +6738,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.gripper-finger-tip",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Gripper finger tip",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Gripper finger tip: Hiwonder Black Aluminum Alloy Gripper",
         "sku": null,
         "category": "gripper"
       },
@@ -6723,7 +6758,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6737,7 +6772,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder Black Aluminum Alloy Gripper (Hiwonder, SKU 21070010). Geared two-finger aluminium gripper. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6745,8 +6781,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.finger-pivot",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Finger pivot",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Finger pivot: Hiwonder Black Aluminum Alloy Gripper",
         "sku": null,
         "category": "gripper"
       },
@@ -6765,7 +6801,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6779,7 +6815,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder Black Aluminum Alloy Gripper (Hiwonder, SKU 21070010). Geared two-finger aluminium gripper. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6787,8 +6824,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.arm-cable",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Arm cable",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Arm cable: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "cable"
       },
@@ -6807,7 +6844,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6821,7 +6858,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6829,8 +6867,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.arm-cable-bend",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Arm cable bend",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Arm cable bend: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "cable"
       },
@@ -6849,7 +6887,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6863,7 +6901,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6871,8 +6910,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.arm-cable-2",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Arm cable",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Arm cable: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "cable"
       },
@@ -6891,7 +6930,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6905,7 +6944,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6913,8 +6953,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.arm-cable-3",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Arm cable",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Arm cable: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "cable"
       },
@@ -6933,7 +6973,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -6947,7 +6987,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6955,8 +6996,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.wrist-servo-lead-red",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Wrist servo lead red: Micro servo",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Wrist servo lead red: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "cable"
       },
@@ -6975,22 +7016,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/169",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "5.95",
-        "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unverified",
+        "price": "unknown",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Micro servo (Adafruit, SKU 169). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -6998,8 +7039,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.wrist-servo-lead-red-bend",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Wrist servo lead red bend: Micro servo",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Wrist servo lead red bend: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "cable"
       },
@@ -7018,22 +7059,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/169",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "5.95",
-        "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unverified",
+        "price": "unknown",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Micro servo (Adafruit, SKU 169). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7041,8 +7082,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.wrist-servo-lead-red-2",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Wrist servo lead red: Micro servo",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Wrist servo lead red: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "cable"
       },
@@ -7061,22 +7102,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/169",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "5.95",
-        "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unverified",
+        "price": "unknown",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Micro servo (Adafruit, SKU 169). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7084,8 +7125,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.wrist-servo-lead-white",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Wrist servo lead white: Micro servo",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Wrist servo lead white: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "cable"
       },
@@ -7104,22 +7145,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/169",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "5.95",
-        "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unverified",
+        "price": "unknown",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Micro servo (Adafruit, SKU 169). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7127,8 +7168,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.wrist-servo-lead-white-bend",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Wrist servo lead white bend: Micro servo",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Wrist servo lead white bend: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "cable"
       },
@@ -7147,22 +7188,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/169",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "5.95",
-        "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unverified",
+        "price": "unknown",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Micro servo (Adafruit, SKU 169). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7170,8 +7211,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.wrist-servo-lead-white-2",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Wrist servo lead white: Micro servo",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Wrist servo lead white: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "cable"
       },
@@ -7190,22 +7231,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/169",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "5.95",
-        "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unverified",
+        "price": "unknown",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Micro servo (Adafruit, SKU 169). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7213,8 +7254,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.base-cable-loom",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Base cable loom",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Base cable loom: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "cable"
       },
@@ -7233,7 +7274,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -7247,7 +7288,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7255,8 +7297,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.base-cable-loom-bend",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Base cable loom bend",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Base cable loom bend: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "cable"
       },
@@ -7275,7 +7317,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -7289,7 +7331,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7297,8 +7340,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.base-cable-loom-2",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Base cable loom",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Base cable loom: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "cable"
       },
@@ -7317,7 +7360,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -7331,7 +7374,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7339,8 +7383,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.base-cable-loop",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Base cable loop",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Base cable loop: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "cable"
       },
@@ -7359,7 +7403,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -7373,7 +7417,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7381,8 +7426,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.base-cable-loop-bend",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Base cable loop bend",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Base cable loop bend: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "cable"
       },
@@ -7401,7 +7446,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -7415,7 +7460,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7423,8 +7469,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.base-cable-loop-2",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Base cable loop",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Base cable loop: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "cable"
       },
@@ -7443,7 +7489,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -7457,7 +7503,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7465,8 +7512,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.board-bracket",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Board bracket",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Board bracket: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "frame"
       },
@@ -7485,7 +7532,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -7499,7 +7546,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7507,8 +7555,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.controller-board",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Controller board: Adafruit HUZZAH32 - ESP32 Feather Board",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Controller board: Hiwonder Serial Bus Servo Controller",
         "sku": null,
         "category": "board"
       },
@@ -7527,13 +7575,13 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/3405",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/serial-bus-servo-controller",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "19.95",
+        "price_amount": "39.99",
         "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
@@ -7542,7 +7590,7 @@
         "price": "unverified",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Adafruit HUZZAH32 - ESP32 Feather Board (Adafruit, SKU 3405). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (a close real equivalent): Hiwonder Serial Bus Servo Controller (Hiwonder, SKU 21090003). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7550,8 +7598,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.servo-header",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Servo header: Micro servo",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Servo header: Hiwonder Serial Bus Servo Controller",
         "sku": null,
         "category": "board"
       },
@@ -7570,22 +7618,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/169",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/serial-bus-servo-controller",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "5.95",
-        "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_amount": null,
+        "price_currency": null,
+        "price_checked_at": null,
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unverified",
+        "price": "unknown",
         "notes": [
           "Shape and size estimated from the uploaded image; not a real product",
-          "Suggested real part for this role: Micro servo (Adafruit, SKU 169). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (the product this piece comes with): Hiwonder Serial Bus Servo Controller (Hiwonder, SKU 21090003). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7593,8 +7641,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.board-usb-port",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Board usb port",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Board usb port: Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
         "sku": null,
         "category": "board"
       },
@@ -7613,7 +7661,7 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/xarm-1s",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
@@ -7627,7 +7675,8 @@
         "electrical": "unknown",
         "price": "unknown",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (the product this piece comes with): Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm (Hiwonder, SKU 21010002). Frame, hardware and servo leads of the xArm 1S kit. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7635,8 +7684,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.board-module",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Board module",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Board module: Hiwonder Bluetooth Module for the servo controller",
         "sku": null,
         "category": "board"
       },
@@ -7655,21 +7704,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/bluetooth-module",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "12.99",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "estimated_from_image",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Shape and size estimated from the uploaded image; not a real product"
+          "Shape and size estimated from the uploaded image; not a real product",
+          "Suggested real part (a close real equivalent): Hiwonder Bluetooth Module for the servo controller (Hiwonder, SKU 13040017). Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7677,8 +7727,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.base-rotation-servo",
       "identity": {
-        "manufacturer": "Suggested part from Adafruit",
-        "model": "Base rotation servo: Micro servo",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Base rotation servo: Hiwonder LX-225 Serial Bus Servo (25kg)",
         "sku": null,
         "category": "motor"
       },
@@ -7697,13 +7747,13 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": "https://www.adafruit.com/product/169",
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/lx-225",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": "5.95",
+        "price_amount": "17.99",
         "price_currency": "USD",
-        "price_checked_at": "2026-10-24T00:00:00Z",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
@@ -7712,7 +7762,7 @@
         "price": "unverified",
         "notes": [
           "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
-          "Suggested real part for this role: Micro servo (Adafruit, SKU 169). Hand-picked, not checked against this design's size, power or wiring."
+          "Suggested real part (a close real equivalent): Hiwonder LX-225 Serial Bus Servo (25kg) (Hiwonder, SKU 21100038). High-torque bus servo for the heavily loaded joints. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     },
@@ -7720,8 +7770,8 @@
       "schema_version": "1.0",
       "catalog_id": "concept.power-regulator-board",
       "identity": {
-        "manufacturer": "Concept (not a sourced part)",
-        "model": "Power regulator board",
+        "manufacturer": "Suggested part from Hiwonder",
+        "model": "Power regulator board: Hiwonder Power Supply Adapter for Robot Arm, 7.5V 3A",
         "sku": null,
         "category": "board"
       },
@@ -7740,21 +7790,22 @@
       "mounts": [],
       "ports": [],
       "sourcing": {
-        "manufacturer_reference_url": null,
+        "manufacturer_reference_url": "https://www.hiwonder.com/products/power-supply-adapter-7-5v-3a",
         "datasheet_url": null,
         "purchase_url": null,
         "purchase_url_verified_at": null,
-        "price_amount": null,
-        "price_currency": null,
-        "price_checked_at": null,
+        "price_amount": "7.99",
+        "price_currency": "USD",
+        "price_checked_at": "2026-10-25T00:00:00Z",
         "availability_status": "unknown"
       },
       "evidence": {
         "dimensions": "unknown",
         "electrical": "unknown",
-        "price": "unknown",
+        "price": "unverified",
         "notes": [
-          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product"
+          "Typical internal part for this kind of device, inferred because the image cannot show it; not a real product",
+          "Suggested real part (a close real equivalent): Hiwonder Power Supply Adapter for Robot Arm, 7.5V 3A (Hiwonder, SKU 15020008). Power for the servo bus. Hand-picked, not checked against this design's size, power or wiring."
         ]
       }
     }

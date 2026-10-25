@@ -1,0 +1,297 @@
+{
+  "demo": "pi_camera",
+  "checked_at": "2026-10-25T00:00:00Z",
+  "parts": {
+    "camera pcb": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "exact",
+      "price": "29.25",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "mounting pad": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "mounting hole": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "lens housing": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "housing plate": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "lens holder facet": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "lens holder": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "lens barrel": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "lens barrel ring": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "lens glass": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "sensor flex stiffener": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "flex copper window": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "flex copper mark": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "qr code sticker": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "qr code dot": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "part number label": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "part number print": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "raspberry logo dot": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "raspberry logo leaf": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "silkscreen text raspberry pi": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "silkscreen text camera module": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "silkscreen code text": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "silkscreen date text": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "regulatory mark": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "copyright mark": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "data matrix": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "data matrix cell": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "test pad ring": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "test pad": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "connector latch": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "connector contacts": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "image sensor chip": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "autofocus voice coil": {
+      "title": "Raspberry Pi Camera Module 3 Standard (12MP autofocus)",
+      "vendor": "Adafruit",
+      "sku": "5657",
+      "url": "https://www.adafruit.com/product/5657",
+      "match": "parent",
+      "note": "The whole Camera Module 3; its lens, sensor and markings come with it."
+    },
+    "ribbon cable": {
+      "title": "Flex Cable for Raspberry Pi Camera or Display - 200mm",
+      "vendor": "Adafruit",
+      "sku": "1647",
+      "url": "https://www.adafruit.com/product/1647",
+      "match": "exact",
+      "price": "1.95",
+      "note": "The 200 mm camera cable the module ships with."
+    },
+    "ribbon conductor": {
+      "title": "Flex Cable for Raspberry Pi Camera or Display - 200mm",
+      "vendor": "Adafruit",
+      "sku": "1647",
+      "url": "https://www.adafruit.com/product/1647",
+      "match": "parent",
+      "note": "The 200 mm camera cable the module ships with."
+    },
+    "ribbon connector": {
+      "title": "BOOMELE 1.0-15P FPC connector (1.0mm pitch, 15 pin)",
+      "vendor": "LCSC",
+      "sku": "C21859",
+      "url": "https://www.lcsc.com/product-detail/C21859.html",
+      "match": "equivalent",
+      "price": "0.07",
+      "note": "Same 15-pin 1.0 mm pitch FPC socket as the board's camera connector."
+    }
+  }
+}

@@ -1,0 +1,283 @@
+{
+  "demo": "drone",
+  "checked_at": "2026-10-25T00:00:00Z",
+  "parts": {
+    "body shell": {
+      "title": "HISINGY Mach 500 Line-of-Sight Beginner Drone Combo",
+      "vendor": "RaceDayQuads",
+      "sku": "23630",
+      "url": "https://www.racedayquads.com/products/hisingy-mach-500-line-of-sight-beginner-drone-combo",
+      "match": "parent",
+      "note": "Shell, arms and guards of a complete beginner quad."
+    },
+    "nose cap": {
+      "title": "HISINGY Mach 500 Line-of-Sight Beginner Drone Combo",
+      "vendor": "RaceDayQuads",
+      "sku": "23630",
+      "url": "https://www.racedayquads.com/products/hisingy-mach-500-line-of-sight-beginner-drone-combo",
+      "match": "parent",
+      "note": "Shell, arms and guards of a complete beginner quad."
+    },
+    "canopy": {
+      "title": "HISINGY Mach 500 Line-of-Sight Beginner Drone Combo",
+      "vendor": "RaceDayQuads",
+      "sku": "23630",
+      "url": "https://www.racedayquads.com/products/hisingy-mach-500-line-of-sight-beginner-drone-combo",
+      "match": "parent",
+      "note": "Shell, arms and guards of a complete beginner quad."
+    },
+    "belly plate": {
+      "title": "HISINGY Mach 500 Line-of-Sight Beginner Drone Combo",
+      "vendor": "RaceDayQuads",
+      "sku": "23630",
+      "url": "https://www.racedayquads.com/products/hisingy-mach-500-line-of-sight-beginner-drone-combo",
+      "match": "parent",
+      "note": "Shell, arms and guards of a complete beginner quad."
+    },
+    "battery pack rib": {
+      "title": "HISINGY Mach 500 Line-of-Sight Beginner Drone Combo",
+      "vendor": "RaceDayQuads",
+      "sku": "23630",
+      "url": "https://www.racedayquads.com/products/hisingy-mach-500-line-of-sight-beginner-drone-combo",
+      "match": "parent",
+      "note": "Shell, arms and guards of a complete beginner quad."
+    },
+    "charging port": {
+      "title": "HISINGY Mach 500 Line-of-Sight Beginner Drone Combo",
+      "vendor": "RaceDayQuads",
+      "sku": "23630",
+      "url": "https://www.racedayquads.com/products/hisingy-mach-500-line-of-sight-beginner-drone-combo",
+      "match": "parent",
+      "note": "Shell, arms and guards of a complete beginner quad."
+    },
+    "arm": {
+      "title": "HISINGY Mach 500 Line-of-Sight Beginner Drone Combo",
+      "vendor": "RaceDayQuads",
+      "sku": "23630",
+      "url": "https://www.racedayquads.com/products/hisingy-mach-500-line-of-sight-beginner-drone-combo",
+      "match": "parent",
+      "note": "Shell, arms and guards of a complete beginner quad."
+    },
+    "arm stripe": {
+      "title": "HISINGY Mach 500 Line-of-Sight Beginner Drone Combo",
+      "vendor": "RaceDayQuads",
+      "sku": "23630",
+      "url": "https://www.racedayquads.com/products/hisingy-mach-500-line-of-sight-beginner-drone-combo",
+      "match": "parent",
+      "note": "Shell, arms and guards of a complete beginner quad."
+    },
+    "guard ring": {
+      "title": "HISINGY Mach 500 Line-of-Sight Beginner Drone Combo",
+      "vendor": "RaceDayQuads",
+      "sku": "23630",
+      "url": "https://www.racedayquads.com/products/hisingy-mach-500-line-of-sight-beginner-drone-combo",
+      "match": "parent",
+      "note": "Shell, arms and guards of a complete beginner quad."
+    },
+    "guard spoke": {
+      "title": "HISINGY Mach 500 Line-of-Sight Beginner Drone Combo",
+      "vendor": "RaceDayQuads",
+      "sku": "23630",
+      "url": "https://www.racedayquads.com/products/hisingy-mach-500-line-of-sight-beginner-drone-combo",
+      "match": "parent",
+      "note": "Shell, arms and guards of a complete beginner quad."
+    },
+    "guard mount": {
+      "title": "HISINGY Mach 500 Line-of-Sight Beginner Drone Combo",
+      "vendor": "RaceDayQuads",
+      "sku": "23630",
+      "url": "https://www.racedayquads.com/products/hisingy-mach-500-line-of-sight-beginner-drone-combo",
+      "match": "parent",
+      "note": "Shell, arms and guards of a complete beginner quad."
+    },
+    "gyro imu chip": {
+      "title": "HISINGY Mach 500 Line-of-Sight Beginner Drone Combo",
+      "vendor": "RaceDayQuads",
+      "sku": "23630",
+      "url": "https://www.racedayquads.com/products/hisingy-mach-500-line-of-sight-beginner-drone-combo",
+      "match": "parent",
+      "note": "Shell, arms and guards of a complete beginner quad."
+    },
+    "flight controller mcu": {
+      "title": "HISINGY Mach 500 Line-of-Sight Beginner Drone Combo",
+      "vendor": "RaceDayQuads",
+      "sku": "23630",
+      "url": "https://www.racedayquads.com/products/hisingy-mach-500-line-of-sight-beginner-drone-combo",
+      "match": "parent",
+      "note": "Shell, arms and guards of a complete beginner quad."
+    },
+    "logo panel": {
+      "title": "HISINGY Sticker Pack",
+      "vendor": "RaceDayQuads",
+      "sku": "23637",
+      "url": "https://www.racedayquads.com/products/hisingy-sticker-pack",
+      "match": "equivalent",
+      "price": "3.99"
+    },
+    "logo panel red edge": {
+      "title": "HISINGY Sticker Pack",
+      "vendor": "RaceDayQuads",
+      "sku": "23637",
+      "url": "https://www.racedayquads.com/products/hisingy-sticker-pack",
+      "match": "parent"
+    },
+    "logo mark bar": {
+      "title": "HISINGY Sticker Pack",
+      "vendor": "RaceDayQuads",
+      "sku": "23637",
+      "url": "https://www.racedayquads.com/products/hisingy-sticker-pack",
+      "match": "parent"
+    },
+    "logo mark cross": {
+      "title": "HISINGY Sticker Pack",
+      "vendor": "RaceDayQuads",
+      "sku": "23637",
+      "url": "https://www.racedayquads.com/products/hisingy-sticker-pack",
+      "match": "parent"
+    },
+    "body pinstripe": {
+      "title": "HISINGY Sticker Pack",
+      "vendor": "RaceDayQuads",
+      "sku": "23637",
+      "url": "https://www.racedayquads.com/products/hisingy-sticker-pack",
+      "match": "parent"
+    },
+    "wordmark": {
+      "title": "HISINGY Sticker Pack",
+      "vendor": "RaceDayQuads",
+      "sku": "23637",
+      "url": "https://www.racedayquads.com/products/hisingy-sticker-pack",
+      "match": "parent"
+    },
+    "battery pack": {
+      "title": "Hisingy ES950 950mAh LiPo Battery - Firefly / Mach-500",
+      "vendor": "RaceDayQuads",
+      "sku": "22665",
+      "url": "https://www.racedayquads.com/products/hisingy-es950-950mah-lipo-battery-firefly-mach-500",
+      "match": "exact",
+      "price": "8.49"
+    },
+    "lipo battery 1s": {
+      "title": "Hisingy ES950 950mAh LiPo Battery - Firefly / Mach-500",
+      "vendor": "RaceDayQuads",
+      "sku": "22665",
+      "url": "https://www.racedayquads.com/products/hisingy-es950-950mah-lipo-battery-firefly-mach-500",
+      "match": "parent"
+    },
+    "motor pod": {
+      "title": "HISINGY Firefly 8520 FPV Motor (2pcs)",
+      "vendor": "RaceDayQuads",
+      "sku": "23633",
+      "url": "https://www.racedayquads.com/products/hisingy-firefly-8520-fpv-motor-2pcs-gray",
+      "match": "exact",
+      "price": "8.49",
+      "pack_size": 2,
+      "note": "8520 coreless motors, sold as a pair."
+    },
+    "motor rib": {
+      "title": "HISINGY Firefly 8520 FPV Motor (2pcs)",
+      "vendor": "RaceDayQuads",
+      "sku": "23633",
+      "url": "https://www.racedayquads.com/products/hisingy-firefly-8520-fpv-motor-2pcs-gray",
+      "match": "parent"
+    },
+    "motor cap": {
+      "title": "HISINGY Firefly 8520 FPV Motor (2pcs)",
+      "vendor": "RaceDayQuads",
+      "sku": "23633",
+      "url": "https://www.racedayquads.com/products/hisingy-firefly-8520-fpv-motor-2pcs-gray",
+      "match": "parent"
+    },
+    "motor shaft": {
+      "title": "HISINGY Firefly 8520 FPV Motor (2pcs)",
+      "vendor": "RaceDayQuads",
+      "sku": "23633",
+      "url": "https://www.racedayquads.com/products/hisingy-firefly-8520-fpv-motor-2pcs-gray",
+      "match": "parent"
+    },
+    "propeller blade": {
+      "title": "Hisingy Firefly 55mm 2-Blade Propeller (Set of 4) - 1.5mm Shaft",
+      "vendor": "RaceDayQuads",
+      "sku": "22666",
+      "url": "https://www.racedayquads.com/products/hisingy-firefly-55mm-2-blade-propeller-set-of-4-1-5mm-shaft-obsidian-black",
+      "match": "exact",
+      "price": "4.99",
+      "pack_size": 8,
+      "note": "Two-blade props: the eight blades are one 4-pack."
+    },
+    "propeller tip": {
+      "title": "Hisingy Firefly 55mm 2-Blade Propeller (Set of 4) - 1.5mm Shaft",
+      "vendor": "RaceDayQuads",
+      "sku": "22666",
+      "url": "https://www.racedayquads.com/products/hisingy-firefly-55mm-2-blade-propeller-set-of-4-1-5mm-shaft-obsidian-black",
+      "match": "parent"
+    },
+    "propeller root": {
+      "title": "Hisingy Firefly 55mm 2-Blade Propeller (Set of 4) - 1.5mm Shaft",
+      "vendor": "RaceDayQuads",
+      "sku": "22666",
+      "url": "https://www.racedayquads.com/products/hisingy-firefly-55mm-2-blade-propeller-set-of-4-1-5mm-shaft-obsidian-black",
+      "match": "parent"
+    },
+    "propeller blade hole": {
+      "title": "Hisingy Firefly 55mm 2-Blade Propeller (Set of 4) - 1.5mm Shaft",
+      "vendor": "RaceDayQuads",
+      "sku": "22666",
+      "url": "https://www.racedayquads.com/products/hisingy-firefly-55mm-2-blade-propeller-set-of-4-1-5mm-shaft-obsidian-black",
+      "match": "parent"
+    },
+    "prop hub": {
+      "title": "Hisingy Firefly 55mm 2-Blade Propeller (Set of 4) - 1.5mm Shaft",
+      "vendor": "RaceDayQuads",
+      "sku": "22666",
+      "url": "https://www.racedayquads.com/products/hisingy-firefly-55mm-2-blade-propeller-set-of-4-1-5mm-shaft-obsidian-black",
+      "match": "parent"
+    },
+    "prop screw": {
+      "title": "Hisingy Firefly 55mm 2-Blade Propeller (Set of 4) - 1.5mm Shaft",
+      "vendor": "RaceDayQuads",
+      "sku": "22666",
+      "url": "https://www.racedayquads.com/products/hisingy-firefly-55mm-2-blade-propeller-set-of-4-1-5mm-shaft-obsidian-black",
+      "match": "parent"
+    },
+    "flight controller board": {
+      "title": "NewBeeDrone VRDrone Flight Controller (brushed)",
+      "vendor": "RaceDayQuads",
+      "sku": "",
+      "url": "https://www.racedayquads.com/products/newbeedrone-vrdrone-flight-controller",
+      "match": "equivalent",
+      "price": "39.99"
+    },
+    "wi-fi receiver board": {
+      "title": "BetaFPV ELRS Nano 2.4GHz Receiver",
+      "vendor": "RaceDayQuads",
+      "sku": "21985",
+      "url": "https://www.racedayquads.com/products/betafpv-elrs-nano-2-4ghz-receiver",
+      "match": "equivalent",
+      "price": "11.99"
+    },
+    "power wire, 1.5 mm": {
+      "title": "Silicone Wire (1 ft red, 1 ft black), 22 AWG",
+      "vendor": "RaceDayQuads",
+      "sku": "6001600577316",
+      "url": "https://www.racedayquads.com/products/silicone-wire-2-ft-red-and-black-pair",
+      "match": "equivalent",
+      "price": "1.49"
+    },
+    "power wire, 1.2 mm": {
+      "title": "Silicone Wire (1 ft red, 1 ft black), 22 AWG",
+      "vendor": "RaceDayQuads",
+      "sku": "6001600577316",
+      "url": "https://www.racedayquads.com/products/silicone-wire-2-ft-red-and-black-pair",
+      "match": "parent"
+    },
+    "signal wire, 1 mm": {
+      "title": "DIY Silicone Cable Set, JST-SH only",
+      "vendor": "RaceDayQuads",
+      "sku": "AIRB-CableSet-1.0",
+      "url": "https://www.racedayquads.com/products/sh-1-0-silicone-cable-set",
+      "match": "equivalent",
+      "price": "5.99"
+    }
+  }
+}

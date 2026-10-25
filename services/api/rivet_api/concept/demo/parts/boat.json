@@ -1,0 +1,329 @@
+{
+  "demo": "boat",
+  "checked_at": "2026-10-25T00:00:00Z",
+  "parts": {
+    "hull aft": {
+      "title": "Pro Boat Hull: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3094",
+      "url": "https://www.horizonhobby.com/product/PRB-3094.html",
+      "match": "equivalent",
+      "price": "80.99",
+      "note": "Deep-V hull of the same class of boat."
+    },
+    "hull bow": {
+      "title": "Pro Boat Hull: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3094",
+      "url": "https://www.horizonhobby.com/product/PRB-3094.html",
+      "match": "parent"
+    },
+    "hull flank band aft": {
+      "title": "Pro Boat Hull: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3094",
+      "url": "https://www.horizonhobby.com/product/PRB-3094.html",
+      "match": "parent"
+    },
+    "hull flank band bow": {
+      "title": "Pro Boat Hull: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3094",
+      "url": "https://www.horizonhobby.com/product/PRB-3094.html",
+      "match": "parent"
+    },
+    "deck aft": {
+      "title": "Pro Boat Hull: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3094",
+      "url": "https://www.horizonhobby.com/product/PRB-3094.html",
+      "match": "parent"
+    },
+    "deck bow": {
+      "title": "Pro Boat Hull: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3094",
+      "url": "https://www.horizonhobby.com/product/PRB-3094.html",
+      "match": "parent"
+    },
+    "keel": {
+      "title": "Pro Boat Hull: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3094",
+      "url": "https://www.horizonhobby.com/product/PRB-3094.html",
+      "match": "parent"
+    },
+    "bow keel": {
+      "title": "Pro Boat Hull: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3094",
+      "url": "https://www.horizonhobby.com/product/PRB-3094.html",
+      "match": "parent"
+    },
+    "chine strake": {
+      "title": "Pro Boat Hull: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3094",
+      "url": "https://www.horizonhobby.com/product/PRB-3094.html",
+      "match": "parent"
+    },
+    "gunwale trim": {
+      "title": "Pro Boat Hull: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3094",
+      "url": "https://www.horizonhobby.com/product/PRB-3094.html",
+      "match": "parent"
+    },
+    "transom": {
+      "title": "Pro Boat Hull: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3094",
+      "url": "https://www.horizonhobby.com/product/PRB-3094.html",
+      "match": "parent"
+    },
+    "canopy": {
+      "title": "Pro Boat Canopy: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3096",
+      "url": "https://www.horizonhobby.com/product/PRB-3096.html",
+      "match": "equivalent",
+      "price": "31.99"
+    },
+    "canopy nose": {
+      "title": "Pro Boat Canopy: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3096",
+      "url": "https://www.horizonhobby.com/product/PRB-3096.html",
+      "match": "parent"
+    },
+    "canopy window": {
+      "title": "Pro Boat Canopy: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3096",
+      "url": "https://www.horizonhobby.com/product/PRB-3096.html",
+      "match": "parent"
+    },
+    "canopy scoop": {
+      "title": "Pro Boat Canopy: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3096",
+      "url": "https://www.horizonhobby.com/product/PRB-3096.html",
+      "match": "parent"
+    },
+    "scoop intake": {
+      "title": "Pro Boat Canopy: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3096",
+      "url": "https://www.horizonhobby.com/product/PRB-3096.html",
+      "match": "parent"
+    },
+    "flame streak": {
+      "title": "Pro Boat Sonicwake 24in Self-Righting Brushless Deep-V RTR",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-1992",
+      "url": "https://www.horizonhobby.com/product/PRB-1992.html",
+      "match": "parent",
+      "note": "Graphics and fittings of the complete boat."
+    },
+    "hull lettering": {
+      "title": "Pro Boat Sonicwake 24in Self-Righting Brushless Deep-V RTR",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-1992",
+      "url": "https://www.horizonhobby.com/product/PRB-1992.html",
+      "match": "parent",
+      "note": "Graphics and fittings of the complete boat."
+    },
+    "hull streak": {
+      "title": "Pro Boat Sonicwake 24in Self-Righting Brushless Deep-V RTR",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-1992",
+      "url": "https://www.horizonhobby.com/product/PRB-1992.html",
+      "match": "parent",
+      "note": "Graphics and fittings of the complete boat."
+    },
+    "deck flame": {
+      "title": "Pro Boat Sonicwake 24in Self-Righting Brushless Deep-V RTR",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-1992",
+      "url": "https://www.horizonhobby.com/product/PRB-1992.html",
+      "match": "parent",
+      "note": "Graphics and fittings of the complete boat."
+    },
+    "canopy trim stripe": {
+      "title": "Pro Boat Sonicwake 24in Self-Righting Brushless Deep-V RTR",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-1992",
+      "url": "https://www.horizonhobby.com/product/PRB-1992.html",
+      "match": "parent",
+      "note": "Graphics and fittings of the complete boat."
+    },
+    "canopy orange stripe": {
+      "title": "Pro Boat Sonicwake 24in Self-Righting Brushless Deep-V RTR",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-1992",
+      "url": "https://www.horizonhobby.com/product/PRB-1992.html",
+      "match": "parent",
+      "note": "Graphics and fittings of the complete boat."
+    },
+    "canopy side lettering": {
+      "title": "Pro Boat Sonicwake 24in Self-Righting Brushless Deep-V RTR",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-1992",
+      "url": "https://www.horizonhobby.com/product/PRB-1992.html",
+      "match": "parent",
+      "note": "Graphics and fittings of the complete boat."
+    },
+    "transom plate": {
+      "title": "Pro Boat Sonicwake 24in Self-Righting Brushless Deep-V RTR",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-1992",
+      "url": "https://www.horizonhobby.com/product/PRB-1992.html",
+      "match": "parent",
+      "note": "Graphics and fittings of the complete boat."
+    },
+    "rudder": {
+      "title": "Pro Boat Rudder Set: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3090",
+      "url": "https://www.horizonhobby.com/product/PRB-3090.html",
+      "match": "equivalent",
+      "price": "23.99"
+    },
+    "rudder bracket": {
+      "title": "Pro Boat Rudder Set: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3090",
+      "url": "https://www.horizonhobby.com/product/PRB-3090.html",
+      "match": "parent"
+    },
+    "rudder tiller": {
+      "title": "Pro Boat Rudder Set: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3090",
+      "url": "https://www.horizonhobby.com/product/PRB-3090.html",
+      "match": "parent"
+    },
+    "drive strut": {
+      "title": "Pro Boat Prop Strut Set: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3088",
+      "url": "https://www.horizonhobby.com/product/PRB-3088.html",
+      "match": "equivalent",
+      "price": "17.99"
+    },
+    "prop shaft": {
+      "title": "Pro Boat Prop Strut Set: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3088",
+      "url": "https://www.horizonhobby.com/product/PRB-3088.html",
+      "match": "parent"
+    },
+    "propeller": {
+      "title": "Pro Boat Propeller (3): Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3095",
+      "url": "https://www.horizonhobby.com/product/PRB-3095.html",
+      "match": "equivalent",
+      "price": "23.99",
+      "pack_size": 3
+    },
+    "prop nut": {
+      "title": "Pro Boat Propeller (3): Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3095",
+      "url": "https://www.horizonhobby.com/product/PRB-3095.html",
+      "match": "parent"
+    },
+    "trim tab": {
+      "title": "Pro Boat Trim Tabs: Sonicwake 36in V3",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-4088",
+      "url": "https://www.horizonhobby.com/product/PRB-4088.html",
+      "match": "equivalent",
+      "price": "27.99",
+      "pack_size": 2
+    },
+    "turn fin": {
+      "title": "Pro Boat Turn Fin Set: Sonicwake 24in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-3087",
+      "url": "https://www.horizonhobby.com/product/PRB-3087.html",
+      "match": "equivalent",
+      "price": "23.99",
+      "pack_size": 2
+    },
+    "water outlet": {
+      "title": "Pro Boat Water Cooling Line 3mm ID, 36in",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB-1153",
+      "url": "https://www.horizonhobby.com/product/PRB-1153.html",
+      "match": "equivalent",
+      "price": "7.99",
+      "pack_size": 2,
+      "note": "Water-cooling line that ends at the outlets."
+    },
+    "water-cooled brushless motor": {
+      "title": "Spektrum Firma 3542-2500Kv Outrunner Marine Motor",
+      "vendor": "Horizon Hobby",
+      "sku": "SPMXMM1600",
+      "url": "https://www.horizonhobby.com/product/SPMXMM1600.html",
+      "match": "equivalent",
+      "price": "49.99"
+    },
+    "motor end bell": {
+      "title": "Spektrum Firma 3542-2500Kv Outrunner Marine Motor",
+      "vendor": "Horizon Hobby",
+      "sku": "SPMXMM1600",
+      "url": "https://www.horizonhobby.com/product/SPMXMM1600.html",
+      "match": "parent"
+    },
+    "water-cooled esc": {
+      "title": "Spektrum Firma 50A Marine ESC",
+      "vendor": "Horizon Hobby",
+      "sku": "SPMX-1128",
+      "url": "https://www.horizonhobby.com/product/SPMX-1128.html",
+      "match": "equivalent",
+      "price": "49.99"
+    },
+    "lipo battery pack": {
+      "title": "Spektrum 11.1V 2200mAh 3S 30C Smart G2 LiPo Battery: IC3",
+      "vendor": "Horizon Hobby",
+      "sku": "SPMX223S30",
+      "url": "https://www.horizonhobby.com/product/SPMX223S30.html",
+      "match": "equivalent",
+      "price": "29.99"
+    },
+    "radio receiver box": {
+      "title": "Spektrum MRX200 FHSS 3-Channel Marine Receiver",
+      "vendor": "Horizon Hobby",
+      "sku": "SPMMRX200",
+      "url": "https://www.horizonhobby.com/product/SPMMRX200.html",
+      "match": "equivalent",
+      "price": "29.99"
+    },
+    "rudder servo": {
+      "title": "Pro Boat Servo 5.3kg 4.8-6V Waterproof Analog",
+      "vendor": "Horizon Hobby",
+      "sku": "PRB18039",
+      "url": "https://www.horizonhobby.com/product/PRB18039.html",
+      "match": "equivalent",
+      "price": "27.99"
+    },
+    "power wire, 3 mm": {
+      "title": "Silicone Wire (1 ft red, 1 ft black), 22 AWG",
+      "vendor": "RaceDayQuads",
+      "sku": "6001600577316",
+      "url": "https://www.racedayquads.com/products/silicone-wire-2-ft-red-and-black-pair",
+      "match": "equivalent",
+      "price": "1.49"
+    },
+    "signal wire, 1.2 mm": {
+      "title": "DIY Silicone Cable Set, JST-SH only",
+      "vendor": "RaceDayQuads",
+      "sku": "AIRB-CableSet-1.0",
+      "url": "https://www.racedayquads.com/products/sh-1-0-silicone-cable-set",
+      "match": "equivalent",
+      "price": "5.99"
+    }
+  }
+}

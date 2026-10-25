@@ -1,0 +1,411 @@
+{
+  "demo": "fpv_car",
+  "checked_at": "2026-10-25T00:00:00Z",
+  "parts": {
+    "body": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "equivalent",
+      "price": "19.99",
+      "note": "Boxy clear body for a 1/24 crawler."
+    },
+    "hood": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "hood vent": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "cabin": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "roof": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "windscreen": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "windscreen frame": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "window": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "side window": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "door seam": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "door handle": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "beltline trim": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "door trim strip": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "running board": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "fender flare": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "mirror stalk": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "side mirror": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "grille": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "grille bar": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "grille badge": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "badge star": {
+      "title": "Pro-Line 1/24 Cliffhanger High Performance Clear Body: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "PRO359600",
+      "url": "https://www.horizonhobby.com/product/PRO359600.html",
+      "match": "parent"
+    },
+    "headlight": {
+      "title": "Axial LED Light Set: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "AXI10001",
+      "url": "https://www.horizonhobby.com/product/AXI10001.html",
+      "match": "equivalent",
+      "price": "4.99",
+      "pack_size": 2,
+      "note": "One light set lights both headlights and the tail lights."
+    },
+    "headlight bezel": {
+      "title": "Axial LED Light Set: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "AXI10001",
+      "url": "https://www.horizonhobby.com/product/AXI10001.html",
+      "match": "parent"
+    },
+    "headlight glow": {
+      "title": "Axial LED Light Set: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "AXI10001",
+      "url": "https://www.horizonhobby.com/product/AXI10001.html",
+      "match": "parent"
+    },
+    "fog lamp": {
+      "title": "Axial LED Light Set: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "AXI10001",
+      "url": "https://www.horizonhobby.com/product/AXI10001.html",
+      "match": "parent"
+    },
+    "tail light": {
+      "title": "Axial LED Light Set: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "AXI10001",
+      "url": "https://www.horizonhobby.com/product/AXI10001.html",
+      "match": "parent"
+    },
+    "turn signal": {
+      "title": "Axial LED Light Set: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "AXI10001",
+      "url": "https://www.horizonhobby.com/product/AXI10001.html",
+      "match": "parent"
+    },
+    "bumper": {
+      "title": "Axial Front Bumper with LED: SCX24 Ford Bronco",
+      "vendor": "Horizon Hobby",
+      "sku": "AXI200010",
+      "url": "https://www.horizonhobby.com/product/AXI200010.html",
+      "match": "equivalent",
+      "price": "10.99"
+    },
+    "underbody": {
+      "title": "Axial Chassis, X-Long Wheel Base 153.7mm: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "AXI201003",
+      "url": "https://www.horizonhobby.com/product/AXI201003.html",
+      "match": "equivalent",
+      "price": "16.99"
+    },
+    "tyre": {
+      "title": "Axial 1.0 Nitto Trail Grappler M/T V2 Tires (4): SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "AXI40004",
+      "url": "https://www.horizonhobby.com/product/AXI40004.html",
+      "match": "equivalent",
+      "price": "18.99",
+      "pack_size": 4
+    },
+    "tyre sidewall": {
+      "title": "Axial 1.0 Nitto Trail Grappler M/T V2 Tires (4): SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "AXI40004",
+      "url": "https://www.horizonhobby.com/product/AXI40004.html",
+      "match": "parent"
+    },
+    "rim": {
+      "title": "Axial 1.0 Method MR307 Hole Wheels (4): SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "AXI40000",
+      "url": "https://www.horizonhobby.com/product/AXI40000.html",
+      "match": "equivalent",
+      "price": "5.99",
+      "pack_size": 4
+    },
+    "rim lip": {
+      "title": "Axial 1.0 Method MR307 Hole Wheels (4): SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "AXI40000",
+      "url": "https://www.horizonhobby.com/product/AXI40000.html",
+      "match": "parent"
+    },
+    "rim spoke": {
+      "title": "Axial 1.0 Method MR307 Hole Wheels (4): SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "AXI40000",
+      "url": "https://www.horizonhobby.com/product/AXI40000.html",
+      "match": "parent"
+    },
+    "hub cap": {
+      "title": "Axial 1.0 Method MR307 Hole Wheels (4): SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "AXI40000",
+      "url": "https://www.horizonhobby.com/product/AXI40000.html",
+      "match": "parent"
+    },
+    "fpv camera box": {
+      "title": "HISINGY Easy Copter FPV Camera + VTX",
+      "vendor": "RaceDayQuads",
+      "sku": "G24327CN1Z",
+      "url": "https://www.racedayquads.com/products/hisingy-easy-copter-fpv-camera-vtx",
+      "match": "equivalent",
+      "price": "32.49",
+      "note": "Camera and 5.8 GHz video transmitter in one unit."
+    },
+    "camera box base": {
+      "title": "HISINGY Easy Copter FPV Camera + VTX",
+      "vendor": "RaceDayQuads",
+      "sku": "G24327CN1Z",
+      "url": "https://www.racedayquads.com/products/hisingy-easy-copter-fpv-camera-vtx",
+      "match": "parent"
+    },
+    "camera box vent slot": {
+      "title": "HISINGY Easy Copter FPV Camera + VTX",
+      "vendor": "RaceDayQuads",
+      "sku": "G24327CN1Z",
+      "url": "https://www.racedayquads.com/products/hisingy-easy-copter-fpv-camera-vtx",
+      "match": "parent"
+    },
+    "fpv logo": {
+      "title": "HISINGY Easy Copter FPV Camera + VTX",
+      "vendor": "RaceDayQuads",
+      "sku": "G24327CN1Z",
+      "url": "https://www.racedayquads.com/products/hisingy-easy-copter-fpv-camera-vtx",
+      "match": "parent"
+    },
+    "fpv logo arrow": {
+      "title": "HISINGY Easy Copter FPV Camera + VTX",
+      "vendor": "RaceDayQuads",
+      "sku": "G24327CN1Z",
+      "url": "https://www.racedayquads.com/products/hisingy-easy-copter-fpv-camera-vtx",
+      "match": "parent"
+    },
+    "camera lens barrel": {
+      "title": "HISINGY Easy Copter FPV Camera + VTX",
+      "vendor": "RaceDayQuads",
+      "sku": "G24327CN1Z",
+      "url": "https://www.racedayquads.com/products/hisingy-easy-copter-fpv-camera-vtx",
+      "match": "parent"
+    },
+    "lens bezel": {
+      "title": "HISINGY Easy Copter FPV Camera + VTX",
+      "vendor": "RaceDayQuads",
+      "sku": "G24327CN1Z",
+      "url": "https://www.racedayquads.com/products/hisingy-easy-copter-fpv-camera-vtx",
+      "match": "parent"
+    },
+    "camera lens": {
+      "title": "HISINGY Easy Copter FPV Camera + VTX",
+      "vendor": "RaceDayQuads",
+      "sku": "G24327CN1Z",
+      "url": "https://www.racedayquads.com/products/hisingy-easy-copter-fpv-camera-vtx",
+      "match": "parent"
+    },
+    "video transmitter": {
+      "title": "HISINGY Easy Copter FPV Camera + VTX",
+      "vendor": "RaceDayQuads",
+      "sku": "G24327CN1Z",
+      "url": "https://www.racedayquads.com/products/hisingy-easy-copter-fpv-camera-vtx",
+      "match": "parent"
+    },
+    "camera sensor board": {
+      "title": "HISINGY Easy Copter FPV Camera + VTX",
+      "vendor": "RaceDayQuads",
+      "sku": "G24327CN1Z",
+      "url": "https://www.racedayquads.com/products/hisingy-easy-copter-fpv-camera-vtx",
+      "match": "parent"
+    },
+    "whip antenna": {
+      "title": "FlyFishRC Osprey 5.8GHz 40mm U.FL Antenna - LHCP",
+      "vendor": "RaceDayQuads",
+      "sku": "FFSH-A000505",
+      "url": "https://www.racedayquads.com/products/flyfishrc-osprey-5-8ghz-40mm-u-fl-antenna-lhcp-cyan",
+      "match": "equivalent",
+      "price": "6.99"
+    },
+    "antenna base": {
+      "title": "FlyFishRC Osprey 5.8GHz 40mm U.FL Antenna - LHCP",
+      "vendor": "RaceDayQuads",
+      "sku": "FFSH-A000505",
+      "url": "https://www.racedayquads.com/products/flyfishrc-osprey-5-8ghz-40mm-u-fl-antenna-lhcp-cyan",
+      "match": "parent"
+    },
+    "receiver and esc board": {
+      "title": "Furitek Iguana Pro 30A/50A Brushed ESC Combo with Bluetooth: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "FRU2071",
+      "url": "https://www.horizonhobby.com/product/FRU2071.html",
+      "match": "equivalent",
+      "price": "74.99"
+    },
+    "lipo battery": {
+      "title": "Spektrum 7.4V 350mAh 2S LiPo Battery: SCX24 PH 2.0",
+      "vendor": "Horizon Hobby",
+      "sku": "SPMX3502S30",
+      "url": "https://www.horizonhobby.com/product/SPMX3502S30.html",
+      "match": "exact",
+      "price": "8.99"
+    },
+    "drive motor": {
+      "title": "Dynamite 88T Brushed Motor, 11T/10T Pinion: SCX24",
+      "vendor": "Horizon Hobby",
+      "sku": "DYNS1217",
+      "url": "https://www.horizonhobby.com/product/DYNS1217.html",
+      "match": "exact",
+      "price": "10.99"
+    },
+    "steering servo": {
+      "title": "Sub-micro Servo - SG51R",
+      "vendor": "Adafruit",
+      "sku": "2201",
+      "url": "https://www.adafruit.com/product/2201",
+      "match": "equivalent",
+      "price": "5.95"
+    },
+    "power wire, 1.4 mm": {
+      "title": "Silicone Wire (1 ft red, 1 ft black), 22 AWG",
+      "vendor": "RaceDayQuads",
+      "sku": "6001600577316",
+      "url": "https://www.racedayquads.com/products/silicone-wire-2-ft-red-and-black-pair",
+      "match": "equivalent",
+      "price": "1.49"
+    },
+    "power wire, 1.2 mm": {
+      "title": "Silicone Wire (1 ft red, 1 ft black), 22 AWG",
+      "vendor": "RaceDayQuads",
+      "sku": "6001600577316",
+      "url": "https://www.racedayquads.com/products/silicone-wire-2-ft-red-and-black-pair",
+      "match": "parent"
+    },
+    "power wire, 1 mm": {
+      "title": "Silicone Wire (1 ft red, 1 ft black), 22 AWG",
+      "vendor": "RaceDayQuads",
+      "sku": "6001600577316",
+      "url": "https://www.racedayquads.com/products/silicone-wire-2-ft-red-and-black-pair",
+      "match": "parent"
+    },
+    "signal wire, 1 mm": {
+      "title": "DIY Silicone Cable Set, JST-SH only",
+      "vendor": "RaceDayQuads",
+      "sku": "AIRB-CableSet-1.0",
+      "url": "https://www.racedayquads.com/products/sh-1-0-silicone-cable-set",
+      "match": "equivalent",
+      "price": "5.99"
+    }
+  }
+}

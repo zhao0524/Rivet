@@ -1,0 +1,498 @@
+{
+  "demo": "arm",
+  "checked_at": "2026-10-25T00:00:00Z",
+  "parts": {
+    "base plate": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "base plate arm": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "base plate arm tip": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "base plate hole": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "pedestal": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "pedestal band": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "turntable ring": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "turntable": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "turntable bearing": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "shoulder side plate": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "shoulder plate": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "shoulder bearing": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "shoulder bearing hub": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "plate screw": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "arm plate": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "knee boss": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "elbow plate end": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "arm spacer": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "arm stiffener": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "elbow servo label": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "elbow servo label print": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "elbow horn": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "elbow horn screw": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "forearm clamp": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "forearm tube": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "forearm end cap": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "wrist horn plate": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "wrist bolt": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "wrist roll horn": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "board bracket": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "board usb port": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "arm cable": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "arm cable bend": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "wrist servo lead red": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "wrist servo lead red bend": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "wrist servo lead white": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "wrist servo lead white bend": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "base cable loom": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "base cable loom bend": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "base cable loop": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "base cable loop bend": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "gear tooth": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "gripper plate slot": {
+      "title": "Hiwonder xArm 1S Intelligent Bus Servo Robotic Arm",
+      "vendor": "Hiwonder",
+      "sku": "21010002",
+      "url": "https://www.hiwonder.com/products/xarm-1s",
+      "match": "parent",
+      "note": "Frame, hardware and servo leads of the xArm 1S kit."
+    },
+    "shoulder servo": {
+      "title": "Hiwonder LX-225 Serial Bus Servo (25kg)",
+      "vendor": "Hiwonder",
+      "sku": "21100038",
+      "url": "https://www.hiwonder.com/products/lx-225",
+      "match": "equivalent",
+      "price": "17.99",
+      "note": "High-torque bus servo for the heavily loaded joints."
+    },
+    "elbow servo": {
+      "title": "Hiwonder LX-225 Serial Bus Servo (25kg)",
+      "vendor": "Hiwonder",
+      "sku": "21100038",
+      "url": "https://www.hiwonder.com/products/lx-225",
+      "match": "equivalent",
+      "price": "17.99",
+      "note": "High-torque bus servo for the heavily loaded joints."
+    },
+    "base rotation servo": {
+      "title": "Hiwonder LX-225 Serial Bus Servo (25kg)",
+      "vendor": "Hiwonder",
+      "sku": "21100038",
+      "url": "https://www.hiwonder.com/products/lx-225",
+      "match": "equivalent",
+      "price": "17.99",
+      "note": "High-torque bus servo for the heavily loaded joints."
+    },
+    "shoulder servo block": {
+      "title": "Hiwonder Servo Bracket for the LX-15D Bus Servo",
+      "vendor": "Hiwonder",
+      "sku": "",
+      "url": "https://www.hiwonder.com/products/servo-bracket-compatible-with-lx-15d",
+      "match": "equivalent",
+      "price": "3.99"
+    },
+    "wrist bracket": {
+      "title": "Hiwonder Servo Bracket for the LX-15D Bus Servo",
+      "vendor": "Hiwonder",
+      "sku": "",
+      "url": "https://www.hiwonder.com/products/servo-bracket-compatible-with-lx-15d",
+      "match": "equivalent",
+      "price": "3.99"
+    },
+    "wrist pitch servo": {
+      "title": "Hiwonder LX-15D Intelligent Serial Bus Servo",
+      "vendor": "Hiwonder",
+      "sku": "21100031",
+      "url": "https://www.hiwonder.com/products/lx-15d",
+      "match": "exact",
+      "price": "16.99"
+    },
+    "wrist roll servo": {
+      "title": "Hiwonder LX-15D Intelligent Serial Bus Servo",
+      "vendor": "Hiwonder",
+      "sku": "21100031",
+      "url": "https://www.hiwonder.com/products/lx-15d",
+      "match": "exact",
+      "price": "16.99"
+    },
+    "gripper servo": {
+      "title": "Hiwonder LX-15D Intelligent Serial Bus Servo",
+      "vendor": "Hiwonder",
+      "sku": "21100031",
+      "url": "https://www.hiwonder.com/products/lx-15d",
+      "match": "exact",
+      "price": "16.99"
+    },
+    "gripper plate": {
+      "title": "Hiwonder Black Aluminum Alloy Gripper",
+      "vendor": "Hiwonder",
+      "sku": "21070010",
+      "url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
+      "match": "equivalent",
+      "price": "13.99",
+      "note": "Geared two-finger aluminium gripper."
+    },
+    "gripper gear": {
+      "title": "Hiwonder Black Aluminum Alloy Gripper",
+      "vendor": "Hiwonder",
+      "sku": "21070010",
+      "url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
+      "match": "parent",
+      "note": "Geared two-finger aluminium gripper."
+    },
+    "gripper linkage": {
+      "title": "Hiwonder Black Aluminum Alloy Gripper",
+      "vendor": "Hiwonder",
+      "sku": "21070010",
+      "url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
+      "match": "parent",
+      "note": "Geared two-finger aluminium gripper."
+    },
+    "gripper finger": {
+      "title": "Hiwonder Black Aluminum Alloy Gripper",
+      "vendor": "Hiwonder",
+      "sku": "21070010",
+      "url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
+      "match": "parent",
+      "note": "Geared two-finger aluminium gripper."
+    },
+    "gripper finger tip": {
+      "title": "Hiwonder Black Aluminum Alloy Gripper",
+      "vendor": "Hiwonder",
+      "sku": "21070010",
+      "url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
+      "match": "parent",
+      "note": "Geared two-finger aluminium gripper."
+    },
+    "finger pivot": {
+      "title": "Hiwonder Black Aluminum Alloy Gripper",
+      "vendor": "Hiwonder",
+      "sku": "21070010",
+      "url": "https://www.hiwonder.com/products/silver-aluminum-alloy-gripper",
+      "match": "parent",
+      "note": "Geared two-finger aluminium gripper."
+    },
+    "controller board": {
+      "title": "Hiwonder Serial Bus Servo Controller",
+      "vendor": "Hiwonder",
+      "sku": "21090003",
+      "url": "https://www.hiwonder.com/products/serial-bus-servo-controller",
+      "match": "equivalent",
+      "price": "39.99"
+    },
+    "servo header": {
+      "title": "Hiwonder Serial Bus Servo Controller",
+      "vendor": "Hiwonder",
+      "sku": "21090003",
+      "url": "https://www.hiwonder.com/products/serial-bus-servo-controller",
+      "match": "parent"
+    },
+    "board module": {
+      "title": "Hiwonder Bluetooth Module for the servo controller",
+      "vendor": "Hiwonder",
+      "sku": "13040017",
+      "url": "https://www.hiwonder.com/products/bluetooth-module",
+      "match": "equivalent",
+      "price": "12.99"
+    },
+    "power regulator board": {
+      "title": "Hiwonder Power Supply Adapter for Robot Arm, 7.5V 3A",
+      "vendor": "Hiwonder",
+      "sku": "15020008",
+      "url": "https://www.hiwonder.com/products/power-supply-adapter-7-5v-3a",
+      "match": "equivalent",
+      "price": "7.99",
+      "note": "Power for the servo bus."
+    }
+  }
+}
