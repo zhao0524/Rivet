@@ -56,3 +56,6 @@ temp/
 /exports/
 # Runtime data when the API is started from the repo root; canonical root is services/api/data.
 /data/
+
+# Agent skills: .claude/skills mirrors .devin/skills; restore with `npx skills experimental_install`
+.claude/skills/

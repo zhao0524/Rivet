@@ -18,6 +18,7 @@ The rover is also the fallback: if a concept model cannot be built (provider err
 | [`docs/project.md`](docs/project.md) | Product requirements, UX, scope, and language |
 | [`docs/implementation.md`](docs/implementation.md) | Tech stack, contracts, ownership lanes, schedule, and tests |
 | [`contracts/api.md`](contracts/api.md) | Frozen v1 REST API, error and job-event contract; JSON schemas sit next to it. Validate with `uv run scripts/validate_contracts.py` |
+| [`docs/SKILLS/README.md`](docs/SKILLS/README.md) | Agent skills installed in this repo (scraping, browser automation, engineering, stack-specific) and how to add more |
 
 If the two conflict on schema or safety/verification rules, follow `implementation.md`, then reconcile both in a reviewed change.
 
@@ -88,24 +89,6 @@ A live provider is needed for concept models of your own photos. For live image 
 `RIVET_MODE=live`, `RIVET_VISION_PROVIDER=openai`, `RIVET_VISION_MODEL=gpt-4o` and
 `OPENAI_API_KEY` in root `.env.local`. See [provider verification](services/api/README.md)
 for the opt-in tests. Backboard image input remains unsupported for the demo.
-
-### v2 geometry-first design workspace (`/design`)
-
-`http://localhost:3000/design` is the newer, geometry-first path (linked from `/new`). You give a
-prompt and/or a reference photo, Rivet authors three different designs, builds real B-rep geometry
-for each, runs the engineering engine over it, and renders six camera views per candidate so you can
-compare them and pick one. Concept-only checks appearance; **Engineered** also sources real catalog
-parts and runs the engine's checks.
-
-It is offline by default and labelled as such: every result reports `generation_mode: "fixture"` from
-the deterministic rule-based author. For real authoring, set `RIVET_3D_MODE=live` and
-`OPENAI_API_KEY` in root `.env.local`; live mode is explicit and **hard-fails** if the key is missing
-rather than silently falling back. `RIVET_DESIGN_MODEL` overrides the author model (default:
-`RIVET_VISION_MODEL`, else `gpt-4o`). Optional extras: `RIVET_IMAGE_PROVIDER=openai` for image
-previews, and `RIVET_RENDERER=chromium` for headless three.js renders instead of the deterministic
-CPU renderer. See `.env.example` for the full list and defaults.
-
-Live authoring costs real money per run (roughly $0.30–0.60 for three candidates on `gpt-4o`).
 
 ```bash
 pnpm test:web
