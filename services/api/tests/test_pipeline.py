@@ -148,9 +148,11 @@ def test_engine_returning_wrong_shape_fails_job(generate, stub_engine_cls):
     assert job["error"]["code"] == "ENGINE_CONTRACT_VIOLATION"
 
 
-def test_vision_failure_marks_job_failed_with_retryable_error(generate):
+def test_fixture_vision_failure_marks_job_failed_with_retryable_error(generate):
+    # A live provider that errors falls back to the saved rover reading
+    # (test_interpretation.py); a fixture provider's failure still fails the job.
     class BrokenVision:
-        mode = "live"
+        mode = "fixture"
 
         def interpret(self, request, image):
             raise ApiError("VISION_PARSE_FAILED", "model returned junk", 502, retryable=True)

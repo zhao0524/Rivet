@@ -155,7 +155,8 @@ system dependencies). For a virtual environment, use its Python with `-m pytest`
 
 [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs independent jobs: contract/fixture
 validation, engine pytest, API pytest (fixture mode), web lint/typecheck/Vitest/build, a verified-parts
-golden set from recorded pages, and an optional PlatformIO firmware compile.
+golden set from recorded pages, browser acceptance (both Playwright suites, with the real engine and
+offline vision) and an optional PlatformIO firmware compile.
 [`supplier-links.yml`](.github/workflows/supplier-links.yml) checks catalog purchase links daily and opens
 an issue when one breaks. The [verification receipt](docs/final-verification.md) distinguishes executed
 software checks from live-provider, hardware-fit and human rehearsal gates.

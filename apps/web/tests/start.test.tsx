@@ -69,7 +69,10 @@ beforeEach(() => {
   startOverride = null;
   unsupportedFamily = null;
 });
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  vi.unstubAllGlobals();
+});
 
 async function renderIn(ui: React.ReactElement) {
   let result!: ReturnType<typeof render>;
@@ -283,6 +286,8 @@ describe('Workspace', () => {
   }, 20_000);
 
   it('opens a ready project without generating, and picking a part shows it', async () => {
+    // Reduced motion skips the one-time assembly replay, so the picked-part card can show right away.
+    vi.stubGlobal('matchMedia', (query: string) => ({ matches: query.includes('reduce'), media: query, addEventListener() {}, removeEventListener() {} }));
     seed('p_ws6', { phase: 'ready', exampleId: 'rivet-intent-rover-001', buildId: 'rivet-intent-rover-001' });
     await open('p_ws6');
     await screen.findByTestId('workspace-chat-wrap', {}, { timeout: 8000 });
