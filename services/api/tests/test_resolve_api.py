@@ -1,9 +1,7 @@
 import json
-from datetime import datetime, timezone
 
 import pytest
 
-from rivet_api.agents.product import ProductGuess
 from rivet_api.agents.vision import LiveVisionProvider, MockVisionProvider
 from rivet_api.config import Settings
 from rivet_api.errors import ApiError

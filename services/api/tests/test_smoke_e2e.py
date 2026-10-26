@@ -1,8 +1,6 @@
 import re
 from pathlib import Path
 
-import pytest
-from fastapi.testclient import TestClient
 
 from rivet_api.config import Settings
 from rivet_api.main import create_app

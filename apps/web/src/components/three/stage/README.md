@@ -16,11 +16,9 @@ import { RivetStage } from './components/three/stage';
 Omit `boundsMm` to measure the children. `fitCameraToBounds` is exported for
 callers that need the same framing math (thumbnails, screenshots).
 
-## Dependencies (for `apps/web/package.json`, C0)
+## Dependencies
 
-- runtime: `react@19`, `react-dom@19`, `three@0.180`, `@react-three/fiber@9`, `@react-three/drei@10`
-- dev: `@types/three`, `vitest@3`, `jsdom`, `@testing-library/react@16`, `@vitejs/plugin-react`
+Pinned in `apps/web/package.json`: `react@18`, `three@0.169`, `@react-three/fiber@8`,
+`@react-three/drei@9`.
 
-Tests in `__tests__/` run under Vitest with the React plugin; math tests use the
-node environment and DOM tests opt into jsdom per file. `demo/StageDemo.tsx` is a local playground with wide/tall/small/empty
-presets; it is not product UI.
+Tests in `__tests__/` run under Vitest (jsdom by default, see `apps/web/vitest.config.ts`).

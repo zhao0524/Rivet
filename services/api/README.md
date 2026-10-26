@@ -47,7 +47,7 @@ The API reads only the process environment, never a `.env` file: export the vari
 | `BACKBOARD_API_KEY` | unset | Required for `backboard`. Server side only; never logged or returned |
 | `BACKBOARD_LLM_PROVIDER` | `openai` | `backboard` only: which LLM provider Backboard routes the request to |
 | `BACKBOARD_BASE_URL` | `https://app.backboard.io/api` | `backboard` only: Backboard API base URL |
-| `RIVET_RESOLVER` | `stub` | Product resolver. Only `stub` exists until lane B's resolver lands; it is labeled a saved example and is refused in `RIVET_MODE=live` |
+| `RIVET_RESOLVER` | `stub` | Product resolver: `stub` (labeled a saved example and refused in `RIVET_MODE=live`), `engine` (live fetches through `rivet_engine.sourcing`, cached under `RIVET_DATA_ROOT/sourcing-cache`) or `engine-recorded` (replays recorded pages). The engine resolvers need `rivet_engine` installed; any other value fails at startup |
 | `RIVET_OFFERS_PROVIDER` | `stub` | Where-to-buy offers provider: `stub` (canned fixtures, never a live lookup), `recorded` (engine replays saved pages) or `live` (engine fetches the web). `recorded`/`live` need `rivet_engine.ecommerce`; any other value fails at startup. See [Offers](#offers) |
 | `RIVET_ENABLE_ESTELLE` | `false` | Turn on the Estelle grounding client |
 | `RIVET_ESTELLE_MODE` | `cli` | `cli` works; `mcp` always reports unavailable (tool parameters are undocumented) |

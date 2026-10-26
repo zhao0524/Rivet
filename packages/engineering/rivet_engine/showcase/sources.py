@@ -17,7 +17,7 @@ from rivet_engine.ecommerce.identifiers import InvalidUrl, canonical_url
 from rivet_engine.ecommerce.vendors import vendor_for_url
 from rivet_engine.showcase.models import UnsourcedPart
 from rivet_engine.sourcing.evidence import host_of
-from rivet_engine.sourcing.extract import included_items, page_text
+from rivet_engine.sourcing.extract import included_items
 from rivet_engine.sourcing.fetch import FetchResult
 
 MAX_QUOTE = 400

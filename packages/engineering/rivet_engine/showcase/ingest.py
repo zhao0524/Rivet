@@ -26,7 +26,6 @@ from rivet_engine.showcase.models import (
     ShowcaseProduct,
     Source,
     Totals,
-    UnsourcedPart,
 )
 from rivet_engine.showcase.sources import BomItem, SourceMeta, extract_parts
 from rivet_engine.sourcing.evidence import parse_utc, tier_for_url
