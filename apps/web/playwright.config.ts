@@ -27,13 +27,15 @@ export const serveCommand = (port: number) => (SERVE_BUILD ? `npx next build && 
  */
 export default defineConfig({
   testDir: './e2e',
-  timeout: 90_000,
+  // The CI runner renders WebGL in software on two cores: give each test more room there.
+  timeout: process.env.CI ? 180_000 : 90_000,
   expect: { timeout: 15_000 },
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  // Every test drives WebGL scenes; a few workers keep a dev server responsive.
-  workers: process.env.CI ? 2 : 3,
+  // Every test drives WebGL scenes; a few workers keep a dev server responsive. CI runs one at a
+  // time: two software-rendered scenes on a two-core runner starve each other and the server.
+  workers: process.env.CI ? 1 : 3,
   reporter: process.env.CI ? [['list'], ['github']] : 'list',
   globalSetup: './e2e/global-setup.ts',
   use: {

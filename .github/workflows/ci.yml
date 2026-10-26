@@ -147,7 +147,7 @@ jobs:
   browser:
     name: Browser acceptance (real engine and offline vision)
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     env:
       # Both Playwright suites serve a production build: `next dev` on a two-core runner
       # compiles on demand and runs unminified React, and the 3D specs outlast their timeouts.
