@@ -12,6 +12,14 @@ const CHANNEL = process.env.E2E_CHANNEL?.trim() || undefined;
 const CHANNEL_ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'];
 
 /**
+ * `E2E_WEB_SERVER=start` serves a production build (`next build` then `next start`) instead of
+ * `next dev`. CI uses it: on a two-core runner, on-demand dev compiles and unminified React make
+ * the WebGL-heavy specs outlast their timeouts.
+ */
+export const SERVE_BUILD = process.env.E2E_WEB_SERVER === 'start';
+export const serveCommand = (port: number) => (SERVE_BUILD ? `npx next build && npx next start --port ${port}` : `npx next dev --port ${port}`);
+
+/**
  * Flow E2E coverage against the offline fixture data source: landing → prompt → clarify →
  * generate → the five steps → done, projects, theme, mobile layout. No API server needed.
  * `npx playwright install chromium` once, then `npm run e2e`. Point E2E_BASE_URL at an
@@ -38,10 +46,10 @@ export default defineConfig({
   webServer: process.env.E2E_BASE_URL
     ? undefined
     : {
-        command: `npx next dev --port ${PORT}`,
+        command: serveCommand(PORT),
         url: BASE_URL,
         reuseExistingServer: false,
-        timeout: 180_000,
+        timeout: SERVE_BUILD ? 600_000 : 180_000,
         env: {
           NEXT_PUBLIC_RIVET_USE_FIXTURES: 'true',
           RIVET_NEXT_DIST_DIR: '.next-e2e',
