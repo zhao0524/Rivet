@@ -289,7 +289,6 @@ def plan_fixes(spec: DesignSpec, result: dict) -> list[dict]:
         if pick is None:
             continue
         body, other = pick
-        depth = float(hit.get("depth_mm", 0)) + max(spec.constraints.min_general_clearance_mm, 0.2) + 0.2
         if hit.get("kind") == "penetration":
             parent_entry = parts[body.parent_id]
             lo, hi = parent_entry["local_bounds_mm"]["min"], parent_entry["local_bounds_mm"]["max"]

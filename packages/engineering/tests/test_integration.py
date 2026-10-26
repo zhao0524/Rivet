@@ -1,8 +1,5 @@
 import copy
-import json
 import socket
-import subprocess
-import sys
 from collections import Counter
 from pathlib import Path
 
@@ -10,7 +7,7 @@ import pytest
 
 import rivet_engine
 from rivet_engine.catalog import catalog_from_records
-from rivet_engine.configurator import Builder, parse_intent, solve_intent
+from rivet_engine.configurator import Builder, parse_intent
 from rivet_engine.models import BuildPlan
 from rivet_engine.ports import EngineError, InvalidInputError, UnsupportedRequestError
 from tests import support

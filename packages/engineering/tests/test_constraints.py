@@ -5,7 +5,7 @@ import pytest
 
 from rivet_engine import mounts
 from rivet_engine.catalog import catalog_from_records
-from rivet_engine.models import BuildPlan, IntentRequirements, Pose
+from rivet_engine.models import BuildPlan, IntentRequirements
 from rivet_engine.ports import AABB, VerificationContext, finding
 from rivet_engine.validators import aggregate, verify_candidate
 from tests import support

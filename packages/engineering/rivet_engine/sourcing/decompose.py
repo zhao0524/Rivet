@@ -23,7 +23,6 @@ from rivet_engine.sourcing.evidence import Evidence, Verdict, tier_for_url, veri
 from rivet_engine.sourcing.extract import (
     DEFAULT_TTL_DAYS,
     evidence_from_jsonld,
-    evidence_from_text,
     find_quote,
     included_items,
     page_text,

@@ -10,7 +10,7 @@ from pathlib import Path
 
 import numpy as np
 
-from .meshing import GlbNode, RenderMaterial, encode_glb, encode_stl
+from .meshing import GlbNode, encode_glb, encode_stl
 from . import occ
 
 

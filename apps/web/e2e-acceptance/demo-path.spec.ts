@@ -101,6 +101,12 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
   let projectId = '';
   let assetId = '';
   let interpreted: Promise<Response> | null = null;
+  // Counted from before submit: the workspace can send generate before the next step starts.
+  let generateCount = 0;
+  page.on('request', (req) => {
+    if (req.method() === 'POST' && new URL(req.url()).pathname === '/api/projects/generate') generateCount += 1;
+  });
+
   let generated: Promise<Response> | null = null;
   await test.step('/new: attach the reference image, enter the prompt, upload on submit', async () => {
     await page.goto('/new');
@@ -125,11 +131,6 @@ test('reference image to a real-engine rover: clarify, generate, review, parts, 
     await expect(page).toHaveURL(/\/p\/p_[a-z0-9]+\/workspace$/, { timeout: 60_000 });
     projectId = page.url().split('/')[4]!;
     expect(await readProject<StoredProject>(page, projectId)).toMatchObject({ imageAssetId: assetId });
-  });
-
-  let generateCount = 0;
-  page.on('request', (req) => {
-    if (req.method() === 'POST' && new URL(req.url()).pathname === '/api/projects/generate') generateCount += 1;
   });
 
   let intentId = '';

@@ -31,7 +31,6 @@ Exit codes: 0 no FAIL, 1 at least one FAIL, 2 bad usage.
 from __future__ import annotations
 
 import argparse
-import copy
 import json
 import os
 import re

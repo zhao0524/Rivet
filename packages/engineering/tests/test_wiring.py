@@ -1,7 +1,6 @@
 import copy
 from collections import Counter
 
-import pytest
 
 from rivet_engine import mounts, wiring
 from rivet_engine.catalog import load_catalog

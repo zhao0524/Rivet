@@ -3,6 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { defineConfig, devices } from '@playwright/test';
 import { API_PORT, API_URL, REPO_ROOT, WEB_PORT, WEB_URL } from './e2e-acceptance/env';
+import { SERVE_BUILD, serveCommand } from './playwright.config';
 
 /**
  * End-to-end acceptance run of the demo path (issue #71): a local API with the real
@@ -89,11 +90,11 @@ export default defineConfig({
     {
       name: 'web',
       // `npx` so the run does not depend on pnpm being on PATH (same as playwright.config.ts).
-      command: `npx next dev --port ${WEB_PORT}`,
+      command: serveCommand(WEB_PORT),
       cwd: WEB_CWD,
       url: `${WEB_URL}/new`,
       reuseExistingServer: false,
-      timeout: 180_000,
+      timeout: SERVE_BUILD ? 600_000 : 180_000,
       env: {
         // HTTP mode: the app talks to the API above instead of the checked-in fixtures.
         NEXT_PUBLIC_RIVET_USE_FIXTURES: 'false',
