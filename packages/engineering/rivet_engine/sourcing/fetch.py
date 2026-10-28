@@ -23,7 +23,7 @@ from typing import Protocol
 from urllib import robotparser
 from urllib.parse import urlparse
 
-USER_AGENT = "RivetBot/0.1 (+https://github.com/RohanGottipati/Rivet; sourcing verification)"
+USER_AGENT = "RivetBot/0.1 (+https://github.com/zhao0524/Rivet; sourcing verification)"
 DEFAULT_CACHE_TTL_DAYS = 14
 
 

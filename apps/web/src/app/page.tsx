@@ -14,7 +14,7 @@ import { Icon } from '../components/system/Icon';
 import { ThemeToggle } from '../components/system/ThemeToggle';
 import '../components/home/marketing.css';
 
-const REPO_URL = 'https://github.com/RohanGottipati/Rivet';
+const REPO_URL = 'https://github.com/zhao0524/Rivet';
 
 const HERO_DECOR = [
   { name: 'gear', spot: 'hero-gear' },
