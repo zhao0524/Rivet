@@ -1,7 +1,7 @@
 # Demo UI audit
 
 Audited October 24–25, 2026, against `main` at `a16f1ed`. Fixes are on
-`fix/demo-ui-audit`, published as [PR #109](https://github.com/RohanGottipati/Rivet/pull/109).
+`fix/demo-ui-audit`, published as PR #109.
 The previous feature-branch work and its stashes were preserved.
 
 PR preparation rebased these fixes onto `main` at `ae9178f`, including the frontend

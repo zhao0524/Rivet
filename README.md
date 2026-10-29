@@ -2,8 +2,6 @@
 
 AI-assisted hardware-building platform, built for the **SOON Hackathon**: describe an object or upload a photo, and Rivet turns it into an interactive 3D model built from separate parts. For the supported rover it goes further, with a design made from cataloged parts, a real BOM, wiring, assembly steps, a simulation and ESP32 starter firmware.
 
-**Repository:** [`zhao0524/Rivet`](https://github.com/zhao0524/Rivet), mirrored from [`RohanGottipati/Rivet`](https://github.com/RohanGottipati/Rivet). Pull request links in `docs/` (for example #109–#114) refer to the upstream repository.
-
 ## What it does
 
 Rivet has two build paths:
